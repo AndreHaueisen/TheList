@@ -3,10 +3,8 @@ package com.andrehaueisen.listadejanot.httpDataFetcher
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.andrehaueisen.listadejanot.httpDataFetcher.dagger.DaggerHttpDataFetcherComponent
-import com.andrehaueisen.listadejanot.httpDataFetcher.dagger.HttpDataFetcherModule
-import com.andrehaueisen.listadejanot.models.Politician
-import io.reactivex.Observer
+import com.andrehaueisen.listadejanot.application.Application
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +15,8 @@ import javax.inject.Inject
  */
 class DataServiceActivity : AppCompatActivity(){
 
+    val LOG = DataServiceActivity::class.java.simpleName
+
     @Inject
     lateinit var mDataService : DataService
 
@@ -24,32 +24,30 @@ class DataServiceActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
 
-        DaggerHttpDataFetcherComponent.builder()
-                .httpDataFetcherModule(HttpDataFetcherModule())
-                .build()
-                .injectDataService(this)
+        val appComponent = Application.get(this).getAppComponent()
+        appComponent.injectDataService(this)
 
 
-        mDataService.getIndividualPoliticianData()
+        mDataService.savePoliticiansToDatabase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object: Observer<Politician>{
+                .subscribe(object: SingleObserver<Boolean> {
                     override fun onSubscribe(d: Disposable?) {
-                        Log.i("DataServiceActivty", "Subscribed")
+                        Log.i(LOG, "Subscribed")
                     }
 
-                    override fun onNext(it: Politician) {
-
+                    override fun onError(e: Throwable) {
+                        Log.e(LOG, "Erro aqui ${e} = ${e.printStackTrace()}")
                     }
 
-                    override fun onComplete() {
-                        Log.i("DataServiceActivty", "Completed")
-                    }
-
-                    override fun onError(e: Throwable?) {
-
+                    override fun onSuccess(t: Boolean?) {
+                        Log.i(LOG, "All politicians where added to database: $t")
                     }
                 })
+
+        val dbFile = getDatabasePath("politicians.db")
+        Log.i(LOG, "${dbFile.absolutePath}\n${dbFile.path}\n${dbFile.canonicalPath}")
+
 
     }
 }

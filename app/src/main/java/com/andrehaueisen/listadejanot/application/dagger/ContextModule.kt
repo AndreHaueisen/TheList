@@ -10,9 +10,8 @@ import dagger.Provides
 @Module
 class ContextModule(val mContext: Context) {
 
-
-    @Provides
     @ApplicationScope
+    @Provides
     fun provideContext() : Context{
         return mContext
     }
