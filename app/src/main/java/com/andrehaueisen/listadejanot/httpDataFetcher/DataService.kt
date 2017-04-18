@@ -33,8 +33,6 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
     var senadorCounter = 0
     var deputadoCounter = 0
 
-
-
     private fun getResponse(): Observable<Connection.Response> {
         return Observable.fromCallable(object : Callable<Connection.Response> {
             override fun call(): Connection.Response {
