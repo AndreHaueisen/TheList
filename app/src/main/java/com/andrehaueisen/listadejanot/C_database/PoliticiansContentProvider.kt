@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.database
+package com.andrehaueisen.listadejanot.C_database
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
 import android.util.Log
-import com.andrehaueisen.listadejanot.database.tables.PoliticianDbHelper
+import com.andrehaueisen.listadejanot.C_database.tables.PoliticianDbHelper
 
 /**
  * Created by andre on 4/16/2017.

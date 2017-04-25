@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.application.dagger
+package com.andrehaueisen.listadejanot.A_application.dagger
 
 import android.content.Context
 import dagger.Module

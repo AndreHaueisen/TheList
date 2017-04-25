@@ -1,7 +1,7 @@
-package com.andrehaueisen.listadejanot.application.dagger
+package com.andrehaueisen.listadejanot.A_application.dagger
 
-import com.andrehaueisen.listadejanot.httpDataFetcher.DataServiceActivity
-import com.andrehaueisen.listadejanot.httpDataFetcher.dagger.HttpDataFetcherModule
+import com.andrehaueisen.listadejanot.B_httpDataFetcher.DataServiceActivity
+import com.andrehaueisen.listadejanot.B_httpDataFetcher.dagger.HttpDataFetcherModule
 import dagger.Component
 
 /**

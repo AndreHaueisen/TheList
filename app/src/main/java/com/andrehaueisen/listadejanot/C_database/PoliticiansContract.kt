@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.database
+package com.andrehaueisen.listadejanot.C_database
 
 import android.content.ContentResolver
 import android.content.ContentUris

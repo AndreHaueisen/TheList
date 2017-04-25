@@ -1,5 +1,7 @@
 package com.andrehaueisen.listadejanot.models;
 
+import android.support.annotation.Nullable;
+
 /**
  * Created by andre on 4/15/2017.
  */
@@ -26,14 +28,14 @@ public class Politician {
         mName = name;
     }
 
-    public Politician(Post cargo, String imageUrl, String name, String email) {
+    public Politician(Post cargo, String imageUrl, String name, @Nullable String email) {
         mCargo = cargo;
         mImageUrl = imageUrl;
         mName = name;
         mEmail = email;
     }
 
-    public Politician(Post cargo, String imageUrl, String name, String email, byte[] image) {
+    public Politician(Post cargo, String imageUrl, String name, @Nullable String email, byte[] image) {
         mCargo = cargo;
         mImageUrl = imageUrl;
         mName = name;
@@ -41,11 +43,11 @@ public class Politician {
         mImage = image;
     }
 
-    public Post getCargo() {
+    public Post getPost() {
         return mCargo;
     }
 
-    public void setCargo(Post cargo) {
+    public void setPost(Post cargo) {
         mCargo = cargo;
     }
 

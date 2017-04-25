@@ -1,9 +1,9 @@
-package com.andrehaueisen.listadejanot.database.tables
+package com.andrehaueisen.listadejanot.C_database.tables
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.andrehaueisen.listadejanot.database.PoliticiansContract
+import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 
 /**
  * Created by andre on 4/16/2017.

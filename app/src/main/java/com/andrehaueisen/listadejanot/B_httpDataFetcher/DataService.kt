@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.httpDataFetcher
+package com.andrehaueisen.listadejanot.B_httpDataFetcher
 
 
 import android.content.ContentValues
@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.util.Patterns
-import com.andrehaueisen.listadejanot.database.PoliticiansContract
+import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -32,8 +32,6 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
     lateinit var mPoliticiansURL: ArrayList<Uri>
     var senadorCounter = 0
     var deputadoCounter = 0
-
-
 
     private fun getResponse(): Observable<Connection.Response> {
         return Observable.fromCallable(object : Callable<Connection.Response> {
@@ -129,10 +127,10 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
                     Log.i(LOG_TAG, "Politicians list size after buffer: ${politiciansList.size}")
 
                     politiciansList.map {
-                        val imageBytes = getImageBytes(it.imageUrl, it.cargo)
+                        val imageBytes = getImageBytes(it.imageUrl, it.post)
                         val contentValues = ContentValues()
                         try {
-                            contentValues.put(politiciansEntry.COLUMN_CARGO, it.cargo.name)
+                            contentValues.put(politiciansEntry.COLUMN_CARGO, it.post.name)
                             contentValues.put(politiciansEntry.COLUMN_IMAGE_URL, it.imageUrl)
                             contentValues.put(politiciansEntry.COLUMN_NAME, it.name)
                             contentValues.put(politiciansEntry.COLUMN_EMAIL, it.email)

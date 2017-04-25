@@ -1,9 +1,9 @@
-package com.andrehaueisen.listadejanot.httpDataFetcher.dagger
+package com.andrehaueisen.listadejanot.B_httpDataFetcher.dagger
 
 import android.content.Context
-import com.andrehaueisen.listadejanot.application.dagger.ApplicationScope
-import com.andrehaueisen.listadejanot.application.dagger.ContextModule
-import com.andrehaueisen.listadejanot.httpDataFetcher.DataService
+import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationScope
+import com.andrehaueisen.listadejanot.A_application.dagger.ContextModule
+import com.andrehaueisen.listadejanot.B_httpDataFetcher.DataService
 import dagger.Module
 import dagger.Provides
 import org.jsoup.Connection

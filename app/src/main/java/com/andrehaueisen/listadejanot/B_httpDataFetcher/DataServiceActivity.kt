@@ -1,9 +1,9 @@
-package com.andrehaueisen.listadejanot.httpDataFetcher
+package com.andrehaueisen.listadejanot.B_httpDataFetcher
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.andrehaueisen.listadejanot.application.Application
+import com.andrehaueisen.listadejanot.A_application.Application
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
