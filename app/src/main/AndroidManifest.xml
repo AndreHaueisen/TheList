@@ -16,9 +16,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".B_httpDataFetcher.DataServiceActivity">
 
-        </activity>
+        <service
+            android:name=".B_httpDataFetcher.DataService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                       android:resource="@xml/sync_adapter" />
+        </service>
+
+        <service android:name=".B_httpDataFetcher.StubAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
 
         <provider
             android:name=".C_database.PoliticiansContentProvider"
@@ -31,10 +48,10 @@
             android:label="@string/title_activity_main_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

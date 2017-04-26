@@ -54,6 +54,7 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
                     mPoliticiansList.addAll(mSenadorList)
                     mActiveList = ActiveList.SENADOR_LIST
                     mAdapter.notifyDataSetChanged()
+
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -62,10 +63,14 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
                     mPoliticiansList.addAll(mDeputadosList)
                     mActiveList = ActiveList.DEPUTADO_LIST
                     mAdapter.notifyDataSetChanged()
+                    menuItem.isChecked = true
+
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_notifications -> {
+                    menuItem.isChecked = true
+
                     return@setOnNavigationItemSelectedListener true
                 }
             }

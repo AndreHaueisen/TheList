@@ -1,8 +1,18 @@
 <resources>
     <string name="app_name">Lista de Janot</string>
-    <string name="title_activity_main_list">MainListActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main_list">Lista de Janot</string>
+
+    <!--D_main_list strings-->
+    <string name="title_senadores">Senadores</string>
+    <string name="title_deputados">Deputados</string>
+    <string name="title_presidente">Presidente</string>
+
     <string name="votes_title">Votes</string>
+
+    <string name="font_roboto_black">sans-serif-black</string>
+    <string name="font_roboto_regular">sans-serif</string>
+
+    <!--Sync strings-->
+    <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>
+    <string name="sync_account_type">com.andrehaueisen.listadejanot.account</string>
 </resources>

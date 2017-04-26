@@ -54,22 +54,11 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
 
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        //@BindView(R.id.politician_image_view)
-        val mPoliticianImageView: ImageView
-        //@BindView(R.id.name_text_view)
-        val mNameTextView : TextView
-       // @Nullable @BindView(R.id.email_text_view)
-        val mEmailTextView : TextView
-       // @BindView(R.id.votes_number_text_view)
-        lateinit var mVotesNumberTextView : TextView
-       // @BindView(R.id.add_to_vote_count_image_view)
-        lateinit var mVoteImageView : ImageView
-
-        init {
-            mPoliticianImageView = itemView.findViewById(R.id.politician_image_view) as ImageView
-            mNameTextView = itemView.findViewById(R.id.name_text_view) as TextView
-            mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
-        }
+        val mPoliticianImageView : ImageView = itemView.findViewById(R.id.politician_image_view) as ImageView
+        val mNameTextView : TextView = itemView.findViewById(R.id.name_text_view) as TextView
+        val mEmailTextView : TextView = itemView.findViewById(R.id.email_text_view) as TextView
+        //val mVotesNumberTextView : TextView
+        //val mVoteImageView : ImageView
 
         internal fun bindDataToView(politician: Politician){
 
