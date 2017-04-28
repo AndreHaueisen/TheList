@@ -6,7 +6,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
-import android.os.Bundle
 import com.andrehaueisen.listadejanot.A_application.dagger.AccountModule
 import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationComponent
 import com.andrehaueisen.listadejanot.A_application.dagger.ContextModule
@@ -42,7 +41,7 @@ class Application : Application(){
 
         mComponent.injectAccount(this)
 
-        setupAccount()
+        //setupAccount()
     }
 
     private fun setupAccount(){
@@ -59,19 +58,15 @@ class Application : Application(){
 
         val authority = context.getString(R.string.provider_authority)
 
-        val settingsBundle = Bundle()
+        //ContentResolver.setIsSyncable(newAccount, authority, 0)
+        ContentResolver.setSyncAutomatically(newAccount, authority, false)
+        //ContentResolver.cancelSync(newAccount, authority)
+
+        /*val settingsBundle = Bundle()
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true)
-        /*val request = SyncRequest.Builder()
-                .setSyncAdapter(newAccount, authority)
-                .setManual(true)
-                .setExpedited(true)
-                .setExtras(Bundle())
-                .build()*/
 
-        ContentResolver.requestSync(newAccount, authority, settingsBundle)
-        //ContentResolver.setSyncAutomatically(newAccount, authority, true)
-
+        ContentResolver.requestSync(newAccount, authority, settingsBundle)*/
     }
 
     fun getAppComponent() : ApplicationComponent{

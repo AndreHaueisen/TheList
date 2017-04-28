@@ -1,6 +1,6 @@
 package com.andrehaueisen.listadejanot.utilities
 
-import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
+import com.andrehaueisen.listadejanot.B_database.PoliticiansContract
 
 /**
  * Created by andre on 4/15/2017.

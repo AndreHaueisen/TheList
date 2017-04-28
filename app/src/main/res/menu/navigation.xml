@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_senadores"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_senado_federal"
         android:title="@string/title_senadores"/>
 
     <item
         android:id="@+id/navigation_deputados"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_camara_deputados"
         android:title="@string/title_deputados"/>
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_palacio_do_planalto"
         android:title="@string/title_presidente"/>
 
 </menu>

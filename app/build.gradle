@@ -84,6 +84,11 @@ dependencies {
     //compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
     //kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'
 
+    // https://mvnrepository.com/artifact/net.coobird/thumbnailator
+    //image resize
+    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+
+
     compile 'org.jsoup:jsoup:1.9.2'
 
     testCompile 'junit:junit:4.12'
