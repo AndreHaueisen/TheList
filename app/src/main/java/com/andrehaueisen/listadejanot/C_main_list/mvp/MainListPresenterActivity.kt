@@ -29,8 +29,15 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                 .build()
                 .injectModel(this)
 
-        mView = MainListView(this)
-        subscribeToModel()
+        if(savedInstanceState == null) {
+            mView = MainListView(this)
+            mView.setViews()
+            subscribeToModel()
+        }else{
+            mView = MainListView(this, savedInstanceState)
+            mView.setViews()
+        }
+
 
     }
 
@@ -38,7 +45,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         mModel.loadDeputadosData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object: Observer<Politician> {
+                .subscribe(object : Observer<Politician> {
                     override fun onSubscribe(disposable: Disposable?) {
                         mCompositeDisposable.add(disposable)
                     }
@@ -59,7 +66,15 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         mModel.loadSenadoresData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object: Observer<Politician> {
+                .subscribe(object : Observer<Politician> {
+                    override fun onSubscribe(disposable: Disposable?) {
+                        mCompositeDisposable.add(disposable)
+                    }
+
+                    override fun onNext(senador: Politician) {
+                        mView.notifySenadorAddition(senador)
+                    }
+
                     override fun onError(e: Throwable?) {
 
                     }
@@ -67,15 +82,12 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                     override fun onComplete() {
 
                     }
-
-                    override fun onNext(senador: Politician) {
-                        mView.notifySenadorAddition(senador)
-                    }
-
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mCompositeDisposable.add(disposable)
-                    }
                 })
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putAll(mView.onSaveInstanceState())
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {

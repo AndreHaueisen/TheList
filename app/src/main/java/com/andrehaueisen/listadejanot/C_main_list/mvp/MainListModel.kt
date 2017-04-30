@@ -73,6 +73,8 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager) :
                 data.moveToNext()
             }
             data.close()
+            mDeputadoList.clear()
+            mSenadorList.clear()
         }
     }
 

@@ -2,10 +2,12 @@
     <string name="app_name">Lista de Janot</string>
     <string name="title_activity_main_list">Lista de Janot</string>
 
-    <!--D_main_list strings-->
+    <!--C_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_presidente">Presidente</string>
+    <string name="add_vote">Condemn</string>
+    <string name="remove_vote">Absolve</string>
 
     <string name="votes_title">Votes</string>
 
@@ -15,4 +17,5 @@
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>
     <string name="sync_account_type">com.andrehaueisen.listadejanot.account</string>
+
 </resources>

@@ -19,13 +19,13 @@
         tools:ignore="ContentDescription"/>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="105dp"
-        app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardCornerRadius="4dp"
         app:cardElevation="@dimen/cardview_default_elevation">
 
@@ -37,7 +37,6 @@
                 android:id="@+id/mold_image_view"
                 android:layout_width="190dp"
                 android:layout_height="110dp"
-                android:background="@color/colorPrimary"
                 android:elevation="2dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -96,13 +95,16 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="110.110"/>
 
-            <ImageView
+            <ToggleButton
                 android:id="@+id/add_to_vote_count_image_view"
+                style="@android:style/Widget.Material.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_add_circle_24dp"
+                android:textOn="@string/remove_vote"
+                android:textOff="@string/add_vote"
+                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 

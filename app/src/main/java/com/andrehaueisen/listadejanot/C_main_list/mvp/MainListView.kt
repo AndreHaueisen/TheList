@@ -1,11 +1,12 @@
 package com.andrehaueisen.listadejanot.C_main_list.mvp
 
+import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import com.andrehaueisen.listadejanot.C_main_list.PoliticianListAdapter
+import android.support.v4.view.ViewPager
+import com.andrehaueisen.listadejanot.C_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.Constants
 import kotlinx.android.synthetic.main.activity_main_list.*
 
 
@@ -14,83 +15,89 @@ import kotlinx.android.synthetic.main.activity_main_list.*
  */
 class MainListView(val presenterActivity: MainListPresenterActivity) : MainListMvpContract.View {
 
-    private lateinit var mPoliticiansRecyclerView: RecyclerView
-    private lateinit var mBottomNavigationView: BottomNavigationView
-
-    private val mPoliticiansList = ArrayList<Politician>()
-    private val mDeputadosList = ArrayList<Politician>()
-    private val mSenadorList = ArrayList<Politician>()
-    private val mAdapter = PoliticianListAdapter(presenterActivity, mPoliticiansList)
-    private var mActiveList = ActiveList.SENADOR_LIST
-
-    private enum class ActiveList{
-        DEPUTADO_LIST, SENADOR_LIST
-    }
+    private val mPagerAdapter : ViewPager
+    private val mBottomNavigationView: BottomNavigationView
+    private var mBundle: Bundle? = null
 
     init {
         presenterActivity.setContentView(R.layout.activity_main_list)
-        setViews()
+        mPagerAdapter = presenterActivity.politicians_pager_adapter
+        mBottomNavigationView = presenterActivity.navigation
+    }
+
+    constructor(presenterActivity: MainListPresenterActivity, bundle: Bundle) : this(presenterActivity){
+        mBundle = bundle
     }
 
     override fun setViews() {
-        setRecyclerView()
+        setPagerAdapter()
         setBottomNavigationView()
     }
 
-    private fun setRecyclerView() {
-        mPoliticiansRecyclerView = presenterActivity.politicians_recycler_view
-        mPoliticiansRecyclerView.layoutManager = LinearLayoutManager(presenterActivity)
-        //mPoliticiansRecyclerView.setHasFixedSize(true)
-        mPoliticiansRecyclerView.adapter = mAdapter
+    fun setPagerAdapter(){
+        mPagerAdapter.adapter = PoliticiansPagesAdapter(presenterActivity.supportFragmentManager)
+        mPagerAdapter.offscreenPageLimit = 2
+        mPagerAdapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+               mBottomNavigationView.menu.getItem(position).isChecked = true
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+        })
+        if(mBundle != null){
+            mPagerAdapter.onRestoreInstanceState(mBundle?.getParcelable(Constants.BUNDLE_PAGER_ADAPTER))
+        }
     }
 
     private fun setBottomNavigationView() {
-        mBottomNavigationView = presenterActivity.navigation
         mBottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
 
                 R.id.navigation_senadores -> {
-                    mPoliticiansList.clear()
-                    mPoliticiansList.addAll(mSenadorList)
-                    mActiveList = ActiveList.SENADOR_LIST
-                    mAdapter.notifyDataSetChanged()
-
+                    mPagerAdapter.setCurrentItem(0, true)
+                    menuItem.isChecked = true
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_deputados -> {
-                    mPoliticiansList.clear()
-                    mPoliticiansList.addAll(mDeputadosList)
-                    mActiveList = ActiveList.DEPUTADO_LIST
-                    mAdapter.notifyDataSetChanged()
+                    mPagerAdapter.setCurrentItem(1, true)
                     menuItem.isChecked = true
-
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_notifications -> {
                     menuItem.isChecked = true
-
                     return@setOnNavigationItemSelectedListener true
                 }
             }
+
             false
         }
     }
 
     override fun notifyDeputadoAddition(deputado: Politician) {
-        mDeputadosList.add(deputado)
-        if(mActiveList == ActiveList.DEPUTADO_LIST) {
-            mPoliticiansList.add(deputado)
-            mAdapter.notifyItemInserted(mDeputadosList.size)
-        }
+        val deputadoFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(1)
+        (deputadoFragment as MainListDeputadosView).notifyDeputadoAddition(deputado)
     }
 
     override fun notifySenadorAddition(senador: Politician) {
-        mSenadorList.add(senador)
-        if(mActiveList == ActiveList.SENADOR_LIST) {
-            mPoliticiansList.add(senador)
-            mAdapter.notifyItemInserted(mSenadorList.size)
-        }
+        val senadorFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(0)
+        (senadorFragment as MainListSenadoresView).notifySenadorAddition(senador)
+    }
+
+    override fun onSaveInstanceState() : Bundle {
+        val bundle = Bundle()
+        bundle.putParcelable(Constants.BUNDLE_PAGER_ADAPTER, mPagerAdapter.onSaveInstanceState())
+        return bundle
+    }
+
+    override fun onDestroy() {
+
     }
 }

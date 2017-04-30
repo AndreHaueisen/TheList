@@ -11,4 +11,6 @@ import dagger.Component
 interface MainListComponent{
 
     fun injectModel(mainListActivity: MainListPresenterActivity)
+
+
 }

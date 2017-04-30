@@ -22,5 +22,10 @@ class Constants{
         @JvmField val COLUMNS_INDEX_NAME = 1
         @JvmField val COLUMNS_INDEX_EMAIL = 2
         @JvmField val COLUMNS_INDEX_IMAGE = 3
+
+        @JvmField val BUNDLE_DEPUTADOS = "deputados_list"
+        @JvmField val BUNDLE_SENADORES = "senadores_list"
+        @JvmField val BUNDLE_MANAGER = "layout_manager_state"
+        @JvmField val BUNDLE_PAGER_ADAPTER = "pager_adapter"
     }
 }

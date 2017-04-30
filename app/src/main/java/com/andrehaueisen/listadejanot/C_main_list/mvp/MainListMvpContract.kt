@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.C_main_list.mvp
 
+import android.os.Bundle
 import com.andrehaueisen.listadejanot.models.Politician
 import io.reactivex.Observable
 
@@ -8,17 +9,27 @@ import io.reactivex.Observable
  */
 interface MainListMvpContract{
 
-    interface View {
+    interface View{
         fun setViews()
-
-        fun notifyDeputadoAddition(deputado: Politician)
         fun notifySenadorAddition(senador: Politician)
+        fun notifyDeputadoAddition(deputado: Politician)
+
+        fun onSaveInstanceState():Bundle
+        fun onDestroy()
+    }
+
+    interface SenadoresView {
+        fun notifySenadorAddition(senador: Politician)
+    }
+
+    interface DeputadosView {
+        fun notifyDeputadoAddition(deputado: Politician)
     }
 
     interface Model {
         fun initiateDataLoad()
-        fun loadDeputadosData() : Observable<Politician>
-        fun loadSenadoresData() : Observable<Politician>
+        fun loadDeputadosData(): Observable<Politician>
+        fun loadSenadoresData(): Observable<Politician>
     }
 
     interface Presenter {
@@ -26,8 +37,6 @@ interface MainListMvpContract{
         fun subscribeToModel()
 
         //ManipulateView
-
-
 
     }
 }
