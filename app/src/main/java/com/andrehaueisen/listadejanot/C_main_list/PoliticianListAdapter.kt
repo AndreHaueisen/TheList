@@ -72,10 +72,10 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
         val view: View
         if (viewType == VIEW_TYPE_DEPUTADO) {
             view = inflater.inflate(R.layout.item_deputado, parent, false)
-            return PoliticianHolder(VIEW_TYPE_DEPUTADO, view)
+            return PoliticianHolder(view)
         } else {
             view = inflater.inflate(R.layout.item_senador, parent, false)
-            return PoliticianHolder(VIEW_TYPE_SENADOR, view)
+            return PoliticianHolder(view)
         }
     }
 
@@ -93,20 +93,13 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
         }
     }
 
-    inner class PoliticianHolder(view_type: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        lateinit var mEmailTextView: TextView
-
-        init {
-            if (view_type == VIEW_TYPE_SENADOR) {
-                mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
-            }
-        }
+    inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val mCardView: CardView = itemView.findViewById(R.id.card_view) as CardView
         val mMoldView: View = itemView.findViewById(R.id.mold_image_view)
         val mPoliticianImageView: ImageView = itemView.findViewById(R.id.politician_image_view) as ImageView
         val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view) as TextView
+        val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
 
         //val mVotesNumberTextView : TextView
         val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_image_view) as ToggleButton
@@ -130,10 +123,8 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
                     .into(mPoliticianImageView)
             mNameTextView.text = politician.name
             // mVotesNumberTextView.text = //voteNumber
+            mEmailTextView.text = politician.email
 
-            if (politician.post == Politician.Post.SENADOR) {
-                mEmailTextView.text = politician.email
-            }
 
             mVoteButton.backgroundTintList = mResources.getColorStateList(R.drawable.selector_vote_button)
             mVoteButton.setOnClickListener {

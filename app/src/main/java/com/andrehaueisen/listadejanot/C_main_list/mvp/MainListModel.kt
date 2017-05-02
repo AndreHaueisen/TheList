@@ -54,9 +54,10 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager) :
                 if(data.getString(Constants.COLUMNS_INDEX_CARGO) == Politician.Post.DEPUTADO.name){
 
                     val deputadoName = data.getString(Constants.COLUMNS_INDEX_NAME)
+                    val deputadoEmail = data.getString(Constants.COLUMNS_INDEX_EMAIL)
                     val deputadoImage = data.getBlob(Constants.COLUMNS_INDEX_IMAGE)
 
-                    val deputado = Politician(Politician.Post.DEPUTADO, null, deputadoName, null, deputadoImage)
+                    val deputado = Politician(Politician.Post.DEPUTADO, null, deputadoName, deputadoEmail, deputadoImage)
                     mDeputadoList.add(deputado)
                     deputadosObservable.onNext(deputado)
 
