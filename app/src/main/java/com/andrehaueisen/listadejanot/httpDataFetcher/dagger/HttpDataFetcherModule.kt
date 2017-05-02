@@ -20,7 +20,7 @@ class HttpDataFetcherModule{
     @ApplicationScope
     @Provides
     fun provideJsoup() : Connection{
-        return Jsoup.connect(BASE_URL).timeout(10*1000).method(Connection.Method.GET)
+        return Jsoup.connect(BASE_URL).timeout(20*1000).method(Connection.Method.GET)
     }
 
     @ApplicationScope

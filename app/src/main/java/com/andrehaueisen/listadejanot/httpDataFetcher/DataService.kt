@@ -97,9 +97,13 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
                                 val document = response.parse()
                                 val personalInfoBox = document.getElementById("content")
                                 val imageUrl = personalInfoBox.getElementsByTag("img")[0].attr("src")
-                                val name = personalInfoBox.getElementsByTag("ul")[0].getElementsByTag("li")[0].text().substringAfter(':')
+                                val name = personalInfoBox.getElementsByTag("ul")[0].getElementsByTag("li")[0].text()
+                                        .substringAfter(':')
+                                        .replaceFirst(" ", "", true)
+                                        .toCamelCase()
+                                val email = personalInfoBox.getElementsByAttribute("href")[20].text()
 
-                                val politician = Politician(Politician.Post.DEPUTADO, imageUrl, name)
+                                val politician = Politician(Politician.Post.DEPUTADO, imageUrl, name, email)
                                 deputadoCounter++
                                 Log.i(LOG_TAG, "Adding $politician to buffer. Deputado N: $deputadoCounter")
 
@@ -172,5 +176,27 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOS)
 
         return byteArrayOS.toByteArray()
+    }
+
+    fun String.toCamelCase(): String {
+        var result = ""
+        if (this.isEmpty()) {
+            return result
+        }
+        val firstChar = this[0]
+        val firstCharToUpperCase = Character.toUpperCase(firstChar)
+        result += firstCharToUpperCase
+        for (i in 1..this.length - 1) {
+            val currentChar = this[i]
+            val previousChar = this[i - 1]
+            if (previousChar == ' ') {
+                val currentCharToUpperCase = Character.toUpperCase(currentChar)
+                result += currentCharToUpperCase
+            } else {
+                val currentCharToLowerCase = Character.toLowerCase(currentChar)
+                result += currentCharToLowerCase
+            }
+        }
+        return result
     }
 }
