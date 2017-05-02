@@ -13,16 +13,16 @@ import kotlinx.android.synthetic.main.activity_main_list.*
 /**
  * Created by andre on 4/20/2017.
  */
-class MainListView(val presenterActivity: MainListPresenterActivity) : MainListMvpContract.View {
+class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainListMvpContract.View {
 
     private val mPagerAdapter : ViewPager
     private val mBottomNavigationView: BottomNavigationView
     private var mBundle: Bundle? = null
 
     init {
-        presenterActivity.setContentView(R.layout.activity_main_list)
-        mPagerAdapter = presenterActivity.politicians_pager_adapter
-        mBottomNavigationView = presenterActivity.navigation
+        mPresenterActivity.setContentView(R.layout.activity_main_list)
+        mPagerAdapter = mPresenterActivity.politicians_pager_adapter
+        mBottomNavigationView = mPresenterActivity.navigation
     }
 
     constructor(presenterActivity: MainListPresenterActivity, bundle: Bundle) : this(presenterActivity){
@@ -35,7 +35,7 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
     }
 
     fun setPagerAdapter(){
-        mPagerAdapter.adapter = PoliticiansPagesAdapter(presenterActivity.supportFragmentManager)
+        mPagerAdapter.adapter = PoliticiansPagesAdapter(mPresenterActivity.supportFragmentManager)
         mPagerAdapter.offscreenPageLimit = 2
         mPagerAdapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
@@ -43,10 +43,14 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-               mBottomNavigationView.menu.getItem(position).isChecked = true
+
             }
 
             override fun onPageSelected(position: Int) {
+                when(position){
+                    0 -> mBottomNavigationView.selectedItemId = R.id.navigation_senadores
+                    1 -> mBottomNavigationView.selectedItemId = R.id.navigation_deputados
+                }
 
             }
         })
@@ -61,18 +65,15 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
 
                 R.id.navigation_senadores -> {
                     mPagerAdapter.setCurrentItem(0, true)
-                    menuItem.isChecked = true
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_deputados -> {
                     mPagerAdapter.setCurrentItem(1, true)
-                    menuItem.isChecked = true
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_notifications -> {
-                    menuItem.isChecked = true
                     return@setOnNavigationItemSelectedListener true
                 }
             }
@@ -95,9 +96,5 @@ class MainListView(val presenterActivity: MainListPresenterActivity) : MainListM
         val bundle = Bundle()
         bundle.putParcelable(Constants.BUNDLE_PAGER_ADAPTER, mPagerAdapter.onSaveInstanceState())
         return bundle
-    }
-
-    override fun onDestroy() {
-
     }
 }

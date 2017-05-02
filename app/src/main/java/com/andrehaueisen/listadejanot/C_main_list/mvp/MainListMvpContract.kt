@@ -15,7 +15,6 @@ interface MainListMvpContract{
         fun notifyDeputadoAddition(deputado: Politician)
 
         fun onSaveInstanceState():Bundle
-        fun onDestroy()
     }
 
     interface SenadoresView {
