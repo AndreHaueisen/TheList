@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -28,7 +29,6 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
     private val VIEW_TYPE_DEPUTADO = 0
     private val VIEW_TYPE_SENADOR = 1
     private val mGlide = Glide.with(context)
-    private val mResources = context.resources
 
     val mCardObjectAnimatorAbsolve: ObjectAnimator
     val mMoldViewObjectAnimatorAbsolve: ObjectAnimator
@@ -38,26 +38,26 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
 
     init {
         mCardObjectAnimatorAbsolve = ObjectAnimator.ofInt(null, "backgroundColor",
-                mResources.getColor(R.color.colorAccentDark),
-                mResources.getColor(R.color.colorPrimaryDark))
+                ContextCompat.getColor(context, R.color.colorAccentDark),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark))
         mCardObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
         mCardObjectAnimatorAbsolve.duration = 1000
 
         mMoldViewObjectAnimatorAbsolve = ObjectAnimator.ofInt(null, "backgroundColor",
-                mResources.getColor(R.color.colorAccent),
-                mResources.getColor(R.color.colorPrimary))
+                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.colorPrimary))
         mMoldViewObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
         mMoldViewObjectAnimatorAbsolve.duration = 1000
 
         mCardObjectAnimatorCondemn = ObjectAnimator.ofInt(null, "backgroundColor",
-                mResources.getColor(R.color.colorPrimaryDark),
-                mResources.getColor(R.color.colorAccentDark))
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorAccentDark))
         mCardObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
         mCardObjectAnimatorCondemn.duration = 1000
 
         mMoldViewObjectAnimatorCondemn = ObjectAnimator.ofInt(null, "backgroundColor",
-                mResources.getColor(R.color.colorPrimary),
-                mResources.getColor(R.color.colorAccent))
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorAccent))
         mMoldViewObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
         mMoldViewObjectAnimatorCondemn.duration = 1000
 
@@ -107,12 +107,12 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
         internal fun bindDataToView(politician: Politician) {
 
             if (politician.hasPersonVote){
-                mCardView.background = mResources.getDrawable(R.color.colorAccentDark)
-                mMoldView.setBackgroundColor(mResources.getColor(R.color.colorAccent))
+                mCardView.background = ContextCompat.getDrawable(context, R.color.colorAccentDark)
+                mMoldView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                 mVoteButton.isChecked = true
             }else{
-                mCardView.background = mResources.getDrawable(R.color.colorPrimaryDark)
-                mMoldView.setBackgroundColor(mResources.getColor(R.color.colorPrimary))
+                mCardView.background = ContextCompat.getDrawable(context, R.color.colorPrimaryDark)
+                mMoldView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 mVoteButton.isChecked = false
             }
 
@@ -126,7 +126,7 @@ class PoliticianListAdapter(val context: Context, val politicianList: ArrayList<
             mEmailTextView.text = politician.email
 
 
-            mVoteButton.backgroundTintList = mResources.getColorStateList(R.drawable.selector_vote_button)
+            mVoteButton.backgroundTintList = ContextCompat.getColorStateList(context, R.drawable.selector_vote_button)
             mVoteButton.setOnClickListener {
 
                 if (politician.hasPersonVote){

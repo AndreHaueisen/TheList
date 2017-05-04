@@ -4,104 +4,130 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by andre on 4/15/2017.
  */
 
 public class Politician implements Parcelable {
 
-    private Post mPost;
-    private String mImageUrl;
-    private String mName;
-    private String mEmail;
-    private byte[] mImage;
-    private boolean mHasPersonVote;
+    @Exclude
+    private Post post;
+    @Exclude
+    private String imageUrl;
+    @Exclude
+    private String email;
+    private String name;
+    private long votesNumber;
+    private ArrayList<String> condemnedBy;
+    @Exclude
+    private byte[] image;
 
     public enum Post{
         DEPUTADO, SENADOR
     }
 
     public Politician(Post post){
-        mPost = post;
+        this.post = post;
     }
 
-    public Politician(Post post, String imageUrl, String name) {
-        mPost = post;
-        mImageUrl = imageUrl;
-        mName = name;
+    public Politician(String name, long votesNumber){
+        this.name = name;
+        this.votesNumber = votesNumber;
     }
 
-    public Politician(Post post, String imageUrl, String name, @Nullable String email) {
-        mPost = post;
-        mImageUrl = imageUrl;
-        mName = name;
-        mEmail = email;
+    public Politician(String name, long votesNumber, ArrayList<String> condemnedBy){
+        this.name = name;
+        this.votesNumber = votesNumber;
+        this.condemnedBy = condemnedBy;
     }
 
     public Politician(Post post, String imageUrl, String name, @Nullable String email, byte[] image) {
-        mPost = post;
-        mImageUrl = imageUrl;
-        mName = name;
-        mEmail = email;
-        mImage = image;
+        this.post = post;
+        this.imageUrl = imageUrl;
+        this.name = name;
+        this.email = email;
+        this.image = image;
     }
 
     public Post getPost() {
-        return mPost;
+        return post;
     }
 
     public void setPost(Post post) {
-        mPost = post;
+        this.post = post;
     }
 
     public String getImageUrl() {
-        return mImageUrl;
+        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        mImageUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public void setEmail(String email) {
-        mEmail = email;
+        this.email = email;
+    }
+
+    public long getVotesNumber() {
+        return votesNumber;
+    }
+
+    public void setVotesNumber(long votesNumber) {
+        this.votesNumber = votesNumber;
     }
 
     public byte[] getImage() {
-        return mImage;
+        return image;
     }
 
     public void setImage(byte[] image) {
-        mImage = image;
+        this.image = image;
     }
 
-    public boolean getHasPersonVote() {
-        return mHasPersonVote;
+    public ArrayList<String> getCondemnedBy() {
+        return condemnedBy;
     }
 
-    public void setHasPersonVote(boolean hasPersonVote) {
-        mHasPersonVote = hasPersonVote;
+    public void setCondemnedBy(ArrayList<String> condemnedBy) {
+        this.condemnedBy = condemnedBy;
+    }
+
+    public Map<String, Object> toSimpleMap(){
+
+        Map<String, Object> simplePoliticianMap = new HashMap<>();
+        simplePoliticianMap.put("name", name);
+        simplePoliticianMap.put("votesNumber", votesNumber);
+
+        return simplePoliticianMap;
     }
 
     protected Politician(Parcel in) {
-        mPost = (Post) in.readValue(Post.class.getClassLoader());
-        mImageUrl = in.readString();
-        mName = in.readString();
-        mEmail = in.readString();
-        mHasPersonVote = in.readByte() != 0x00;
-        mImage = new byte[in.readInt()];
-        in.readByteArray(mImage);
+        post = (Post) in.readValue(Post.class.getClassLoader());
+        imageUrl = in.readString();
+        name = in.readString();
+        email = in.readString();
+        votesNumber = in.readLong();
+        image = new byte[in.readInt()];
+        in.readByteArray(image);
 
     }
 
@@ -112,13 +138,13 @@ public class Politician implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(mPost);
-        dest.writeString(mImageUrl);
-        dest.writeString(mName);
-        dest.writeString(mEmail);
-        dest.writeByte((byte) (mHasPersonVote ? 0x01 : 0x00));
-        dest.writeInt(mImage.length);
-        dest.writeByteArray(mImage);
+        dest.writeValue(post);
+        dest.writeString(imageUrl);
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeLong(votesNumber);
+        dest.writeInt(image.length);
+        dest.writeByteArray(image);
     }
 
     @SuppressWarnings("unused")

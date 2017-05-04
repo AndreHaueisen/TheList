@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 //apply plugin: 'io.fabric'
 
 android {
@@ -43,6 +44,12 @@ dependencies {
     compile "com.android.support:palette-v7:$support_version"
     compile "com.android.support:customtabs:$support_version"
     compile "com.android.support:support-dynamic-animation:$support_version"
+
+    //firebase
+    compile 'com.google.firebase:firebase-database:10.2.4'
+    compile 'com.google.firebase:firebase-auth:10.2.4'
+    compile 'com.firebaseui:firebase-ui-database:1.2.0'
+    compile 'com.firebaseui:firebase-ui-auth:1.2.0'
 
     //rest interactions
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
