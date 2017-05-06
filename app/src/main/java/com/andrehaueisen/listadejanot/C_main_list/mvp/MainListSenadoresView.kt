@@ -45,9 +45,9 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         mSenadoresRecyclerView.adapter = senadoresAdapter
     }
 
-    override fun notifySenadorAddition(senador: Politician) {
-        mSenadorList.add(senador)
-        mSenadoresRecyclerView.adapter.notifyItemInserted(mSenadorList.size)
+    override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
+        mSenadorList.addAll(senadores)
+        mSenadoresRecyclerView.adapter.notifyDataSetChanged()
     }
 
 

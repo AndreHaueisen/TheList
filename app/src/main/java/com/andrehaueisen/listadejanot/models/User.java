@@ -1,5 +1,7 @@
 package com.andrehaueisen.listadejanot.models;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 
 public class User{
 
+    @Exclude
     private String email;
     private String age;
     private String state;

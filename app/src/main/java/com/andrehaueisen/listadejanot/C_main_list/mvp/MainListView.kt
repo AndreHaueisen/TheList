@@ -37,7 +37,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     fun setPagerAdapter(){
         mPagerAdapter.adapter = PoliticiansPagesAdapter(mPresenterActivity.supportFragmentManager)
         mPagerAdapter.offscreenPageLimit = 2
-        mPagerAdapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        mPagerAdapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -47,14 +47,14 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
             }
 
             override fun onPageSelected(position: Int) {
-                when(position){
+                when (position) {
                     0 -> mBottomNavigationView.selectedItemId = R.id.navigation_senadores
                     1 -> mBottomNavigationView.selectedItemId = R.id.navigation_deputados
                 }
 
             }
         })
-        if(mBundle != null){
+        if (mBundle != null) {
             mPagerAdapter.onRestoreInstanceState(mBundle?.getParcelable(Constants.BUNDLE_PAGER_ADAPTER))
         }
     }
@@ -82,17 +82,17 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         }
     }
 
-    override fun notifyDeputadoAddition(deputado: Politician) {
+    override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
         val deputadoFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(1)
-        (deputadoFragment as MainListDeputadosView).notifyDeputadoAddition(deputado)
+        (deputadoFragment as MainListDeputadosView).notifyDeputadosNewList(deputados)
     }
 
-    override fun notifySenadorAddition(senador: Politician) {
+    override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
         val senadorFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(0)
-        (senadorFragment as MainListSenadoresView).notifySenadorAddition(senador)
+        (senadorFragment as MainListSenadoresView).notifySenadoresNewList(senadores)
     }
 
-    override fun onSaveInstanceState() : Bundle {
+    override fun onSaveInstanceState(): Bundle {
         val bundle = Bundle()
         bundle.putParcelable(Constants.BUNDLE_PAGER_ADAPTER, mPagerAdapter.onSaveInstanceState())
         return bundle

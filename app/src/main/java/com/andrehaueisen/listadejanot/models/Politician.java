@@ -24,12 +24,18 @@ public class Politician implements Parcelable {
     private String email;
     private String name;
     private long votesNumber;
-    private ArrayList<String> condemnedBy;
+    private ArrayList<String> condemnedBy = new ArrayList<>();
     @Exclude
     private byte[] image;
+    @Exclude
+    private boolean hasPersonVote;
 
     public enum Post{
         DEPUTADO, SENADOR
+    }
+
+    public Politician(){
+
     }
 
     public Politician(Post post){
@@ -45,6 +51,15 @@ public class Politician implements Parcelable {
         this.name = name;
         this.votesNumber = votesNumber;
         this.condemnedBy = condemnedBy;
+    }
+
+    public Politician(Post post, String name, long votesNumber, ArrayList<String> condemnedBy, @Nullable String email, byte[] image) {
+        this.post = post;
+        this.name = name;
+        this.votesNumber = votesNumber;
+        this.condemnedBy.addAll(condemnedBy);
+        this.email = email;
+        this.image = image;
     }
 
     public Politician(Post post, String imageUrl, String name, @Nullable String email, byte[] image) {
@@ -111,6 +126,14 @@ public class Politician implements Parcelable {
         this.condemnedBy = condemnedBy;
     }
 
+    public boolean getHasPersonVote() {
+        return hasPersonVote;
+    }
+
+    public void setHasPersonVote(boolean hasPersonVote) {
+        this.hasPersonVote = hasPersonVote;
+    }
+
     public Map<String, Object> toSimpleMap(){
 
         Map<String, Object> simplePoliticianMap = new HashMap<>();
@@ -128,6 +151,7 @@ public class Politician implements Parcelable {
         votesNumber = in.readLong();
         image = new byte[in.readInt()];
         in.readByteArray(image);
+        hasPersonVote = in.readByte() != 0x00;
 
     }
 
@@ -143,6 +167,7 @@ public class Politician implements Parcelable {
         dest.writeString(name);
         dest.writeString(email);
         dest.writeLong(votesNumber);
+        dest.writeByte((byte) (hasPersonVote ? 0x01 : 0x00));
         dest.writeInt(image.length);
         dest.writeByteArray(image);
     }

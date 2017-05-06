@@ -42,16 +42,16 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     }
 
     override fun subscribeToModel() {
-        mModel.loadDeputadosData()
+        mModel.loadDeputadosMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Politician> {
+                .subscribe(object : Observer<ArrayList<Politician>> {
                     override fun onSubscribe(disposable: Disposable?) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onNext(senador: Politician) {
-                        mView.notifyDeputadoAddition(senador)
+                    override fun onNext(deputados: ArrayList<Politician>) {
+                        mView.notifyDeputadosNewList(deputados)
                     }
 
                     override fun onError(t: Throwable?) {
@@ -63,16 +63,16 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                     }
                 })
 
-        mModel.loadSenadoresData()
+        mModel.loadSenadoresMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Politician> {
+                .subscribe(object : Observer<ArrayList<Politician>> {
                     override fun onSubscribe(disposable: Disposable?) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onNext(senador: Politician) {
-                        mView.notifySenadorAddition(senador)
+                    override fun onNext(senadores: ArrayList<Politician>) {
+                        mView.notifySenadoresNewList(senadores)
                     }
 
                     override fun onError(e: Throwable?) {
@@ -92,6 +92,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()
+        mModel.onDestroy()
         super.onDestroy()
     }
 }

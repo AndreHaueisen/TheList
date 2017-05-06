@@ -44,9 +44,9 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
         mDeputadosRecyclerView.adapter = deputadosAdapter
     }
 
-    override fun notifyDeputadoAddition(deputado: Politician) {
-        mDeputadosList.add(deputado)
-        mDeputadosRecyclerView.adapter.notifyItemInserted(mDeputadosList.size)
+    override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
+        mDeputadosList.addAll(deputados)
+        mDeputadosRecyclerView.adapter.notifyDataSetChanged()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

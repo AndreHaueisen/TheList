@@ -12,18 +12,32 @@
         android:id="@+id/politicians_pager_adapter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingTop="27dp"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
     </android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/add_stub_lists_button"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Add Lists"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
+        android:layout_marginBottom="0dp"
         android:background="@color/colorPrimaryLight"
         app:elevation="8dp"
         app:itemIconTint="@drawable/selector_bottom_navigation"

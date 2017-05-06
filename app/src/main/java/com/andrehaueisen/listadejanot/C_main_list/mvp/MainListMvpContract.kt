@@ -11,31 +11,38 @@ interface MainListMvpContract{
 
     interface View{
         fun setViews()
-        fun notifySenadorAddition(senador: Politician)
-        fun notifyDeputadoAddition(deputado: Politician)
+        fun notifySenadoresNewList(senadores: ArrayList<Politician>)
+        fun notifyDeputadosNewList(deputados: ArrayList<Politician>)
 
         fun onSaveInstanceState():Bundle
     }
 
     interface SenadoresView {
-        fun notifySenadorAddition(senador: Politician)
+        fun notifySenadoresNewList(senadores: ArrayList<Politician>)
     }
 
     interface DeputadosView {
-        fun notifyDeputadoAddition(deputado: Politician)
-    }
-
-    interface Model {
-        fun initiateDataLoad()
-        fun loadDeputadosData(): Observable<Politician>
-        fun loadSenadoresData(): Observable<Politician>
+        fun notifyDeputadosNewList(deputados: ArrayList<Politician>)
     }
 
     interface Presenter {
 
         fun subscribeToModel()
+    }
 
-        //ManipulateView
+    interface Model {
+        fun initiateDataLoad()
+        fun loadSenadoresMainList(): Observable<ArrayList<Politician>>
+        fun loadSenadoresPreList(): Observable<ArrayList<Politician>>
+        fun loadDeputadosMainList(): Observable<ArrayList<Politician>>
+        fun loadDeputadosPreList(): Observable<ArrayList<Politician>>
+
+        fun onDestroy()
+    }
+
+    interface Repository{
 
     }
+
+
 }
