@@ -1,9 +1,9 @@
-package com.andrehaueisen.listadejanot.C_main_list.mvp
+package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
-import com.andrehaueisen.listadejanot.C_main_list.PoliticiansPagesAdapter
+import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants

@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.A_application.dagger
 
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.google.firebase.database.DatabaseReference
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,7 @@ class ApplicationModule(val mDatabaseReference: DatabaseReference) {
 
     @ApplicationScope
     @Provides
-    fun providesDatabaseReference(): DatabaseReference{
-        return mDatabaseReference
+    fun provideFirebaseRepository() : FirebaseRepository {
+        return FirebaseRepository(mDatabaseReference)
     }
 }

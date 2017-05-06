@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.andrehaueisen.listadejanot.C_main_list.mvp.MainListPresenterActivity">
+    tools:context="com.andrehaueisen.listadejanot.D_main_list.mvp.MainListPresenterActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/politicians_pager_adapter"

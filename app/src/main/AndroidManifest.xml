@@ -19,13 +19,13 @@
         android:theme="@style/AppTheme">
 
         <provider
-            android:name=".B_database.PoliticiansContentProvider"
+            android:name=".C_database.PoliticiansContentProvider"
             android:authorities="com.andrehaueisen.listadejanot.politicians"
             android:exported="false"
             android:syncable="true"/>
 
         <activity
-            android:name=".C_main_list.mvp.MainListPresenterActivity"
+            android:name=".D_main_list.mvp.MainListPresenterActivity"
             android:label="@string/title_activity_main_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

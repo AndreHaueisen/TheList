@@ -1,9 +1,9 @@
-package com.andrehaueisen.listadejanot.C_main_list.dagger
+package com.andrehaueisen.listadejanot.D_main_list.dagger
 
 import android.content.Context
 import android.support.v4.app.LoaderManager
-import com.andrehaueisen.listadejanot.C_main_list.mvp.MainListModel
-import com.andrehaueisen.listadejanot.D_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.D_main_list.mvp.MainListModel
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import dagger.Module
 import dagger.Provides
 
@@ -12,24 +12,12 @@ import dagger.Provides
  */
 
 @Module
-class MainListModule(val context: Context, val loaderManager: LoaderManager){
-
-    @MainListScope
-    @Provides
-    fun provideContext() : Context{
-        return context
-    }
+class MainListModule(val loaderManager: LoaderManager){
 
     @MainListScope
     @Provides
     fun provideLoaderManager() : LoaderManager{
         return loaderManager
-    }
-
-    @MainListScope
-    @Provides
-    fun provideListFirebaseDatabase(context: Context) : FirebaseRepository {
-        return FirebaseRepository(context)
     }
 
     @MainListScope

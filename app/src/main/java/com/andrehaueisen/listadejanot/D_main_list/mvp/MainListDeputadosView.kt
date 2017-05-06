@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.C_main_list.mvp
+package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.andrehaueisen.listadejanot.C_main_list.PoliticianListAdapter
+import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants

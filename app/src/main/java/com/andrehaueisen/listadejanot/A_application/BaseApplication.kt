@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationComponent
 import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationModule
+import com.andrehaueisen.listadejanot.A_application.dagger.ContextModule
 import com.andrehaueisen.listadejanot.A_application.dagger.DaggerApplicationComponent
 import com.google.firebase.database.FirebaseDatabase
 
@@ -26,6 +27,7 @@ class BaseApplication : Application(){
 
         mComponent = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(FirebaseDatabase.getInstance().reference))
+                .contextModule(ContextModule(this))
                 .build()
 
     }

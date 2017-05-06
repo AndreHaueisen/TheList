@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.C_main_list
+package com.andrehaueisen.listadejanot.D_main_list
 
 import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator

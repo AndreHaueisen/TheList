@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.C_main_list.mvp
+package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.content.Context
 import android.database.Cursor
@@ -7,8 +7,8 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
-import com.andrehaueisen.listadejanot.B_database.PoliticiansContract
-import com.andrehaueisen.listadejanot.D_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
 import io.reactivex.Observable
@@ -30,10 +30,10 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    private val mSenadoresMainListObservable = mFirebaseRepository.getSenadoresMainList()
-    private val mSenadoresPreListObservable = mFirebaseRepository.getSenadoresPreList()
-    private val mDeputadosMainListObservable = mFirebaseRepository.getDeputadosMainList()
-    private val mDeputadosPreListObservable = mFirebaseRepository.getDeputadosPreList()
+    lateinit private var mSenadoresMainListObservable : Observable<ArrayList<Politician>>
+    lateinit private var mSenadoresPreListObservable : Observable<ArrayList<Politician>>
+    lateinit private var mDeputadosMainListObservable : Observable<ArrayList<Politician>>
+    lateinit private var mDeputadosPreListObservable : Observable<ArrayList<Politician>>
 
     private lateinit var mSenadoresMainList: ArrayList<Politician>
     private lateinit var mSenadoresPreList: ArrayList<Politician>
@@ -55,7 +55,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
     private var mListCounter = 0
 
     init {
-        
+
         mOnListsReadyPublisher
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,6 +81,13 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
                     }
                 })
+    }
+
+    fun connectToFirebase(){
+        mSenadoresMainListObservable = mFirebaseRepository.getSenadoresMainList()
+        mSenadoresPreListObservable = mFirebaseRepository.getSenadoresPreList()
+        mDeputadosMainListObservable = mFirebaseRepository.getDeputadosMainList()
+        mDeputadosPreListObservable = mFirebaseRepository.getDeputadosPreList()
 
         getSenadoresMainList()
         getSenadoresPreList()

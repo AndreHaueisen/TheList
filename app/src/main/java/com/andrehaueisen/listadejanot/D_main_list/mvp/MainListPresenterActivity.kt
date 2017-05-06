@@ -1,9 +1,10 @@
-package com.andrehaueisen.listadejanot.C_main_list.mvp
+package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.andrehaueisen.listadejanot.C_main_list.dagger.DaggerMainListComponent
-import com.andrehaueisen.listadejanot.C_main_list.dagger.MainListModule
+import com.andrehaueisen.listadejanot.A_application.BaseApplication
+import com.andrehaueisen.listadejanot.D_main_list.dagger.DaggerMainListComponent
+import com.andrehaueisen.listadejanot.D_main_list.dagger.MainListModule
 import com.andrehaueisen.listadejanot.models.Politician
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,20 +26,20 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         super.onCreate(savedInstanceState)
 
         DaggerMainListComponent.builder()
-                .mainListModule(MainListModule(this, supportLoaderManager))
+                .applicationComponent(BaseApplication.get(this).getAppComponent())
+                .mainListModule(MainListModule(supportLoaderManager))
                 .build()
                 .injectModel(this)
 
         if(savedInstanceState == null) {
             mView = MainListView(this)
             mView.setViews()
+            mModel.connectToFirebase()
             subscribeToModel()
         }else{
             mView = MainListView(this, savedInstanceState)
             mView.setViews()
         }
-
-
     }
 
     override fun subscribeToModel() {

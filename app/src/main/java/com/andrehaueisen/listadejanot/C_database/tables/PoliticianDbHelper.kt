@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.B_database.tables
+package com.andrehaueisen.listadejanot.C_database.tables
 
 import android.content.Context
 import android.database.SQLException

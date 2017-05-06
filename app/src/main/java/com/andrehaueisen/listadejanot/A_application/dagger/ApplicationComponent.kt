@@ -1,6 +1,7 @@
 package com.andrehaueisen.listadejanot.A_application.dagger
 
-import com.google.firebase.database.DatabaseReference
+import android.content.Context
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import dagger.Component
 
 /**
@@ -10,6 +11,8 @@ import dagger.Component
 @Component(modules = arrayOf(ContextModule::class, ApplicationModule::class))
 interface ApplicationComponent{
 
-    fun databaseReference() : DatabaseReference
+    fun loadFirebaseRepository() : FirebaseRepository
+
+    fun loadContext() : Context
 }
 

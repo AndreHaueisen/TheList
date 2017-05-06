@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.C_main_list.mvp
+package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
 import com.andrehaueisen.listadejanot.models.Politician

@@ -1,10 +1,6 @@
-package com.andrehaueisen.listadejanot.D_firebase
+package com.andrehaueisen.listadejanot.B_firebase
 
-import android.app.Activity
-import android.content.Context
 import android.util.Log
-import com.andrehaueisen.listadejanot.A_application.BaseApplication
-import com.andrehaueisen.listadejanot.D_firebase.dagger.DaggerFirebaseComponent
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.Constants
@@ -15,14 +11,9 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/3/2017.
  */
-class FirebaseRepository(context: Context) {
+class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
-
-    val mDatabaseReference: DatabaseReference = DaggerFirebaseComponent.builder()
-            .applicationComponent(BaseApplication.get(context as Activity).getAppComponent())
-            .build()
-            .databaseReference()
 
     private val mPublishSenadorMainListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()
     private val mPublishSenadorPreListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()

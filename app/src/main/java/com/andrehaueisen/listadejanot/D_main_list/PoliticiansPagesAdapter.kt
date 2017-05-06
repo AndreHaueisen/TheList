@@ -1,10 +1,10 @@
-package com.andrehaueisen.listadejanot.C_main_list
+package com.andrehaueisen.listadejanot.D_main_list
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.andrehaueisen.listadejanot.C_main_list.mvp.MainListDeputadosView
-import com.andrehaueisen.listadejanot.C_main_list.mvp.MainListSenadoresView
+import com.andrehaueisen.listadejanot.D_main_list.mvp.MainListDeputadosView
+import com.andrehaueisen.listadejanot.D_main_list.mvp.MainListSenadoresView
 
 /**
  * Created by andre on 4/30/2017.

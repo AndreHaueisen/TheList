@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.C_main_list.dagger
+package com.andrehaueisen.listadejanot.D_main_list.dagger
 
 import javax.inject.Scope
 
