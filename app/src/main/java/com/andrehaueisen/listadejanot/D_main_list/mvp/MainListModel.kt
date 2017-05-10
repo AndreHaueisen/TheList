@@ -7,8 +7,8 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
-import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
 import io.reactivex.Observable
@@ -246,6 +246,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             mDeputadosMainList
                     .first { mainListDeputado -> mainListDeputado.name == deputadoName }
                     .also { mainListDeputado ->
+                        mainListDeputado.post = Politician.Post.DEPUTADO
                         mainListDeputado.email = deputadoEmail
                         mainListDeputado.image = deputadoImage
                         mFilteredDeputadosMainList.add(mainListDeputado)
@@ -256,6 +257,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 mDeputadosPreList.
                         first { preListDeputado -> preListDeputado.name == deputadoName }
                         .also { preListDeputado ->
+                            preListDeputado.post = Politician.Post.DEPUTADO
                             preListDeputado.email = deputadoEmail
                             preListDeputado.image = deputadoImage
                             mFilteredDeputadosPreList.add(preListDeputado)
@@ -272,6 +274,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             mSenadoresMainList
                     .first { mainListSenador -> mainListSenador.name == senadorName }
                     .also { mainListSenador ->
+                        mainListSenador.post = Politician.Post.SENADOR
                         mainListSenador.email = senadorEmail
                         mainListSenador.image = senadorImage
                         mFilteredSenadoresMainList.add(mainListSenador)
@@ -282,6 +285,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             try {
                 mSenadoresPreList.first { preListSenador -> preListSenador.name == senadorName }
                         .also { preListSenador ->
+                            preListSenador.post = Politician.Post.SENADOR
                             preListSenador.email = senadorEmail
                             preListSenador.image = senadorImage
                             mFilteredSenadoresPreList.add(preListSenador)

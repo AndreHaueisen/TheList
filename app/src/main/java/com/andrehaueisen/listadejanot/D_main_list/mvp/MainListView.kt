@@ -3,6 +3,10 @@ package com.andrehaueisen.listadejanot.D_main_list.mvp
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.TextView
 import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
@@ -18,11 +22,15 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     private val mPagerAdapter : ViewPager
     private val mBottomNavigationView: BottomNavigationView
     private var mBundle: Bundle? = null
+    private val mToolbar : Toolbar
+    private val mToolbarTitleTextView: TextView
 
     init {
         mPresenterActivity.setContentView(R.layout.activity_main_list)
         mPagerAdapter = mPresenterActivity.politicians_pager_adapter
         mBottomNavigationView = mPresenterActivity.navigation
+        mToolbar = mPresenterActivity.toolbar
+        mToolbarTitleTextView = mPresenterActivity.toolbar_title
     }
 
     constructor(presenterActivity: MainListPresenterActivity, bundle: Bundle) : this(presenterActivity){
@@ -30,8 +38,14 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     }
 
     override fun setViews() {
+        setToolbar()
         setPagerAdapter()
         setBottomNavigationView()
+    }
+
+    fun setToolbar(){
+        mPresenterActivity.setSupportActionBar(mToolbar)
+        mPresenterActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     fun setPagerAdapter(){
@@ -48,8 +62,12 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
             override fun onPageSelected(position: Int) {
                 when (position) {
-                    0 -> mBottomNavigationView.selectedItemId = R.id.navigation_senadores
-                    1 -> mBottomNavigationView.selectedItemId = R.id.navigation_deputados
+                    0 -> {
+                        mBottomNavigationView.selectedItemId = R.id.navigation_senadores
+                        mToolbarTitleTextView.text = mPresenterActivity.getString(R.string.banned_senadores_title) }
+                    1 -> {
+                        mBottomNavigationView.selectedItemId = R.id.navigation_deputados
+                        mToolbarTitleTextView.text = mPresenterActivity.getString(R.string.banned_deputados_title) }
                 }
 
             }
@@ -65,11 +83,13 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
                 R.id.navigation_senadores -> {
                     mPagerAdapter.setCurrentItem(0, true)
+                    mToolbarTitleTextView.text = mPresenterActivity.getString(R.string.banned_senadores_title)
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_deputados -> {
                     mPagerAdapter.setCurrentItem(1, true)
+                    mToolbarTitleTextView.text = mPresenterActivity.getString(R.string.banned_deputados_title)
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -80,6 +100,19 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
             false
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?) {
+        mPresenterActivity.menuInflater.inflate(R.menu.menu_main_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when(item?.itemId){
+            R.id.action_add_politician_to_main_list -> return true
+        }
+
+        return true
     }
 
     override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {

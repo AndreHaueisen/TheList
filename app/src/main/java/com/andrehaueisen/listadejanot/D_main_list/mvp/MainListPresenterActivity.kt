@@ -2,6 +2,8 @@ package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.D_main_list.dagger.DaggerMainListComponent
 import com.andrehaueisen.listadejanot.D_main_list.dagger.MainListModule
@@ -84,6 +86,16 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
                     }
                 })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        mView.onCreateOptionsMenu(menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        mView.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

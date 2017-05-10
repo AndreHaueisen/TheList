@@ -38,7 +38,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
         mDeputadosRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
-        val deputadosAdapter = PoliticianListAdapter(context, mDeputadosList)
+        val deputadosAdapter = PoliticianListAdapter(activity, mDeputadosList)
 
         mDeputadosRecyclerView.layoutManager = layoutManager
         mDeputadosRecyclerView.adapter = deputadosAdapter
@@ -66,4 +66,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
         super.onSaveInstanceState(outState)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

@@ -1,0 +1,9 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_start_politician">
+
+    <target
+        android:name="path_politician"
+        android:animation="@anim/politician_to_thief_animation">
+    </target>
+</animated-vector>

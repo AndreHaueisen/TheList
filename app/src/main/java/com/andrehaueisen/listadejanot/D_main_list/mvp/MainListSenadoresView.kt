@@ -40,7 +40,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         mSenadoresRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
-        val senadoresAdapter = PoliticianListAdapter(context, mSenadorList)
+        val senadoresAdapter = PoliticianListAdapter(activity, mSenadorList)
         mSenadoresRecyclerView.layoutManager = layoutManager
         mSenadoresRecyclerView.adapter = senadoresAdapter
     }
@@ -66,5 +66,9 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         outState.putParcelable(Constants.BUNDLE_MANAGER, mSenadoresRecyclerView.layoutManager.onSaveInstanceState())
 
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

@@ -1,6 +1,8 @@
 package com.andrehaueisen.listadejanot.D_main_list.mvp
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.andrehaueisen.listadejanot.models.Politician
 import io.reactivex.Observable
 
@@ -13,6 +15,9 @@ interface MainListMvpContract{
         fun setViews()
         fun notifySenadoresNewList(senadores: ArrayList<Politician>)
         fun notifyDeputadosNewList(deputados: ArrayList<Politician>)
+
+        fun onCreateOptionsMenu(menu: Menu?)
+        fun onOptionsItemSelected(item: MenuItem?): Boolean
 
         fun onSaveInstanceState():Bundle
     }

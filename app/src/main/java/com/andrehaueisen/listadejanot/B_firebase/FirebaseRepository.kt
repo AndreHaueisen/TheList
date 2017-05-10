@@ -1,6 +1,7 @@
 package com.andrehaueisen.listadejanot.B_firebase
 
 import android.util.Log
+import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.Constants
@@ -14,11 +15,6 @@ import io.reactivex.subjects.PublishSubject
 class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
-
-    private val mPublishSenadorMainListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()
-    private val mPublishSenadorPreListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()
-    private val mPublishDeputadoMainListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()
-    private val mPublishDeputadoPreListVoteUpdate: PublishSubject<Boolean> = PublishSubject.create()
 
     private val mPublishSenadoresMainList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mPublishSenadoresPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
@@ -45,7 +41,9 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         database.setValue(user)
     }
 
-    fun updateSenadorVoteOnMainList(senador: Politician, userEmail: String): Observable<Boolean> {
+    fun updateSenadorVoteOnMainList(senador: Politician,
+                                    userEmail: String,
+                                    viewHolder: PoliticianListAdapter.PoliticianHolder) {
 
         if (senador.post == Politician.Post.SENADOR) {
             val database = mDatabaseReference
@@ -55,19 +53,21 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             database.runTransaction(object : Transaction.Handler {
 
                 override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-                    if (isSuccessful) {
+                    if (isSuccessful && dataSnapshot.exists()) {
+
                         val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)
+                        senador.condemnedBy = updatedSenador.condemnedBy
+                        senador.votesNumber = updatedSenador.votesNumber
                         if (updatedSenador.condemnedBy.contains(userEmail.encodeEmail())) {
-                            mPublishSenadorMainListVoteUpdate.onNext(true)
+                            viewHolder.setCondemnAnimations(senador)
                         } else {
-                            mPublishSenadorMainListVoteUpdate.onNext(false)
+                            viewHolder.setAbsolveAnimations(senador)
                         }
 
                         Log.i(LOG_TAG, dataSnapshot.toString())
                     } else {
                         Log.e(LOG_TAG, error.toString())
                     }
-
                 }
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
@@ -89,10 +89,9 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             })
         }
 
-        return Observable.defer { mPublishSenadorMainListVoteUpdate }
     }
 
-    fun updateSenadorVoteOnPreList(senador: Politician, userEmail: String): Observable<Boolean> {
+    fun updateSenadorVoteOnPreList(senador: Politician, userEmail: String) {
         if (senador.post == Politician.Post.SENADOR) {
             val database = mDatabaseReference
                     .child(Constants.LOCATION_SENADORES_PRE_LIST)
@@ -118,15 +117,16 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                     mutableData.value = senadorRemote
                     return Transaction.success(mutableData)
-
                 }
             })
         }
 
-        return Observable.defer { mPublishSenadorPreListVoteUpdate }
+
     }
 
-    fun updateDeputadoVoteOnMainList(deputado: Politician, userEmail: String): Observable<Boolean> {
+    fun updateDeputadoVoteOnMainList(deputado: Politician,
+                                     userEmail: String,
+                                     viewHolder: PoliticianListAdapter.PoliticianHolder){
         if (deputado.post == Politician.Post.DEPUTADO) {
             val database = mDatabaseReference
                     .child(Constants.LOCATION_DEPUTADOS_MAIN_LIST)
@@ -134,8 +134,22 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
             database.runTransaction(object : Transaction.Handler {
 
-                override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot?) {
-                    //TODO notify completion or error
+                override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
+                    if (isSuccessful && dataSnapshot.exists()) {
+
+                        val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)
+                        deputado.condemnedBy = updatedDeputado.condemnedBy
+                        deputado.votesNumber = updatedDeputado.votesNumber
+                        if (updatedDeputado.condemnedBy.contains(userEmail.encodeEmail())) {
+                            viewHolder.setCondemnAnimations(deputado)
+                        } else {
+                            viewHolder.setAbsolveAnimations(deputado)
+                        }
+
+                        Log.i(LOG_TAG, dataSnapshot.toString())
+                    } else {
+                        Log.e(LOG_TAG, error.toString())
+                    }
                 }
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
@@ -156,11 +170,9 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                 }
             })
         }
-
-        return Observable.defer { mPublishDeputadoMainListVoteUpdate }
     }
 
-    fun updateDeputadoVoteOnPreList(deputado: Politician, userEmail: String): Observable<Boolean> {
+    fun updateDeputadoVoteOnPreList(deputado: Politician, userEmail: String) {
         if (deputado.post == Politician.Post.DEPUTADO) {
             val database = mDatabaseReference
                     .child(Constants.LOCATION_DEPUTADOS_PRE_LIST)
@@ -190,8 +202,6 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                 }
             })
         }
-
-        return Observable.defer { mPublishDeputadoPreListVoteUpdate }
     }
 
     val mListenerForSenadoresMainList = object : ValueEventListener {
