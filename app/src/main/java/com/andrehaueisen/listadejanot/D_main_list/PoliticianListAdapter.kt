@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -110,8 +109,8 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         private val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view) as TextView
         private val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
         private val mVotesNumberTextView : TextView = itemView.findViewById(R.id.votes_number_text_view) as TextView
+        private val mAnimatedBadgeImageView: ImageView = itemView.findViewById(R.id.badge_image_view) as ImageView
         private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_image_view) as ToggleButton
-        private val mAnimatedVoteButton: ImageButton = itemView.findViewById(R.id.add_vote_count_image_view) as ImageButton
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
         private var mIsShowingPolitician = true
@@ -136,14 +135,14 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorAccentDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true
-                mAnimatedVoteButton.setImageDrawable(mThiefPoliticianAnimation)
+                mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
                 mIsShowingPolitician = true
                 changeButtonAnimation()
             } else {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorPrimaryDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary))
                 mVoteButton.isChecked = false
-                mAnimatedVoteButton.setImageDrawable(mPoliticianThiefAnimation)
+                mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
                 mIsShowingPolitician = false
                 changeButtonAnimation()
             }
@@ -159,7 +158,6 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             mNameTextView.text = politician.name
             mVotesNumberTextView.text = politician.votesNumber.toString()
             mEmailTextView.text = politician.email
-            mVoteButton.backgroundTintList = ContextCompat.getColorStateList(activity, R.drawable.selector_vote_button)
         }
 
         fun setAbsolveAnimations(politician: Politician) {
@@ -206,22 +204,22 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
         fun changeButtonAnimation(){
 
-            if(mAnimatedVoteButton.drawable == mPoliticianThiefAnimation && mIsShowingPolitician){
-                (mAnimatedVoteButton.drawable as AnimatedVectorDrawable).start()
+            if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && mIsShowingPolitician){
+                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
                 mIsShowingPolitician = false
 
-            }else if(mAnimatedVoteButton.drawable == mPoliticianThiefAnimation && !mIsShowingPolitician){
-                mAnimatedVoteButton.setImageDrawable(mThiefPoliticianAnimation)
-                (mAnimatedVoteButton.drawable as AnimatedVectorDrawable).start()
+            }else if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && !mIsShowingPolitician){
+                mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
+                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
                 mIsShowingPolitician = true
 
-            }else if(mAnimatedVoteButton.drawable == mThiefPoliticianAnimation && mIsShowingPolitician){
-                mAnimatedVoteButton.setImageDrawable(mPoliticianThiefAnimation)
-                (mAnimatedVoteButton.drawable as AnimatedVectorDrawable).start()
+            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && mIsShowingPolitician){
+                mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
+                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
                 mIsShowingPolitician = false
 
-            }else if(mAnimatedVoteButton.drawable == mThiefPoliticianAnimation && !mIsShowingPolitician){
-                (mAnimatedVoteButton.drawable as AnimatedVectorDrawable).start()
+            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && !mIsShowingPolitician){
+                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
                 mIsShowingPolitician = true
             }
 

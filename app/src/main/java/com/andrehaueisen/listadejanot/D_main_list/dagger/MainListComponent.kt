@@ -13,4 +13,5 @@ interface MainListComponent{
 
     fun injectModel(mainListActivity: MainListPresenterActivity)
 
+
 }

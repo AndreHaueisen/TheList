@@ -27,7 +27,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
     private var mDeputadosList = ArrayList<Politician>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_main_list_deputados, container, false)
+        val view = inflater.inflate(R.layout.d_fragment_main_list_deputados, container, false)
         setRecyclerView(view)
 
         return view

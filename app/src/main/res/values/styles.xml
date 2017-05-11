@@ -22,9 +22,14 @@
         <item name="android:fontFamily">@string/font_roboto_regular</item>
     </style>
 
-    <style name="RobotoBlackTextStyle" parent="TextAppearance.AppCompat.Title">
+    <style name="RobotoBlackTextStyle">
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@string/font_roboto_black</item>
+    </style>
+
+    <style name="RobotoItalicBlackTextStyle" parent="RobotoBlackTextStyle">
+        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="RobotoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">

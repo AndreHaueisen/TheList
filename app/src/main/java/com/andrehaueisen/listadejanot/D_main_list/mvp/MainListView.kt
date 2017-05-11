@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.D_main_list.mvp
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
@@ -8,10 +9,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
+import com.andrehaueisen.listadejanot.E_add_politician.mvp.AddPoliticianPresenterActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
-import kotlinx.android.synthetic.main.activity_main_list.*
+import kotlinx.android.synthetic.main.d_activity_main_list.*
 
 
 /**
@@ -26,7 +28,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     private val mToolbarTitleTextView: TextView
 
     init {
-        mPresenterActivity.setContentView(R.layout.activity_main_list)
+        mPresenterActivity.setContentView(R.layout.d_activity_main_list)
         mPagerAdapter = mPresenterActivity.politicians_pager_adapter
         mBottomNavigationView = mPresenterActivity.navigation
         mToolbar = mPresenterActivity.toolbar
@@ -109,7 +111,10 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when(item?.itemId){
-            R.id.action_add_politician_to_main_list -> return true
+            R.id.action_add_politician_to_main_list -> {
+                val intent = Intent(mPresenterActivity, AddPoliticianPresenterActivity::class.java)
+                mPresenterActivity.startActivity(intent)
+            }
         }
 
         return true
