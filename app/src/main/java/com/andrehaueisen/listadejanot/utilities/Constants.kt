@@ -18,11 +18,14 @@ class Constants{
                 politiciansEntry.COLUMN_EMAIL,
                 politiciansEntry.COLUMN_IMAGE)
 
-        @JvmField val COLUMNS_INDEX_CARGO = 0
-        @JvmField val COLUMNS_INDEX_NAME = 1
-        @JvmField val COLUMNS_INDEX_EMAIL = 2
-        @JvmField val COLUMNS_INDEX_IMAGE = 3
+        @JvmField val POLITICIANS_COLUMNS_NO_IMAGE = arrayOf(
+                politiciansEntry.COLUMN_CARGO,
+                politiciansEntry.COLUMN_NAME,
+                politiciansEntry.COLUMN_EMAIL)
 
+        @JvmField val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
+        @JvmField val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
+        @JvmField val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
         @JvmField val BUNDLE_DEPUTADOS = "deputados_list"
         @JvmField val BUNDLE_SENADORES = "senadores_list"
         @JvmField val BUNDLE_MANAGER = "layout_manager_state"

@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
-import com.andrehaueisen.listadejanot.E_add_politician.mvp.AddPoliticianPresenterActivity
+import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
@@ -26,6 +26,9 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     private var mBundle: Bundle? = null
     private val mToolbar : Toolbar
     private val mToolbarTitleTextView: TextView
+    private var mMainListSenadores : ArrayList<Politician>? = null
+    private var mMainListDeputados : ArrayList<Politician>? = null
+
 
     init {
         mPresenterActivity.setContentView(R.layout.d_activity_main_list)
@@ -112,7 +115,20 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
         when(item?.itemId){
             R.id.action_add_politician_to_main_list -> {
-                val intent = Intent(mPresenterActivity, AddPoliticianPresenterActivity::class.java)
+                val intent = Intent(mPresenterActivity, PoliticianSelectorPresenterActivity::class.java)
+
+                if(mMainListDeputados != null) {
+                    val noPicDeputadosList = ArrayList<Politician>()
+                    noPicDeputadosList.addAll(mMainListDeputados as ArrayList<Politician>)
+                    noPicDeputadosList.forEach { it.image = null }
+                    intent.putParcelableArrayListExtra(Constants.INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
+                }
+                if(mMainListDeputados != null) {
+                    val noPicSenadoresList = ArrayList<Politician>()
+                    noPicSenadoresList.addAll(mMainListSenadores as ArrayList<Politician>)
+                    noPicSenadoresList.forEach { it.image = null }
+                    intent.putParcelableArrayListExtra(Constants.INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
+                }
                 mPresenterActivity.startActivity(intent)
             }
         }
@@ -121,11 +137,13 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     }
 
     override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
+        mMainListDeputados = deputados
         val deputadoFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(1)
         (deputadoFragment as MainListDeputadosView).notifyDeputadosNewList(deputados)
     }
 
     override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
+        mMainListSenadores = senadores
         val senadorFragment = (mPagerAdapter.adapter as PoliticiansPagesAdapter).getItem(0)
         (senadorFragment as MainListSenadoresView).notifySenadoresNewList(senadores)
     }

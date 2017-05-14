@@ -2,7 +2,7 @@
     <string name="app_name">Lista de Janot</string>
     <string name="title_activity_main_list">Lista de Janot</string>
 
-    <!--C_main_list strings-->
+    <!--D_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
@@ -23,6 +23,11 @@
     <string name="deputado_absolved">Deputado absolved</string>
 
     <string name="add_politician">Add Politician</string>
+
+    <!--E_politician_selector strings-->
+    <string name="dialog_title_loading_database">Loading politicians</string>
+    <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
+    <string name="type_politician_name_hint">Politician Name</string>
 
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>

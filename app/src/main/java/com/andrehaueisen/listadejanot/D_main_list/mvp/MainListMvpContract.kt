@@ -38,9 +38,7 @@ interface MainListMvpContract{
     interface Model {
         fun initiateDataLoad()
         fun loadSenadoresMainList(): Observable<ArrayList<Politician>>
-        fun loadSenadoresPreList(): Observable<ArrayList<Politician>>
         fun loadDeputadosMainList(): Observable<ArrayList<Politician>>
-        fun loadDeputadosPreList(): Observable<ArrayList<Politician>>
 
         fun onDestroy()
     }

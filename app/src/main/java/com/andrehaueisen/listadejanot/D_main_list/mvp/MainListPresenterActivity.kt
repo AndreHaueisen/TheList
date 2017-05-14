@@ -1,13 +1,11 @@
 package com.andrehaueisen.listadejanot.D_main_list.mvp
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.D_main_list.dagger.DaggerMainListComponent
-import com.andrehaueisen.listadejanot.D_main_list.dagger.MainListComponent
 import com.andrehaueisen.listadejanot.D_main_list.dagger.MainListModule
 import com.andrehaueisen.listadejanot.models.Politician
 import io.reactivex.Observer
@@ -20,15 +18,6 @@ import javax.inject.Inject
 
 class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Presenter {
 
-    companion object{
-        fun get(activity: Activity) : MainListPresenterActivity {
-            return activity as MainListPresenterActivity
-        }
-
-    }
-
-    private lateinit var mMainListComponent : MainListComponent
-
     @Inject
     lateinit var mModel: MainListModel
 
@@ -38,12 +27,11 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mMainListComponent = DaggerMainListComponent.builder()
+        DaggerMainListComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
                 .mainListModule(MainListModule(supportLoaderManager))
                 .build()
-
-        mMainListComponent.injectModel(this)
+                .injectModel(this)
 
         if(savedInstanceState == null) {
             mView = MainListView(this)
@@ -119,9 +107,5 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         mCompositeDisposable.dispose()
         mModel.onDestroy()
         super.onDestroy()
-    }
-
-    fun getMainListComponent(): MainListComponent{
-        return mMainListComponent
     }
 }

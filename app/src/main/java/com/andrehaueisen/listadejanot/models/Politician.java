@@ -28,24 +28,52 @@ public class Politician implements Parcelable {
     @Exclude
     private byte[] image;
 
-    public enum Post{
-        DEPUTADO, SENADOR
+    public enum Post implements Parcelable {
+        DEPUTADO, SENADOR;
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(ordinal());
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Post> CREATOR = new Creator<Post>() {
+            @Override
+            public Post createFromParcel(Parcel in) {
+                return Post.values()[in.readInt()];
+            }
+
+            @Override
+            public Post[] newArray(int size) {
+                return new Post[size];
+            }
+        };
     }
 
-    public Politician(){
+    public Politician() {
 
     }
 
-    public Politician(Post post){
+    public Politician(Post post) {
         this.post = post;
     }
 
-    public Politician(String name, long votesNumber){
+    public Politician(String name, long votesNumber) {
         this.name = name;
         this.votesNumber = votesNumber;
     }
 
-    public Politician(String name, long votesNumber, ArrayList<String> condemnedBy){
+    public Politician(Post post, String name, String email) {
+        this.post = post;
+        this.name = name;
+        this.email = email;
+    }
+
+    public Politician(String name, long votesNumber, ArrayList<String> condemnedBy) {
         this.name = name;
         this.votesNumber = votesNumber;
         this.condemnedBy = condemnedBy;
@@ -66,6 +94,16 @@ public class Politician implements Parcelable {
         this.name = name;
         this.email = email;
         this.image = image;
+    }
+
+    protected Politician(Parcel in) {
+        post = in.readParcelable(Post.class.getClassLoader());
+        imageUrl = in.readString();
+        email = in.readString();
+        name = in.readString();
+        votesNumber = in.readLong();
+        condemnedBy = in.createStringArrayList();
+        image = in.createByteArray();
     }
 
     public Post getPost() {
@@ -124,7 +162,7 @@ public class Politician implements Parcelable {
         this.condemnedBy = condemnedBy;
     }
 
-       public Map<String, Object> toSimpleMap(){
+    public Map<String, Object> toSimpleMap() {
 
         Map<String, Object> simplePoliticianMap = new HashMap<>();
         simplePoliticianMap.put("name", name);
@@ -133,15 +171,15 @@ public class Politician implements Parcelable {
         return simplePoliticianMap;
     }
 
-    protected Politician(Parcel in) {
-        post = (Post) in.readValue(Post.class.getClassLoader());
-        imageUrl = in.readString();
-        name = in.readString();
-        email = in.readString();
-        votesNumber = in.readLong();
-        image = new byte[in.readInt()];
-        in.readByteArray(image);
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(post, flags);
+        dest.writeString(imageUrl);
+        dest.writeString(email);
+        dest.writeString(name);
+        dest.writeLong(votesNumber);
+        dest.writeStringList(condemnedBy);
+        dest.writeByteArray(image);
     }
 
     @Override
@@ -149,19 +187,7 @@ public class Politician implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(post);
-        dest.writeString(imageUrl);
-        dest.writeString(name);
-        dest.writeString(email);
-        dest.writeLong(votesNumber);
-        dest.writeInt(image.length);
-        dest.writeByteArray(image);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Politician> CREATOR = new Parcelable.Creator<Politician>() {
+    public static final Creator<Politician> CREATOR = new Creator<Politician>() {
         @Override
         public Politician createFromParcel(Parcel in) {
             return new Politician(in);

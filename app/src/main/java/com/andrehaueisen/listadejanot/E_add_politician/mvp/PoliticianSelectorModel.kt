@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.D_main_list.mvp
+package com.andrehaueisen.listadejanot.E_add_politician.mvp
 
 import android.content.Context
 import android.database.Cursor
@@ -20,32 +20,33 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 /**
- * Created by andre on 4/21/2017.
+ * Created by andre on 5/11/2017.
  */
-class MainListModel(val context: Context, val loaderManager: LoaderManager, val mFirebaseRepository: FirebaseRepository) :
-        MainListMvpContract.Model,
+class PoliticianSelectorModel(val mContext: Context,
+                              val mLoaderManager: LoaderManager,
+                              val mFirebaseRepository: FirebaseRepository,
+                              val mSenadoresMainList: ArrayList<Politician>,
+                              val mDeputadosMainList: ArrayList<Politician>) :
+        PoliticianSelectorMvpContract.Model,
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private val LOG_TAG: String = PoliticianSelectorModel::class.java.simpleName
     private val COLUMNS_INDEX_CARGO = 0
     private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_EMAIL = 2
-    private val COLUMNS_INDEX_IMAGE = 3
-
-    private val LOG_TAG: String = MainListModel::class.java.simpleName
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    lateinit private var mSenadoresMainListObservable : Observable<ArrayList<Politician>>
-    lateinit private var mDeputadosMainListObservable : Observable<ArrayList<Politician>>
+    lateinit private var mSenadoresPreListObservable: Observable<ArrayList<Politician>>
+    lateinit private var mDeputadosPreListObservable: Observable<ArrayList<Politician>>
 
-    private lateinit var mSenadoresMainList: ArrayList<Politician>
-    private lateinit var mDeputadosMainList: ArrayList<Politician>
+    private lateinit var mSenadoresPreList: ArrayList<Politician>
+    private lateinit var mDeputadosPreList: ArrayList<Politician>
 
-    private val mFilteredSenadoresMainList = ArrayList<Politician>()
-    private val mFilteredDeputadosMainList = ArrayList<Politician>()
 
-    private val mFinalMainListSenadoresPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mFinalMainListDeputadosPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private val mSearchablePoliticianList = ArrayList<Politician>()
+
+    private val mFinalSearchablePoliticianPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private val mOnListsReadyPublisher: PublishSubject<Boolean> = PublishSubject.create()
 
@@ -80,16 +81,16 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 })
     }
 
-    fun connectToFirebase(){
-        mSenadoresMainListObservable = mFirebaseRepository.getSenadoresMainList()
-        mDeputadosMainListObservable = mFirebaseRepository.getDeputadosMainList()
+    fun connectToFirebase() {
+        mSenadoresPreListObservable = mFirebaseRepository.getSenadoresPreList()
+        mDeputadosPreListObservable = mFirebaseRepository.getDeputadosPreList()
 
-        getSenadoresMainList()
-        getDeputadosMainList()
+        getSenadoresPreList()
+        getDeputadosPreList()
     }
 
-    private fun getSenadoresMainList() {
-        mSenadoresMainListObservable
+    private fun getSenadoresPreList() {
+        mSenadoresPreListObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ArrayList<Politician>> {
@@ -107,14 +108,14 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     }
 
                     override fun onNext(deputadosPreList: ArrayList<Politician>) {
-                        mSenadoresMainList = deputadosPreList
+                        mSenadoresPreList = deputadosPreList
                         mOnListsReadyPublisher.onNext(true)
                     }
                 })
     }
 
-    private fun getDeputadosMainList() {
-        mDeputadosMainListObservable
+    private fun getDeputadosPreList() {
+        mDeputadosPreListObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ArrayList<Politician>> {
@@ -131,25 +132,25 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(deputadosMainList: ArrayList<Politician>) {
-                        mDeputadosMainList = deputadosMainList
+                    override fun onNext(deputadosPreList: ArrayList<Politician>) {
+                        mDeputadosPreList = deputadosPreList
                         mOnListsReadyPublisher.onNext(true)
                     }
                 })
     }
 
     override fun initiateDataLoad() {
-        if (loaderManager.getLoader<Cursor>(Constants.LOADER_ID) == null) {
-            loaderManager.initLoader(Constants.LOADER_ID, null, this)
+        if (mLoaderManager.getLoader<Cursor>(Constants.LOADER_ID) == null) {
+            mLoaderManager.initLoader(Constants.LOADER_ID, null, this)
 
         } else {
-            loaderManager.restartLoader(Constants.LOADER_ID, null, this)
+            mLoaderManager.restartLoader(Constants.LOADER_ID, null, this)
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
-        return CursorLoader(context, politiciansEntry.CONTENT_URI, Constants.POLITICIANS_COLUMNS, null, null, null)
+        return CursorLoader(mContext, politiciansEntry.CONTENT_URI, Constants.POLITICIANS_COLUMNS_NO_IMAGE, null, null, null)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
@@ -162,66 +163,68 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
                     val deputadoName = data.getString(COLUMNS_INDEX_NAME)
                     val deputadoEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val deputadoImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                    searchForDeputadoOnList(deputadoName, deputadoEmail, deputadoImage)
+                    addDeputadoToSearchableList(deputadoName, deputadoEmail)
 
 
                 } else {
                     val senadorName = data.getString(COLUMNS_INDEX_NAME)
                     val senadorEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val senadorImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                    searchForSenadorOnList(senadorName, senadorEmail, senadorImage)
+                    addSenadorToSearchableList(senadorName, senadorEmail)
                 }
                 data.moveToNext()
             }
-            mFinalMainListDeputadosPublisher.onNext(mFilteredDeputadosMainList)
-            mFinalMainListSenadoresPublisher.onNext(mFilteredSenadoresMainList)
+            mFinalSearchablePoliticianPublisher.onNext(mSearchablePoliticianList)
             data.close()
         }
     }
 
-    private fun searchForDeputadoOnList(deputadoName: String, deputadoEmail: String, deputadoImage: ByteArray) {
-        try {
-            mDeputadosMainList
-                    .first { mainListDeputado -> mainListDeputado.name == deputadoName }
-                    .also { mainListDeputado ->
-                        mainListDeputado.post = Politician.Post.DEPUTADO
-                        mainListDeputado.email = deputadoEmail
-                        mainListDeputado.image = deputadoImage
-                        mFilteredDeputadosMainList.add(mainListDeputado)
-                    }
-        } catch (noSuchElement: NoSuchElementException) {
+    private fun addDeputadoToSearchableList(deputadoName: String, deputadoEmail: String) {
 
+        mDeputadosMainList
+                .filter { it.name == deputadoName }
+                .forEach { return }
+
+        val deputado = Politician(Politician.Post.DEPUTADO, deputadoName, deputadoEmail)
+        try {
+            mDeputadosPreList.first { it.name == deputadoName }
+                    .also {
+                        deputado.votesNumber = it.votesNumber
+                        deputado.condemnedBy = it.condemnedBy
+                    }
+
+            mSearchablePoliticianList.add(deputado)
+
+        } catch (noSuchElement: NoSuchElementException) {
+            mSearchablePoliticianList.add(deputado)
         }
     }
 
-    private fun searchForSenadorOnList(senadorName: String, senadorEmail: String, senadorImage: ByteArray) {
+    private fun addSenadorToSearchableList(senadorName: String, senadorEmail: String) {
+
+        mSenadoresMainList
+                .filter { it.name == senadorName }
+                .forEach { return }
+
+        val senador = Politician(Politician.Post.DEPUTADO, senadorName, senadorEmail)
         try {
-            mSenadoresMainList
-                    .first { mainListSenador -> mainListSenador.name == senadorName }
-                    .also { mainListSenador ->
-                        mainListSenador.post = Politician.Post.SENADOR
-                        mainListSenador.email = senadorEmail
-                        mainListSenador.image = senadorImage
-                        mFilteredSenadoresMainList.add(mainListSenador)
+            mSenadoresPreList.first { it.name == senadorName }
+                    .also {
+                        senador.votesNumber = it.votesNumber
+                        senador.condemnedBy = it.condemnedBy
                     }
 
-        } catch (noSuchElement: NoSuchElementException) {
+            mSearchablePoliticianList.add(senador)
 
+        } catch (noSuchElement: NoSuchElementException) {
+            mSearchablePoliticianList.add(senador)
         }
     }
 
-    override fun loadSenadoresMainList(): Observable<ArrayList<Politician>> {
-        return Observable.defer { mFinalMainListSenadoresPublisher }
+    override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> {
+        return Observable.defer { mFinalSearchablePoliticianPublisher }
     }
-
-
-    override fun loadDeputadosMainList(): Observable<ArrayList<Politician>> {
-        return Observable.defer { mFinalMainListDeputadosPublisher }
-    }
-
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()
