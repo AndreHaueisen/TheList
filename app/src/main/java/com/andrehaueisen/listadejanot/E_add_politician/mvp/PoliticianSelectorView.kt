@@ -11,12 +11,13 @@ import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
+import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 
 
 /**
  * Created by andre on 5/11/2017.
  */
-class PoliticianSelectorView(val mActivitySelectorPresenter: PoliticianSelectorPresenterActivity): PoliticianSelectorMvpContract.View {
+class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenterActivity): PoliticianSelectorMvpContract.View {
 
 
     private val mAutoCompleteTextView : AppCompatMultiAutoCompleteTextView
@@ -24,8 +25,8 @@ class PoliticianSelectorView(val mActivitySelectorPresenter: PoliticianSelectorP
     lateinit private var mLoadingDatabaseAlertDialog : AlertDialog
 
     init {
-        mActivitySelectorPresenter.setContentView(R.layout.e_activity_politician_selector)
-        mAutoCompleteTextView = mActivitySelectorPresenter.findViewById(R.id.auto_complete_text_view) as AppCompatMultiAutoCompleteTextView
+        mActivityPresenter.setContentView(R.layout.e_activity_politician_selector)
+        mAutoCompleteTextView = mActivityPresenter.auto_complete_text_view
     }
 
     constructor(activitySelectorPresenter: PoliticianSelectorPresenterActivity, savedInstanceState: Bundle) : this(activitySelectorPresenter){
@@ -34,44 +35,50 @@ class PoliticianSelectorView(val mActivitySelectorPresenter: PoliticianSelectorP
         }
     }
 
-    override fun setViews() {
-        beginLoadingDatabaseAlertDialog()
+    override fun setViews(isSavedState: Boolean) {
+        setToolbar()
+
+        if(!isSavedState){
+            beginLoadingDatabaseAlertDialog()
+        }else{
+            setAutoCompleteTextView()
+        }
+    }
+
+    private fun setToolbar(){
+        val toolbar = mActivityPresenter.select_politician_toolbar
+        mActivityPresenter.setSupportActionBar(toolbar)
+        mActivityPresenter.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun beginLoadingDatabaseAlertDialog(){
-        mLoadingDatabaseAlertDialog = AlertDialog.Builder(mActivitySelectorPresenter)
+        mLoadingDatabaseAlertDialog = AlertDialog.Builder(mActivityPresenter)
                 .setCancelable(false)
-                .setTitle(mActivitySelectorPresenter.getString(R.string.dialog_title_loading_database))
-                .setMessage(mActivitySelectorPresenter.getString(R.string.dialog_message_loading_database))
+                .setTitle(mActivityPresenter.getString(R.string.dialog_title_loading_database))
+                .setMessage(mActivityPresenter.getString(R.string.dialog_message_loading_database))
                 .create()
 
         mLoadingDatabaseAlertDialog.show()
+    }
 
+    private fun setAutoCompleteTextView(politicians: ArrayList<Politician>){
+
+        mSearchablePoliticiansList = politicians
+        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, politicians)
+        mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
+        mAutoCompleteTextView.threshold = 1
+        mAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+
+        mLoadingDatabaseAlertDialog.dismiss()
     }
 
     override fun notifySearchablePoliticiansNewList(politicians: ArrayList<Politician>) {
         setAutoCompleteTextView(politicians)
     }
 
-    private fun setAutoCompleteTextView(politicians: ArrayList<Politician>){
-
-        mSearchablePoliticiansList = politicians
-        val adapter = AutoCompletionAdapter(mActivitySelectorPresenter, R.layout.item_politician_identifier, politicians)
-        mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
-        mAutoCompleteTextView.threshold = 1
-        adapter.setDropDownViewResource(R.layout.item_politician_identifier)
-        mAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
-
-        mLoadingDatabaseAlertDialog.dismiss()
-    }
-
-    override fun setViewsFromSavedState() {
-        setAutoCompleteTextView()
-    }
-
     private fun setAutoCompleteTextView(){
 
-        val adapter = AutoCompletionAdapter(mActivitySelectorPresenter, R.layout.item_politician_identifier, mSearchablePoliticiansList)
+        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, mSearchablePoliticiansList)
         mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
         mAutoCompleteTextView.threshold = 1
         mAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
@@ -79,7 +86,6 @@ class PoliticianSelectorView(val mActivitySelectorPresenter: PoliticianSelectorP
     }
 
     override fun onCreateOptionsMenu(menu: Menu?) {
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

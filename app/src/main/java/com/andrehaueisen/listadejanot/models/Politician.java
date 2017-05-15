@@ -162,6 +162,11 @@ public class Politician implements Parcelable {
         this.condemnedBy = condemnedBy;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public Map<String, Object> toSimpleMap() {
 
         Map<String, Object> simplePoliticianMap = new HashMap<>();

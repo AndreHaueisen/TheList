@@ -9,7 +9,7 @@ import android.widget.Filter
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-
+import java.util.*
 
 
 /**
@@ -18,7 +18,7 @@ import com.andrehaueisen.listadejanot.models.Politician
 class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansList: ArrayList<Politician>) : ArrayAdapter<Politician>(
         mContext,
         layoutId,
-        mPoliticiansList){
+        mPoliticiansList) {
 
     private val mPoliticianListOriginalCopy = ArrayList<Politician>()
     private val mPoliticianFilter = PoliticiansFilter()
@@ -54,18 +54,18 @@ class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansLi
         return mPoliticianFilter
     }
 
-    inner class PoliticiansFilter : Filter(){
+    inner class PoliticiansFilter : Filter() {
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            if(mPoliticiansList.size != mPoliticianListOriginalCopy.size){
+
+            val results = FilterResults()
+
+            if (mPoliticiansList.size != mPoliticianListOriginalCopy.size) {
                 mPoliticiansList.clear()
                 mPoliticiansList.addAll(mPoliticianListOriginalCopy)
             }
 
-            val results = FilterResults()
-
-            if (constraint!= null) {
-
+            if (constraint != null) {
                 val filteredList = mPoliticiansList.filter { it.name.startsWith(constraint, true) }
                 results.values = filteredList
                 results.count = filteredList.size
@@ -86,7 +86,4 @@ class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansLi
         }
     }
 
-    override fun notifyDataSetChanged() {
-        super.notifyDataSetChanged()
-    }
 }

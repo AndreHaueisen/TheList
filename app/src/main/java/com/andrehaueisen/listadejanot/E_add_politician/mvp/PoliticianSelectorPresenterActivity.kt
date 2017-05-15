@@ -2,6 +2,8 @@ package com.andrehaueisen.listadejanot.E_add_politician.mvp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.AddPoliticianModule
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerAddPoliticianComponent
@@ -19,7 +21,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     @Inject
     lateinit var mSelectorModel: PoliticianSelectorModel
-    lateinit private var mSelectorView: PoliticianSelectorView
+    lateinit private var mView: PoliticianSelectorView
 
     private val mCompositeDisposable = CompositeDisposable()
 
@@ -45,13 +47,13 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .injectModel(this)
 
         if(savedInstanceState == null) {
-            mSelectorView = PoliticianSelectorView(this)
-            mSelectorView.setViews()
+            mView = PoliticianSelectorView(this)
+            mView.setViews(false)
             mSelectorModel.connectToFirebase()
             subscribeToModel()
         }else{
-            mSelectorView = PoliticianSelectorView(this, savedInstanceState)
-            mSelectorView.setViewsFromSavedState()
+            mView = PoliticianSelectorView(this, savedInstanceState)
+            mView.setViews(true)
         }
     }
 
@@ -65,7 +67,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                     }
 
                     override fun onNext(deputadosPreList: ArrayList<Politician>) {
-                        mSelectorView.notifySearchablePoliticiansNewList(deputadosPreList)
+                        mView.notifySearchablePoliticiansNewList(deputadosPreList)
                     }
 
                     override fun onError(e: Throwable?) {
@@ -79,8 +81,18 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        mView.onCreateOptionsMenu(menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        mView.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putAll(mSelectorView.onSaveInstanceState())
+        outState.putAll(mView.onSaveInstanceState())
         super.onSaveInstanceState(outState)
     }
 

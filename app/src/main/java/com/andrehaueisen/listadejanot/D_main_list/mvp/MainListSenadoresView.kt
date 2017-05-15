@@ -24,7 +24,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         }
     }
     private lateinit var mSenadoresRecyclerView: RecyclerView
-    private var mSenadorList = ArrayList<Politician>()
+    private val mSenadorList = ArrayList<Politician>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -48,6 +48,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
         mSenadorList.addAll(senadores)
         mSenadoresRecyclerView.adapter.notifyDataSetChanged()
+        val k = 5
     }
 
 

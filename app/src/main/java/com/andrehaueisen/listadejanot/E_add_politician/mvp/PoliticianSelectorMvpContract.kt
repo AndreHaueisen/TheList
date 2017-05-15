@@ -12,8 +12,7 @@ import io.reactivex.Observable
 interface PoliticianSelectorMvpContract {
 
     interface View{
-        fun setViews()
-        fun setViewsFromSavedState()
+        fun setViews(isSavedState: Boolean)
         fun notifySearchablePoliticiansNewList(politicians: ArrayList<Politician>)
 
         fun onCreateOptionsMenu(menu: Menu?)

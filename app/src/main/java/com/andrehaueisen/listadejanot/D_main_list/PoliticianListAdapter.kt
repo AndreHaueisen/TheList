@@ -23,8 +23,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 
-
-
 /**
  * Created by andre on 4/24/2017.
  */

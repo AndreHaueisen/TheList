@@ -9,32 +9,24 @@
     tools:context="com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorPresenterActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/add_politician_toolbar"
+        android:id="@+id/select_politician_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            style="@style/RobotoRegularToolbarTextStyle"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
+            android:id="@+id/auto_complete_text_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_politician"/>
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:theme="@style/Autocomplete"
+            android:dropDownAnchor="@id/select_politician_toolbar"
+            android:dropDownSelector="@color/colorAccentLight"
+            android:hint="@string/type_politician_name_hint"
+            />
 
     </android.support.v7.widget.Toolbar>
-
-    <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
-        android:id="@+id/auto_complete_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/shape_text_box"
-        android:dropDownSelector="@color/colorAccentDark"
-        android:hint="@string/type_politician_name_hint"
-        android:textColorHint="@color/colorAccentDark"/>
-
 
 </LinearLayout>
