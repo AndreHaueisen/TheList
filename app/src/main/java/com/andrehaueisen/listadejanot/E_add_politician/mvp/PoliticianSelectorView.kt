@@ -1,16 +1,20 @@
 package com.andrehaueisen.listadejanot.E_add_politician.mvp
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AppCompatMultiAutoCompleteTextView
+import android.support.v7.widget.CardView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.MultiAutoCompleteTextView
+import android.view.View
+import android.widget.*
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 
 
@@ -19,8 +23,9 @@ import kotlinx.android.synthetic.main.e_activity_politician_selector.*
  */
 class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenterActivity): PoliticianSelectorMvpContract.View {
 
-
-    private val mAutoCompleteTextView : AppCompatMultiAutoCompleteTextView
+    private val mAutoCompleteTextView : AutoCompleteTextView
+    private val mGlide = Glide.with(mActivityPresenter)
+    private val mBlurry = Blurry.with(mActivityPresenter)
     lateinit private var mSearchablePoliticiansList: ArrayList<Politician>
     lateinit private var mLoadingDatabaseAlertDialog : AlertDialog
 
@@ -61,27 +66,65 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
         mLoadingDatabaseAlertDialog.show()
     }
 
-    private fun setAutoCompleteTextView(politicians: ArrayList<Politician>){
+    private fun setAutoCompleteTextView(){
 
-        mSearchablePoliticiansList = politicians
-        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, politicians)
+        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, mSearchablePoliticiansList)
         mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
         mAutoCompleteTextView.threshold = 1
-        mAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
 
-        mLoadingDatabaseAlertDialog.dismiss()
     }
 
     override fun notifySearchablePoliticiansNewList(politicians: ArrayList<Politician>) {
         setAutoCompleteTextView(politicians)
     }
 
-    private fun setAutoCompleteTextView(){
+    private fun setAutoCompleteTextView(politicians: ArrayList<Politician>){
 
-        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, mSearchablePoliticiansList)
+        mSearchablePoliticiansList = politicians
+        val adapter = AutoCompletionAdapter(mActivityPresenter, R.layout.item_politician_identifier, politicians)
         mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
         mAutoCompleteTextView.threshold = 1
-        mAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+        mAutoCompleteTextView.onItemClickListener = object : AdapterView.OnItemClickListener{
+            override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                val politicianName = (view.findViewById(R.id.name_text_view) as TextView).text.toString()
+                mActivityPresenter.subscribeToIndividualModel(politicianName)
+            }
+        }
+
+        mLoadingDatabaseAlertDialog.dismiss()
+    }
+
+    override fun notifyPoliticianReady(politician: Politician) {
+        val mCardView: CardView = mActivityPresenter.card_view
+        val mMoldView: View = mActivityPresenter.mold_image_view
+        val mBlurImageView = mActivityPresenter.blur_background_image_view
+        val mPoliticianImageView: ImageView = mActivityPresenter.politician_image_view
+        val mNameTextView: TextView = mActivityPresenter.name_text_view
+        val mEmailTextView = mActivityPresenter.email_text_view
+        val mVotesNumberTextView : TextView = mActivityPresenter.votes_number_text_view
+        val mAnimatedBadgeImageView: ImageView = mActivityPresenter.badge_image_view
+        val mVoteButton: ToggleButton = mActivityPresenter.add_to_vote_count_image_view
+
+        val completePolitician = mSearchablePoliticiansList.first { it.name == politician.name }
+        completePolitician.image = politician.image
+
+        mGlide.load(politician.image)
+                .crossFade()
+                .placeholder(R.drawable.politician_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(mPoliticianImageView)
+
+        val politicianImage = BitmapFactory.decodeResource(mActivityPresenter.resources, R.drawable.congresso_nacional_portrait)
+
+        mBlurry.async()
+                .sampling(5)
+                .animate(1000)
+                .from(politicianImage)
+                .into(mBlurImageView)
+
+        mNameTextView.text = completePolitician.name
+        mVotesNumberTextView.text = completePolitician.votesNumber.toString()
+        mEmailTextView.text = completePolitician.email
 
     }
 

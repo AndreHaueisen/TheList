@@ -30,6 +30,7 @@ class Constants{
         @JvmField val BUNDLE_SENADORES = "senadores_list"
         @JvmField val BUNDLE_MANAGER = "layout_manager_state"
         @JvmField val BUNDLE_PAGER_ADAPTER = "pager_adapter"
+        @JvmField val BUNDLE_POLITICIAN_NAME = "politician_name"
 
         @JvmField val LOCATION_UID_MAPPINGS = "UID_Mappings"
         @JvmField val LOCATION_USERS = "Users"

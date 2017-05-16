@@ -6,4 +6,4 @@ import javax.inject.Scope
  * Created by andre on 5/11/2017.
  */
 @Scope
-annotation class AddPoliticianScope
+annotation class PoliticianSelectorScope

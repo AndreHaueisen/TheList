@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#3a3c3f</color>
 
     <color name="textBox">#d2d2d2</color>
+    <color name="grey_transparent">#4664666a</color>
     <!--<color name="colorAccent">#1b7c6b</color>
     <color name="colorAccentDark">#004f40</color>
     <color name="colorAccentLight">#53ac99</color>-->

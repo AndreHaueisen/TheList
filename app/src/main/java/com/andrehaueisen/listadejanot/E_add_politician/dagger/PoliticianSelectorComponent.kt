@@ -7,9 +7,9 @@ import dagger.Component
 /**
  * Created by andre on 5/11/2017.
  */
-@AddPoliticianScope
-@Component(modules = arrayOf(AddPoliticianModule::class), dependencies = arrayOf(ApplicationComponent::class))
-interface AddPoliticianComponent {
+@PoliticianSelectorScope
+@Component(modules = arrayOf(PoliticianSelectorModule::class), dependencies = arrayOf(ApplicationComponent::class))
+interface PoliticianSelectorComponent {
 
-    fun injectModel(politicianSelectorPresenterActivity: PoliticianSelectorPresenterActivity)
+    fun injectModels(politicianSelectorPresenterActivity: PoliticianSelectorPresenterActivity)
 }

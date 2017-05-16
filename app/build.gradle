@@ -86,6 +86,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+    compile 'jp.wasabeef:blurry:2.1.1'
+
     //kotlin parcelable
     //compile 'nz.bradcampbell:paperparcel:2.0.1'
     //compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional

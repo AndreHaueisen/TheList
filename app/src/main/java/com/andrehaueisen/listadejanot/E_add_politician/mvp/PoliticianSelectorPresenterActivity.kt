@@ -2,25 +2,33 @@ package com.andrehaueisen.listadejanot.E_add_politician.mvp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
-import com.andrehaueisen.listadejanot.E_add_politician.dagger.AddPoliticianModule
-import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerAddPoliticianComponent
+import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerPoliticianSelectorComponent
+import com.andrehaueisen.listadejanot.E_add_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
 import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter{
 
+    private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
+
     @Inject
     lateinit var mSelectorModel: PoliticianSelectorModel
+    @Inject
+    lateinit var mIndividualPoliticianModel : IndividualPoliticianSelectorModel
+
     lateinit private var mView: PoliticianSelectorView
 
     private val mCompositeDisposable = CompositeDisposable()
@@ -40,11 +48,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             deputadosMainList.addAll(intent.getParcelableArrayListExtra(Constants.INTENT_DEPUTADOS_MAIN_LIST))
         }
 
-        DaggerAddPoliticianComponent.builder()
+        DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .addPoliticianModule(AddPoliticianModule(supportLoaderManager, senadoresMainList, deputadosMainList))
+                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager, senadoresMainList, deputadosMainList))
                 .build()
-                .injectModel(this)
+                .injectModels(this)
 
         if(savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
@@ -81,6 +89,26 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     }
 
+    override fun subscribeToIndividualModel(politicianName: String){
+        mIndividualPoliticianModel.loadSinglePoliticianObservable()
+                .toSingle()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<Politician>{
+                    override fun onSuccess(politician: Politician) {
+                        mView.notifyPoliticianReady(politician)
+                    }
+
+                    override fun onSubscribe(disposable: Disposable?) {
+                        mIndividualPoliticianModel.initiateSinglePoliticianLoad(politicianName)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        Log.e(LOG_TAG, e.toString())
+                    }
+                })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         mView.onCreateOptionsMenu(menu)
         return super.onCreateOptionsMenu(menu)
@@ -99,6 +127,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
+        mIndividualPoliticianModel.onDestroy()
         super.onDestroy()
     }
 }
