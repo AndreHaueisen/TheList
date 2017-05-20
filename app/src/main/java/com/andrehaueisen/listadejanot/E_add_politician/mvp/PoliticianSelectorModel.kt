@@ -107,8 +107,8 @@ class PoliticianSelectorModel(val mContext: Context,
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(deputadosPreList: ArrayList<Politician>) {
-                        mSenadoresPreList = deputadosPreList
+                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
+                        mSenadoresPreList = searchablePoliticiansList
                         mOnListsReadyPublisher.onNext(true)
                     }
                 })
@@ -132,8 +132,8 @@ class PoliticianSelectorModel(val mContext: Context,
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(deputadosPreList: ArrayList<Politician>) {
-                        mDeputadosPreList = deputadosPreList
+                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
+                        mDeputadosPreList = searchablePoliticiansList
                         mOnListsReadyPublisher.onNext(true)
                     }
                 })

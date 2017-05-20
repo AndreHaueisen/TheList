@@ -55,7 +55,7 @@ class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansLi
     }
 
     inner class PoliticiansFilter : Filter() {
-
+        //TODO solve java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification
         override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             val results = FilterResults()

@@ -43,9 +43,7 @@ interface MainListMvpContract{
         fun onDestroy()
     }
 
-    interface Repository{
-
-    }
+    interface Repository
 
 
 }

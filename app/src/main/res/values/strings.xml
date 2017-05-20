@@ -28,6 +28,7 @@
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
     <string name="type_politician_name_hint">Politician Name</string>
+    <string name="selector_explanation">If the politician is not on the main lists, you can find it here. Once vote count reaches the threshold he will be send to the main list</string>
 
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>

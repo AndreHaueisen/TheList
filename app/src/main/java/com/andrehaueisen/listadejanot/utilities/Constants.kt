@@ -23,6 +23,10 @@ class Constants{
                 politiciansEntry.COLUMN_NAME,
                 politiciansEntry.COLUMN_EMAIL)
 
+        @JvmField val POLITICIANS_COLUMNS_IMAGE = arrayOf(
+                politiciansEntry.COLUMN_NAME,
+                politiciansEntry.COLUMN_IMAGE)
+
         @JvmField val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
         @JvmField val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
         @JvmField val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
@@ -31,6 +35,7 @@ class Constants{
         @JvmField val BUNDLE_MANAGER = "layout_manager_state"
         @JvmField val BUNDLE_PAGER_ADAPTER = "pager_adapter"
         @JvmField val BUNDLE_POLITICIAN_NAME = "politician_name"
+        @JvmField val BUNDLE_PAIR_NAME_IMAGE = "pair_name_image"
 
         @JvmField val LOCATION_UID_MAPPINGS = "UID_Mappings"
         @JvmField val LOCATION_USERS = "Users"

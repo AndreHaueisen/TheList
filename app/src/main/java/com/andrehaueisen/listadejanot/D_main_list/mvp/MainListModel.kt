@@ -106,8 +106,8 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(deputadosPreList: ArrayList<Politician>) {
-                        mSenadoresMainList = deputadosPreList
+                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
+                        mSenadoresMainList = searchablePoliticiansList
                         mOnListsReadyPublisher.onNext(true)
                     }
                 })

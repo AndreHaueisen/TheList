@@ -7,21 +7,19 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
-import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
-import io.reactivex.internal.observers.FutureSingleObserver
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by andre on 5/16/2017.
  */
 class IndividualPoliticianSelectorModel(val mContext: Context, val mLoaderManager: LoaderManager) : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val COLUMNS_INDEX_CARGO = 0
-    private val COLUMNS_INDEX_NAME = 1
-    private val COLUMNS_INDEX_EMAIL = 2
-    private val COLUMNS_INDEX_IMAGE = 3
+    private val COLUMNS_INDEX_NAME = 0
+    private val COLUMNS_INDEX_IMAGE = 1
 
-    private var mSinglePoliticianObservable = FutureSingleObserver<Politician>()
+    private var mSinglePoliticianPublisher : PublishSubject<Pair<String, ByteArray>> = PublishSubject.create()
 
     override fun initiateSinglePoliticianLoad(politicianName: String) {
         val args = Bundle()
@@ -40,7 +38,7 @@ class IndividualPoliticianSelectorModel(val mContext: Context, val mLoaderManage
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
         return CursorLoader(mContext,
                 politiciansEntry.CONTENT_URI,
-                Constants.POLITICIANS_COLUMNS,
+                Constants.POLITICIANS_COLUMNS_IMAGE,
                 "${politiciansEntry.COLUMN_NAME} = ?",
                 arrayOf(politicianName),
                 null)
@@ -51,30 +49,22 @@ class IndividualPoliticianSelectorModel(val mContext: Context, val mLoaderManage
         if (data != null && data.count != 0) {
             data.moveToFirst()
 
-            val politician : Politician
-            if (data.getString(COLUMNS_INDEX_CARGO) == Politician.Post.DEPUTADO.name) {
-                val deputadoName = data.getString(COLUMNS_INDEX_NAME)
-                val deputadoEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                val deputadoImage = data.getBlob(COLUMNS_INDEX_IMAGE)
+            val politicianName = data.getString(COLUMNS_INDEX_NAME)
+            val politicianImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                politician = Politician(Politician.Post.DEPUTADO, null, deputadoName, deputadoEmail, deputadoImage)
+            val pairPoliticianNameImage = Pair(politicianName, politicianImage)
 
-            } else {
-                val senadorName = data.getString(COLUMNS_INDEX_NAME)
-                val senadorEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                val senadorImage = data.getBlob(COLUMNS_INDEX_IMAGE)
+            mSinglePoliticianPublisher.onNext(pairPoliticianNameImage)
+                    //.onSuccess(pairPoliticianNameImage)
 
-                politician = Politician(Politician.Post.SENADOR, null, senadorName, senadorEmail, senadorImage)
-            }
 
-            mSinglePoliticianObservable.onSuccess(politician)
         }
 
         data?.close()
     }
 
-    override fun loadSinglePoliticianObservable(): FutureSingleObserver<Politician> {
-        return mSinglePoliticianObservable
+    override fun loadSinglePoliticianObservable(): Observable<Pair<String, ByteArray>> {
+        return Observable.defer { mSinglePoliticianPublisher }
     }
 
     override fun onDestroy() {
@@ -82,6 +72,6 @@ class IndividualPoliticianSelectorModel(val mContext: Context, val mLoaderManage
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }
