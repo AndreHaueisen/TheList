@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.models.Politician
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by andre on 5/11/2017.
@@ -13,7 +14,7 @@ interface PoliticianSelectorMvpContract {
     interface View{
         fun setViews(isSavedState: Boolean)
         fun notifySearchablePoliticiansNewList()
-        fun notifyPoliticianImageReady()
+        fun notifyPoliticianReady()
 
         fun onCreateOptionsMenu(menu: Menu?)
         fun onOptionsItemSelected(item: MenuItem?): Boolean
@@ -21,8 +22,8 @@ interface PoliticianSelectorMvpContract {
 
     interface Presenter{
 
-        fun subscribeToModel()
-        fun subscribeToIndividualModel(politicianName: String)
+        fun subscribeToPoliticianSelectorModel()
+        fun subscribeToSinglePoliticianModel(politicianName: String)
     }
 
     interface Model{
@@ -34,7 +35,7 @@ interface PoliticianSelectorMvpContract {
 
     interface IndividualPoliticianModel{
         fun initiateSinglePoliticianLoad(politicianName: String)
-        fun loadSinglePoliticianObservable(): Observable<Pair<String, ByteArray>>
+        fun loadSinglePoliticianPublisher(): PublishSubject<Politician>
 
         fun onDestroy()
     }

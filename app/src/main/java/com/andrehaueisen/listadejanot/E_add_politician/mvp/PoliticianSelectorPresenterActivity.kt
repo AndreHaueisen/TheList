@@ -8,11 +8,9 @@ import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.PoliticianSelectorModule
-import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
-import io.reactivex.Observer
-import io.reactivex.SingleObserver
+import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -26,18 +24,17 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     @Inject
     lateinit var mSelectorModel: PoliticianSelectorModel
     @Inject
-    lateinit var mIndividualPoliticianModel : IndividualPoliticianSelectorModel
+    lateinit var mSinglePoliticianModel: SinglePoliticianModel
 
     lateinit private var mView: PoliticianSelectorView
-
+    private var mPolitician: Politician? = null
+    lateinit private var mOriginalSearchablePoliticiansList : ArrayList<Politician>
     private val mCompositeDisposable = CompositeDisposable()
 
-    lateinit private var mOriginalSearchablePoliticiansList: ArrayList<Politician>
-    private var mPairNameImage : Pair<String, ByteArray>? = null
+    lateinit private var mLastSelectedPoliticianName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.e_activity_politician_selector)
 
         val senadoresMainList = ArrayList<Politician>()
         val deputadosMainList = ArrayList<Politician>()
@@ -60,12 +57,12 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView = PoliticianSelectorView(this)
             mView.setViews(false)
             mSelectorModel.connectToFirebase()
-            subscribeToModel()
+            subscribeToPoliticianSelectorModel()
 
         }else{
             mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(Constants.BUNDLE_SEARCHABLE_POLITICIANS)
-            if(savedInstanceState.containsKey(Constants.BUNDLE_PAIR_NAME_IMAGE)) {
-                mPairNameImage = savedInstanceState.getSerializable(Constants.BUNDLE_PAIR_NAME_IMAGE) as Pair < String, ByteArray>
+            if(savedInstanceState.containsKey(Constants.BUNDLE_POLITICIAN)) {
+                mPolitician = savedInstanceState.getParcelable(Constants.BUNDLE_POLITICIAN)
             }
 
             mView = PoliticianSelectorView(this)
@@ -73,16 +70,17 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
-    override fun subscribeToModel() {
+    override fun subscribeToPoliticianSelectorModel() {
         mSelectorModel.loadSearchablePoliticiansList()
+                .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<Politician>> {
+                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
                     override fun onSubscribe(disposable: Disposable?) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
                         mOriginalSearchablePoliticiansList = searchablePoliticiansList
                         mView.notifySearchablePoliticiansNewList()
                     }
@@ -98,45 +96,33 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     }
 
-    override fun subscribeToIndividualModel(politicianName: String){
-        mIndividualPoliticianModel.loadSinglePoliticianObservable()
-                .firstOrError()
+    override fun subscribeToSinglePoliticianModel(politicianName: String){
+        mLastSelectedPoliticianName = politicianName
+        mSinglePoliticianModel.loadSinglePoliticianPublisher()
+                .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<Pair<String, ByteArray>> {
-                    override fun onSuccess(pairPoliticianNameImage: Pair<String, ByteArray>) {
-                        mPairNameImage = pairPoliticianNameImage
-                        mView.notifyPoliticianImageReady()
+                .subscribe(mSinglePoliticianObserver)
+    }
 
-                    }
+    private val mSinglePoliticianObserver = object : MaybeObserver<Politician>{
+        override fun onError(t: Throwable?) {
+            Log.e(LOG_TAG, t.toString())
+        }
 
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mIndividualPoliticianModel.initiateSinglePoliticianLoad(politicianName)
-                    }
+        override fun onSubscribe(disposable: Disposable?) {
+            mCompositeDisposable.add(disposable)
+            mSinglePoliticianModel.initiateSinglePoliticianLoad(mLastSelectedPoliticianName)
+        }
 
-                    override fun onError(e: Throwable?) {
-                        Log.e(LOG_TAG, e.toString())
-                    }
-                })
-                /*.subscribe(object : Observer<Pair<String, ByteArray>>{
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mIndividualPoliticianModel.initiateSinglePoliticianLoad(politicianName)
-                        mCompositeDisposable.add(disposable)
-                    }
+        override fun onSuccess(politician: Politician?) {
+            mPolitician = politician
+            mView.notifyPoliticianReady()
+        }
 
-                    override fun onComplete() {
+        override fun onComplete() {
 
-                    }
-
-                    override fun onError(e: Throwable?) {
-                        Log.e(LOG_TAG, e.toString())
-                    }
-
-                    override fun onNext(pairPoliticianNameImage: Pair<String, ByteArray>?) {
-                        mPairNameImage = pairPoliticianNameImage
-                        mView.notifyPoliticianImageReady()
-                    }
-                })*/
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -151,20 +137,20 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelableArrayList(Constants.BUNDLE_SEARCHABLE_POLITICIANS, mOriginalSearchablePoliticiansList)
-        if(mPairNameImage != null){
-            outState.putSerializable(Constants.BUNDLE_PAIR_NAME_IMAGE, mPairNameImage)
+        if(mPolitician != null){
+            outState.putParcelable(Constants.BUNDLE_POLITICIAN, mPolitician)
         }
         super.onSaveInstanceState(outState)
     }
 
     fun getOriginalSearchablePoliticiansList() = mOriginalSearchablePoliticiansList
 
-    fun getNameImagePair() = mPairNameImage
+    fun getSinglePolitician() = mPolitician
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
-        mIndividualPoliticianModel.onDestroy()
+        mSinglePoliticianModel.onDestroy()
         super.onDestroy()
     }
 }

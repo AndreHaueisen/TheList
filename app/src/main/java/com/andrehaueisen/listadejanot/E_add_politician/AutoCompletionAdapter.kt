@@ -9,23 +9,21 @@ import android.widget.Filter
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import java.util.*
 
 
 /**
  * Created by andre on 5/13/2017.
  */
-class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansList: ArrayList<Politician>) : ArrayAdapter<Politician>(
+class AutoCompletionAdapter(mContext: Context,
+                            layoutId: Int,
+                            val mNonReliablePoliticiansList: ArrayList<Politician>,
+                            val mOriginalPoliticianList: ArrayList<Politician>) : ArrayAdapter<Politician>(
         mContext,
         layoutId,
-        mPoliticiansList) {
+        mNonReliablePoliticiansList) {
 
-    private val mPoliticianListOriginalCopy = ArrayList<Politician>()
+
     private val mPoliticianFilter = PoliticiansFilter()
-
-    init {
-        mPoliticianListOriginalCopy.addAll(mPoliticiansList)
-    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -60,13 +58,13 @@ class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansLi
 
             val results = FilterResults()
 
-            if (mPoliticiansList.size != mPoliticianListOriginalCopy.size) {
-                mPoliticiansList.clear()
-                mPoliticiansList.addAll(mPoliticianListOriginalCopy)
+            if (mNonReliablePoliticiansList.size != mOriginalPoliticianList.size) {
+                mNonReliablePoliticiansList.clear()
+                mNonReliablePoliticiansList.addAll(mOriginalPoliticianList)
             }
 
             if (constraint != null) {
-                val filteredList = mPoliticiansList.filter { it.name.startsWith(constraint, true) }
+                val filteredList = mNonReliablePoliticiansList.filter { it.name.startsWith(constraint, true) }
                 results.values = filteredList
                 results.count = filteredList.size
             }
@@ -77,8 +75,8 @@ class AutoCompletionAdapter(mContext: Context, layoutId: Int, var mPoliticiansLi
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
 
             if (results.count > 0) {
-                mPoliticiansList.clear()
-                mPoliticiansList.addAll(results.values as ArrayList<Politician>)
+                mNonReliablePoliticiansList.clear()
+                mNonReliablePoliticiansList.addAll(results.values as ArrayList<Politician>)
                 notifyDataSetChanged()
             } else {
                 notifyDataSetInvalidated()

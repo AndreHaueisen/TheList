@@ -6,7 +6,6 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.Constants
 import com.google.firebase.database.*
-import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -36,7 +35,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     }
 
     fun saveUser(userEmail: String, user: User) {
-        val database = mDatabaseReference.child(Constants.LOCATION_USERS).child(userEmail)
+        val database = mDatabaseReference.child(Constants.LOCATION_USERS_DATA).child(userEmail)
 
         database.setValue(user)
     }
@@ -126,7 +125,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     fun updateDeputadoVoteOnMainList(deputado: Politician,
                                      userEmail: String,
-                                     viewHolder: PoliticianListAdapter.PoliticianHolder){
+                                     viewHolder: PoliticianListAdapter.PoliticianHolder) {
         if (deputado.post == Politician.Post.DEPUTADO) {
             val database = mDatabaseReference
                     .child(Constants.LOCATION_DEPUTADOS_MAIN_LIST)
@@ -207,6 +206,8 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     val mListenerForSenadoresMainList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            if (mMainListSenadores.isNotEmpty()) mMainListSenadores.clear()
+
             if (dataSnapshot != null && dataSnapshot.exists()) {
                 dataSnapshot.children.forEach { if (it != null) mMainListSenadores.add(it.getValue(mGenericIndicator)) }
             }
@@ -222,6 +223,10 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     val mListenerForSenadoresPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            if (mPreListSenadores.isNotEmpty()){
+                mPreListSenadores.clear()
+            }
+
             if (dataSnapshot != null && dataSnapshot.exists()) {
                 dataSnapshot.children.forEach { if (it != null) mPreListSenadores.add(it.getValue(mGenericIndicator)) }
             }
@@ -236,6 +241,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     val mListenerForDeputadosMainList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            if (mMainListDeputados.isNotEmpty()) mMainListDeputados.clear()
             if (dataSnapshot != null && dataSnapshot.exists()) {
                 dataSnapshot.children.forEach { if (it != null) mMainListDeputados.add(it.getValue(mGenericIndicator)) }
             }
@@ -250,8 +256,13 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     val mListenerForDeputadosPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            if (mPreListDeputados.isNotEmpty()) {
+                mPreListDeputados.clear()
+            }
+
             if (dataSnapshot != null && dataSnapshot.exists()) {
                 dataSnapshot.children.forEach { if (it != null) mPreListDeputados.add(it.getValue(mGenericIndicator)) }
+
             }
             mPublishDeputadosPreList.onNext(mPreListDeputados)
         }
@@ -261,28 +272,32 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }
     }
 
-    fun getSenadoresMainList(): Observable<ArrayList<Politician>> {
+    fun getSenadoresMainList(): PublishSubject<ArrayList<Politician>> {
         mDatabaseReference.child(Constants.LOCATION_SENADORES_MAIN_LIST).addListenerForSingleValueEvent(mListenerForSenadoresMainList)
 
-        return Observable.defer { mPublishSenadoresMainList }
+        return mPublishSenadoresMainList
     }
 
-    fun getSenadoresPreList(): Observable<ArrayList<Politician>> {
-        mDatabaseReference.child(Constants.LOCATION_SENADORES_PRE_LIST).addListenerForSingleValueEvent(mListenerForSenadoresPreList)
+    fun getSenadoresPreList(): PublishSubject<ArrayList<Politician>> {
+        mDatabaseReference
+                .child(Constants.LOCATION_SENADORES_PRE_LIST)
+                .addListenerForSingleValueEvent(mListenerForSenadoresPreList)
 
-        return Observable.defer { mPublishSenadoresPreList }
+        return mPublishSenadoresPreList
     }
 
-    fun getDeputadosMainList(): Observable<ArrayList<Politician>> {
+    fun getDeputadosMainList(): PublishSubject<ArrayList<Politician>> {
         mDatabaseReference.child(Constants.LOCATION_DEPUTADOS_MAIN_LIST).addListenerForSingleValueEvent(mListenerForDeputadosMainList)
 
-        return Observable.defer { mPublishDeputadosMainList }
+        return mPublishDeputadosMainList
     }
 
-    fun getDeputadosPreList(): Observable<ArrayList<Politician>> {
-        mDatabaseReference.child(Constants.LOCATION_DEPUTADOS_PRE_LIST).addListenerForSingleValueEvent(mListenerForDeputadosPreList)
+    fun getDeputadosPreList(): PublishSubject<ArrayList<Politician>> {
+        mDatabaseReference
+                .child(Constants.LOCATION_DEPUTADOS_PRE_LIST)
+                .addListenerForSingleValueEvent(mListenerForDeputadosPreList)
 
-        return Observable.defer { mPublishDeputadosPreList }
+        return mPublishDeputadosPreList
     }
 
     fun onDestroy() {

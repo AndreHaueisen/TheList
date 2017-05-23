@@ -20,7 +20,7 @@ class PoliticiansContract {
             val TABLE_NAME = "politicians_table"
 
             val _ID = "_id"
-            val COLUMN_CARGO = "cargo"
+            val COLUMN_POST = "cargo"
             val COLUMN_IMAGE_URL = "image_url"
             val COLUMN_NAME = "name"
             val COLUMN_EMAIL = "email"

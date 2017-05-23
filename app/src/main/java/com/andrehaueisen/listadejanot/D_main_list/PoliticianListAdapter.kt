@@ -19,6 +19,7 @@ import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.Constants
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -102,7 +103,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val mCardView: CardView = itemView.findViewById(R.id.card_view) as CardView
-        private val mMoldView: View = itemView.findViewById(R.id.mold_image_view)
+        private val mMoldView: View = itemView.findViewById(R.id.mold_view)
         private val mPoliticianImageView: ImageView = itemView.findViewById(R.id.politician_image_view) as ImageView
         private val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view) as TextView
         private val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
@@ -111,7 +112,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_image_view) as ToggleButton
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
-        private var mIsShowingPolitician = true
+        private var mIsShowingPoliticianDrawable = true
 
         internal fun bindDataToView(politician: Politician) {
 
@@ -120,29 +121,31 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
             mVoteButton.setOnClickListener {
                 if (politician.post == Politician.Post.DEPUTADO) {
-                    mFirebaseRepository.updateDeputadoVoteOnMainList(politician, "fakeEmailUser@ba.com", this@PoliticianHolder)
+                    mFirebaseRepository.updateDeputadoVoteOnMainList(politician, Constants.FAKE_USER_EMAIL, this@PoliticianHolder)
                 } else {
-                    mFirebaseRepository.updateSenadorVoteOnMainList(politician, "fakeEmailUser@ba.com", this@PoliticianHolder)
+                    mFirebaseRepository.updateSenadorVoteOnMainList(politician, Constants.FAKE_USER_EMAIL, this@PoliticianHolder)
                 }
             }
         }
 
         private fun setInitialVisualStatus(politician: Politician){
 
-            if (politician.condemnedBy.contains("fakeEmailUser@ba,com")) {
+            if (politician.condemnedBy.contains(Constants.FAKE_USER_EMAIL)) {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorAccentDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
-                mIsShowingPolitician = true
+                mIsShowingPoliticianDrawable = true
                 changeButtonAnimation()
+
             } else {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorPrimaryDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary))
                 mVoteButton.isChecked = false
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
-                mIsShowingPolitician = false
+                mIsShowingPoliticianDrawable = false
                 changeButtonAnimation()
+
             }
         }
 
@@ -200,25 +203,25 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             changeButtonAnimation()
         }
 
-        fun changeButtonAnimation(){
+        private fun changeButtonAnimation(){
 
-            if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && mIsShowingPolitician){
+            if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable){
                 (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPolitician = false
+                mIsShowingPoliticianDrawable = false
 
-            }else if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && !mIsShowingPolitician){
+            }else if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && !mIsShowingPoliticianDrawable){
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
                 (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPolitician = true
+                mIsShowingPoliticianDrawable = true
 
-            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && mIsShowingPolitician){
+            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && mIsShowingPoliticianDrawable){
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
                 (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPolitician = false
+                mIsShowingPoliticianDrawable = false
 
-            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && !mIsShowingPolitician){
+            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && !mIsShowingPoliticianDrawable){
                 (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPolitician = true
+                mIsShowingPoliticianDrawable = true
             }
 
         }

@@ -36,7 +36,7 @@
 
     <style name="BigRobotoBlackTextStyle">
         <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/black_transparent</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@string/font_roboto_black</item>
     </style>
 

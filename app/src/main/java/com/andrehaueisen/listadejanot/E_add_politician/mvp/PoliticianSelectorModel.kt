@@ -11,6 +11,7 @@ import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.Constants
+import io.reactivex.MaybeObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,23 +38,18 @@ class PoliticianSelectorModel(val mContext: Context,
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    lateinit private var mSenadoresPreListObservable: Observable<ArrayList<Politician>>
-    lateinit private var mDeputadosPreListObservable: Observable<ArrayList<Politician>>
+    private var mSenadoresPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private var mDeputadosPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private lateinit var mSenadoresPreList: ArrayList<Politician>
     private lateinit var mDeputadosPreList: ArrayList<Politician>
 
-
     private val mSearchablePoliticianList = ArrayList<Politician>()
-
     private val mFinalSearchablePoliticianPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-
     private val mOnListsReadyPublisher: PublishSubject<Boolean> = PublishSubject.create()
-
     private var mListCounter = 0
 
     init {
-
         mOnListsReadyPublisher
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -82,24 +78,28 @@ class PoliticianSelectorModel(val mContext: Context,
     }
 
     fun connectToFirebase() {
-        mSenadoresPreListObservable = mFirebaseRepository.getSenadoresPreList()
-        mDeputadosPreListObservable = mFirebaseRepository.getDeputadosPreList()
+        mSenadoresPreListPublisher = mFirebaseRepository.getSenadoresPreList()
+        mDeputadosPreListPublisher = mFirebaseRepository.getDeputadosPreList()
 
         getSenadoresPreList()
         getDeputadosPreList()
     }
 
     private fun getSenadoresPreList() {
-        mSenadoresPreListObservable
+        mSenadoresPreListPublisher
+                .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<Politician>> {
+                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
                     override fun onSubscribe(disposable: Disposable?) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onComplete() {
-
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>?) {
+                        if(searchablePoliticiansList != null) {
+                            mSenadoresPreList = searchablePoliticiansList
+                            mOnListsReadyPublisher.onNext(true)
+                        }
                     }
 
                     override fun onError(e: Throwable?) {
@@ -107,24 +107,27 @@ class PoliticianSelectorModel(val mContext: Context,
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
-                        mSenadoresPreList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
+                    override fun onComplete() {
+
                     }
                 })
     }
 
     private fun getDeputadosPreList() {
-        mDeputadosPreListObservable
+        mDeputadosPreListPublisher
+                .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mCompositeDisposable.add(disposable)
+                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>?) {
+                        if (searchablePoliticiansList != null) {
+                            mDeputadosPreList = searchablePoliticiansList
+                            mOnListsReadyPublisher.onNext(true)
+                        }
                     }
 
-                    override fun onComplete() {
-
+                    override fun onSubscribe(disposable: Disposable?) {
+                        mCompositeDisposable.add(disposable)
                     }
 
                     override fun onError(e: Throwable?) {
@@ -132,9 +135,8 @@ class PoliticianSelectorModel(val mContext: Context,
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onNext(searchablePoliticiansList: ArrayList<Politician>) {
-                        mDeputadosPreList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
+                    override fun onComplete() {
+
                     }
                 })
     }

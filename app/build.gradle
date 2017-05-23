@@ -20,13 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
+
 }
 
 ext {
@@ -99,10 +93,6 @@ dependencies {
     //compile 'nz.bradcampbell:paperparcel:2.0.1'
     //compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
     //kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'
-
-    // https://mvnrepository.com/artifact/net.coobird/thumbnailator
-    //image resize
-    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 
     compile 'org.jsoup:jsoup:1.10.2'
 

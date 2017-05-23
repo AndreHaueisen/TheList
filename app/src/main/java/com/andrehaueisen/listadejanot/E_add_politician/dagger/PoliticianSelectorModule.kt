@@ -3,7 +3,7 @@ package com.andrehaueisen.listadejanot.E_add_politician.dagger
 import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.E_add_politician.mvp.IndividualPoliticianSelectorModel
+import com.andrehaueisen.listadejanot.E_add_politician.mvp.SinglePoliticianModel
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorModel
 import com.andrehaueisen.listadejanot.models.Politician
 import dagger.Module
@@ -29,8 +29,8 @@ class PoliticianSelectorModule(val mLoaderManager: LoaderManager, val mSenadores
 
     @PoliticianSelectorScope
     @Provides
-    fun provideIndividualSelectorModel(context: Context, loaderManager: LoaderManager): IndividualPoliticianSelectorModel{
-        return IndividualPoliticianSelectorModel(context, loaderManager)
+    fun provideIndividualSelectorModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository): SinglePoliticianModel {
+        return SinglePoliticianModel(context, loaderManager, firebaseRepository)
     }
 
 }

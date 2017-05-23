@@ -100,9 +100,10 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
                 R.id.navigation_notifications -> {
                     return@setOnNavigationItemSelectedListener true
                 }
+
+                else -> false
             }
 
-            false
         }
     }
 
