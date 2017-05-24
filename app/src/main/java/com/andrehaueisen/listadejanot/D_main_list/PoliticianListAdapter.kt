@@ -19,7 +19,7 @@ import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
+import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -109,7 +109,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         private val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
         private val mVotesNumberTextView : TextView = itemView.findViewById(R.id.votes_number_text_view) as TextView
         private val mAnimatedBadgeImageView: ImageView = itemView.findViewById(R.id.badge_image_view) as ImageView
-        private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_image_view) as ToggleButton
+        private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_toggle_button) as ToggleButton
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
         private var mIsShowingPoliticianDrawable = true
@@ -121,16 +121,16 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
             mVoteButton.setOnClickListener {
                 if (politician.post == Politician.Post.DEPUTADO) {
-                    mFirebaseRepository.updateDeputadoVoteOnMainList(politician, Constants.FAKE_USER_EMAIL, this@PoliticianHolder)
+                    mFirebaseRepository.updateDeputadoVoteOnMainList(politician, FAKE_USER_EMAIL, this@PoliticianHolder)
                 } else {
-                    mFirebaseRepository.updateSenadorVoteOnMainList(politician, Constants.FAKE_USER_EMAIL, this@PoliticianHolder)
+                    mFirebaseRepository.updateSenadorVoteOnMainList(politician, FAKE_USER_EMAIL, this@PoliticianHolder)
                 }
             }
         }
 
         private fun setInitialVisualStatus(politician: Politician){
 
-            if (politician.condemnedBy.contains(Constants.FAKE_USER_EMAIL)) {
+            if (politician.condemnedBy.contains(FAKE_USER_EMAIL)) {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorAccentDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true
@@ -161,7 +161,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             mEmailTextView.text = politician.email
         }
 
-        fun setAbsolveAnimations(politician: Politician) {
+        fun initiateAbsolveAnimations(politician: Politician) {
 
             //TODO do minus one mVotesNumberTextView
             mVotesNumberTextView.text = politician.votesNumber.toString()
@@ -182,9 +182,9 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             changeButtonAnimation()
         }
 
-        fun setCondemnAnimations(politician: Politician) {
+        fun initiateCondemnAnimations(politician: Politician) {
 
-            //TODO do plus one mVotesNumberTextView
+            //TODO do plus one mVotesNumberTextView animation
             mVotesNumberTextView.text = politician.votesNumber.toString()
 
             mCardObjectAnimatorCondemn.target = mCardView

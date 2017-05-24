@@ -9,8 +9,9 @@ import android.support.v4.content.Loader
 import android.util.Log
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
+import com.andrehaueisen.listadejanot.utilities.LOADER_ID
+import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
 import io.reactivex.MaybeObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -141,17 +142,17 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
     }
 
     override fun initiateDataLoad() {
-        if (loaderManager.getLoader<Cursor>(Constants.LOADER_ID) == null) {
-            loaderManager.initLoader(Constants.LOADER_ID, null, this)
+        if (loaderManager.getLoader<Cursor>(LOADER_ID) == null) {
+            loaderManager.initLoader(LOADER_ID, null, this)
 
         } else {
-            loaderManager.restartLoader(Constants.LOADER_ID, null, this)
+            loaderManager.restartLoader(LOADER_ID, null, this)
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
-        return CursorLoader(context, politiciansEntry.CONTENT_URI, Constants.POLITICIANS_COLUMNS, null, null, null)
+        return CursorLoader(context, politiciansEntry.CONTENT_URI, POLITICIANS_COLUMNS, null, null, null)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {

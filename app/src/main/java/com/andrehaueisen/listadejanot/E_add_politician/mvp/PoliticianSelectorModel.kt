@@ -10,7 +10,8 @@ import android.util.Log
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
+import com.andrehaueisen.listadejanot.utilities.LOADER_ID
+import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS_NO_IMAGE
 import io.reactivex.MaybeObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -142,17 +143,17 @@ class PoliticianSelectorModel(val mContext: Context,
     }
 
     override fun initiateDataLoad() {
-        if (mLoaderManager.getLoader<Cursor>(Constants.LOADER_ID) == null) {
-            mLoaderManager.initLoader(Constants.LOADER_ID, null, this)
+        if (mLoaderManager.getLoader<Cursor>(LOADER_ID) == null) {
+            mLoaderManager.initLoader(LOADER_ID, null, this)
 
         } else {
-            mLoaderManager.restartLoader(Constants.LOADER_ID, null, this)
+            mLoaderManager.restartLoader(LOADER_ID, null, this)
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
-        return CursorLoader(mContext, politiciansEntry.CONTENT_URI, Constants.POLITICIANS_COLUMNS_NO_IMAGE, null, null, null)
+        return CursorLoader(mContext, politiciansEntry.CONTENT_URI, POLITICIANS_COLUMNS_NO_IMAGE, null, null, null)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
@@ -209,7 +210,7 @@ class PoliticianSelectorModel(val mContext: Context,
                 .filter { it.name == senadorName }
                 .forEach { return }
 
-        val senador = Politician(Politician.Post.DEPUTADO, senadorName, senadorEmail)
+        val senador = Politician(Politician.Post.SENADOR, senadorName, senadorEmail)
         try {
             mSenadoresPreList.first { it.name == senadorName }
                     .also {

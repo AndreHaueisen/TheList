@@ -16,14 +16,18 @@ interface PoliticianSelectorMvpContract {
         fun notifySearchablePoliticiansNewList()
         fun notifyPoliticianReady()
 
+        fun initiateCondemnAnimations(politician: Politician)
+        fun initiateAbsolveAnimations(politician: Politician)
+
         fun onCreateOptionsMenu(menu: Menu?)
         fun onOptionsItemSelected(item: MenuItem?): Boolean
     }
 
     interface Presenter{
-
         fun subscribeToPoliticianSelectorModel()
         fun subscribeToSinglePoliticianModel(politicianName: String)
+
+        fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View)
     }
 
     interface Model{
@@ -36,6 +40,7 @@ interface PoliticianSelectorMvpContract {
     interface IndividualPoliticianModel{
         fun initiateSinglePoliticianLoad(politicianName: String)
         fun loadSinglePoliticianPublisher(): PublishSubject<Politician>
+        fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View)
 
         fun onDestroy()
     }

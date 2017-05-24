@@ -9,7 +9,10 @@ import android.support.v4.content.Loader
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN_NAME
+import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
+import com.andrehaueisen.listadejanot.utilities.LOADER_ID
+import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,22 +37,22 @@ class SinglePoliticianModel(val mContext: Context, val mLoaderManager: LoaderMan
     override fun initiateSinglePoliticianLoad(politicianName: String) {
 
         val args = Bundle()
-        args.putString(Constants.BUNDLE_POLITICIAN_NAME, politicianName)
+        args.putString(BUNDLE_POLITICIAN_NAME, politicianName)
 
-        if (mLoaderManager.getLoader<Cursor>(Constants.LOADER_ID) == null) {
-            mLoaderManager.initLoader(Constants.LOADER_ID, args, this)
+        if (mLoaderManager.getLoader<Cursor>(LOADER_ID) == null) {
+            mLoaderManager.initLoader(LOADER_ID, args, this)
 
         } else {
-            mLoaderManager.restartLoader(Constants.LOADER_ID, args, this)
+            mLoaderManager.restartLoader(LOADER_ID, args, this)
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val politicianName = args?.getString(Constants.BUNDLE_POLITICIAN_NAME)
+        val politicianName = args?.getString(BUNDLE_POLITICIAN_NAME)
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
         return CursorLoader(mContext,
                 politiciansEntry.CONTENT_URI,
-                Constants.POLITICIANS_COLUMNS,
+                POLITICIANS_COLUMNS,
                 "${politiciansEntry.COLUMN_NAME} = ?",
                 arrayOf(politicianName),
                 null)
@@ -87,18 +90,15 @@ class SinglePoliticianModel(val mContext: Context, val mLoaderManager: LoaderMan
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
 
                     override fun onSuccess(deputadosList: ArrayList<Politician>?) {
-                        try {
-                            val firebaseDeputado = deputadosList?.first { it.name == deputado.name }
-                            if (firebaseDeputado != null) {
-                                deputado.condemnedBy = firebaseDeputado.condemnedBy
-                                deputado.votesNumber = firebaseDeputado.votesNumber
-                            }
 
-                            mSinglePoliticianPublisher.onNext(deputado)
+                        deputadosList?.firstOrNull { it.name == deputado.name }
+                                .also {
+                                    if(it != null) deputado.condemnedBy = it.condemnedBy
+                                    deputado.votesNumber = it?.votesNumber ?: 0
+                                }
 
-                        } catch(nsee: NoSuchElementException) {
-                            mSinglePoliticianPublisher.onNext(deputado)
-                        }
+                        mSinglePoliticianPublisher.onNext(deputado)
+
                     }
 
                     override fun onSubscribe(disposable: Disposable?) {
@@ -123,19 +123,15 @@ class SinglePoliticianModel(val mContext: Context, val mLoaderManager: LoaderMan
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
 
-                    override fun onSuccess(senadoresList: ArrayList<Politician>?) {
-                        try {
-                            val firebaseSenador = senadoresList?.first { it.name == senador.name }
-                            if (firebaseSenador != null) {
-                                senador.condemnedBy = firebaseSenador.condemnedBy
-                                senador.votesNumber = firebaseSenador.votesNumber
-                            }
+                    override fun onSuccess(senadoresList: ArrayList<Politician>) {
 
-                            mSinglePoliticianPublisher.onNext(senador)
+                        senadoresList.firstOrNull { it.name == senador.name }
+                                .also {
+                                    if(it != null) senador.condemnedBy = it.condemnedBy
+                                    senador.votesNumber = it?.votesNumber ?: 0
+                                }
 
-                        } catch(nsee: NoSuchElementException) {
-                            mSinglePoliticianPublisher.onNext(senador)
-                        }
+                        mSinglePoliticianPublisher.onNext(senador)
                     }
 
                     override fun onSubscribe(disposable: Disposable?) {
@@ -150,6 +146,14 @@ class SinglePoliticianModel(val mContext: Context, val mLoaderManager: LoaderMan
 
                     }
                 })
+    }
+
+    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {
+        if (politician.post.name == Politician.Post.SENADOR.name) {
+            mFirebaseRepository.updateSenadorVoteOnPreList(politician, FAKE_USER_EMAIL, view)
+        } else {
+            mFirebaseRepository.updateDeputadoVoteOnPreList(politician, FAKE_USER_EMAIL, view)
+        }
     }
 
     override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> {

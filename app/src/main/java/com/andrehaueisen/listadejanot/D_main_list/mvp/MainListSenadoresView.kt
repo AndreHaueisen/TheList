@@ -7,10 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_SENADORES
 import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
 
 
 /**
@@ -55,16 +56,16 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState != null) {
-            mSenadorList.addAll(savedInstanceState.getParcelableArrayList<Politician>(Constants.BUNDLE_SENADORES))
-            mSenadoresRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(Constants.BUNDLE_MANAGER))
+            mSenadorList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_SENADORES))
+            mSenadoresRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mSenadoresRecyclerView.adapter.notifyDataSetChanged()
             savedInstanceState.clear()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(Constants.BUNDLE_SENADORES, mSenadorList)
-        outState.putParcelable(Constants.BUNDLE_MANAGER, mSenadoresRecyclerView.layoutManager.onSaveInstanceState())
+        outState.putParcelableArrayList(BUNDLE_SENADORES, mSenadorList)
+        outState.putParcelable(BUNDLE_MANAGER, mSenadoresRecyclerView.layoutManager.onSaveInstanceState())
 
         super.onSaveInstanceState(outState)
     }

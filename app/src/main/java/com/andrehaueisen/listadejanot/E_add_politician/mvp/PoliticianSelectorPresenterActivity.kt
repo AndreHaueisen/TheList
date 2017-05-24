@@ -9,7 +9,10 @@ import com.andrehaueisen.listadejanot.A_application.BaseApplication
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_SEARCHABLE_POLITICIANS
+import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
+import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -39,12 +42,12 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         val senadoresMainList = ArrayList<Politician>()
         val deputadosMainList = ArrayList<Politician>()
 
-        if (intent.hasExtra(Constants.INTENT_SENADORES_MAIN_LIST)){
-            senadoresMainList.addAll(intent.getParcelableArrayListExtra(Constants.INTENT_SENADORES_MAIN_LIST))
+        if (intent.hasExtra(INTENT_SENADORES_MAIN_LIST)){
+            senadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST))
         }
 
-        if(intent.hasExtra(Constants.INTENT_DEPUTADOS_MAIN_LIST)){
-            deputadosMainList.addAll(intent.getParcelableArrayListExtra(Constants.INTENT_DEPUTADOS_MAIN_LIST))
+        if(intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)){
+            deputadosMainList.addAll(intent.getParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST))
         }
 
         DaggerPoliticianSelectorComponent.builder()
@@ -55,18 +58,18 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         if(savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
-            mView.setViews(false)
+            mView.setViews(isSavedState = false)
             mSelectorModel.connectToFirebase()
             subscribeToPoliticianSelectorModel()
 
         }else{
-            mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(Constants.BUNDLE_SEARCHABLE_POLITICIANS)
-            if(savedInstanceState.containsKey(Constants.BUNDLE_POLITICIAN)) {
-                mPolitician = savedInstanceState.getParcelable(Constants.BUNDLE_POLITICIAN)
+            mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS)
+            if(savedInstanceState.containsKey(BUNDLE_POLITICIAN)) {
+                mPolitician = savedInstanceState.getParcelable(BUNDLE_POLITICIAN)
             }
 
             mView = PoliticianSelectorView(this)
-            mView.setViews(true)
+            mView.setViews(isSavedState = true)
         }
     }
 
@@ -136,11 +139,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(Constants.BUNDLE_SEARCHABLE_POLITICIANS, mOriginalSearchablePoliticiansList)
+        outState.putParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS, mOriginalSearchablePoliticiansList)
         if(mPolitician != null){
-            outState.putParcelable(Constants.BUNDLE_POLITICIAN, mPolitician)
+            outState.putParcelable(BUNDLE_POLITICIAN, mPolitician)
         }
         super.onSaveInstanceState(outState)
+    }
+
+    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View){
+        mSinglePoliticianModel.updatePoliticianVote(politician, view)
     }
 
     fun getOriginalSearchablePoliticiansList() = mOriginalSearchablePoliticiansList

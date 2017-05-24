@@ -7,10 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
 import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
 
 /**
  * Created by andre on 4/30/2017.
@@ -52,16 +53,16 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState != null) {
-            mDeputadosList.addAll(savedInstanceState.getParcelableArrayList<Politician>(Constants.BUNDLE_DEPUTADOS))
-            mDeputadosRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(Constants.BUNDLE_MANAGER))
+            mDeputadosList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_DEPUTADOS))
+            mDeputadosRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mDeputadosRecyclerView.adapter.notifyDataSetChanged()
             savedInstanceState.clear()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(Constants.BUNDLE_DEPUTADOS, mDeputadosList)
-        outState.putParcelable(Constants.BUNDLE_MANAGER, mDeputadosRecyclerView.layoutManager.onSaveInstanceState())
+        outState.putParcelableArrayList(BUNDLE_DEPUTADOS, mDeputadosList)
+        outState.putParcelable(BUNDLE_MANAGER, mDeputadosRecyclerView.layoutManager.onSaveInstanceState())
 
         super.onSaveInstanceState(outState)
     }

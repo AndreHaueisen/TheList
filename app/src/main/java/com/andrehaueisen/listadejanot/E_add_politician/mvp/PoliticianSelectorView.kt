@@ -2,19 +2,19 @@ package com.andrehaueisen.listadejanot.E_add_politician.mvp
 
 import android.content.Context
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.Constants
+import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
 import com.andrehaueisen.listadejanot.utilities.ImageProcessor
+import com.andrehaueisen.listadejanot.utilities.encodeEmail
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -26,59 +26,33 @@ import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 /**
  * Created by andre on 5/11/2017.
  */
-class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenterActivity) : PoliticianSelectorMvpContract.View {
+
+class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenterActivity) : PoliticianSelectorMvpContract.View {
 
     private val DEFAULT_ANIM_DURATION = 500L
-
-    private val mAutoCompleteTextView: AutoCompleteTextView
-    private val mDeleteTextImageButton: ImageButton
-    private val mConstraintLayout: ConstraintLayout
-    private val mMoldView: View
-    private val mBlurImageView: ImageView
-    private val mPoliticianImageView: ImageView
-    private val mAnimatedBadgeImageView: ImageView
-    private val mExplanationTextView: TextView
-    private val mNameTextView: TextView
-    private val mEmailTextView: TextView
-    private val mVotesNumberTextView: TextView
-    private val mVoteButton: ToggleButton
+    private val mGlide = Glide.with(mPresenterActivity)
+    private val mBlurry = Blurry.with(mPresenterActivity)
     private val mPoliticianThiefAnimation: AnimatedVectorDrawable
     private val mThiefPoliticianAnimation: AnimatedVectorDrawable
-
-    private val mGlide = Glide.with(mActivityPresenter)
-    private val mBlurry = Blurry.with(mActivityPresenter)
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
 
     private var mIsShowingPoliticianDrawable = true
 
     init {
-        mActivityPresenter.setContentView(R.layout.e_activity_politician_selector)
-        mAutoCompleteTextView = mActivityPresenter.auto_complete_text_view
-        mDeleteTextImageButton = mActivityPresenter.delete_text_image_button
-        mConstraintLayout = mActivityPresenter.constraint_layout
-        mMoldView = mActivityPresenter.mold_view
-        mBlurImageView = mActivityPresenter.blur_background_image_view
-        mPoliticianImageView = mActivityPresenter.politician_image_view
-        mExplanationTextView = mActivityPresenter.selector_explanation_text_view
-        mNameTextView = mActivityPresenter.name_text_view
-        mEmailTextView = mActivityPresenter.email_text_view
-        mVotesNumberTextView = mActivityPresenter.votes_number_text_view
-        mAnimatedBadgeImageView = mActivityPresenter.badge_image_view
-        mVoteButton = mActivityPresenter.add_to_vote_count_image_view
+        mPresenterActivity.setContentView(R.layout.e_activity_politician_selector)
 
-        mPoliticianThiefAnimation = mActivityPresenter.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
-        mThiefPoliticianAnimation = mActivityPresenter.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
+        mPoliticianThiefAnimation = mPresenterActivity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
+        mThiefPoliticianAnimation = mPresenterActivity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
     }
 
     override fun setViews(isSavedState: Boolean) {
         setToolbar()
         setViewsInitialState()
-
         if (isSavedState) {
             setAutoCompleteTextView()
-            if (mActivityPresenter.getSinglePolitician() != null) {
-                bindPoliticianDataToViews(mActivityPresenter.getSinglePolitician() as Politician)
+            if (mPresenterActivity.getSinglePolitician() != null) {
+                bindPoliticianDataToViews(mPresenterActivity.getSinglePolitician() as Politician)
                 initiateShowAnimations()
             }
         } else {
@@ -88,21 +62,19 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
     }
 
     private fun setToolbar() {
-        val toolbar = mActivityPresenter.select_politician_toolbar
-        mActivityPresenter.setSupportActionBar(toolbar)
-        mActivityPresenter.supportActionBar?.setDisplayShowTitleEnabled(false)
+        val toolbar = mPresenterActivity.select_politician_toolbar
+        mPresenterActivity.setSupportActionBar(toolbar)
+        mPresenterActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun setViewsInitialState() {
-        val backGroundImage = ImageProcessor.resamplePic(mActivityPresenter, mActivityPresenter.resources, R.drawable.simbolo_justica)
-        mBlurImageView.setImageBitmap(backGroundImage)
+        val backGroundImage = ImageProcessor.resamplePic(mPresenterActivity, mPresenterActivity.resources, R.drawable.simbolo_justica)
+        mPresenterActivity.blur_background_image_view.setImageBitmap(backGroundImage)
 
         ExpectAnim()
-                .expect(mConstraintLayout)
+                .expect(mPresenterActivity.constraint_layout)
                 .toBe(alpha(0.0f), outOfScreen(Gravity.TOP))
-                .expect(mPoliticianImageView)
-                .toBe(alpha(0.0f), outOfScreen(Gravity.TOP))
-                .expect(mDeleteTextImageButton)
+                .expect(mPresenterActivity.delete_text_image_button)
                 .toBe(alpha(0.0f))
                 .toAnimation()
                 .setNow()
@@ -110,35 +82,38 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
 
     private fun setAutoCompleteTextView() {
         val nonReliablePoliticiansList = ArrayList<Politician>()
-        nonReliablePoliticiansList.addAll(mActivityPresenter.getOriginalSearchablePoliticiansList())
+        nonReliablePoliticiansList.addAll(mPresenterActivity.getOriginalSearchablePoliticiansList())
 
-        val adapter = AutoCompletionAdapter(mActivityPresenter,
+        val adapter = AutoCompletionAdapter(mPresenterActivity,
                 R.layout.item_politician_identifier,
                 nonReliablePoliticiansList,
-                mActivityPresenter.getOriginalSearchablePoliticiansList())
+                mPresenterActivity.getOriginalSearchablePoliticiansList())
 
-        mAutoCompleteTextView.setAdapter<ArrayAdapter<Politician>>(adapter)
+        mPresenterActivity.auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
         setOnCompleteTextViewClickListener()
         setOnDeleteTextClickListener()
-        dismissAlertDialog()
 
+        dismissAlertDialog()
     }
 
     private fun setOnCompleteTextViewClickListener() {
 
-        mAutoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+        mPresenterActivity
+                .auto_complete_text_view
+                .onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             dismissKeyBoard()
 
-            val politicianName = mAutoCompleteTextView.text.toString()
-            mActivityPresenter.subscribeToSinglePoliticianModel(politicianName)
+            val politicianName = mPresenterActivity.auto_complete_text_view.text.toString()
+            mPresenterActivity.subscribeToSinglePoliticianModel(politicianName)
         }
     }
 
     fun setOnDeleteTextClickListener() {
-        mDeleteTextImageButton.setOnClickListener {
-            mAutoCompleteTextView.text.clear()
+        mPresenterActivity.delete_text_image_button.setOnClickListener {
+
+            mPresenterActivity.auto_complete_text_view.text.clear()
             ExpectAnim()
-                    .expect(mDeleteTextImageButton)
+                    .expect(mPresenterActivity.delete_text_image_button)
                     .toBe(alpha(0.0f))
                     .toAnimation()
                     .setDuration(DEFAULT_ANIM_DURATION)
@@ -147,16 +122,16 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
     }
 
     private fun beginDatabaseLoadingAlertDialog() {
-        mLoadingDatabaseAlertDialog = AlertDialog.Builder(mActivityPresenter)
+        mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
                 .setCancelable(false)
-                .setTitle(mActivityPresenter.getString(R.string.dialog_title_loading_database))
-                .setMessage(mActivityPresenter.getString(R.string.dialog_message_loading_database))
+                .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
+                .setMessage(mPresenterActivity.getString(R.string.dialog_message_loading_database))
                 .create()
 
         mLoadingDatabaseAlertDialog?.show()
     }
 
-    private fun dismissAlertDialog() {
+     fun dismissAlertDialog() {
         val isAlertDialogActive = (mLoadingDatabaseAlertDialog != null && mLoadingDatabaseAlertDialog?.isShowing!!)
         if (isAlertDialogActive) {
             mLoadingDatabaseAlertDialog?.dismiss()
@@ -164,8 +139,8 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
     }
 
     private fun dismissKeyBoard() {
-        val manager = mActivityPresenter.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(mAutoCompleteTextView.windowToken, 0)
+        val manager = mPresenterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(mPresenterActivity.auto_complete_text_view.windowToken, 0)
     }
 
     override fun notifySearchablePoliticiansNewList() {
@@ -174,17 +149,24 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
 
     override fun notifyPoliticianReady() {
 
-        val politician = mActivityPresenter.getSinglePolitician()
+        val politician = mPresenterActivity.getSinglePolitician()
 
         if (politician != null) {
             bindPoliticianDataToViews(politician)
             initiateShowAnimations()
 
-            if (politician.condemnedBy.contains(Constants.FAKE_USER_EMAIL)) {
-                initiateCondemnAnimations()
+            if (politician.condemnedBy.contains(FAKE_USER_EMAIL)) {
+                initiateCondemnAnimations(politician)
             } else {
-                initiateAbsolveAnimations()
+                initiateAbsolveAnimations(politician)
             }
+            setVoteButtonClickListener(politician)
+        }
+    }
+
+    fun setVoteButtonClickListener(politician: Politician){
+        mPresenterActivity.add_to_vote_count_toggle_button.setOnClickListener {
+            mPresenterActivity.updatePoliticianVote(politician, this)
         }
     }
 
@@ -194,31 +176,34 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
                 .crossFade()
                 .placeholder(R.drawable.politician_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(mPoliticianImageView)
+                .into(mPresenterActivity.politician_image_view)
 
-        mNameTextView.text = politician.name
-        mVotesNumberTextView.text = politician.votesNumber.toString()
-        mEmailTextView.text = politician.email
-        mVotesNumberTextView.text = politician.votesNumber.toString()
+        mPresenterActivity.post_text_view.text = politician.post.name
+        mPresenterActivity.name_text_view.text = politician.name
+        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
+        mPresenterActivity.email_text_view.text = politician.email
 
+        if(politician.condemnedBy.firstOrNull { it == FAKE_USER_EMAIL.encodeEmail() } == null) {
+            mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+        }else{
+            mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+        }
     }
 
     fun initiateShowAnimations() {
-        val backgroundBlurImage = ImageProcessor.resamplePic(mActivityPresenter, mActivityPresenter.resources, R.drawable.simbolo_justica)
+        val backgroundBlurImage = ImageProcessor.resamplePic(mPresenterActivity, mPresenterActivity.resources, R.drawable.simbolo_justica)
         mBlurry
                 .sampling(5)
                 .animate(2000)
                 .from(backgroundBlurImage)
-                .into(mBlurImageView)
+                .into(mPresenterActivity.blur_background_image_view)
 
         ExpectAnim()
-                .expect(mExplanationTextView)
+                .expect(mPresenterActivity.explanation_text_view)
                 .toBe(invisible(), outOfScreen(Gravity.BOTTOM))
-                .expect(mConstraintLayout)
+                .expect(mPresenterActivity.constraint_layout)
                 .toBe(alpha(1.0f), atItsOriginalPosition())
-                .expect(mPoliticianImageView)
-                .toBe(alpha(1.0f), atItsOriginalPosition())
-                .expect(mDeleteTextImageButton)
+                .expect(mPresenterActivity.delete_text_image_button)
                 .toBe(alpha(1.0f))
 
                 .toAnimation()
@@ -227,17 +212,17 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
 
     }
 
-    fun initiateCondemnAnimations() {
+    override fun initiateCondemnAnimations(politician: Politician) {
         ExpectAnim()
-                .expect(mMoldView)
+                .expect(mPresenterActivity.mold_view)
                 .toBe(alpha(0.5f))
 
         changeButtonAnimation()
     }
 
-    fun initiateAbsolveAnimations() {
+    override fun initiateAbsolveAnimations(politician: Politician) {
         ExpectAnim()
-                .expect(mMoldView)
+                .expect(mPresenterActivity.mold_view)
                 .toBe(alpha(1.0f))
 
         changeButtonAnimation()
@@ -245,22 +230,22 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
 
     private fun changeButtonAnimation() {
 
-        if (mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable) {
-            (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
+        if (mPresenterActivity.badge_image_view.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable) {
+            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
             mIsShowingPoliticianDrawable = false
 
-        } else if (mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && !mIsShowingPoliticianDrawable) {
-            mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
-            (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
+        } else if (mPresenterActivity.badge_image_view.drawable == mPoliticianThiefAnimation && !mIsShowingPoliticianDrawable) {
+            mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
             mIsShowingPoliticianDrawable = true
 
-        } else if (mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && mIsShowingPoliticianDrawable) {
-            mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
-            (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
+        } else if (mPresenterActivity.badge_image_view.drawable == mThiefPoliticianAnimation && mIsShowingPoliticianDrawable) {
+            mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
             mIsShowingPoliticianDrawable = false
 
-        } else if (mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && !mIsShowingPoliticianDrawable) {
-            (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
+        } else if (mPresenterActivity.badge_image_view.drawable == mThiefPoliticianAnimation && !mIsShowingPoliticianDrawable) {
+            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
             mIsShowingPoliticianDrawable = true
         }
 
@@ -272,6 +257,4 @@ class PoliticianSelectorView(val mActivityPresenter: PoliticianSelectorPresenter
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return true
     }
-
-
 }
