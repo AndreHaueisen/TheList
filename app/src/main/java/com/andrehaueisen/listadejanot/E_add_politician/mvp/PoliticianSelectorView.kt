@@ -12,9 +12,7 @@ import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
-import com.andrehaueisen.listadejanot.utilities.ImageProcessor
-import com.andrehaueisen.listadejanot.utilities.encodeEmail
+import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -54,6 +52,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             if (mPresenterActivity.getSinglePolitician() != null) {
                 bindPoliticianDataToViews(mPresenterActivity.getSinglePolitician() as Politician)
                 initiateShowAnimations()
+                notifyPoliticianReady()
             }
         } else {
             beginDatabaseLoadingAlertDialog()
@@ -75,6 +74,8 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 .expect(mPresenterActivity.constraint_layout)
                 .toBe(alpha(0.0f), outOfScreen(Gravity.TOP))
                 .expect(mPresenterActivity.delete_text_image_button)
+                .toBe(alpha(0.0f))
+                .expect(mPresenterActivity.plus_one_text_view)
                 .toBe(alpha(0.0f))
                 .toAnimation()
                 .setNow()
@@ -131,7 +132,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         mLoadingDatabaseAlertDialog?.show()
     }
 
-     fun dismissAlertDialog() {
+    fun dismissAlertDialog() {
         val isAlertDialogActive = (mLoadingDatabaseAlertDialog != null && mLoadingDatabaseAlertDialog?.isShowing!!)
         if (isAlertDialogActive) {
             mLoadingDatabaseAlertDialog?.dismiss()
@@ -155,18 +156,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             bindPoliticianDataToViews(politician)
             initiateShowAnimations()
 
-            if (politician.condemnedBy.contains(FAKE_USER_EMAIL)) {
-                initiateCondemnAnimations(politician)
+            if (politician.condemnedBy.contains(FAKE_USER_EMAIL.encodeEmail())) {
+                configureInitialCondemnStatus(politician)
             } else {
-                initiateAbsolveAnimations(politician)
+                configureInitialAbsolveStatus(politician)
             }
             setVoteButtonClickListener(politician)
-        }
-    }
-
-    fun setVoteButtonClickListener(politician: Politician){
-        mPresenterActivity.add_to_vote_count_toggle_button.setOnClickListener {
-            mPresenterActivity.updatePoliticianVote(politician, this)
         }
     }
 
@@ -182,16 +177,11 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         mPresenterActivity.name_text_view.text = politician.name
         mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
         mPresenterActivity.email_text_view.text = politician.email
-
-        if(politician.condemnedBy.firstOrNull { it == FAKE_USER_EMAIL.encodeEmail() } == null) {
-            mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
-        }else{
-            mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
-        }
     }
 
     fun initiateShowAnimations() {
         val backgroundBlurImage = ImageProcessor.resamplePic(mPresenterActivity, mPresenterActivity.resources, R.drawable.simbolo_justica)
+
         mBlurry
                 .sampling(5)
                 .animate(2000)
@@ -212,23 +202,49 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     }
 
-    override fun initiateCondemnAnimations(politician: Politician) {
+    private fun configureInitialCondemnStatus(politician: Politician){
         ExpectAnim()
-                .expect(mPresenterActivity.mold_view)
-                .toBe(alpha(0.5f))
+                .expect(mPresenterActivity.plus_one_text_view)
+                .toBe(sameCenterAs(mPresenterActivity.votes_number_text_view, true, true))
+                .toAnimation().setNow()
 
-        changeButtonAnimation()
+        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
+        mPresenterActivity.add_to_vote_count_toggle_button.isChecked = true
+        mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+
+        mIsShowingPoliticianDrawable = true
+        changeBadgeStatus()
+    }
+
+    private fun configureInitialAbsolveStatus(politician: Politician){
+
+        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
+        mPresenterActivity.add_to_vote_count_toggle_button.isChecked = false
+        mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+
+        mIsShowingPoliticianDrawable = false
+        changeBadgeStatus()
+    }
+
+    fun setVoteButtonClickListener(politician: Politician) {
+        mPresenterActivity.add_to_vote_count_toggle_button.setOnClickListener {
+            mPresenterActivity.updatePoliticianVote(politician, this)
+        }
+    }
+
+    override fun initiateCondemnAnimations(politician: Politician) {
+        mPresenterActivity.plus_one_text_view.text = mPresenterActivity.getString(R.string.plus_one)
+        changeBadgeStatus()
+        ExpectAnim().plusOneCondemnAnimation(mPresenterActivity.window.decorView.rootView, politician)
     }
 
     override fun initiateAbsolveAnimations(politician: Politician) {
-        ExpectAnim()
-                .expect(mPresenterActivity.mold_view)
-                .toBe(alpha(1.0f))
-
-        changeButtonAnimation()
+        mPresenterActivity.plus_one_text_view.text = mPresenterActivity.getString(R.string.minus_one)
+        changeBadgeStatus()
+        ExpectAnim().minusOneAbsolveAnimation(mPresenterActivity.window.decorView.rootView, politician)
     }
 
-    private fun changeButtonAnimation() {
+    private fun changeBadgeStatus() {
 
         if (mPresenterActivity.badge_image_view.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable) {
             (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
