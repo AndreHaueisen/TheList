@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
 import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
 
 /**
  * Created by andre on 4/30/2017.
@@ -46,6 +46,8 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
     }
 
     override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
+        if(mDeputadosList.isNotEmpty()) mDeputadosList.clear()
+
         mDeputadosList.addAll(deputados)
         mDeputadosRecyclerView.adapter.notifyDataSetChanged()
     }

@@ -44,48 +44,56 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         }
     }
 
+    override fun onRestart() {
+        mModel.connectToFirebase()
+        super.onRestart()
+    }
+
+    private val mDeputadosMainListObserver = object : Observer<ArrayList<Politician>>{
+        override fun onSubscribe(disposable: Disposable?) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onNext(deputados: ArrayList<Politician>) {
+            mView.notifyDeputadosNewList(deputados)
+        }
+
+        override fun onError(t: Throwable?) {
+
+        }
+
+        override fun onComplete() {
+
+        }
+    }
+    private val mSenadoresMainListObserver = object : Observer<ArrayList<Politician>>{
+        override fun onSubscribe(disposable: Disposable?) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onNext(senadores: ArrayList<Politician>) {
+            mView.notifySenadoresNewList(senadores)
+        }
+
+        override fun onError(e: Throwable?) {
+
+        }
+
+        override fun onComplete() {
+
+        }
+    }
+
     override fun subscribeToModel() {
         mModel.loadDeputadosMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mCompositeDisposable.add(disposable)
-                    }
-
-                    override fun onNext(deputados: ArrayList<Politician>) {
-                        mView.notifyDeputadosNewList(deputados)
-                    }
-
-                    override fun onError(t: Throwable?) {
-
-                    }
-
-                    override fun onComplete() {
-
-                    }
-                })
+                .subscribe(mDeputadosMainListObserver)
 
         mModel.loadSenadoresMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
-                        mCompositeDisposable.add(disposable)
-                    }
-
-                    override fun onNext(senadores: ArrayList<Politician>) {
-                        mView.notifySenadoresNewList(senadores)
-                    }
-
-                    override fun onError(e: Throwable?) {
-
-                    }
-
-                    override fun onComplete() {
-
-                    }
-                })
+                .subscribe(mSenadoresMainListObserver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
