@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_SENADORES
 import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_SENADORES
 
 
 /**
@@ -49,9 +49,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
         mSenadorList.addAll(senadores)
         mSenadoresRecyclerView.adapter.notifyDataSetChanged()
-        val k = 5
     }
-
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)

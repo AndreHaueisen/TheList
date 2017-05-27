@@ -129,9 +129,9 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
             mVoteButton.setOnClickListener {
                 if (politician.post == Politician.Post.DEPUTADO) {
-                    mFirebaseRepository.updateDeputadoVoteOnMainList(politician, FAKE_USER_EMAIL, this@PoliticianHolder)
+                    mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, FAKE_USER_EMAIL, this@PoliticianHolder, null)
                 } else {
-                    mFirebaseRepository.updateSenadorVoteOnMainList(politician, FAKE_USER_EMAIL, this@PoliticianHolder)
+                    mFirebaseRepository.updateSenadorVoteOnBothLists(politician, FAKE_USER_EMAIL, this@PoliticianHolder, null)
                 }
             }
         }

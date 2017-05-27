@@ -40,3 +40,7 @@ val POLITICIANS_COLUMNS_NO_IMAGE = arrayOf(
         politiciansEntry.COLUMN_NAME,
         politiciansEntry.COLUMN_EMAIL)
 
+val POLITICIANS_COLUMNS_NAME_IMAGE = arrayOf(
+        politiciansEntry.COLUMN_NAME,
+        politiciansEntry.COLUMN_IMAGE)
+

@@ -185,16 +185,13 @@ class PoliticianSelectorModel(val mContext: Context,
 
     private fun addDeputadoToSearchableList(deputadoName: String, deputadoEmail: String) {
 
-        mDeputadosMainList
-                .filter { it.name == deputadoName }
-                .forEach { return }
-
         val deputado = Politician(Politician.Post.DEPUTADO, deputadoName, deputadoEmail)
         try {
             mDeputadosPreList.first { it.name == deputadoName }
                     .also {
                         deputado.votesNumber = it.votesNumber
                         deputado.condemnedBy = it.condemnedBy
+                        mDeputadosPreList.remove(it)
                     }
 
             mSearchablePoliticianList.add(deputado)
@@ -206,16 +203,13 @@ class PoliticianSelectorModel(val mContext: Context,
 
     private fun addSenadorToSearchableList(senadorName: String, senadorEmail: String) {
 
-        mSenadoresMainList
-                .filter { it.name == senadorName }
-                .forEach { return }
-
         val senador = Politician(Politician.Post.SENADOR, senadorName, senadorEmail)
         try {
             mSenadoresPreList.first { it.name == senadorName }
                     .also {
                         senador.votesNumber = it.votesNumber
                         senador.condemnedBy = it.condemnedBy
+                        mSenadoresPreList.remove(it)
                     }
 
             mSearchablePoliticianList.add(senador)
@@ -224,6 +218,8 @@ class PoliticianSelectorModel(val mContext: Context,
             mSearchablePoliticianList.add(senador)
         }
     }
+
+    fun getSearchablePoliticiansList () = mSearchablePoliticianList
 
     override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> {
         return Observable.defer { mFinalSearchablePoliticianPublisher }
