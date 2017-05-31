@@ -22,11 +22,13 @@ public class Politician implements Parcelable {
     private String imageUrl;
     @Exclude
     private String email;
+    @Exclude
+    private byte[] image;
+
     private String name;
     private long votesNumber;
     private ArrayList<String> condemnedBy = new ArrayList<>();
-    @Exclude
-    private byte[] image;
+
 
     public enum Post implements Parcelable {
         DEPUTADO, SENADOR;
@@ -172,6 +174,7 @@ public class Politician implements Parcelable {
         Map<String, Object> simplePoliticianMap = new HashMap<>();
         simplePoliticianMap.put("name", name);
         simplePoliticianMap.put("votesNumber", votesNumber);
+        simplePoliticianMap.put("condemnedBy", condemnedBy);
 
         return simplePoliticianMap;
     }

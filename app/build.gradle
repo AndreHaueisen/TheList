@@ -86,13 +86,13 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+    //kotlin parcelable
+    /*compile 'nz.bradcampbell:paperparcel:2.0.1'
+    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
+    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'*/
+
     compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.github.florent37:expectanim:1.0.3'
-
-    //kotlin parcelable
-    //compile 'nz.bradcampbell:paperparcel:2.0.1'
-    //compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
-    //kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'
 
     compile 'org.jsoup:jsoup:1.10.2'
 

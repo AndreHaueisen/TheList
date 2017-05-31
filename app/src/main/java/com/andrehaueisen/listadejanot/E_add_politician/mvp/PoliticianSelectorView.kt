@@ -12,12 +12,15 @@ import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
+import com.andrehaueisen.listadejanot.utilities.encodeEmail
+import com.andrehaueisen.listadejanot.utilities.minusOneAbsolveAnimation
+import com.andrehaueisen.listadejanot.utilities.plusOneCondemnAnimation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.*
-import jp.wasabeef.blurry.Blurry
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 
 
@@ -29,12 +32,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     private val DEFAULT_ANIM_DURATION = 500L
     private val mGlide = Glide.with(mPresenterActivity)
-    private val mBlurry = Blurry.with(mPresenterActivity)
     private val mPoliticianThiefAnimation: AnimatedVectorDrawable
     private val mThiefPoliticianAnimation: AnimatedVectorDrawable
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
 
+    private var mIsInitialRequest = true
     private var mIsShowingPoliticianDrawable = true
 
     init {
@@ -67,8 +70,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     }
 
     private fun setViewsInitialState() {
-        val backGroundImage = ImageProcessor.resamplePic(mPresenterActivity, mPresenterActivity.resources, R.drawable.simbolo_justica)
-        mPresenterActivity.blur_background_image_view.setImageBitmap(backGroundImage)
 
         ExpectAnim()
                 .expect(mPresenterActivity.constraint_layout)
@@ -95,6 +96,11 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         setOnDeleteTextClickListener()
 
         dismissAlertDialog()
+        ExpectAnim()
+                .expect(mPresenterActivity.select_politician_toolbar)
+                .toBe(centerInParent(false, true))
+                .toAnimation().setDuration(DEFAULT_ANIM_DURATION)
+                .start()
     }
 
     private fun setOnCompleteTextViewClickListener() {
@@ -167,9 +173,22 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     private fun bindPoliticianDataToViews(politician: Politician) {
 
+        val GLIDE_TRANSFORM_RADIUS : Int
+        val GLIDE_TRANSFORM_MARGIN : Int
+
+        if(politician.post == Politician.Post.DEPUTADO){
+            GLIDE_TRANSFORM_RADIUS = 2
+            GLIDE_TRANSFORM_MARGIN = 2
+
+        }else{
+            GLIDE_TRANSFORM_RADIUS = 4
+            GLIDE_TRANSFORM_MARGIN = 10
+        }
+
         mGlide.load(politician.image)
                 .crossFade()
                 .placeholder(R.drawable.politician_placeholder)
+                .bitmapTransform(RoundedCornersTransformation(mPresenterActivity, GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(mPresenterActivity.politician_image_view)
 
@@ -179,26 +198,30 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         mPresenterActivity.email_text_view.text = politician.email
     }
 
-    fun initiateShowAnimations() {
-        val backgroundBlurImage = ImageProcessor.resamplePic(mPresenterActivity, mPresenterActivity.resources, R.drawable.simbolo_justica)
+    private fun initiateShowAnimations() {
 
-        mBlurry
-                .sampling(5)
-                .animate(2000)
-                .from(backgroundBlurImage)
-                .into(mPresenterActivity.blur_background_image_view)
+        if(mIsInitialRequest) {
+            ExpectAnim()
+                    .expect(mPresenterActivity.select_politician_toolbar)
+                    .toBe(atItsOriginalPosition())
+                    .expect(mPresenterActivity.constraint_layout)
+                    .toBe(alpha(1.0f), atItsOriginalPosition())
+                    .expect(mPresenterActivity.delete_text_image_button)
+                    .toBe(alpha(1.0f))
+                    .toAnimation()
+                    .setDuration(DEFAULT_ANIM_DURATION)
+                    .start()
 
-        ExpectAnim()
-                .expect(mPresenterActivity.explanation_text_view)
-                .toBe(invisible(), outOfScreen(Gravity.BOTTOM))
-                .expect(mPresenterActivity.constraint_layout)
-                .toBe(alpha(1.0f), atItsOriginalPosition())
-                .expect(mPresenterActivity.delete_text_image_button)
-                .toBe(alpha(1.0f))
+            mIsInitialRequest = false
 
-                .toAnimation()
-                .setDuration(DEFAULT_ANIM_DURATION)
-                .start()
+        }else{
+            ExpectAnim()
+                    .expect(mPresenterActivity.delete_text_image_button)
+                    .toBe(alpha(1.0f))
+                    .toAnimation()
+                    .setDuration(DEFAULT_ANIM_DURATION)
+                    .start()
+        }
 
     }
 

@@ -12,8 +12,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/3/2017.
  */
-public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
-    //TODO learn rxjava cache to avoid querying firebase every time
+class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
@@ -72,24 +71,23 @@ public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                         }
 
                         Log.i(LOG_TAG, dataSnapshot.toString())
+
                     } else {
-                        Log.e(LOG_TAG, error.toString())
+                        viewHolder?.initiateAbsolveAnimations(senador)
+                        Log.i(LOG_TAG, "Senador removed from main list")
                     }
                 }
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                    val senadorRemote: Politician = mutableData.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
 
-                    val encodedEmail = userEmail.encodeEmail()
-                    if (senadorRemote.condemnedBy.contains(encodedEmail)) {
-                        senadorRemote.votesNumber--
-                        senadorRemote.condemnedBy.remove(encodedEmail)
-                    } else {
-                        senadorRemote.votesNumber++
-                        senadorRemote.condemnedBy.add(encodedEmail)
+                    if (senador.votesNumber == VOTES_TO_MAIN_LIST_THRESHOLD) {
+                        addSenadorOnMainList(senador)
+
+                    } else if (senador.votesNumber == VOTES_TO_MAIN_LIST_THRESHOLD - 1) {
+                        removeSenadorFromMainList(senador)
                     }
 
-                    mutableData.value = senadorRemote
+                    mutableData.value = senador.toSimpleMap()
                     return Transaction.success(mutableData)
 
                 }
@@ -187,28 +185,26 @@ public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                         Log.i(LOG_TAG, dataSnapshot.toString())
                     } else {
+                        viewHolder?.initiateAbsolveAnimations(deputado)
                         Log.e(LOG_TAG, error.toString())
                     }
                 }
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                    val deputadoRemote: Politician = mutableData.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
 
-                    val encodedEmail = userEmail.encodeEmail()
-                    if (deputadoRemote.condemnedBy.contains(encodedEmail)) {
-                        deputadoRemote.votesNumber--
-                        deputadoRemote.condemnedBy.remove(encodedEmail)
-                    } else {
-                        deputadoRemote.votesNumber++
-                        deputadoRemote.condemnedBy.add(encodedEmail)
+                    if (deputado.votesNumber == VOTES_TO_MAIN_LIST_THRESHOLD) {
+                        addDeputadoOnMainList(deputado)
+
+                    } else if (deputado.votesNumber == VOTES_TO_MAIN_LIST_THRESHOLD - 1) {
+                        removeDeputadoFromMainList(deputado)
                     }
 
-                    mutableData.value = deputadoRemote
+                    mutableData.value = deputado.toSimpleMap()
                     return Transaction.success(mutableData)
-
                 }
             })
         }
+
 
         fun updateDeputadoVoteOnPreList(deputado: Politician,
                                         userEmail: String,
@@ -226,7 +222,7 @@ public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                             val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)
                             updatedDeputado.email = deputado.email
-                            updateDeputadoVoteOnMainList(deputado, userEmail, viewHolder)
+                            updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
 
                             deputado.condemnedBy = updatedDeputado.condemnedBy
                             deputado.votesNumber = updatedDeputado.votesNumber
@@ -269,7 +265,6 @@ public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         updateDeputadoVoteOnPreList(deputado, userEmail, politicianSelectorView)
     }
 
-    
 
     val mListenerForSenadoresMainList = object : ValueEventListener {
 
@@ -377,47 +372,54 @@ public class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     }
 
     //TODO put these functions on Firebase functions when possible
-    fun addSenadorOnMainList(senador: Politician) {
-        if (senador.post == Politician.Post.SENADOR) {
-            val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail())
-            database.setValue(senador.toSimpleMap(), ({ error, reference ->
-                //TODO notify completion or error
+    private fun addSenadorOnMainList(senador: Politician) {
 
-            }))
-        }
+        val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail())
+        database.setValue(senador.toSimpleMap(), ({ _, _ ->
+            Log.i(LOG_TAG, "New senador on main list")
+        }))
+
     }
 
-    fun addSenadorOnPreList(senador: Politician) {
-        if (senador.post == Politician.Post.SENADOR) {
-            val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email.encodeEmail())
-            database.setValue(senador.toSimpleMap(), ({ error, reference ->
-                //TODO notify completion or error
+    private fun addSenadorOnPreList(senador: Politician) {
 
-            }))
-        }
+        val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email.encodeEmail())
+        database.setValue(senador.toSimpleMap(), ({ error, reference ->
+            //TODO notify completion or error
+
+        }))
+
     }
 
-    fun addDeputadoOnMainList(deputado: Politician) {
-        if (deputado.post == Politician.Post.DEPUTADO) {
-            val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email.encodeEmail())
-            database.setValue(deputado.toSimpleMap(), ({ error, reference ->
-                //TODO notify completion or error
+    private fun addDeputadoOnMainList(deputado: Politician) {
 
-            }))
-        }
+        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email.encodeEmail())
+        database.setValue(deputado.toSimpleMap(), ({ _, _ ->
+            Log.i(LOG_TAG, "New deputado on main list")
+        }))
+
     }
 
-    fun addDeputadoOnPreList(deputado: Politician) {
-        if (deputado.post == Politician.Post.DEPUTADO) {
-            val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email.encodeEmail())
-            database.setValue(deputado.toSimpleMap(), ({ error, reference ->
-                //TODO notify completion or error
+    private fun addDeputadoOnPreList(deputado: Politician) {
 
-            }))
-        }
+        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email.encodeEmail())
+        database.setValue(deputado.toSimpleMap(), ({ error, reference ->
+            //TODO notify completion or error
+
+        }))
+
     }
 
-    fun saveSenadoresOnMainList(senadores: ArrayList<Politician>) {
+
+    private fun removeSenadorFromMainList(senador: Politician) {
+        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail()).removeValue()
+    }
+
+    private fun removeDeputadoFromMainList(deputado: Politician) {
+        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email.encodeEmail()).removeValue()
+    }
+
+    private fun saveSenadoresOnMainList(senadores: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()

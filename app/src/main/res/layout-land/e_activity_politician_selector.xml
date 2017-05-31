@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <LinearLayout
@@ -40,9 +41,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:minHeight="24dp"
@@ -53,158 +54,135 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/blur_background_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="@color/colorPrimaryDark">
 
         <TextView
-            android:id="@+id/explanation_text_view"
+            android:id="@+id/post_text_view"
             style="@style/BigRobotoBlackTextStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:gravity="center"
-            android:text="@string/selector_explanation"
-            android:textAlignment="center"/>
+            android:layout_marginStart="16dp"
+            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
+            app:layout_constraintTop_toTopOf="@+id/politician_image_view"
+            tools:text="senador"/>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraint_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical">
+        <ImageView
+            android:id="@+id/politician_image_view"
+            android:layout_width="180dp"
+            android:layout_height="234dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/post_text_view"/>
 
-            <TextView
-                android:id="@+id/post_text_view"
-                style="@style/BigRobotoBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
-                app:layout_constraintTop_toTopOf="@+id/politician_image_view"
-                tools:text="senador"/>
+        <TextView
+            android:id="@+id/name_text_view"
+            style="@style/RobotoBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/post_text_view"
+            tools:text="Aecio Neves"/>
 
-            <ImageView
-                android:id="@+id/politician_image_view"
-                android:layout_width="150dp"
-                android:layout_height="195dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:background="#fff"
-                android:elevation="2dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/email_text_view"
+            style="@style/RobotoRegularTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/name_text_view"
+            tools:text="asdasfd@gmail.com"/>
 
-            <TextView
-                android:id="@+id/name_text_view"
-                style="@style/RobotoBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:textAlignment="center"
-                app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
-                app:layout_constraintTop_toBottomOf="@+id/post_text_view"
-                tools:text="Aecio Neves"
-                android:layout_marginLeft="16dp"/>
+        <View
+            android:id="@+id/mold_view"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/colorPrimaryLight"
+            app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/email_text_view"
-                style="@style/RobotoRegularTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
-                app:layout_constraintTop_toBottomOf="@+id/name_text_view"
-                tools:text="asdasfd@gmail.com"/>
+        <TextView
+            android:id="@+id/textView"
+            style="@style/RobotoBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/votes_title"
+            app:layout_constraintLeft_toRightOf="@+id/badge_image_view"
+            app:layout_constraintRight_toLeftOf="@+id/add_to_vote_count_toggle_button"
+            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
 
-            <View
-                android:id="@+id/mold_view"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:background="@color/colorPrimaryLight"
-                app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
-                app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
-                app:layout_constraintRight_toRightOf="parent"/>
+        <TextView
+            android:id="@+id/votes_number_text_view"
+            style="@style/RobotoRegularTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
+            app:layout_constraintLeft_toLeftOf="@+id/textView"
+            app:layout_constraintRight_toRightOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="110.110"/>
 
-            <TextView
-                android:id="@+id/textView"
-                style="@style/RobotoBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/votes_title"
-                app:layout_constraintLeft_toRightOf="@+id/badge_image_view"
-                app:layout_constraintRight_toLeftOf="@+id/add_to_vote_count_toggle_button"
-                app:layout_constraintTop_toTopOf="@+id/mold_view"/>
+        <ImageView
+            android:id="@+id/badge_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
+            app:layout_constraintLeft_toLeftOf="@+id/mold_view"
+            app:layout_constraintTop_toTopOf="@+id/mold_view"
+            tools:layout_height="48dp"
+            tools:layout_width="48dp"/>
 
-            <TextView
-                android:id="@+id/votes_number_text_view"
-                style="@style/RobotoRegularTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-                app:layout_constraintLeft_toLeftOf="@+id/textView"
-                app:layout_constraintRight_toRightOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:text="110.110"/>
+        <ToggleButton
+            android:id="@+id/add_to_vote_count_toggle_button"
+            style="@android:style/Widget.Material.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/white"
+            android:textOff="@string/add_vote"
+            android:textOn="@string/remove_vote"
+            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
+            app:layout_constraintRight_toRightOf="@+id/mold_view"
+            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
 
-            <ImageView
-                android:id="@+id/badge_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-                app:layout_constraintLeft_toLeftOf="@+id/mold_view"
-                app:layout_constraintTop_toTopOf="@+id/mold_view"
-                tools:layout_height="48dp"
-                tools:layout_width="48dp"/>
+        <TextView
+            android:id="@+id/plus_one_text_view"
+            style="@style/RobotoBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/plus_one"
+            app:layout_constraintBottom_toBottomOf="@+id/add_to_vote_count_toggle_button"
+            app:layout_constraintLeft_toLeftOf="@+id/add_to_vote_count_toggle_button"
+            app:layout_constraintRight_toRightOf="@+id/add_to_vote_count_toggle_button"
+            app:layout_constraintTop_toTopOf="@+id/add_to_vote_count_toggle_button"/>
 
-            <ToggleButton
-                android:id="@+id/add_to_vote_count_toggle_button"
-                style="@android:style/Widget.Material.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:textColor="@android:color/white"
-                android:textOff="@string/add_vote"
-                android:textOn="@string/remove_vote"
-                app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-                app:layout_constraintRight_toRightOf="@+id/mold_view"
-                app:layout_constraintTop_toTopOf="@+id/mold_view"/>
-
-            <TextView
-                android:id="@+id/plus_one_text_view"
-                style="@style/RobotoBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/plus_one"
-                app:layout_constraintLeft_toLeftOf="@+id/add_to_vote_count_toggle_button"
-                app:layout_constraintRight_toRightOf="@+id/add_to_vote_count_toggle_button"
-                app:layout_constraintTop_toTopOf="@+id/add_to_vote_count_toggle_button"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/add_to_vote_count_toggle_button"
-                android:layout_marginBottom="8dp"/>
-
-        </android.support.constraint.ConstraintLayout>
-
-    </FrameLayout>
-
+    </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
