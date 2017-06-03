@@ -65,34 +65,52 @@
             style="@style/BigRobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
+            tools:text="SENADOR"/>
+
+        <TextView
+            android:id="@+id/missing_votes_text_view"
+            style="@style/RobotoItalicBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/mold_view"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="499 votes to be condemned"/>
 
         <ImageView
             android:id="@+id/politician_image_view"
             android:layout_width="180dp"
             android:layout_height="234dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/post_text_view"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.519"/>
 
         <TextView
             android:id="@+id/name_text_view"
             style="@style/RobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
+            app:layout_constraintLeft_toLeftOf="@+id/post_text_view"
+            app:layout_constraintRight_toRightOf="@+id/post_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/post_text_view"
             tools:text="Aecio Neves"/>
 
         <TextView
@@ -100,8 +118,9 @@
             style="@style/RobotoRegularTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintLeft_toLeftOf="@+id/name_text_view"
             app:layout_constraintRight_toRightOf="@+id/name_text_view"
             app:layout_constraintTop_toBottomOf="@+id/name_text_view"
@@ -122,24 +141,28 @@
             style="@style/RobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:text="@string/votes_title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
+            app:layout_constraintTop_toTopOf="@+id/mold_view"
+            app:layout_constraintVertical_bias="0.511"/>
 
         <TextView
             android:id="@+id/votes_number_text_view"
-            style="@style/RobotoRegularTextStyle"
+            style="@style/RobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-            app:layout_constraintHorizontal_bias="0.454"
-            app:layout_constraintLeft_toLeftOf="@+id/textView"
-            app:layout_constraintRight_toRightOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintLeft_toRightOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/mold_view"
+            app:layout_constraintVertical_bias="0.523"
             tools:text="110.110"/>
 
         <ImageView
@@ -147,17 +170,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mold_view"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
+            app:layout_constraintRight_toRightOf="@+id/politician_image_view"
             tools:layout_height="48dp"
             tools:layout_width="48dp"/>
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"
-            style="@android:style/Widget.Material.Button.Borderless"
+            style="@style/ToggleButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

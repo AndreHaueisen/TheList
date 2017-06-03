@@ -23,6 +23,11 @@
         <item name="android:textColorHint">@color/colorPrimaryLight</item>
     </style>
 
+    <style name="ToggleButtonStyle" parent="@android:style/Widget.Material.Button.Borderless">
+        <item name="android:textAppearance">@style/RobotoBlackTextStyle</item>
+
+    </style>
+
     <style name="RobotoRegularToolbarTextStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@string/font_roboto_regular</item>

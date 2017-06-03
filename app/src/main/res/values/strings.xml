@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Lista de Janot</string>
     <string name="title_activity_main_list">Lista de Janot</string>
+    <string name="facebook_app_id">1698727047098274</string>
 
     <!--D_main_list strings-->
     <string name="title_senadores">Senadores</string>
@@ -31,6 +32,10 @@
     <string name="selector_explanation">If the politician is not on the main lists, you can find it here. Once vote count reaches the threshold he will be send to the main list</string>
     <string name="plus_one">+1</string>
     <string name="minus_one">-1</string>
+    <string name="share">Share</string>
+    <string name="share_title">Ask for help using...</string>
+    <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
+    <string name="missing_votes_to_threshold">%1$d to be condemned</string>
 
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>

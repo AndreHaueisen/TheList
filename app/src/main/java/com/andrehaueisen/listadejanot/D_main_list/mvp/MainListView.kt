@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
 import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorPresenterActivity
-import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
-import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
+import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
+import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
 import kotlinx.android.synthetic.main.d_activity_main_list.*
 
 
@@ -87,10 +87,6 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
                 R.id.navigation_deputados -> {
                     mPresenterActivity.politicians_pager_adapter.setCurrentItem(1, true)
                     mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_deputados_title)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.navigation_notifications -> {
                     return@setOnNavigationItemSelectedListener true
                 }
 

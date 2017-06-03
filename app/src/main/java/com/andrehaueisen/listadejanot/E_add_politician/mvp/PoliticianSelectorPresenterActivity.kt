@@ -161,6 +161,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
         mSinglePoliticianModel.onDestroy()
+        mView.onDestroy()
         super.onDestroy()
     }
 }

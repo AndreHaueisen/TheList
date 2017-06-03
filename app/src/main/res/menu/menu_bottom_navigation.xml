@@ -11,9 +11,4 @@
         android:icon="@drawable/ic_camara_deputados"
         android:title="@string/title_deputados"/>
 
-    <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_palacio_do_planalto"
-        android:title="@string/title_governadores"/>
-
 </menu>

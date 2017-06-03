@@ -14,6 +14,8 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
     val moldView = parentView.findViewById(R.id.mold_view)
+    val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+    val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
     this.expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
@@ -35,6 +37,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                         .start()
                         .setEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
+                            missingVotesTextView?.text = parentView.resources.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
                         }
             }
 }
@@ -45,9 +48,12 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
     val moldView = parentView.findViewById(R.id.mold_view)
+    val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+    val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
     this.setStartListener {
         votesNumberTextView.text = politician.votesNumber.toString()
+        missingVotesTextView?.text = parentView.resources.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
     }
             .expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
