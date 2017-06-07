@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    tools:context="com.andrehaueisen.listadejanot.F_information.mvp.InformationPresenterActivity">
+
+    <android.support.v7.widget.Toolbar
+        app:theme="@style/ToolbarStyle"
+        android:title="@string/information"
+        android:id="@+id/information_toolbar"
+        app:titleTextColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        style="@style/RobotoRegularTextStyle"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight="2"
+        android:text="@string/understand_app_motivation"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/play_on_boarding_audio_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"
+        app:backgroundTint="@color/colorAccent"/>
+
+</LinearLayout>

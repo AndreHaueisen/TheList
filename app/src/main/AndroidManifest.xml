@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
             android:name=".C_database.PoliticiansContentProvider"
             android:authorities="com.andrehaueisen.listadejanot.politicians"
@@ -33,8 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".E_add_politician.mvp.PoliticianSelectorPresenterActivity">
+        </activity>
+        <activity android:name=".F_information.mvp.InformationPresenterActivity">
         </activity>
     </application>
 

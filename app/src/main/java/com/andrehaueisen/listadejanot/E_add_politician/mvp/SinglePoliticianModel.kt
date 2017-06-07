@@ -39,7 +39,6 @@ class SinglePoliticianModel(val mContext: Context,
 
         if (mLoaderManager.getLoader<Cursor>(LOADER_ID) == null) {
             mLoaderManager.initLoader(LOADER_ID, args, this)
-
         } else {
             mLoaderManager.restartLoader(LOADER_ID, args, this)
         }
@@ -58,19 +57,22 @@ class SinglePoliticianModel(val mContext: Context,
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
 
-        if (data != null && data.count != 0) {
-            data.moveToFirst()
+        with(data){
+            if (this != null && this.count != 0) {
+                moveToFirst()
 
-            val politicianName = data.getString(COLUMNS_INDEX_NAME)
-            val politicianImage = data.getBlob(COLUMNS_INDEX_IMAGE)
+                val politicianName = getString(COLUMNS_INDEX_NAME)
+                val politicianImage = getBlob(COLUMNS_INDEX_IMAGE)
 
-            val politician = mPoliticianList.find { it.name == politicianName }?.also { it.image = politicianImage }
+                val politician = mPoliticianList.find { it.name == politicianName }?.also { it.image = politicianImage }
 
-            if(politician != null) {
-                mSinglePoliticianPublisher.onNext(politician)
+                if(politician != null) {
+                    mSinglePoliticianPublisher.onNext(politician)
+                }
             }
+            this?.close()
         }
-        data?.close()
+
     }
 
     override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {

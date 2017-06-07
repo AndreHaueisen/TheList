@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.D_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorPresenterActivity
+import com.andrehaueisen.listadejanot.F_information.mvp.InformationPresenterActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
@@ -38,13 +39,13 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         setBottomNavigationView()
     }
 
-    fun setToolbar() {
+    private fun setToolbar() {
         val toolbar = mPresenterActivity.toolbar
         mPresenterActivity.setSupportActionBar(toolbar)
         mPresenterActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    fun setPagerAdapter() {
+    private fun setPagerAdapter() {
         mPresenterActivity.politicians_pager_adapter.adapter = PoliticiansPagesAdapter(mPresenterActivity.supportFragmentManager)
         mPresenterActivity.politicians_pager_adapter.offscreenPageLimit = 2
         mPresenterActivity.politicians_pager_adapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -106,23 +107,28 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
             R.id.action_add_politician_to_main_list -> {
                 val intent = Intent(mPresenterActivity, PoliticianSelectorPresenterActivity::class.java)
 
-                if (mMainListDeputados != null) {
+                mMainListDeputados?.let {
                     val noPicDeputadosList = ArrayList<Politician>()
-                    (mMainListDeputados as ArrayList<Politician>).forEach {
+                    it.forEach {
                         val deputado = Politician(it.post, it.name, it.email)
                         noPicDeputadosList.add(deputado)
                     }
                     intent.putParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
                 }
 
-                if (mMainListSenadores != null) {
+                mMainListSenadores?.let {
                     val noPicSenadoresList = ArrayList<Politician>()
-                    (mMainListSenadores as ArrayList<Politician>).forEach {
+                    it.forEach {
                         val senador = Politician(it.post, it.name, it.email)
                         noPicSenadoresList.add(senador)
                     }
                     intent.putParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
                 }
+                mPresenterActivity.startActivity(intent)
+            }
+
+            R.id.action_app_info -> {
+                val intent = Intent(mPresenterActivity, InformationPresenterActivity::class.java)
                 mPresenterActivity.startActivity(intent)
             }
         }

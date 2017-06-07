@@ -24,6 +24,7 @@
     <string name="deputado_absolved">Deputado absolved</string>
 
     <string name="add_politician">Add Politician</string>
+    <string name="information">Information</string>
 
     <!--E_politician_selector strings-->
     <string name="dialog_title_loading_database">Loading politicians</string>
@@ -36,6 +37,9 @@
     <string name="share_title">Ask for help using...</string>
     <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
     <string name="missing_votes_to_threshold">%1$d to be condemned</string>
+
+    <!--F_information strings-->
+    <string name="understand_app_motivation">If you want to know more about the app and it\'s motivation I have some words for you</string>
 
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>

@@ -73,54 +73,60 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     }
 
     private fun setToolbar() {
-        val toolbar = mPresenterActivity.select_politician_toolbar
-        mPresenterActivity.setSupportActionBar(toolbar)
-        mPresenterActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+        with(mPresenterActivity) {
+            val toolbar = select_politician_toolbar
+            setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
     }
 
     private fun setViewsInitialState() {
 
-        ExpectAnim()
-                .expect(mPresenterActivity.constraint_layout)
-                .toBe(alpha(0.0f), outOfScreen(Gravity.TOP))
-                .expect(mPresenterActivity.delete_text_image_button)
-                .toBe(alpha(0.0f))
-                .expect(mPresenterActivity.plus_one_text_view)
-                .toBe(alpha(0.0f))
-                .toAnimation()
-                .setNow()
+        with(mPresenterActivity) {
+            ExpectAnim()
+                    .expect(constraint_layout)
+                    .toBe(alpha(0.0f), outOfScreen(Gravity.TOP))
+                    .expect(delete_text_image_button)
+                    .toBe(alpha(0.0f))
+                    .expect(plus_one_text_view)
+                    .toBe(alpha(0.0f))
+                    .toAnimation()
+                    .setNow()
+        }
     }
 
     private fun setAutoCompleteTextView() {
-        val nonReliablePoliticiansList = ArrayList<Politician>()
-        nonReliablePoliticiansList.addAll(mPresenterActivity.getOriginalSearchablePoliticiansList())
+        with(mPresenterActivity) {
+            val nonReliablePoliticiansList = ArrayList<Politician>()
+            nonReliablePoliticiansList.addAll(getOriginalSearchablePoliticiansList())
 
-        val adapter = AutoCompletionAdapter(mPresenterActivity,
-                R.layout.item_politician_identifier,
-                nonReliablePoliticiansList,
-                mPresenterActivity.getOriginalSearchablePoliticiansList())
+            val adapter = AutoCompletionAdapter(this,
+                    R.layout.item_politician_identifier,
+                    nonReliablePoliticiansList,
+                    getOriginalSearchablePoliticiansList())
 
-        mPresenterActivity.auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
-        setOnCompleteTextViewClickListener()
-        setOnDeleteTextClickListener()
+            auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
+            setOnCompleteTextViewClickListener()
+            setOnDeleteTextClickListener()
 
-        dismissAlertDialog()
-        ExpectAnim()
-                .expect(mPresenterActivity.select_politician_toolbar)
-                .toBe(centerInParent(false, true))
-                .toAnimation().setDuration(DEFAULT_ANIM_DURATION)
-                .start()
+            dismissAlertDialog()
+            ExpectAnim()
+                    .expect(select_politician_toolbar)
+                    .toBe(centerInParent(false, true))
+                    .toAnimation().setDuration(DEFAULT_ANIM_DURATION)
+                    .start()
+        }
     }
 
     private fun setOnCompleteTextViewClickListener() {
 
-        mPresenterActivity
-                .auto_complete_text_view
-                .onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            dismissKeyBoard()
+        with(mPresenterActivity) {
+            auto_complete_text_view.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+                dismissKeyBoard()
 
-            val politicianName = mPresenterActivity.auto_complete_text_view.text.toString()
-            mPresenterActivity.subscribeToSinglePoliticianModel(politicianName)
+                val politicianName = auto_complete_text_view.text.toString()
+                subscribeToSinglePoliticianModel(politicianName)
+            }
         }
     }
 
@@ -194,20 +200,22 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             GLIDE_TRANSFORM_MARGIN = 10
         }
 
-        mGlide.load(politician.image)
-                .crossFade()
-                .placeholder(R.drawable.politician_placeholder)
-                .bitmapTransform(RoundedCornersTransformation(mPresenterActivity, GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(mPresenterActivity.politician_image_view)
+        with(mPresenterActivity) {
+            mGlide.load(politician.image)
+                    .crossFade()
+                    .placeholder(R.drawable.politician_placeholder)
+                    .bitmapTransform(RoundedCornersTransformation(this, GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(politician_image_view)
 
-        val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
 
-        mPresenterActivity.post_text_view.text = politician.post.name
-        mPresenterActivity.name_text_view.text = politician.name
-        mPresenterActivity.missing_votes_text_view.text = mPresenterActivity.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
-        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
-        mPresenterActivity.email_text_view.text = politician.email
+            post_text_view.text = politician.post.name
+            name_text_view.text = politician.name
+            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            votes_number_text_view.text = politician.votesNumber.toString()
+            email_text_view.text = politician.email
+        }
     }
 
     private fun initiateShowAnimations() {
@@ -238,16 +246,19 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     }
 
     private fun configureInitialCondemnStatus(politician: Politician) {
-        ExpectAnim()
-                .expect(mPresenterActivity.plus_one_text_view)
-                .toBe(sameCenterAs(mPresenterActivity.votes_number_text_view, true, true))
-                .toAnimation().setNow()
+        with(mPresenterActivity) {
 
-        val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
-        mPresenterActivity.missing_votes_text_view.text = mPresenterActivity.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
-        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
-        mPresenterActivity.add_to_vote_count_toggle_button.isChecked = true
-        mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+            ExpectAnim()
+                    .expect(plus_one_text_view)
+                    .toBe(sameCenterAs(votes_number_text_view, true, true))
+                    .toAnimation().setNow()
+
+            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            votes_number_text_view.text = politician.votesNumber.toString()
+            add_to_vote_count_toggle_button.isChecked = true
+            badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+        }
 
         mIsShowingPoliticianDrawable = true
         changeBadgeStatus()
@@ -255,11 +266,13 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     private fun configureInitialAbsolveStatus(politician: Politician) {
 
-        val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
-        mPresenterActivity.missing_votes_text_view.text = mPresenterActivity.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
-        mPresenterActivity.votes_number_text_view.text = politician.votesNumber.toString()
-        mPresenterActivity.add_to_vote_count_toggle_button.isChecked = false
-        mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+        with(mPresenterActivity) {
+            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            votes_number_text_view.text = politician.votesNumber.toString()
+            add_to_vote_count_toggle_button.isChecked = false
+            badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+        }
 
         mIsShowingPoliticianDrawable = false
         changeBadgeStatus()
@@ -321,18 +334,17 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
                     fun getTemporaryFile(): File {
 
-                        val tempFile = File (Environment.getExternalStorageDirectory(), "/tempPoliticiansPic/")
+                        val tempFile = File(Environment.getExternalStorageDirectory(), "/tempPoliticiansPic/")
                         if (!tempFile.exists()) {
                             tempFile.mkdirs()
                         }
 
                         val tempPic = File(tempFile, "politician_pic.png")
-                        var outStream : FileOutputStream? = null
+                        var outStream: FileOutputStream? = null
 
                         try {
                             outStream = FileOutputStream(tempPic)
                             val mBitmap = BitmapFactory.decodeByteArray(politician.image, 0, politician.image.size)
-
                             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
 
                         } catch (e: Exception) {
@@ -350,16 +362,16 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                         return tempPic
                     }
 
-                    fun getShareIntent(uri: Uri): Intent {
-                        val shareIntent = Intent()
 
-                        shareIntent.action = Intent.ACTION_SEND
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, politician.name))
-                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        shareIntent.type = "image/*"
+                    fun getShareIntent(uri: Uri) = with(Intent()) {
 
-                        return shareIntent
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, politician.name))
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        type = "image/*"
+
+                        this
                     }
 
                     val tempFile = getTemporaryFile()
@@ -378,8 +390,8 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         deleteTemporaryPicture()
     }
 
-    fun deleteTemporaryPicture() {
-        if (File(mTempFilePath).delete()) {
+    fun deleteTemporaryPicture() = with(File(mTempFilePath)) {
+        if (delete()) {
             Log.i(LOG_TAG, "Temporary picture file deleted")
         } else {
             Log.i(LOG_TAG, "Temporary picture file not deleted")

@@ -1,0 +1,9 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_start_play">
+
+    <target
+        android:name="path_play"
+        android:animation="@anim/play_to_pause_animation">
+    </target>
+</animated-vector>

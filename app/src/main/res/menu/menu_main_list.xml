@@ -10,6 +10,13 @@
         android:icon="@drawable/ic_add_politician"/>
 
     <item
+        android:id="@+id/action_app_info"
+        android:title="@string/information"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_info_24dp"
+        />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
