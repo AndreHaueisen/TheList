@@ -13,6 +13,7 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
 import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
 import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
+import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import kotlinx.android.synthetic.main.d_activity_main_list.*
 
 
@@ -128,8 +129,11 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
             }
 
             R.id.action_app_info -> {
-                val intent = Intent(mPresenterActivity, InformationPresenterActivity::class.java)
-                mPresenterActivity.startActivity(intent)
+                mPresenterActivity.startNewActivity(InformationPresenterActivity::class.java)
+            }
+
+            R.id.action_logout -> {
+                mPresenterActivity.logUserOut()
             }
         }
 

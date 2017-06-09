@@ -2,8 +2,8 @@ package com.andrehaueisen.listadejanot.D_main_list.dagger
 
 import android.content.Context
 import android.support.v4.app.LoaderManager
-import com.andrehaueisen.listadejanot.D_main_list.mvp.MainListModel
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.D_main_list.mvp.MainListModel
 import dagger.Module
 import dagger.Provides
 

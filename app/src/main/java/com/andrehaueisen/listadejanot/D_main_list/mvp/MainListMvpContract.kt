@@ -33,6 +33,7 @@ interface MainListMvpContract{
     interface Presenter {
 
         fun subscribeToModel()
+        fun logUserOut()
     }
 
     interface Model {

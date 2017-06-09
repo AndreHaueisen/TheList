@@ -11,5 +11,5 @@ import dagger.Component
 @Component(modules = arrayOf(PoliticianSelectorModule::class), dependencies = arrayOf(ApplicationComponent::class))
 interface PoliticianSelectorComponent {
 
-    fun injectModels(politicianSelectorPresenterActivity: PoliticianSelectorPresenterActivity)
+    fun inject(politicianSelectorPresenterActivity: PoliticianSelectorPresenterActivity)
 }

@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.D_main_list.dagger.DaggerMainListComponent
 import com.andrehaueisen.listadejanot.D_main_list.dagger.MainListModule
+import com.andrehaueisen.listadejanot.G_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,6 +23,8 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
     @Inject
     lateinit var mModel: MainListModel
+    @Inject
+    lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
     lateinit private var mView: MainListView
     private val mCompositeDisposable = CompositeDisposable()
@@ -31,7 +36,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
                 .mainListModule(MainListModule(supportLoaderManager))
                 .build()
-                .injectModel(this)
+                .inject(this)
 
         if(savedInstanceState == null) {
             mView = MainListView(this)
@@ -109,6 +114,12 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putAll(mView.onSaveInstanceState())
         super.onSaveInstanceState(outState)
+    }
+
+    override fun logUserOut(){
+        mFirebaseAuthenticator.logout()
+        startNewActivity(LoginActivity::class.java)
+        finish()
     }
 
     override fun onDestroy() {

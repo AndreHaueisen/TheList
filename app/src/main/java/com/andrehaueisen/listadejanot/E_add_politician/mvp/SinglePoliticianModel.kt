@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN_NAME
-import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
 import com.andrehaueisen.listadejanot.utilities.LOADER_ID
 import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS_NAME_IMAGE
 import io.reactivex.disposables.CompositeDisposable
@@ -22,6 +22,7 @@ import io.reactivex.subjects.PublishSubject
 class SinglePoliticianModel(val mContext: Context,
                             val mLoaderManager: LoaderManager,
                             val mFirebaseRepository: FirebaseRepository,
+                            val mFirebaseAuthenticator: FirebaseAuthenticator,
                             val mPoliticianList: ArrayList<Politician>)
 
     : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
@@ -57,7 +58,7 @@ class SinglePoliticianModel(val mContext: Context,
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
 
-        with(data){
+        with(data) {
             if (this != null && this.count != 0) {
                 moveToFirst()
 
@@ -66,7 +67,7 @@ class SinglePoliticianModel(val mContext: Context,
 
                 val politician = mPoliticianList.find { it.name == politicianName }?.also { it.image = politicianImage }
 
-                if(politician != null) {
+                if (politician != null) {
                     mSinglePoliticianPublisher.onNext(politician)
                 }
             }
@@ -76,11 +77,16 @@ class SinglePoliticianModel(val mContext: Context,
     }
 
     override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {
-        if (politician.post.name == Politician.Post.SENADOR.name) {
-            mFirebaseRepository.updateSenadorVoteOnBothLists(politician, FAKE_USER_EMAIL, null, view)
-        } else {
-            mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, FAKE_USER_EMAIL, null, view)
+        val userEmail = mFirebaseAuthenticator.getUserEmail()
+
+        userEmail?.let {
+            if (politician.post.name == Politician.Post.SENADOR.name) {
+                mFirebaseRepository.updateSenadorVoteOnBothLists(politician, it, null, view)
+            } else {
+                mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, it, null, view)
+            }
         }
+
     }
 
     override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> {

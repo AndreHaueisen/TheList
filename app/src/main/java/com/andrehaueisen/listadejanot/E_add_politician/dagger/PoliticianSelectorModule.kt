@@ -2,6 +2,7 @@ package com.andrehaueisen.listadejanot.E_add_politician.dagger
 
 import android.content.Context
 import android.support.v4.app.LoaderManager
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorModel
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.SinglePoliticianModel
@@ -36,9 +37,10 @@ class PoliticianSelectorModule(
             context: Context,
             loaderManager: LoaderManager,
             firebaseRepository: FirebaseRepository,
+            firebaseAuthenticator: FirebaseAuthenticator,
             selectorModel: PoliticianSelectorModel): SinglePoliticianModel {
 
-        return SinglePoliticianModel(context, loaderManager, firebaseRepository, selectorModel.getSearchablePoliticiansList())
+        return SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel.getSearchablePoliticiansList())
     }
 
 }

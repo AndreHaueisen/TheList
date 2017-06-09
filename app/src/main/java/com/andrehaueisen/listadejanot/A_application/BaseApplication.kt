@@ -6,6 +6,7 @@ import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationComponent
 import com.andrehaueisen.listadejanot.A_application.dagger.ApplicationModule
 import com.andrehaueisen.listadejanot.A_application.dagger.ContextModule
 import com.andrehaueisen.listadejanot.A_application.dagger.DaggerApplicationComponent
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 /**
@@ -26,7 +27,7 @@ class BaseApplication : Application(){
         super.onCreate()
 
         mComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(FirebaseDatabase.getInstance().reference))
+                .applicationModule(ApplicationModule(FirebaseDatabase.getInstance().reference, FirebaseAuth.getInstance()))
                 .contextModule(ContextModule(this))
                 .build()
 

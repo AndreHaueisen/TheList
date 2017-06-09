@@ -11,7 +11,7 @@ import dagger.Component
 @Component(modules = arrayOf(MainListModule::class), dependencies = arrayOf(ApplicationComponent::class))
 interface MainListComponent{
 
-    fun injectModel(mainListActivity: MainListPresenterActivity)
+    fun inject(mainListActivity: MainListPresenterActivity)
 
 
 }

@@ -4,7 +4,6 @@ import android.util.Log
 import com.andrehaueisen.listadejanot.D_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorMvpContract
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.google.firebase.database.*
 import io.reactivex.subjects.PublishSubject
@@ -28,19 +27,6 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
-    fun saveUserIdOnLogin(uid: String, userEmail: String) {
-        val database = mDatabaseReference.child(LOCATION_UID_MAPPINGS)
-        val uidMapping = mapOf(Pair(uid, userEmail))
-
-        database.setValue(uidMapping)
-    }
-
-    fun saveUser(userEmail: String, user: User) {
-        val database = mDatabaseReference.child(LOCATION_USERS_DATA).child(userEmail)
-
-        database.setValue(user)
-    }
-
     fun updateSenadorVoteOnBothLists(senador: Politician,
                                      userEmail: String,
                                      viewHolder: PoliticianListAdapter.PoliticianHolder?,
@@ -59,7 +45,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                 override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
                     if (isSuccessful && dataSnapshot.exists()) {
 
-                        val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)
+                        val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)!!
                         senador.condemnedBy = updatedSenador.condemnedBy
                         senador.votesNumber = updatedSenador.votesNumber
                         if (viewHolder != null) {
@@ -69,7 +55,6 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                                 viewHolder.initiateAbsolveAnimations(senador)
                             }
                         }
-
                         Log.i(LOG_TAG, dataSnapshot.toString())
 
                     } else {
@@ -108,7 +93,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                         if (isSuccessful && dataSnapshot.exists()) {
 
-                            val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)
+                            val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)!!
                             updatedSenador.email = senador.email
                             updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
 
@@ -172,7 +157,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                 override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
                     if (isSuccessful && dataSnapshot.exists()) {
 
-                        val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)
+                        val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)!!
                         deputado.condemnedBy = updatedDeputado.condemnedBy
                         deputado.votesNumber = updatedDeputado.votesNumber
                         if (viewHolder != null) {
@@ -220,7 +205,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                         if (isSuccessful && dataSnapshot.exists()) {
 
-                            val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)
+                            val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)!!
                             updatedDeputado.email = deputado.email
                             updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
 
@@ -272,7 +257,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             if (mMainListSenadores.isNotEmpty()) mMainListSenadores.clear()
 
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mMainListSenadores.add(it.getValue(mGenericIndicator)) }
+                dataSnapshot.children.forEach { if (it != null) mMainListSenadores.add(it.getValue(mGenericIndicator)!!) }
             }
             mPublishSenadoresMainList.onNext(mMainListSenadores)
 
@@ -291,7 +276,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             }
 
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mPreListSenadores.add(it.getValue(mGenericIndicator)) }
+                dataSnapshot.children.forEach { if (it != null) mPreListSenadores.add(it.getValue(mGenericIndicator)!!) }
             }
             mPublishSenadoresPreList.onNext(mPreListSenadores)
         }
@@ -306,7 +291,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             if (mMainListDeputados.isNotEmpty()) mMainListDeputados.clear()
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mMainListDeputados.add(it.getValue(mGenericIndicator)) }
+                dataSnapshot.children.forEach { if (it != null) mMainListDeputados.add(it.getValue(mGenericIndicator)!!) }
             }
             mPublishDeputadosMainList.onNext(mMainListDeputados)
         }
@@ -324,7 +309,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             }
 
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mPreListDeputados.add(it.getValue(mGenericIndicator)) }
+                dataSnapshot.children.forEach { if (it != null) mPreListDeputados.add(it.getValue(mGenericIndicator)!!) }
 
             }
             mPublishDeputadosPreList.onNext(mPreListDeputados)

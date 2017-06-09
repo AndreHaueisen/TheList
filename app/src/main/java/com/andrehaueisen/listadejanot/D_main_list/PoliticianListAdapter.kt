@@ -16,13 +16,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.G_login.LoginActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.FAKE_USER_EMAIL
 import com.andrehaueisen.listadejanot.utilities.encodeEmail
 import com.andrehaueisen.listadejanot.utilities.minusOneAbsolveAnimation
 import com.andrehaueisen.listadejanot.utilities.plusOneCondemnAnimation
+import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -36,6 +38,7 @@ import com.github.florent37.expectanim.core.Expectations.sameCenterAs
 class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<PoliticianListAdapter.PoliticianHolder>() {
 
     private val mFirebaseRepository: FirebaseRepository
+    private val mFirebaseAuthenticator: FirebaseAuthenticator
 
     private val VIEW_TYPE_DEPUTADO = 0
     private val VIEW_TYPE_SENADOR = 1
@@ -72,7 +75,10 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         mMoldViewObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
         mMoldViewObjectAnimatorCondemn.duration = 1000
 
-        mFirebaseRepository = BaseApplication.get(activity).getAppComponent().loadFirebaseRepository()
+        val appComponent = BaseApplication.get(activity).getAppComponent()
+        mFirebaseRepository = appComponent.loadFirebaseRepository()
+        mFirebaseAuthenticator = appComponent.loadFirebaseAuthenticator()
+
     }
 
     override fun getItemCount(): Int {
@@ -128,17 +134,25 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             setInitialDataStatus(politician)
 
             mVoteButton.setOnClickListener {
-                if (politician.post == Politician.Post.DEPUTADO) {
-                    mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, FAKE_USER_EMAIL, this@PoliticianHolder, null)
+                if(mFirebaseAuthenticator.isUserLoggedIn()) {
+
+                    val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+                    if (politician.post == Politician.Post.DEPUTADO) {
+                        mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                    } else {
+                        mFirebaseRepository.updateSenadorVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                    }
+
                 } else {
-                    mFirebaseRepository.updateSenadorVoteOnBothLists(politician, FAKE_USER_EMAIL, this@PoliticianHolder, null)
+                    activity.startNewActivity(LoginActivity::class.java)
+                    activity.finish()
                 }
             }
         }
 
         private fun setInitialVisualStatus(politician: Politician){
 
-            if (politician.condemnedBy.contains(FAKE_USER_EMAIL.encodeEmail())) {
+            if (politician.condemnedBy.contains(mFirebaseAuthenticator.getUserEmail()?.encodeEmail())) {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorAccentDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true

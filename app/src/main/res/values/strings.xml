@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Lista de Janot</string>
     <string name="title_activity_main_list">Lista de Janot</string>
-    <string name="facebook_app_id">1698727047098274</string>
+    <string name="facebook_app_id" translatable="false">1698727047098274</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1698727047098274</string>
+    <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
+    <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>
 
     <!--D_main_list strings-->
     <string name="title_senadores">Senadores</string>
@@ -25,6 +28,7 @@
 
     <string name="add_politician">Add Politician</string>
     <string name="information">Information</string>
+    <string name="logout">Logout</string>
 
     <!--E_politician_selector strings-->
     <string name="dialog_title_loading_database">Loading politicians</string>
@@ -44,8 +48,6 @@
     <!--Sync strings-->
     <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>
     <string name="sync_account_type">com.andrehaueisen.listadejanot.account</string>
-
-    <string name="action_settings">Settings</string>
 
 
 </resources>

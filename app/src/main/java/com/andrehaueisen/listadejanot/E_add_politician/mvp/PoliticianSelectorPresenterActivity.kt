@@ -6,13 +6,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.A_application.BaseApplication
+import com.andrehaueisen.listadejanot.B_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.E_add_politician.dagger.PoliticianSelectorModule
+import com.andrehaueisen.listadejanot.G_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_SEARCHABLE_POLITICIANS
-import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
-import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
+import com.andrehaueisen.listadejanot.utilities.*
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -28,6 +27,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mSelectorModel: PoliticianSelectorModel
     @Inject
     lateinit var mSinglePoliticianModel: SinglePoliticianModel
+    @Inject
+    lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
     lateinit private var mView: PoliticianSelectorView
     private var mPolitician: Politician? = null
@@ -57,7 +58,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                         senadoresMainList,
                         deputadosMainList))
                 .build()
-                .injectModels(this)
+                .inject(this)
 
         if(savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
@@ -150,12 +151,19 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     }
 
     override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View){
-        mSinglePoliticianModel.updatePoliticianVote(politician, view)
+        if(mFirebaseAuthenticator.isUserLoggedIn()) {
+            mSinglePoliticianModel.updatePoliticianVote(politician, view)
+        }else{
+            startNewActivity(LoginActivity::class.java)
+            finish()
+        }
     }
 
     fun getOriginalSearchablePoliticiansList() = mOriginalSearchablePoliticiansList
 
     fun getSinglePolitician() = mPolitician
+
+    fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()

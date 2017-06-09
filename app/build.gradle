@@ -21,10 +21,14 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
 }
 
 ext {
-    firebase_version = '10.2.6'
+    firebase_version = '10.2.0'
     support_version = '25.3.1'
     retrofit_version = '2.3.0'
     dagger_version = '2.11-rc2'

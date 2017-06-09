@@ -18,7 +18,10 @@ import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
+import com.andrehaueisen.listadejanot.utilities.encodeEmail
+import com.andrehaueisen.listadejanot.utilities.minusOneAbsolveAnimation
+import com.andrehaueisen.listadejanot.utilities.plusOneCondemnAnimation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -177,7 +180,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             bindPoliticianDataToViews(politician)
             initiateShowAnimations()
 
-            if (politician.condemnedBy.contains(FAKE_USER_EMAIL.encodeEmail())) {
+            if (politician.condemnedBy.contains(mPresenterActivity.getUserEmail()?.encodeEmail())) {
                 configureInitialCondemnStatus(politician)
             } else {
                 configureInitialAbsolveStatus(politician)
