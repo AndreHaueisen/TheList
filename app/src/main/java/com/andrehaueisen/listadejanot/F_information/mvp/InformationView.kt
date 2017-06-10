@@ -4,6 +4,7 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.PlayerStatus
+import com.andrehaueisen.listadejanot.utilities.animateVectorDrawable
 import kotlinx.android.synthetic.main.activity_information_presenter.*
 
 
@@ -45,15 +46,18 @@ class InformationView(val mPresenterActivity: InformationPresenterActivity) : In
         with(mPresenterActivity.play_on_boarding_audio_fab) {
 
             when (playerStatus) {
-
                 PlayerStatus.PLAYING -> {
-                    setImageDrawable(mPlayPauseAnimation)
-                    (drawable as AnimatedVectorDrawable).start()
+                    animateVectorDrawable(
+                            mPlayPauseAnimation,
+                            mPausePlayAnimation,
+                            useInitialToFinalFlow = true)
                 }
 
                 PlayerStatus.PAUSED, PlayerStatus.COMPLETE -> {
-                    setImageDrawable(mPausePlayAnimation)
-                    (drawable as AnimatedVectorDrawable).start()
+                    animateVectorDrawable(
+                            mPlayPauseAnimation,
+                            mPausePlayAnimation,
+                            useInitialToFinalFlow = false)
                 }
             }
         }

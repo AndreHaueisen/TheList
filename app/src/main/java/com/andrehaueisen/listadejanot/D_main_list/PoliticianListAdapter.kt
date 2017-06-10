@@ -1,7 +1,6 @@
 package com.andrehaueisen.listadejanot.D_main_list
 
 import android.animation.AnimatorSet
-import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -21,10 +20,7 @@ import com.andrehaueisen.listadejanot.B_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.G_login.LoginActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.encodeEmail
-import com.andrehaueisen.listadejanot.utilities.minusOneAbsolveAnimation
-import com.andrehaueisen.listadejanot.utilities.plusOneCondemnAnimation
-import com.andrehaueisen.listadejanot.utilities.startNewActivity
+import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -44,41 +40,16 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
     private val VIEW_TYPE_SENADOR = 1
     private val mGlide = Glide.with(activity)
 
-    private val mCardObjectAnimatorAbsolve: ObjectAnimator
-    private val mMoldViewObjectAnimatorAbsolve: ObjectAnimator
+    private val mCardObjectAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorAccentDark, R.color.colorPrimaryDark)
+    private val mMoldViewObjectAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorAccent, R.color.colorPrimary)
 
-    private val mCardObjectAnimatorCondemn: ObjectAnimator
-    private val mMoldViewObjectAnimatorCondemn: ObjectAnimator
+    private val mCardObjectAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorPrimaryDark, R.color.colorAccentDark)
+    private val mMoldViewObjectAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorPrimary, R.color.colorAccent)
 
     init {
-        mCardObjectAnimatorAbsolve = ObjectAnimator.ofInt(null, "backgroundColor",
-                ContextCompat.getColor(activity, R.color.colorAccentDark),
-                ContextCompat.getColor(activity, R.color.colorPrimaryDark))
-        mCardObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
-        mCardObjectAnimatorAbsolve.duration = 1000
-
-        mMoldViewObjectAnimatorAbsolve = ObjectAnimator.ofInt(null, "backgroundColor",
-                ContextCompat.getColor(activity, R.color.colorAccent),
-                ContextCompat.getColor(activity, R.color.colorPrimary))
-        mMoldViewObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
-        mMoldViewObjectAnimatorAbsolve.duration = 1000
-
-        mCardObjectAnimatorCondemn = ObjectAnimator.ofInt(null, "backgroundColor",
-                ContextCompat.getColor(activity, R.color.colorPrimaryDark),
-                ContextCompat.getColor(activity, R.color.colorAccentDark))
-        mCardObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
-        mCardObjectAnimatorCondemn.duration = 1000
-
-        mMoldViewObjectAnimatorCondemn = ObjectAnimator.ofInt(null, "backgroundColor",
-                ContextCompat.getColor(activity, R.color.colorPrimary),
-                ContextCompat.getColor(activity, R.color.colorAccent))
-        mMoldViewObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
-        mMoldViewObjectAnimatorCondemn.duration = 1000
-
         val appComponent = BaseApplication.get(activity).getAppComponent()
         mFirebaseRepository = appComponent.loadFirebaseRepository()
         mFirebaseAuthenticator = appComponent.loadFirebaseAuthenticator()
-
     }
 
     override fun getItemCount(): Int {
@@ -126,8 +97,6 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
 
-        private var mIsShowingPoliticianDrawable = true
-
         internal fun bindDataToView(politician: Politician) {
 
             setInitialVisualStatus(politician)
@@ -152,31 +121,41 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
         private fun setInitialVisualStatus(politician: Politician){
 
-            if (politician.condemnedBy.contains(mFirebaseAuthenticator.getUserEmail()?.encodeEmail())) {
+            fun hasUserVotedOnThisPolitician() = politician.condemnedBy.contains(mFirebaseAuthenticator.getUserEmail()?.encodeEmail())
+
+            if (hasUserVotedOnThisPolitician()) {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorAccentDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
-                mIsShowingPoliticianDrawable = true
+                mAnimatedBadgeImageView.animateVectorDrawable(
+                        mPoliticianThiefAnimation,
+                        mThiefPoliticianAnimation,
+                        useInitialToFinalFlow = true)
                 ExpectAnim()
                         .expect(mPlusOneAnimationTextView)
                         .toBe(sameCenterAs(mVotesNumberTextView, true, true))
                         .toAnimation().setNow()
-                changeButtonAnimation()
 
             } else {
                 mCardView.background = ContextCompat.getDrawable(activity, R.color.colorPrimaryDark)
                 mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary))
                 mVoteButton.isChecked = false
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
-                mIsShowingPoliticianDrawable = false
-                changeButtonAnimation()
-
+                mAnimatedBadgeImageView.animateVectorDrawable(
+                        mPoliticianThiefAnimation,
+                        mThiefPoliticianAnimation,
+                        useInitialToFinalFlow = false)
             }
+
+            ExpectAnim()
+                    .expect(mPlusOneAnimationTextView)
+                    .toBe(Expectations.alpha(0.0f))
+                    .toAnimation()
+                    .setNow()
         }
 
         private fun setInitialDataStatus(politician: Politician){
-
             mGlide.load(politician.image)
                     .crossFade()
                     .placeholder(R.drawable.politician_placeholder)
@@ -186,80 +165,42 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             mVotesNumberTextView.text = politician.votesNumber.toString()
             mEmailTextView.text = politician.email
 
-            ExpectAnim()
-                    .expect(mPlusOneAnimationTextView)
-                    .toBe(Expectations.alpha(0.0f))
-                    .toAnimation()
-                    .setNow()
         }
 
         fun initiateAbsolveAnimations(politician: Politician) {
-
-            //TODO do minus one mVotesNumberTextView
-            mVotesNumberTextView.text = politician.votesNumber.toString()
-
             mCardObjectAnimatorAbsolve.target = mCardView
-            mCardObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
-            mCardObjectAnimatorAbsolve.duration = 1000
-
             mMoldViewObjectAnimatorAbsolve.target = mMoldView
-            mMoldViewObjectAnimatorAbsolve.setEvaluator(ArgbEvaluator())
-            mMoldViewObjectAnimatorAbsolve.duration = 1000
 
             val animatorSet = AnimatorSet()
             animatorSet.interpolator = AccelerateDecelerateInterpolator()
             animatorSet.playTogether(mCardObjectAnimatorAbsolve, mMoldViewObjectAnimatorAbsolve)
             animatorSet.start()
 
+            mVotesNumberTextView.text = politician.votesNumber.toString()
             mPlusOneAnimationTextView.text = activity.getString(R.string.minus_one)
             ExpectAnim().minusOneAbsolveAnimation(itemView, politician)
-            changeButtonAnimation()
+            mAnimatedBadgeImageView.animateVectorDrawable(
+                    mPoliticianThiefAnimation,
+                    mThiefPoliticianAnimation,
+                    useInitialToFinalFlow = false)
         }
 
         fun initiateCondemnAnimations(politician: Politician) {
-
-            //TODO do plus one mVotesNumberTextView animation
-            mVotesNumberTextView.text = politician.votesNumber.toString()
-
             mCardObjectAnimatorCondemn.target = mCardView
-            mCardObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
-            mCardObjectAnimatorCondemn.duration = 1000
-
             mMoldViewObjectAnimatorCondemn.target = mMoldView
-            mMoldViewObjectAnimatorCondemn.setEvaluator(ArgbEvaluator())
-            mMoldViewObjectAnimatorCondemn.duration = 1000
 
             val animatorSet = AnimatorSet()
             animatorSet.interpolator = AccelerateDecelerateInterpolator()
             animatorSet.playTogether(mCardObjectAnimatorCondemn, mMoldViewObjectAnimatorCondemn)
             animatorSet.start()
 
+            mVotesNumberTextView.text = politician.votesNumber.toString()
             mPlusOneAnimationTextView.text = activity.getString(R.string.plus_one)
             ExpectAnim().plusOneCondemnAnimation(itemView, politician)
-            changeButtonAnimation()
-        }
-
-        private fun changeButtonAnimation(){
-
-            if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable){
-                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPoliticianDrawable = false
-
-            }else if(mAnimatedBadgeImageView.drawable == mPoliticianThiefAnimation && !mIsShowingPoliticianDrawable){
-                mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
-                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPoliticianDrawable = true
-
-            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && mIsShowingPoliticianDrawable){
-                mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
-                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPoliticianDrawable = false
-
-            }else if(mAnimatedBadgeImageView.drawable == mThiefPoliticianAnimation && !mIsShowingPoliticianDrawable){
-                (mAnimatedBadgeImageView.drawable as AnimatedVectorDrawable).start()
-                mIsShowingPoliticianDrawable = true
-            }
-
+            mAnimatedBadgeImageView.animateVectorDrawable(
+                    mPoliticianThiefAnimation,
+                    mThiefPoliticianAnimation,
+                    useInitialToFinalFlow = true)
         }
     }
 }

@@ -18,7 +18,7 @@ class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract
 
     @Inject
     lateinit var mModel: InformationModel
-    lateinit var mView: InformationView
+    var mView: InformationView? = null
     val mCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +30,7 @@ class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract
                 .injectModel(this)
 
         mView = InformationView(this)
-        mView.setViews()
+        mView?.setViews()
 
         listenToPlayerStatus()
     }
@@ -44,15 +44,15 @@ class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onError(e: Throwable?) {
-
-                    }
-
                     override fun onNext(playerStatus: PlayerStatus) {
-                        mView.newPlayerEventReported(playerStatus)
+                        mView?.newPlayerEventReported(playerStatus)
                     }
 
                     override fun onComplete() {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
 
                     }
                 })
@@ -67,12 +67,13 @@ class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        mView.onOptionsItemSelected(item)
+        mView?.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
         mModel.onDestroy()
+        mView = null
         mCompositeDisposable.dispose()
         super.onDestroy()
     }

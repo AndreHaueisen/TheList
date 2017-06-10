@@ -30,7 +30,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     @Inject
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
-    lateinit private var mView: PoliticianSelectorView
+    private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
     lateinit private var mOriginalSearchablePoliticiansList : ArrayList<Politician>
     private val mCompositeDisposable = CompositeDisposable()
@@ -62,7 +62,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         if(savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
-            mView.setViews(isSavedState = false)
+            mView!!.setViews(isSavedState = false)
             mSelectorModel.connectToFirebase()
             subscribeToPoliticianSelectorModel()
 
@@ -73,7 +73,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             }
 
             mView = PoliticianSelectorView(this)
-            mView.setViews(isSavedState = true)
+            mView!!.setViews(isSavedState = true)
         }
     }
 
@@ -89,7 +89,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
                     override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
                         mOriginalSearchablePoliticiansList = searchablePoliticiansList
-                        mView.notifySearchablePoliticiansNewList()
+                        mView?.notifySearchablePoliticiansNewList()
                     }
 
                     override fun onError(e: Throwable?) {
@@ -124,7 +124,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         override fun onSuccess(politician: Politician?) {
             mPolitician = politician
-            mView.notifyPoliticianReady()
+            mView?.notifyPoliticianReady()
         }
 
         override fun onComplete() {
@@ -133,12 +133,12 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        mView.onCreateOptionsMenu(menu)
+        mView?.onCreateOptionsMenu(menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        mView.onOptionsItemSelected(item)
+        mView?.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
 
@@ -169,7 +169,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
         mSinglePoliticianModel.onDestroy()
-        mView.onDestroy()
+        mView?.onDestroy()
+        mView = null
         super.onDestroy()
     }
 }

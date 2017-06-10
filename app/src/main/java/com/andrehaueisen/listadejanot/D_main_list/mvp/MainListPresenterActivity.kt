@@ -26,7 +26,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     @Inject
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
-    lateinit private var mView: MainListView
+    private var mView: MainListView? = null
     private val mCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +40,12 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
         if(savedInstanceState == null) {
             mView = MainListView(this)
-            mView.setViews()
+            mView?.setViews()
             mModel.connectToFirebase()
             subscribeToModel()
         }else{
             mView = MainListView(this, savedInstanceState)
-            mView.setViews()
+            mView?.setViews()
         }
     }
 
@@ -60,7 +60,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         }
 
         override fun onNext(deputados: ArrayList<Politician>) {
-            mView.notifyDeputadosNewList(deputados)
+            mView?.notifyDeputadosNewList(deputados)
         }
 
         override fun onError(t: Throwable?) {
@@ -77,7 +77,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         }
 
         override fun onNext(senadores: ArrayList<Politician>) {
-            mView.notifySenadoresNewList(senadores)
+            mView?.notifySenadoresNewList(senadores)
         }
 
         override fun onError(e: Throwable?) {
@@ -102,17 +102,17 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        mView.onCreateOptionsMenu(menu)
+        mView?.onCreateOptionsMenu(menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        mView.onOptionsItemSelected(item)
+        mView?.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putAll(mView.onSaveInstanceState())
+        outState.putAll(mView?.onSaveInstanceState())
         super.onSaveInstanceState(outState)
     }
 
@@ -125,6 +125,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mModel.onDestroy()
+        mView = null
         super.onDestroy()
     }
 }

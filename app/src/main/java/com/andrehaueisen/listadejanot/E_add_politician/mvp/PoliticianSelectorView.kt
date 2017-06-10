@@ -18,10 +18,7 @@ import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.E_add_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
-import com.andrehaueisen.listadejanot.utilities.encodeEmail
-import com.andrehaueisen.listadejanot.utilities.minusOneAbsolveAnimation
-import com.andrehaueisen.listadejanot.utilities.plusOneCondemnAnimation
+import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.florent37.expectanim.ExpectAnim
@@ -46,10 +43,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private val mThiefPoliticianAnimation: AnimatedVectorDrawable
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
-
     private var mIsInitialRequest = true
-    private var mIsShowingPoliticianDrawable = true
-
     private var mTempFilePath: String = ""
 
     init {
@@ -263,8 +257,10 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
         }
 
-        mIsShowingPoliticianDrawable = true
-        changeBadgeStatus()
+        mPresenterActivity.badge_image_view.animateVectorDrawable(
+                mPoliticianThiefAnimation,
+                mThiefPoliticianAnimation,
+                useInitialToFinalFlow = true)
     }
 
     private fun configureInitialAbsolveStatus(politician: Politician) {
@@ -277,8 +273,10 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
         }
 
-        mIsShowingPoliticianDrawable = false
-        changeBadgeStatus()
+        mPresenterActivity.badge_image_view.animateVectorDrawable(
+                mPoliticianThiefAnimation,
+                mThiefPoliticianAnimation,
+                useInitialToFinalFlow = true)
     }
 
     fun setVoteButtonClickListener(politician: Politician) {
@@ -289,37 +287,20 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     override fun initiateCondemnAnimations(politician: Politician) {
         mPresenterActivity.plus_one_text_view.text = mPresenterActivity.getString(R.string.plus_one)
-        changeBadgeStatus()
+        mPresenterActivity.badge_image_view.animateVectorDrawable(
+                mPoliticianThiefAnimation,
+                mThiefPoliticianAnimation,
+                useInitialToFinalFlow = true)
         ExpectAnim().plusOneCondemnAnimation(mPresenterActivity.window.decorView.rootView, politician)
     }
 
     override fun initiateAbsolveAnimations(politician: Politician) {
         mPresenterActivity.plus_one_text_view.text = mPresenterActivity.getString(R.string.minus_one)
-        changeBadgeStatus()
+        mPresenterActivity.badge_image_view.animateVectorDrawable(
+                mPoliticianThiefAnimation,
+                mThiefPoliticianAnimation,
+                useInitialToFinalFlow = false)
         ExpectAnim().minusOneAbsolveAnimation(mPresenterActivity.window.decorView.rootView, politician)
-    }
-
-    private fun changeBadgeStatus() {
-
-        if (mPresenterActivity.badge_image_view.drawable == mPoliticianThiefAnimation && mIsShowingPoliticianDrawable) {
-            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
-            mIsShowingPoliticianDrawable = false
-
-        } else if (mPresenterActivity.badge_image_view.drawable == mPoliticianThiefAnimation && !mIsShowingPoliticianDrawable) {
-            mPresenterActivity.badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
-            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
-            mIsShowingPoliticianDrawable = true
-
-        } else if (mPresenterActivity.badge_image_view.drawable == mThiefPoliticianAnimation && mIsShowingPoliticianDrawable) {
-            mPresenterActivity.badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
-            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
-            mIsShowingPoliticianDrawable = false
-
-        } else if (mPresenterActivity.badge_image_view.drawable == mThiefPoliticianAnimation && !mIsShowingPoliticianDrawable) {
-            (mPresenterActivity.badge_image_view.drawable as AnimatedVectorDrawable).start()
-            mIsShowingPoliticianDrawable = true
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?) {

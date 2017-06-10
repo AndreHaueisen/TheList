@@ -7,7 +7,6 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
 
-
 fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician) {
 
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
@@ -24,7 +23,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
             .expect(moldView)
             .toBe(Expectations.alpha(0.5f))
             .toAnimation()
-            .setDuration(1000)
+            .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
             .setEndListener {
                 ExpectAnim()
@@ -33,7 +32,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                                 Expectations.atItsOriginalScale(),
                                 Expectations.sameCenterAs(votesNumberTextView, true, true))
                         .toAnimation()
-                        .setDuration(500)
+                        .setDuration(DEFAULT_ANIMATIONS_DURATION)
                         .start()
                         .setEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
@@ -62,7 +61,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
             .expect(moldView)
             .toBe(Expectations.alpha(1.0f))
             .toAnimation()
-            .setDuration(1000)
+            .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
             .setEndListener {
                 ExpectAnim()
@@ -71,7 +70,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
                                 Expectations.atItsOriginalScale(),
                                 Expectations.atItsOriginalPosition())
                         .toAnimation()
-                        .setDuration(500)
+                        .setDuration(DEFAULT_ANIMATIONS_DURATION)
                         .start()
             }
 }
