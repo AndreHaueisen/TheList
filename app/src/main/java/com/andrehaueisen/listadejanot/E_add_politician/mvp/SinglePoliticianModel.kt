@@ -23,7 +23,7 @@ class SinglePoliticianModel(val mContext: Context,
                             val mLoaderManager: LoaderManager,
                             val mFirebaseRepository: FirebaseRepository,
                             val mFirebaseAuthenticator: FirebaseAuthenticator,
-                            val mPoliticianList: ArrayList<Politician>)
+                            val mSelectorModel: PoliticianSelectorModel)
 
     : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -65,7 +65,7 @@ class SinglePoliticianModel(val mContext: Context,
                 val politicianName = getString(COLUMNS_INDEX_NAME)
                 val politicianImage = getBlob(COLUMNS_INDEX_IMAGE)
 
-                val politician = mPoliticianList.find { it.name == politicianName }?.also { it.image = politicianImage }
+                val politician = mSelectorModel.getSearchablePoliticiansList().find { it.name == politicianName }?.also { it.image = politicianImage }
 
                 if (politician != null) {
                     mSinglePoliticianPublisher.onNext(politician)

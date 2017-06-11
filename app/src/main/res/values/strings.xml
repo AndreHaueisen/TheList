@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Lista de Janot</string>
-    <string name="title_activity_main_list">Lista de Janot</string>
+    <string name="app_name" translatable="false">Lista de Janot</string>
+    <string name="title_activity_main_list" translatable="false">Lista de Janot</string>
     <string name="facebook_app_id" translatable="false">1698727047098274</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1698727047098274</string>
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
@@ -15,8 +15,8 @@
 
     <string name="votes_title">Votes</string>
 
-    <string name="font_roboto_black">sans-serif-black</string>
-    <string name="font_roboto_regular">sans-serif</string>
+    <string name="font_roboto_black" translatable="false">sans-serif-black</string>
+    <string name="font_roboto_regular" translatable="false">sans-serif</string>
 
     <string name="banned_deputados_title">Banned Deputados</string>
     <string name="banned_senadores_title">Banned Senadores</string>
@@ -34,9 +34,8 @@
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
     <string name="type_politician_name_hint">Politician Name</string>
-    <string name="selector_explanation">If the politician is not on the main lists, you can find it here. Once vote count reaches the threshold he will be send to the main list</string>
-    <string name="plus_one">+1</string>
-    <string name="minus_one">-1</string>
+    <string name="plus_one" translatable="false">+1</string>
+    <string name="minus_one" translatable="false">-1</string>
     <string name="share">Share</string>
     <string name="share_title">Ask for help using...</string>
     <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
@@ -46,8 +45,8 @@
     <string name="understand_app_motivation">If you want to know more about the app and it\'s motivation I have some words for you</string>
 
     <!--Sync strings-->
-    <string name="provider_authority">com.andrehaueisen.listadejanot.politicians</string>
-    <string name="sync_account_type">com.andrehaueisen.listadejanot.account</string>
+    <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>
+    <string name="sync_account_type" translatable="false">com.andrehaueisen.listadejanot.account</string>
 
 
 </resources>

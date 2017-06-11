@@ -68,6 +68,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         }else{
             mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS)
+            mSelectorModel.setSearchablePoliticiansList(mOriginalSearchablePoliticiansList)
             if(savedInstanceState.containsKey(BUNDLE_POLITICIAN)) {
                 mPolitician = savedInstanceState.getParcelable(BUNDLE_POLITICIAN)
             }

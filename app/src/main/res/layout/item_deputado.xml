@@ -121,8 +121,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@android:color/white"
-                android:textOff="@string/add_vote"
-                android:textOn="@string/remove_vote"
+                android:textOff="@string/remove_vote"
+                android:textOn="@string/add_vote"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 

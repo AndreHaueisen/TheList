@@ -1,6 +1,7 @@
 package com.andrehaueisen.listadejanot.F_information.mvp
 
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.support.design.widget.FloatingActionButton
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.PlayerStatus
@@ -15,9 +16,11 @@ class InformationView(val mPresenterActivity: InformationPresenterActivity) : In
 
     private val mPlayPauseAnimation = mPresenterActivity.getDrawable(R.drawable.play_pause_animated_vector) as AnimatedVectorDrawable
     private val mPausePlayAnimation = mPresenterActivity.getDrawable(R.drawable.pause_play_animated_vector) as AnimatedVectorDrawable
+    private val mPlayAudioFab : FloatingActionButton
 
     init {
         mPresenterActivity.setContentView(R.layout.activity_information_presenter)
+        mPlayAudioFab = mPresenterActivity.play_on_boarding_audio_fab
     }
 
     override fun setViews() {
@@ -31,8 +34,8 @@ class InformationView(val mPresenterActivity: InformationPresenterActivity) : In
             }
 
             fun setOnBoardingAudioButton() {
-                play_on_boarding_audio_fab.setImageDrawable(mPlayPauseAnimation)
-                play_on_boarding_audio_fab.setOnClickListener { playOnBoardingAudio() }
+                mPlayAudioFab.setImageDrawable(mPlayPauseAnimation)
+                mPlayAudioFab.setOnClickListener { playOnBoardingAudio() }
             }
 
             setToolbar()
@@ -43,7 +46,7 @@ class InformationView(val mPresenterActivity: InformationPresenterActivity) : In
 
     override fun newPlayerEventReported(playerStatus: PlayerStatus) {
 
-        with(mPresenterActivity.play_on_boarding_audio_fab) {
+        with(mPlayAudioFab) {
 
             when (playerStatus) {
                 PlayerStatus.PLAYING -> {

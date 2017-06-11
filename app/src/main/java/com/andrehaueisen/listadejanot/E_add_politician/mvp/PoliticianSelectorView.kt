@@ -39,19 +39,14 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private val LOG_TAG = PoliticianSelectorView::class.java.simpleName
     private val DEFAULT_ANIM_DURATION = 500L
     private val mGlide = Glide.with(mPresenterActivity)
-    private val mPoliticianThiefAnimation: AnimatedVectorDrawable
-    private val mThiefPoliticianAnimation: AnimatedVectorDrawable
+    private val mPoliticianThiefAnimation = mPresenterActivity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
+    private val mThiefPoliticianAnimation = mPresenterActivity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
     private var mTempFilePath: String = ""
 
-    init {
-        mPresenterActivity.setContentView(R.layout.e_activity_politician_selector)
-
-        mPoliticianThiefAnimation = mPresenterActivity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
-        mThiefPoliticianAnimation = mPresenterActivity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
-    }
+    init { mPresenterActivity.setContentView(R.layout.e_activity_politician_selector) }
 
     override fun setViews(isSavedState: Boolean) {
         setToolbar()
@@ -60,7 +55,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             setAutoCompleteTextView()
             if (mPresenterActivity.getSinglePolitician() != null) {
                 bindPoliticianDataToViews(mPresenterActivity.getSinglePolitician() as Politician)
-                initiateShowAnimations()
                 notifyPoliticianReady()
             }
         } else {
@@ -255,12 +249,13 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             votes_number_text_view.text = politician.votesNumber.toString()
             add_to_vote_count_toggle_button.isChecked = true
             badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
+            badge_image_view.animateVectorDrawable(
+                    mPoliticianThiefAnimation,
+                    mThiefPoliticianAnimation,
+                    useInitialToFinalFlow = true)
         }
 
-        mPresenterActivity.badge_image_view.animateVectorDrawable(
-                mPoliticianThiefAnimation,
-                mThiefPoliticianAnimation,
-                useInitialToFinalFlow = true)
+
     }
 
     private fun configureInitialAbsolveStatus(politician: Politician) {
@@ -271,12 +266,13 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             votes_number_text_view.text = politician.votesNumber.toString()
             add_to_vote_count_toggle_button.isChecked = false
             badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
+            badge_image_view.animateVectorDrawable(
+                    mPoliticianThiefAnimation,
+                    mThiefPoliticianAnimation,
+                    useInitialToFinalFlow = false)
         }
 
-        mPresenterActivity.badge_image_view.animateVectorDrawable(
-                mPoliticianThiefAnimation,
-                mThiefPoliticianAnimation,
-                useInitialToFinalFlow = true)
+
     }
 
     fun setVoteButtonClickListener(politician: Politician) {

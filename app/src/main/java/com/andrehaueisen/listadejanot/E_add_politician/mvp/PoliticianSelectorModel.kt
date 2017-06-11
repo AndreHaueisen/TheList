@@ -45,7 +45,7 @@ class PoliticianSelectorModel(val mContext: Context,
     private lateinit var mSenadoresPreList: ArrayList<Politician>
     private lateinit var mDeputadosPreList: ArrayList<Politician>
 
-    private val mSearchablePoliticianList = ArrayList<Politician>()
+    private var mSearchablePoliticianList = ArrayList<Politician>()
     private val mFinalSearchablePoliticianPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mOnListsReadyPublisher: PublishSubject<Boolean> = PublishSubject.create()
     private var mListCounter = 0
@@ -220,6 +220,10 @@ class PoliticianSelectorModel(val mContext: Context,
     }
 
     fun getSearchablePoliticiansList () = mSearchablePoliticianList
+
+    fun setSearchablePoliticiansList (originalPoliticiansList: ArrayList<Politician>){
+        mSearchablePoliticianList = originalPoliticiansList
+    }
 
     override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> {
         return Observable.defer { mFinalSearchablePoliticianPublisher }

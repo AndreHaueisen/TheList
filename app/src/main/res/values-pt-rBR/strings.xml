@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--D_main_list strings-->
+    <string name="title_senadores">Senadores</string>
+    <string name="title_deputados">Deputados</string>
+    <string name="title_governadores">Governadores</string>
+    <string name="add_vote">Inelegível</string>
+    <string name="remove_vote">Elegível</string>
+    <string name="votes_title">Votos</string>
+    <string name="banned_deputados_title">Deputados Inelegíveis</string>
+    <string name="banned_senadores_title">Senadores Inelegíveis</string>
+    <string name="senador_condemned">Senador inelegível</string>
+    <string name="deputado_condemned">Deputado inelegível</string>
+    <string name="senador_absolved">Senador elegível</string>
+    <string name="deputado_absolved">Deputado inelegível</string>
+    <string name="add_politician">Add Politician</string>
+    <string name="information">Informações</string>
+    <string name="logout">Trocar Conta</string>
+
+    <!--E_politician_selector strings-->
+    <string name="dialog_title_loading_database">Carregando Políticos</string>
+    <string name="dialog_message_loading_database">Digite o nome do político lembrando dos acentos.</string>
+    <string name="type_politician_name_hint">Nome do político</string>
+    <string name="share">Compartilhar</string>
+    <string name="share_title">Peça ajuda usando...</string>
+    <string name="share_boarding_message">Lista de Janot precisa da sua ajuda!\n\nO político %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
+    <string name="missing_votes_to_threshold">%1$d votos para ser inelegível</string>
+
+    <!--F_information strings-->
+    <string name="understand_app_motivation">Se quiser saber mais sobre o app e os links nessa página, tenho algumas palavras para você</string>
+</resources>

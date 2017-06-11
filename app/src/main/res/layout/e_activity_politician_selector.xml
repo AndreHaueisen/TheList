@@ -185,8 +185,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
-            android:textOff="@string/add_vote"
-            android:textOn="@string/remove_vote"
+            android:textOff="@string/remove_vote"
+            android:textOn="@string/add_vote"
             app:layout_constraintBottom_toBottomOf="@+id/mold_view"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mold_view"/>

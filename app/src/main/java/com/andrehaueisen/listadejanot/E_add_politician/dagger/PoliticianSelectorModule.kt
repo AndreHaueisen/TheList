@@ -40,7 +40,7 @@ class PoliticianSelectorModule(
             firebaseAuthenticator: FirebaseAuthenticator,
             selectorModel: PoliticianSelectorModel): SinglePoliticianModel {
 
-        return SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel.getSearchablePoliticiansList())
+        return SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel)
     }
 
 }
