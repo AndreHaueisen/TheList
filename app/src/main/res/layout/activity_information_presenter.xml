@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context="com.andrehaueisen.listadejanot.F_information.mvp.InformationPresenterActivity">
+    tools:context="com.andrehaueisen.listadejanot.f_information.mvp.InformationPresenterActivity">
 
     <android.support.v7.widget.Toolbar
         app:theme="@style/ToolbarStyle"

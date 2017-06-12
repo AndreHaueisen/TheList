@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
-        android:name=".A_application.BaseApplication"
+        android:name=".a_application.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,13 +25,13 @@
                    />
 
         <provider
-            android:name=".C_database.PoliticiansContentProvider"
+            android:name=".c_database.PoliticiansContentProvider"
             android:authorities="com.andrehaueisen.listadejanot.politicians"
             android:exported="false"
             android:syncable="true"/>
 
         <activity
-            android:name=".D_main_list.mvp.MainListPresenterActivity"
+            android:name=".d_main_list.mvp.MainListPresenterActivity"
             android:launchMode="singleInstance"
             android:label="@string/title_activity_main_list">
             <intent-filter>
@@ -40,27 +40,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".E_add_politician.mvp.PoliticianSelectorPresenterActivity"/>
 
-        <activity android:name=".F_information.mvp.InformationPresenterActivity"/>
+        <activity android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
 
-        <activity android:name=".G_login.LoginActivity"/>
+        <activity android:name=".f_information.mvp.InformationPresenterActivity"
+            android:screenOrientation="portrait"/>
 
-
-        <!--<activity android:name="com.facebook.FacebookActivity"
-                  android:configChanges=
-                      "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/facebook_login_protocol_scheme" />
-            </intent-filter>
-        </activity>-->
+        <activity android:name=".g_login.LoginActivity"/>
 
     </application>
 

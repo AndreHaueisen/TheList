@@ -58,15 +58,15 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
 
     //rest interactions
-    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    //compile "com.squareup.retrofit2:retrofit:$retrofit_version"
 
     //JSON Parsing
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    //compile 'com.google.code.gson:gson:2.8.0'
+    //compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //http logging
-    compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+    //compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    //compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     //injection
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -85,8 +85,8 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     //butterknife
-    compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    //compile 'com.jakewharton:butterknife:8.6.0'
+    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
     compile 'jp.wasabeef:recyclerview-animators:2.2.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -97,10 +97,10 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'*/
 
-    compile 'jp.wasabeef:blurry:2.1.1'
+    //compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.github.florent37:expectanim:1.0.3'
 
-    compile 'org.jsoup:jsoup:1.10.2'
+    //compile 'org.jsoup:jsoup:1.10.2'
 
     testCompile 'junit:junit:4.12'
 }

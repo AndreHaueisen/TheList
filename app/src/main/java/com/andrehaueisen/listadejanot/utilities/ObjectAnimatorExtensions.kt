@@ -5,9 +5,9 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.support.v4.content.ContextCompat
 
-fun ObjectAnimator.animateBackgroundToColor(activity: Activity, initialColor: Int, finalColor: Int): ObjectAnimator{
+fun ObjectAnimator.animateBackgroundToColor(activity: Activity, initialColor: Int, finalColor: Int, propertyName: String): ObjectAnimator{
 
-    this.propertyName = "backgroundColor"
+    this.propertyName = propertyName
     this.setIntValues(ContextCompat.getColor(activity, initialColor), ContextCompat.getColor(activity, finalColor))
     this.setEvaluator(ArgbEvaluator())
     this.duration = DEFAULT_ANIMATIONS_DURATION

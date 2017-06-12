@@ -1,6 +1,6 @@
 package com.andrehaueisen.listadejanot.utilities
 
-import com.andrehaueisen.listadejanot.C_database.PoliticiansContract
+import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 
 val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
 val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"

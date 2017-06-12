@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.andrehaueisen.listadejanot.D_main_list.ScrollingActivity">
+      tools:context="com.andrehaueisen.listadejanot.d_main_list.ScrollingActivity">
 
     <item
         android:id="@+id/action_add_politician_to_main_list"

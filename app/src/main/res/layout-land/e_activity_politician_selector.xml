@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context="com.andrehaueisen.listadejanot.E_add_politician.mvp.PoliticianSelectorPresenterActivity">
+    tools:context="com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorPresenterActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/select_politician_toolbar"

@@ -12,7 +12,6 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val moldView = parentView.findViewById(R.id.mold_view)
     val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
@@ -20,8 +19,6 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
             .toBe(Expectations.alpha(1.0f),
                     Expectations.scale(1.5f, 1.5f),
                     Expectations.centerBetweenViews(addVoteCountToggleButton, votesNumberTextView, true, true))
-            .expect(moldView)
-            .toBe(Expectations.alpha(0.5f))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
@@ -46,7 +43,6 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val moldView = parentView.findViewById(R.id.mold_view)
     val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
@@ -58,8 +54,6 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
             .toBe(Expectations.alpha(1.0f),
                     Expectations.scale(1.5f, 1.5f),
                     Expectations.centerBetweenViews(votesNumberTextView, addVoteCountToggleButton, true, true))
-            .expect(moldView)
-            .toBe(Expectations.alpha(1.0f))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
@@ -75,3 +69,18 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
             }
 }
 
+fun ExpectAnim.fadeOutSingleView(view: View){
+    this.expect(view)
+            .toBe(Expectations.alpha(0.0f))
+            .toAnimation()
+            .setDuration(DEFAULT_ANIMATIONS_DURATION)
+            .start()
+}
+
+fun ExpectAnim.fadeInSingleView(view: View){
+    this.expect(view)
+            .toBe(Expectations.alpha(1.0f))
+            .toAnimation()
+            .setDuration(DEFAULT_ANIMATIONS_DURATION)
+            .start()
+}

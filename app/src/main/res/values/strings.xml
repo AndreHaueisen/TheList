@@ -6,7 +6,7 @@
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
     <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>
 
-    <!--D_main_list strings-->
+    <!--d_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
@@ -30,7 +30,7 @@
     <string name="information">Information</string>
     <string name="logout">Logout</string>
 
-    <!--E_politician_selector strings-->
+    <!--e_politician_selector strings-->
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
     <string name="type_politician_name_hint">Politician Name</string>
@@ -41,7 +41,7 @@
     <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
     <string name="missing_votes_to_threshold">%1$d to be condemned</string>
 
-    <!--F_information strings-->
+    <!--f_information strings-->
     <string name="understand_app_motivation">If you want to know more about the app and it\'s motivation I have some words for you</string>
 
     <!--Sync strings-->
