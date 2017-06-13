@@ -19,7 +19,7 @@
 
     <!--e_politician_selector strings-->
     <string name="dialog_title_loading_database">Carregando Políticos</string>
-    <string name="dialog_message_loading_database">Digite o nome do político.</string>
+    <string name="dialog_message_loading_database">Estamos procurando senadores e deputados. Não deixaremos que fujam</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando...</string>
@@ -27,5 +27,9 @@
     <string name="missing_votes_to_threshold">Faltam %1$d votos para sua inelegibilidade</string>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">Se quiser saber mais sobre o app e os links nessa página, tenho algumas palavras para você</string>
+    <string name="understand_app_motivation">1 - Torne o político envolvido em corrupção inelegível\n2 - Quando um total de %1$d pessoas fizerem o mesmo, ele irá para a lista oficial dos inelegíveis\n3 - Nas próximas eleições, não vote em quem está na lista\n4 - Compartilhe</string>
+    <string name="beta_warning">O app está na versão de testes. Mande um email com sugestões e opiniões.</string>
+    <string name="subject_email">Sugestões e opinião</string>
+    <string name="send_email_title">Mande email usando...</string>
+
 </resources>

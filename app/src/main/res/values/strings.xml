@@ -42,7 +42,11 @@
     <string name="missing_votes_to_threshold">%1$d to be condemned</string>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">If you want to know more about the app and it\'s motivation I have some words for you</string>
+    <string name="understand_app_motivation">1 - Condemn the politician\n2 - When %1$d people in total do the same the politician will be added to the condemned list\n3 - In the next elections, don\'t vote on who is on the list\n4 - Share</string>
+    <string name="beta_warning">The app is in beta version. Send me an email to tell me what you think.</string>
+    <string name="contact_email" translatable="false">listadejanot@gmail.com</string>
+    <string name="subject_email">App suggestions</string>
+    <string name="send_email_title">Send email using...</string>
 
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>

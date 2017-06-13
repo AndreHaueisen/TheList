@@ -1,12 +1,11 @@
 package com.andrehaueisen.listadejanot.f_information.mvp
 
-import android.graphics.drawable.AnimatedVectorDrawable
-import android.support.design.widget.FloatingActionButton
+import android.content.Intent
+import android.net.Uri
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.models.PlayerStatus
-import com.andrehaueisen.listadejanot.utilities.animateVectorDrawable
-import kotlinx.android.synthetic.main.activity_information_presenter.*
+import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
+import kotlinx.android.synthetic.main.f_activity_information_presenter.*
 
 
 /**
@@ -14,13 +13,8 @@ import kotlinx.android.synthetic.main.activity_information_presenter.*
  */
 class InformationView(val mPresenterActivity: InformationPresenterActivity) : InformationMvpContract.View {
 
-    private val mPlayPauseAnimation = mPresenterActivity.getDrawable(R.drawable.play_pause_animated_vector) as AnimatedVectorDrawable
-    private val mPausePlayAnimation = mPresenterActivity.getDrawable(R.drawable.pause_play_animated_vector) as AnimatedVectorDrawable
-    private val mPlayAudioFab : FloatingActionButton
-
     init {
-        mPresenterActivity.setContentView(R.layout.activity_information_presenter)
-        mPlayAudioFab = mPresenterActivity.play_on_boarding_audio_fab
+        mPresenterActivity.setContentView(R.layout.f_activity_information_presenter)
     }
 
     override fun setViews() {
@@ -33,37 +27,29 @@ class InformationView(val mPresenterActivity: InformationPresenterActivity) : In
                 supportActionBar?.setDisplayShowTitleEnabled(true)
             }
 
-            fun setOnBoardingAudioButton() {
-                mPlayAudioFab.setImageDrawable(mPlayPauseAnimation)
-                mPlayAudioFab.setOnClickListener { playOnBoardingAudio() }
+            fun setMotivationTextView(){
+                app_motivation_text_view.text = mPresenterActivity.getString(R.string.understand_app_motivation, VOTES_TO_MAIN_LIST_THRESHOLD)
+            }
+
+            fun setEmailTextView() {
+                my_email_text_view.text = getString(R.string.contact_email)
+                my_email_text_view.linksClickable = true
+                my_email_text_view.setOnClickListener {
+                    with(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:${mPresenterActivity.getString(R.string.contact_email)}"))) {
+
+                        putExtra(Intent.EXTRA_EMAIL, mPresenterActivity.getString(R.string.contact_email))
+                        putExtra(Intent.EXTRA_SUBJECT, mPresenterActivity.getString(R.string.subject_email))
+
+                        mPresenterActivity.startActivity(Intent.createChooser(this, mPresenterActivity.getString(R.string.send_email_title)))
+                    }
+                }
             }
 
             setToolbar()
-            setOnBoardingAudioButton()
+            setMotivationTextView()
+            setEmailTextView()
         }
 
-    }
-
-    override fun newPlayerEventReported(playerStatus: PlayerStatus) {
-
-        with(mPlayAudioFab) {
-
-            when (playerStatus) {
-                PlayerStatus.PLAYING -> {
-                    animateVectorDrawable(
-                            mPlayPauseAnimation,
-                            mPausePlayAnimation,
-                            useInitialToFinalFlow = true)
-                }
-
-                PlayerStatus.PAUSED, PlayerStatus.COMPLETE -> {
-                    animateVectorDrawable(
-                            mPlayPauseAnimation,
-                            mPausePlayAnimation,
-                            useInitialToFinalFlow = false)
-                }
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) {

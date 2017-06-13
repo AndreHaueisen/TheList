@@ -21,7 +21,7 @@ class PoliticiansContentProvider : ContentProvider() {
     private val POLITICIANS = 100
     private val POLITICIAN_SPECIFIC = 101
     private val mUriMatcher = buildUriMatcher()
-    
+
     lateinit private var mPoliticiansDbHelper: PoliticianDbHelper
 
     private fun buildUriMatcher(): UriMatcher {

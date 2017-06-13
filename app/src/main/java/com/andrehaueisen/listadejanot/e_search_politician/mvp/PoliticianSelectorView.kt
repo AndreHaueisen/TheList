@@ -19,8 +19,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.R
+import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -144,6 +144,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private fun beginDatabaseLoadingAlertDialog() {
         mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
                 .setCancelable(false)
+                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_janot_24dp))
                 .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
                 .setMessage(mPresenterActivity.getString(R.string.dialog_message_loading_database))
                 .create()
