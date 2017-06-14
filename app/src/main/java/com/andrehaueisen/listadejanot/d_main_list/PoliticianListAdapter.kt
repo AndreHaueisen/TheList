@@ -14,11 +14,11 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
-import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -156,6 +156,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         }
 
         private fun setInitialDataStatus(politician: Politician){
+
             mGlide.load(politician.image)
                     .crossFade()
                     .placeholder(R.drawable.politician_placeholder)

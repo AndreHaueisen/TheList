@@ -44,3 +44,5 @@ val POLITICIANS_COLUMNS_NAME_IMAGE = arrayOf(
         politiciansEntry.COLUMN_NAME,
         politiciansEntry.COLUMN_IMAGE)
 
+val PERMISSION_WRITE_EXTERNAL_STORAGE: Int = 10
+

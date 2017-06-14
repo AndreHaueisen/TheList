@@ -10,8 +10,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="add_vote">Condemn</string>
-    <string name="remove_vote">Absolve</string>
+    <string name="add_vote">Absolve</string>
+    <string name="remove_vote">Condemn</string>
 
     <string name="votes_title">Votes</string>
 

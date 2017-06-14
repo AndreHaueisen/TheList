@@ -2,6 +2,8 @@ package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
@@ -21,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.io.ByteArrayOutputStream
 
 /**
  * Created by andre on 4/21/2017.
@@ -206,7 +209,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     if (mainListDeputado != null) {
                         mainListDeputado.post = Politician.Post.DEPUTADO
                         mainListDeputado.email = deputadoEmail
-                        mainListDeputado.image = deputadoImage
+                        mainListDeputado.image = deputadoImage.resamplePic(70)
                         mCompleteDeputadosMainList.add(mainListDeputado)
                     }
                 }
@@ -219,7 +222,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     if (mainListSenador != null) {
                         mainListSenador.post = Politician.Post.SENADOR
                         mainListSenador.email = senadorEmail
-                        mainListSenador.image = senadorImage
+                        mainListSenador.image = senadorImage.resamplePic(20)
                         mCompleteSenadoresMainList.add(mainListSenador)
                     }
                 }
@@ -234,7 +237,6 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
         return Observable.defer { mFinalMainListDeputadosPublisher }
     }
 
-
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mFirebaseRepository.onDestroy()
@@ -242,5 +244,14 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
 
+    }
+
+    private fun ByteArray.resamplePic(quality: Int): ByteArray {
+
+        val bmp = BitmapFactory.decodeByteArray(this, 0, this.size)
+        val stream = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+
+        return stream.toByteArray()
     }
 }

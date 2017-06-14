@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.util.DisplayMetrics
 import android.view.WindowManager
 
+
 /**
  * Created by andre on 5/17/2017.
  */

@@ -8,8 +8,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.net.Uri
-import android.os.Environment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Gravity
@@ -347,7 +347,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
                     fun getTemporaryFile(): File {
 
-                        val tempFile = File(Environment.getExternalStorageDirectory(), "/tempPoliticiansPic/")
+                        val tempFile = File(mPresenterActivity.filesDir, "politicianTempImage")
                         if (!tempFile.exists()) {
                             tempFile.mkdirs()
                         }
@@ -374,8 +374,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
                         return tempPic
                     }
-
-
                     fun getShareIntent(uri: Uri) = with(Intent()) {
 
                         action = Intent.ACTION_SEND
@@ -389,7 +387,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
                     val tempFile = getTemporaryFile()
                     mTempFilePath = tempFile.path
-                    val uri = Uri.fromFile(tempFile)
+                    val uri = FileProvider.getUriForFile(mPresenterActivity, "${mPresenterActivity.applicationContext.packageName}.fileprovider", getTemporaryFile())
                     mPresenterActivity.startActivity(Intent.createChooser(getShareIntent(uri),
                             mPresenterActivity.getString(R.string.share_title)))
                 }

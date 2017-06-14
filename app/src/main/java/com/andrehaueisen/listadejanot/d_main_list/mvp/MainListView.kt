@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.f_information.mvp.InformationPresenterActivity
-import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
 import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
