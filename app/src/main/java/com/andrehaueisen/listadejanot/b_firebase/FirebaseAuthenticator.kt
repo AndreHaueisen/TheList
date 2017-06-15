@@ -24,12 +24,12 @@ class FirebaseAuthenticator(private val mDatabaseReference: DatabaseReference, v
     fun startLoginFlow(activity: Activity) = activity.startActivityForResult(
             AuthUI.getInstance()
                     .createSignInIntentBuilder()
-                    .setProviders(listOf(
-                            AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                    .setAvailableProviders(listOf(
                             AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                            AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
                             AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build(),
-                            AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                    .setLogo(R.drawable.ic_camara_deputados)
+                            AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                    .setLogo(R.drawable.ic_janot_big)
                     .setTheme(R.style.LogInTheme)
                     .build(), REQUEST_CODE)
 

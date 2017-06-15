@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
@@ -29,8 +29,8 @@ android {
 }
 
 ext {
-    firebase_version = '10.2.0'
-    support_version = '25.3.1'
+    firebase_version = '11.0.1'
+    support_version = '25.4.0'
     retrofit_version = '2.3.0'
     dagger_version = '2.11-rc2'
     okhttp3_version = '3.8.0'
@@ -55,8 +55,10 @@ dependencies {
     compile "com.google.firebase:firebase-database:$firebase_version"
     compile "com.google.firebase:firebase-auth:$firebase_version"
     compile "com.google.firebase:firebase-storage:$firebase_version"
-    compile 'com.firebaseui:firebase-ui-database:1.2.0'
-    compile 'com.firebaseui:firebase-ui-auth:1.2.0'
+    compile 'com.firebaseui:firebase-ui-database:2.0.1'
+    compile 'com.firebaseui:firebase-ui-auth:2.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.twitter.sdk.android:twitter-core:3.0.0'
 
     //rest interactions
     //compile "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -85,10 +87,6 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxkotlin:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
-    //butterknife
-    //compile 'com.jakewharton:butterknife:8.6.0'
-    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-
     compile 'jp.wasabeef:recyclerview-animators:2.2.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -98,10 +96,7 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'*/
 
-    //compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.github.florent37:expectanim:1.0.3'
-
-    //compile 'org.jsoup:jsoup:1.10.2'
 
     testCompile 'junit:junit:4.12'
 }
