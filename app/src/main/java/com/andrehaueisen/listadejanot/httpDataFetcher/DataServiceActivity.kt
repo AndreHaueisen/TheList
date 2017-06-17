@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 class DataServiceActivity : AppCompatActivity(){
 
-    val LOG = DataServiceActivity::class.java.simpleName
+    private val LOG = DataServiceActivity::class.java.simpleName
 
     @Inject
     lateinit var mDataService : DataService

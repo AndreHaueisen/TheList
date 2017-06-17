@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import org.jsoup.helper.HttpConnection
 
 /**
  * Created by andre on 4/15/2017.
@@ -20,7 +21,7 @@ class HttpDataFetcherModule{
     @ApplicationScope
     @Provides
     fun provideJsoup() : Connection{
-        return Jsoup.connect(BASE_URL).timeout(20*1000).method(Connection.Method.GET)
+        return Jsoup.connect(BASE_URL).userAgent(HttpConnection.DEFAULT_UA).timeout(20*1000).method(Connection.Method.GET)
     }
 
     @ApplicationScope

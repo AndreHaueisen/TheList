@@ -4,6 +4,7 @@ package com.andrehaueisen.listadejanot.httpDataFetcher
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.util.Patterns
@@ -15,6 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import org.jsoup.Connection
 import org.jsoup.HttpStatusException
+import org.jsoup.helper.HttpConnection
 import java.io.ByteArrayOutputStream
 import java.io.EOFException
 import java.io.IOException
@@ -63,7 +65,8 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
             if (politicianUri.authority == "www25.senado.leg.br") {
 
                 try {
-                    Observable.fromCallable { mJsoupConnection.url(politicianUri.toString()).execute() }
+                    Thread.sleep(200)
+                    Observable.fromCallable { mJsoupConnection.url(politicianUri.toString()).userAgent(HttpConnection.DEFAULT_UA).execute() }
                             .flatMap { response ->
                                 val document = response.parse()
                                 val personalInfoBox = document.getElementsByClass("body")[0]
@@ -92,7 +95,8 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
             } else {
 
                 try {
-                    Observable.fromCallable { mJsoupConnection.url(politicianUri.toString()).execute() }
+                    Thread.sleep(200)
+                    Observable.fromCallable { mJsoupConnection.url(politicianUri.toString()).userAgent(HttpConnection.DEFAULT_UA).execute() }
                             .flatMap { response ->
                                 val document = response.parse()
                                 val personalInfoBox = document.getElementById("content")
@@ -161,22 +165,30 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
     @Throws(IOException::class)
     private fun getImageBytes(imageUrl: String, post: Politician.Post) : ByteArray{
 
-        val bitmap : Bitmap
+        val imageByteArray : ByteArray
                                                                                         //skip cache on disk since we are persisting it to the database
-        val glide = Glide.with(context).load(imageUrl).asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+        val glide = Glide.with(context).load(imageUrl).asBitmap().toBytes().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
 
         if(post == Politician.Post.DEPUTADO) {
-            bitmap = glide.into(150, 195).get()
+            imageByteArray = glide.into(114, 152).get()
+            return imageByteArray.resamplePic(70)
 
         }else{
-            bitmap = glide.into(300, 360).get()
+            imageByteArray = glide.into(480, 600).get()
+            return imageByteArray.resamplePic(30)
         }
 
-        val byteArrayOS = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOS)
-
-        return byteArrayOS.toByteArray()
     }
+
+    private fun ByteArray.resamplePic(quality: Int): ByteArray {
+
+        val bmp = BitmapFactory.decodeByteArray(this, 0, this.size)
+        val stream = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+
+        return stream.toByteArray()
+    }
+
 
     fun String.toCamelCase(): String {
         var result = ""
