@@ -60,17 +60,6 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.twitter.sdk.android:twitter-core:3.0.0'
 
-    //rest interactions
-    //compile "com.squareup.retrofit2:retrofit:$retrofit_version"
-
-    //JSON Parsing
-    //compile 'com.google.code.gson:gson:2.8.0'
-    //compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
-    //http logging
-    //compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    //compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
-
     //injection
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.google.dagger:dagger:$dagger_version"
@@ -82,7 +71,6 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.2'
 
     //RxJava
-    //compile 'io.reactivex.rxjava2:rxjava:2.0.7'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
@@ -90,11 +78,6 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-
-    //kotlin parcelable
-    /*compile 'nz.bradcampbell:paperparcel:2.0.1'
-    compile 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
-    kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'*/
 
     compile 'com.github.florent37:expectanim:1.0.3'
 

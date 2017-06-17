@@ -46,7 +46,7 @@
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - Condemn the politician\n2 - When %1$d people in total do the same the politician will be added to the condemned list\n3 - In the next elections, don\'t vote on who is on the list\n4 - Share</string>
+    <string name="understand_app_motivation">1 - Politician is on the news for corruption\n2 - Condemn the politician\n3 - When %1$d people in total do the same the politician will be added to the condemned list\n4 - In the next elections, don\'t vote on who is on the list\n5 - Share</string>
     <string name="beta_warning">The app is in beta version. Send me an email to tell me what you think.</string>
     <string name="contact_email" translatable="false">listadejanot@gmail.com</string>
     <string name="subject_email">App suggestions</string>

@@ -31,8 +31,8 @@
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - Torne o político envolvido em corrupção inelegível\n2 - Quando um total de %1$d pessoas fizerem o mesmo, ele irá para a lista oficial dos inelegíveis\n3 - Nas próximas eleições, não vote em quem está na lista\n4 - Compartilhe</string>
-    <string name="beta_warning">O app está na versão de testes. Mande um email com sugestões e opiniões.</string>
+    <string name="understand_app_motivation">1 - O político apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas fizerem o mesmo, ele irá para a lista oficial dos inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="beta_warning">Adicionei 4 senadores e 3 deputados que apareceram na lista de Janot. O restante da lista é você quem vai ajudar a compor.\nO app está na versão de testes. Mande um email com sugestões e opiniões.</string>
     <string name="subject_email">Sugestões e opinião</string>
     <string name="send_email_title">Mande email usando…</string>
 
