@@ -41,7 +41,8 @@
 
         <activity android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
 
-        <activity android:name=".f_information.mvp.InformationPresenterActivity"/>
+        <activity android:name=".f_information.mvp.InformationPresenterActivity"
+            android:theme="@style/DarkBackground"/>
 
         <activity android:name=".g_login.LoginActivity"/>
 

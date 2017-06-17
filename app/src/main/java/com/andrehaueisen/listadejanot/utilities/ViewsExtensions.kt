@@ -1,7 +1,10 @@
 package com.andrehaueisen.listadejanot.utilities
 
+import android.content.res.Resources
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.widget.ImageView
+import android.widget.TextView
+import com.andrehaueisen.listadejanot.R
 
 fun ImageView.animateVectorDrawable(initialAnimation: AnimatedVectorDrawable,
                                     finalAnimation: AnimatedVectorDrawable,
@@ -24,4 +27,14 @@ fun ImageView.animateVectorDrawable(initialAnimation: AnimatedVectorDrawable,
     }
 
 
+}
+
+fun TextView.setMissingVotesText(resources: Resources, voteNumber: Long){
+
+    val missingVoteNumber = (VOTES_TO_MAIN_LIST_THRESHOLD - voteNumber).toInt()
+    if(missingVoteNumber > 0){
+        text = resources.getQuantityString(R.plurals.missing_votes_to_threshold, missingVoteNumber, missingVoteNumber)
+    }else{
+        text = resources.getString(R.string.politician_already_banned)
+    }
 }

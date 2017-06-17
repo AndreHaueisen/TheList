@@ -37,20 +37,30 @@
     <string name="plus_one" translatable="false">+1</string>
     <string name="minus_one" translatable="false">-1</string>
     <string name="share">Share</string>
-    <string name="share_title">Ask for help using...</string>
+    <string name="share_title">Ask for help using…</string>
     <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
-    <string name="missing_votes_to_threshold">%1$d to be condemned</string>
+    <string name="politician_already_banned">This politician is banned</string>
+    <plurals name="missing_votes_to_threshold">
+        <item quantity="one">%1$d vote to be condemned</item>
+        <item quantity="other">%1$d votes to be condemned</item>
+    </plurals>
 
     <!--f_information strings-->
     <string name="understand_app_motivation">1 - Condemn the politician\n2 - When %1$d people in total do the same the politician will be added to the condemned list\n3 - In the next elections, don\'t vote on who is on the list\n4 - Share</string>
     <string name="beta_warning">The app is in beta version. Send me an email to tell me what you think.</string>
     <string name="contact_email" translatable="false">listadejanot@gmail.com</string>
     <string name="subject_email">App suggestions</string>
-    <string name="send_email_title">Send email using...</string>
+    <string name="send_email_title">Send email using…</string>
 
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>
     <string name="sync_account_type" translatable="false">com.andrehaueisen.listadejanot.account</string>
+
+    <!--Accessibility strings-->
+    <string name="description_erase_search_text">Erase search text</string>
+    <string name="description_politician_image">Politician %1$s image</string>
+    <string name="description_badge_honest_politician">Honest badge</string>
+    <string name="description_badge_thief_politician">Thief badge</string>
 
 
 </resources>

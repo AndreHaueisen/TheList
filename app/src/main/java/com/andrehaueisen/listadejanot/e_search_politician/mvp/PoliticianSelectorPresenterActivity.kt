@@ -53,10 +53,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .politicianSelectorModule(PoliticianSelectorModule(
-                        supportLoaderManager,
-                        senadoresMainList,
-                        deputadosMainList))
+                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager))
                 .build()
                 .inject(this)
 

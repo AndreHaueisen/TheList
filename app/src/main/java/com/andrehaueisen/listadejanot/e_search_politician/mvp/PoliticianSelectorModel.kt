@@ -26,9 +26,7 @@ import io.reactivex.subjects.PublishSubject
  */
 class PoliticianSelectorModel(val mContext: Context,
                               val mLoaderManager: LoaderManager,
-                              val mFirebaseRepository: FirebaseRepository,
-                              val mSenadoresMainList: ArrayList<Politician>,
-                              val mDeputadosMainList: ArrayList<Politician>) :
+                              val mFirebaseRepository: FirebaseRepository) :
         PoliticianSelectorMvpContract.Model,
         LoaderManager.LoaderCallbacks<Cursor> {
 

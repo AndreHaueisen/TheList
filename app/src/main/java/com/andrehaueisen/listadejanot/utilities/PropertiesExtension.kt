@@ -23,7 +23,7 @@ val CHILD_LOCATION_VOTES_NUMBER = "votesNumber"
 val CHILD_LOCATION_CONDEMNED_BY = "condemnedBy"
 val CHILD_LOCATION_CONDEMNATIONS = "condemnations"
 
-val VOTES_TO_MAIN_LIST_THRESHOLD : Long = 10
+val VOTES_TO_MAIN_LIST_THRESHOLD : Long = 500
 val DEFAULT_ANIMATIONS_DURATION : Long = 1000
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()

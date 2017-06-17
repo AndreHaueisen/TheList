@@ -209,7 +209,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     if (mainListDeputado != null) {
                         mainListDeputado.post = Politician.Post.DEPUTADO
                         mainListDeputado.email = deputadoEmail
-                        mainListDeputado.image = deputadoImage.resamplePic(70)
+                        mainListDeputado.image = deputadoImage
                         mCompleteDeputadosMainList.add(mainListDeputado)
                     }
                 }
@@ -222,7 +222,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     if (mainListSenador != null) {
                         mainListSenador.post = Politician.Post.SENADOR
                         mainListSenador.email = senadorEmail
-                        mainListSenador.image = senadorImage.resamplePic(20)
+                        mainListSenador.image = senadorImage
                         mCompleteSenadoresMainList.add(mainListSenador)
                     }
                 }

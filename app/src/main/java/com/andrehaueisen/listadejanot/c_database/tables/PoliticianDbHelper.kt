@@ -27,7 +27,7 @@ class PoliticianDbHelper(val context: Context) : SQLiteOpenHelper(context, "poli
             this.readableDatabase
             this.close()
             try {
-                //Copy the database from assests
+                //Copy the database from assets
                 copyDataBase()
                 Log.i("PoliticianDbHelper", "createDatabase database created")
             } catch (mIOException: IOException) {
@@ -66,9 +66,7 @@ class PoliticianDbHelper(val context: Context) : SQLiteOpenHelper(context, "poli
     @Throws(SQLException::class)
     fun openDataBase(): Boolean {
         val mPath = DB_PATH + DB_NAME
-        //Log.v("mPath", mPath);
         mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY)
-        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
         return mDataBase != null
     }
 

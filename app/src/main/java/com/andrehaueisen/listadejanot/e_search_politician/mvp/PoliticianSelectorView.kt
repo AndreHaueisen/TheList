@@ -206,12 +206,11 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .bitmapTransform(RoundedCornersTransformation(this, GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(politician_image_view)
-
-            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
+            politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
 
             post_text_view.text = politician.post.name
             name_text_view.text = politician.name
-            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
             email_text_view.text = politician.email
         }
@@ -257,8 +256,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             constraint_layout.setBackgroundColor( ContextCompat.getColor(this, R.color.colorAccentDark) )
             mold_view.setBackgroundColor( ContextCompat.getColor(this, R.color.colorAccent) )
 
-            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
-            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
             add_to_vote_count_toggle_button.isChecked = true
             badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
@@ -266,6 +264,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = true)
+            badge_image_view.contentDescription = getString(R.string.description_badge_thief_politician)
         }
     }
 
@@ -275,8 +274,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             constraint_layout.setBackgroundColor( ContextCompat.getColor(this, R.color.colorPrimaryDark) )
             mold_view.setBackgroundColor( ContextCompat.getColor(this, R.color.colorPrimary) )
 
-            val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
-            missing_votes_text_view.text = getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+            missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
             add_to_vote_count_toggle_button.isChecked = false
             badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
@@ -284,6 +282,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = false)
+            badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
         }
     }
 
@@ -308,6 +307,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = true)
+            badge_image_view.contentDescription = getString(R.string.description_badge_thief_politician)
 
             ExpectAnim().plusOneCondemnAnimation(window.decorView.rootView, politician)
         }
@@ -328,6 +328,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = false)
+            badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
             ExpectAnim().minusOneAbsolveAnimation(window.decorView.rootView, politician)
         }
     }

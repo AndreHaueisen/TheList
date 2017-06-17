@@ -132,6 +132,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                         mPoliticianThiefAnimation,
                         mThiefPoliticianAnimation,
                         useInitialToFinalFlow = true)
+                mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
                 ExpectAnim()
                         .expect(mPlusOneAnimationTextView)
                         .toBe(sameCenterAs(mVotesNumberTextView, true, true))
@@ -146,6 +147,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                         mPoliticianThiefAnimation,
                         mThiefPoliticianAnimation,
                         useInitialToFinalFlow = false)
+                mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_honest_politician)
             }
 
             ExpectAnim()
@@ -162,6 +164,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     .placeholder(R.drawable.politician_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(mPoliticianImageView)
+            mPoliticianImageView.contentDescription = activity.getString(R.string.description_politician_image, politician.name)
             mNameTextView.text = politician.name
             mVotesNumberTextView.text = politician.votesNumber.toString()
             mEmailTextView.text = politician.email
@@ -184,6 +187,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = false)
+            mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_honest_politician)
         }
 
         fun initiateCondemnAnimations(politician: Politician) {
@@ -202,6 +206,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = true)
+            mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
         }
     }
 }

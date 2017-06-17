@@ -38,7 +38,8 @@
                 android:layout_marginTop="12dp"
                 android:background="#fff"
                 android:elevation="3dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/name_text_view"
@@ -102,7 +103,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mold_view"
             tools:layout_height="48dp"
-            tools:layout_width="48dp"/>
+            tools:layout_width="48dp"
+            tools:ignore="ContentDescription"/>
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"

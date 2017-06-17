@@ -2,9 +2,7 @@ package com.andrehaueisen.listadejanot.b_firebase
 
 import android.app.Activity
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.LOCATION_UID_MAPPINGS
-import com.andrehaueisen.listadejanot.utilities.LOCATION_USERS_DATA
 import com.andrehaueisen.listadejanot.utilities.encodeEmail
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -46,8 +44,4 @@ class FirebaseAuthenticator(private val mDatabaseReference: DatabaseReference, v
         mFirebaseAuth.signOut()
     }
 
-    fun saveUserData(userEmail: String, user: User) {
-        val database = mDatabaseReference.child(LOCATION_USERS_DATA).child(userEmail)
-        database.setValue(user)
-    }
 }

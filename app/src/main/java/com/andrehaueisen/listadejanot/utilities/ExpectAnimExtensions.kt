@@ -12,7 +12,6 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
     this.expect(plusOneTextView)
@@ -33,7 +32,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                         .start()
                         .setEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
-                            missingVotesTextView?.text = parentView.resources.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+                            missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
                         }
             }
 }
@@ -43,12 +42,11 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val votesMissingToThreshold = VOTES_TO_MAIN_LIST_THRESHOLD - politician.votesNumber
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
     this.setStartListener {
         votesNumberTextView.text = politician.votesNumber.toString()
-        missingVotesTextView?.text = parentView.resources.getString(R.string.missing_votes_to_threshold, votesMissingToThreshold)
+        missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
     }
             .expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
