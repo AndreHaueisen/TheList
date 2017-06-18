@@ -55,7 +55,7 @@ class AutoCompletionAdapter(mContext: Context,
     }
 
     inner class PoliticiansFilter : Filter() {
-        
+
         override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             val results = FilterResults()
