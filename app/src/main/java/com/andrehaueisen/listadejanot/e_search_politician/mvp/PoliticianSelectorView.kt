@@ -19,6 +19,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.models.Politician
@@ -287,8 +288,15 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     }
 
     fun setVoteButtonClickListener(politician: Politician) {
-        mPresenterActivity.add_to_vote_count_toggle_button.setOnClickListener {
-            mPresenterActivity.updatePoliticianVote(politician, this)
+        with(mPresenterActivity) {
+            add_to_vote_count_toggle_button.setOnClickListener {
+                if (isConnectedToInternet()) {
+                    updatePoliticianVote(politician, this@PoliticianSelectorView)
+                } else {
+                    Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_SHORT).show()
+                    add_to_vote_count_toggle_button.isChecked = !add_to_vote_count_toggle_button.isChecked
+                }
+            }
         }
     }
 

@@ -2,16 +2,16 @@ package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.R
+import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
+import com.andrehaueisen.listadejanot.utilities.getAppropriateLayoutManager
 
 /**
  * Created by andre on 4/30/2017.
@@ -38,10 +38,9 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView{
         mDeputadosRecyclerView = view.findViewById(R.id.deputados_recycler_view) as RecyclerView
         mDeputadosRecyclerView.setHasFixedSize(true)
 
-        val layoutManager = LinearLayoutManager(context)
         val deputadosAdapter = PoliticianListAdapter(activity, mDeputadosList)
 
-        mDeputadosRecyclerView.layoutManager = layoutManager
+        mDeputadosRecyclerView.layoutManager = context.getAppropriateLayoutManager()
         mDeputadosRecyclerView.adapter = deputadosAdapter
     }
 

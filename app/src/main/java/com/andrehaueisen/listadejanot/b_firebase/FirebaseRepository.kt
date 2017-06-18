@@ -356,7 +356,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     }
 
-    //TODO put these functions on Firebase functions when possible
+
     private fun addSenadorOnMainList(senador: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail())
@@ -369,8 +369,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     private fun addSenadorOnPreList(senador: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email.encodeEmail())
-        database.setValue(senador.toSimpleMap(), ({ error, reference ->
-            //TODO notify completion or error
+        database.setValue(senador.toSimpleMap(), ({ _, _ ->
 
         }))
 
@@ -388,8 +387,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     private fun addDeputadoOnPreList(deputado: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email.encodeEmail())
-        database.setValue(deputado.toSimpleMap(), ({ error, reference ->
-            //TODO notify completion or error
+        database.setValue(deputado.toSimpleMap(), ({ _, _ ->
 
         }))
 
@@ -444,12 +442,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         deputados.filter { it.post == Politician.Post.DEPUTADO }
                 .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap()) }
 
-        database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
-
-            override fun onComplete(error: DatabaseError?, reference: DatabaseReference?) {
-                //TODO notify completion or error
-            }
-        })
+        database.updateChildren(mapSenadores, {_, _ -> })
     }
 
     fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {

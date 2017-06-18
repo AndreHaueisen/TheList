@@ -55,19 +55,14 @@ class AutoCompletionAdapter(mContext: Context,
     }
 
     inner class PoliticiansFilter : Filter() {
-        //TODO solve java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification
+        
         override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             val results = FilterResults()
 
-            if (mNonReliablePoliticiansList.size != mOriginalPoliticianList.size) {
-                mNonReliablePoliticiansList.clear()
-                mNonReliablePoliticiansList.addAll(mOriginalPoliticianList)
-            }
-
             val filteredConstraint = constraint?.toString()?.stripAccents()
             if (filteredConstraint != null) {
-                val filteredList = mNonReliablePoliticiansList.filter { it.name.stripAccents().startsWith(filteredConstraint, true) }
+                val filteredList = mOriginalPoliticianList.filter { it.name.stripAccents().startsWith(filteredConstraint, true) }
                 results.values = filteredList
                 results.count = filteredList.size
             }

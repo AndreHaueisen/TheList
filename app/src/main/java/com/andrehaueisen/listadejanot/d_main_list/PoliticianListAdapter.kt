@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ToggleButton
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
@@ -102,19 +103,29 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             setInitialVisualStatus(politician)
             setInitialDataStatus(politician)
 
-            mVoteButton.setOnClickListener {
-                if(mFirebaseAuthenticator.isUserLoggedIn()) {
+            fun initiateVoteProcess(){
+                val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+                if (politician.post == Politician.Post.DEPUTADO) {
+                    mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                } else {
+                    mFirebaseRepository.updateSenadorVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                }
+            }
 
-                    val userEmail = mFirebaseAuthenticator.getUserEmail()!!
-                    if (politician.post == Politician.Post.DEPUTADO) {
-                        mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+            mVoteButton.setOnClickListener {
+                if (activity.isConnectedToInternet()) {
+
+                    if (mFirebaseAuthenticator.isUserLoggedIn()) {
+                        initiateVoteProcess()
+
                     } else {
-                        mFirebaseRepository.updateSenadorVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                        activity.startNewActivity(LoginActivity::class.java)
+                        activity.finish()
                     }
 
-                } else {
-                    activity.startNewActivity(LoginActivity::class.java)
-                    activity.finish()
+                }else{
+                    Toast.makeText(activity, activity.getString(R.string.no_network), Toast.LENGTH_SHORT).show()
+                    mVoteButton.isChecked = !mVoteButton.isChecked
                 }
             }
         }

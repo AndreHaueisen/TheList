@@ -52,6 +52,10 @@
     <string name="subject_email">App suggestions</string>
     <string name="send_email_title">Send email using…</string>
 
+    <!-- g_login strings-->
+    <string name="no_network">No network connection</string>
+    <string name="unknown_error">Something went wrong. Try again</string>
+
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>
     <string name="sync_account_type" translatable="false">com.andrehaueisen.listadejanot.account</string>

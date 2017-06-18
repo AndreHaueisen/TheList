@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListPresenterActivity
@@ -41,30 +42,15 @@ class LoginActivity : AppCompatActivity() {
         when (idpResponse?.errorCode) {
 
             ErrorCodes.NO_NETWORK -> {
-                //TODO handle errors here
-                /*if (response == null) {
-                    // User pressed back button
-                    showSnackbar(R.string.sign_in_cancelled);
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    showSnackbar(R.string.no_internet_connection);
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    showSnackbar(R.string.unknown_error);
-                    return;
-                }
-            }
-
-            showSnackbar(R.string.unknown_sign_in_response);*/
-                Toast.makeText(this, "No network", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show()
+                startNewActivity(MainListPresenterActivity::class.java)
+                finish()
             }
 
             ErrorCodes.UNKNOWN_ERROR -> {
-                Toast.makeText(this, "Unknown error", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_LONG).show()
+                startNewActivity(MainListPresenterActivity::class.java)
+                finish()
             }
 
             else -> {

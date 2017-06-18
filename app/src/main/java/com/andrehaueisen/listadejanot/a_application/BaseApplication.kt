@@ -26,8 +26,11 @@ class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
 
+        val firebaseInstance = FirebaseDatabase.getInstance()
+        firebaseInstance.setPersistenceEnabled(true)
+
         mComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(FirebaseDatabase.getInstance().reference, FirebaseAuth.getInstance()))
+                .applicationModule(ApplicationModule(firebaseInstance.reference, FirebaseAuth.getInstance()))
                 .contextModule(ContextModule(this))
                 .build()
 
