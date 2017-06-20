@@ -13,12 +13,12 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.ToggleButton
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListPresenterActivity
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
@@ -124,7 +124,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     }
 
                 }else{
-                    Toast.makeText(activity, activity.getString(R.string.no_network), Toast.LENGTH_SHORT).show()
+                    activity.showToast(activity.getString(R.string.no_network))
                     mVoteButton.isChecked = !mVoteButton.isChecked
                 }
             }
@@ -218,6 +218,27 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = true)
             mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
+        }
+
+        fun notifyPoliticianAddedToMainList(email: String){
+            if(politicianList.indexOfFirst { listPolitician -> listPolitician.email == email } == -1){
+                (activity as MainListPresenterActivity).subscribeToModel()
+            }
+        }
+
+        fun notifyPoliticianRemovedFromMainList(removedPolitician: Politician){
+
+            politicianList
+                    .indexOfFirst { listPolitician -> listPolitician.email == removedPolitician.email }
+                    .also { index -> if(index != -1) {
+                        val politician = politicianList[index]
+                        activity.showToast(activity.getString(R.string.absolved_politician, politician.name))
+
+                        politicianList.removeAt(index)
+                        notifyItemRemoved(index)
+
+                    } }
+
         }
     }
 }

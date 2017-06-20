@@ -19,12 +19,22 @@ val LOCATION_SENADORES_MAIN_LIST = "Senadores_main_list"
 val LOCATION_DEPUTADOS_PRE_LIST = "Deputados_pre_list"
 val LOCATION_SENADORES_PRE_LIST = "Senadores_pre_list"
 val LOCATION_USERS_CONDEMNATIONS = "Users_condemnations"
+val CHILD_LOCATION_IS_ON_MAIN_LIST = "isOnMainList"
 val CHILD_LOCATION_VOTES_NUMBER = "votesNumber"
 val CHILD_LOCATION_CONDEMNED_BY = "condemnedBy"
 val CHILD_LOCATION_CONDEMNATIONS = "condemnations"
 
-val VOTES_TO_MAIN_LIST_THRESHOLD : Long = 500
+val VOTES_TO_MAIN_LIST_THRESHOLD : Long = 2
 val DEFAULT_ANIMATIONS_DURATION : Long = 1000
+
+val DEFAULT_POLITICIANS_MAIN_LIST = listOf(
+        "dep.andressanchez@camara.leg.br",
+        "dep.luciovieiralima@camara.leg.br",
+        "dep.rodrigomaia@camara.leg.br",
+        "edison.lobao@senador.leg.br",
+        "lindbergh.farias@senador.leg.br",
+        "renan.calheiros@senador.leg.br",
+        "romero.juca@senador.leg.br")
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 

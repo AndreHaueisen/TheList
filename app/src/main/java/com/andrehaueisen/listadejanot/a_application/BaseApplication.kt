@@ -26,11 +26,15 @@ class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
 
+        //TODO search about firebase persistence
         val firebaseInstance = FirebaseDatabase.getInstance()
-        firebaseInstance.setPersistenceEnabled(true)
+        //firebaseInstance.setPersistenceEnabled(true)
+
+        val firebaseReference = firebaseInstance.reference
+        //firebaseReference.keepSynced(true)
 
         mComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(firebaseInstance.reference, FirebaseAuth.getInstance()))
+                .applicationModule(ApplicationModule(firebaseReference, FirebaseAuth.getInstance()))
                 .contextModule(ContextModule(this))
                 .build()
 

@@ -3,12 +3,12 @@ package com.andrehaueisen.listadejanot.g_login
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListPresenterActivity
 import com.andrehaueisen.listadejanot.g_login.dagger.DaggerLoginActivityComponent
+import com.andrehaueisen.listadejanot.utilities.showToast
 import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -42,13 +42,13 @@ class LoginActivity : AppCompatActivity() {
         when (idpResponse?.errorCode) {
 
             ErrorCodes.NO_NETWORK -> {
-                Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show()
+                showToast(getString(R.string.no_network))
                 startNewActivity(MainListPresenterActivity::class.java)
                 finish()
             }
 
             ErrorCodes.UNKNOWN_ERROR -> {
-                Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_LONG).show()
+                showToast(getString(R.string.unknown_error))
                 startNewActivity(MainListPresenterActivity::class.java)
                 finish()
             }

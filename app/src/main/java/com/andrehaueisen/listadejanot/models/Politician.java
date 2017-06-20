@@ -28,6 +28,7 @@ public class Politician implements Parcelable {
     private String name;
     private long votesNumber;
     private ArrayList<String> condemnedBy = new ArrayList<>();
+    private boolean isOnMainList;
 
 
     public enum Post implements Parcelable {
@@ -106,6 +107,7 @@ public class Politician implements Parcelable {
         votesNumber = in.readLong();
         condemnedBy = in.createStringArrayList();
         image = in.createByteArray();
+        isOnMainList = in.readByte() != 0x00;
     }
 
     public Post getPost() {
@@ -164,17 +166,28 @@ public class Politician implements Parcelable {
         this.condemnedBy = condemnedBy;
     }
 
+    public boolean getIsOnMainList() {
+        return isOnMainList;
+    }
+
+    public void setIsOnMainList(boolean onMainList) {
+        isOnMainList = onMainList;
+    }
+
     @Override
     public String toString() {
         return name;
     }
 
-    public Map<String, Object> toSimpleMap() {
+    public Map<String, Object> toSimpleMap(Boolean isDataGoingToPreList) {
 
         Map<String, Object> simplePoliticianMap = new HashMap<>();
         simplePoliticianMap.put("name", name);
         simplePoliticianMap.put("votesNumber", votesNumber);
         simplePoliticianMap.put("condemnedBy", condemnedBy);
+        if(isDataGoingToPreList) {
+            simplePoliticianMap.put("isOnMainList", isOnMainList);
+        }
 
         return simplePoliticianMap;
     }
@@ -188,6 +201,7 @@ public class Politician implements Parcelable {
         dest.writeLong(votesNumber);
         dest.writeStringList(condemnedBy);
         dest.writeByteArray(image);
+        dest.writeByte((byte) (isOnMainList ? 0x01 : 0x00));
     }
 
     @Override

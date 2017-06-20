@@ -30,6 +30,8 @@
     <string name="information">Information</string>
     <string name="logout">Logout</string>
 
+    <string name="absolved_politician">%1$s deserves a chance</string>
+
     <!--e_politician_selector strings-->
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>

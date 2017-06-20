@@ -7,7 +7,7 @@ import android.net.ConnectivityManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-
+import android.widget.Toast
 
 
 fun <T: Activity> Activity.startNewActivity(classToInit: Class<T>){
@@ -48,4 +48,8 @@ fun Context.isConnectedToInternet(): Boolean{
     val activeNetwork = connectivityManager.activeNetworkInfo
     return (activeNetwork != null && activeNetwork.isConnectedOrConnecting)
 
+}
+
+fun Context.showToast(message: String){
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
