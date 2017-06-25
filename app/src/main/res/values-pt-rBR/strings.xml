@@ -41,6 +41,13 @@
     <string name="no_network">Sem internet</string>
     <string name="unknown_error">Algo deu errado. Tente novamente</string>
 
+    <!--h_user_vote_list strings-->
+    <string name="your_votes">Seus votos</string>
+    <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
+    <string name="small_caps_vote_title">votes</string>
+    <string name="no_one_banned_yet">Você não votou em ningúem ainda</string>
+    <string name="banned">Inelegível</string>
+
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>
     <string name="description_politician_image">Imagem do político %1$s</string>

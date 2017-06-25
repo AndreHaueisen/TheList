@@ -21,6 +21,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
+import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -61,7 +62,9 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     override fun setViews(isSavedState: Boolean) {
         setToolbar()
+        setVoteListFAB()
         setViewsInitialState()
+
         if (isSavedState) {
             setAutoCompleteTextView()
             if (mPresenterActivity.getSinglePolitician() != null) {
@@ -79,6 +82,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             val toolbar = select_politician_toolbar
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
+    }
+
+    private fun setVoteListFAB(){
+        mPresenterActivity.vote_list_fab.setOnClickListener {
+            mPresenterActivity.startNewActivity(UserVoteListPresenterActivity::class.java)
         }
     }
 

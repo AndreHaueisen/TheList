@@ -45,10 +45,10 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:contentDescription="@string/description_erase_search_text"
                 android:minHeight="24dp"
                 android:minWidth="24dp"
-                android:src="@drawable/ic_close_28dp"
-                android:contentDescription="@string/description_erase_search_text"/>
+                android:src="@drawable/ic_close_28dp"/>
 
         </LinearLayout>
 
@@ -96,10 +96,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
+            app:layout_constraintHorizontal_bias="0.519"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.519"
             tools:ignore="ContentDescription"/>
 
         <TextView
@@ -158,14 +158,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/mold_view"
             app:layout_constraintLeft_toRightOf="@+id/textView"
+            app:layout_constraintRight_toLeftOf="@+id/vote_list_fab"
             app:layout_constraintTop_toTopOf="@+id/mold_view"
             app:layout_constraintVertical_bias="0.523"
             tools:text="110.110"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/vote_list_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_view_list_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
+            app:layout_constraintLeft_toLeftOf="@+id/mold_view"
+            app:layout_constraintRight_toRightOf="@+id/mold_view"
+            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
 
         <ImageView
             android:id="@+id/badge_image_view"
@@ -175,9 +187,9 @@
             android:layout_marginEnd="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
             app:layout_constraintRight_toRightOf="@+id/politician_image_view"
+            tools:ignore="ContentDescription"
             tools:layout_height="48dp"
-            tools:layout_width="48dp"
-            tools:ignore="ContentDescription"/>
+            tools:layout_width="48dp"/>
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"

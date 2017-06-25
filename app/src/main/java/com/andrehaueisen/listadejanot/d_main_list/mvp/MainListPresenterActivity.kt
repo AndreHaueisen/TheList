@@ -71,6 +71,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
         }
     }
+
     private val mSenadoresMainListObserver = object : Observer<ArrayList<Politician>>{
         override fun onSubscribe(disposable: Disposable?) {
             mCompositeDisposable.add(disposable)

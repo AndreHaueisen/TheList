@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 
 
-fun <T: Activity> Activity.startNewActivity(classToInit: Class<T>){
+fun <T: Activity> Context.startNewActivity(classToInit: Class<T>){
     val intent = Intent(this, classToInit)
     this.startActivity(intent)
 }

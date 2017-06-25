@@ -106,9 +106,9 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             fun initiateVoteProcess(){
                 val userEmail = mFirebaseAuthenticator.getUserEmail()!!
                 if (politician.post == Politician.Post.DEPUTADO) {
-                    mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                    mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
                 } else {
-                    mFirebaseRepository.updateSenadorVoteOnBothLists(politician, userEmail, this@PoliticianHolder, null)
+                    mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
                 }
             }
 

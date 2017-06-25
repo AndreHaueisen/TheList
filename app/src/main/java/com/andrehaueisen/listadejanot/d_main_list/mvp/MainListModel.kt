@@ -2,8 +2,6 @@ package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
@@ -23,7 +21,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.io.ByteArrayOutputStream
 
 /**
  * Created by andre on 4/21/2017.
@@ -79,7 +76,6 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
     private var mListCounter = 0
 
     init {
-
         mOnListsReadyPublisher
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -244,14 +240,5 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
 
-    }
-
-    private fun ByteArray.resamplePic(quality: Int): ByteArray {
-
-        val bmp = BitmapFactory.decodeByteArray(this, 0, this.size)
-        val stream = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.JPEG, quality, stream)
-
-        return stream.toByteArray()
     }
 }

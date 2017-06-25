@@ -4,6 +4,7 @@ import android.util.Log
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorMvpContract
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.google.firebase.database.*
 import io.reactivex.subjects.PublishSubject
@@ -19,6 +20,8 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     private val mPublishSenadoresPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mPublishDeputadosMainList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private val mPublishUser: PublishSubject<User> = PublishSubject.create()
+    private val mPublishVoteCountList: PublishSubject<HashMap<String, Long>> = PublishSubject.create()
 
     private val mMainListSenadores = ArrayList<Politician>()
     private val mPreListSenadores = ArrayList<Politician>()
@@ -27,12 +30,12 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
-    fun updateSenadorVoteOnBothLists(senador: Politician,
-                                     userEmail: String,
-                                     viewHolder: PoliticianListAdapter.PoliticianHolder?,
-                                     politicianSelectorView: PoliticianSelectorMvpContract.View?) {
+    fun handleSenadorVoteOnDatabase(senador: Politician,
+                                    userEmail: String,
+                                    viewHolder: PoliticianListAdapter.PoliticianHolder?,
+                                    politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-        fun changeIsSenadorOnMainListStatus(email: String, isOnMainList: Boolean){
+        fun changeIsSenadorOnMainListStatus(email: String, isOnMainList: Boolean) {
             val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(email.encodeEmail())
             val mutableMap = mutableMapOf<String, Any>()
             mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
@@ -43,9 +46,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                                         userEmail: String,
                                         viewHolder: PoliticianListAdapter.PoliticianHolder?) {
 
-            val database = mDatabaseReference
-                    .child(LOCATION_SENADORES_MAIN_LIST)
-                    .child(senador.email.encodeEmail())
+            val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail())
 
             database.runTransaction(object : Transaction.Handler {
 
@@ -66,7 +67,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                         changeIsSenadorOnMainListStatus(senador.email, isOnMainList = true)
                         viewHolder?.notifyPoliticianAddedToMainList(senador.email)
 
-                    } else if(!dataSnapshot.exists()){
+                    } else if (!dataSnapshot.exists()) {
 
                         viewHolder?.notifyPoliticianRemovedFromMainList(senador)
                         changeIsSenadorOnMainListStatus(senador.email, isOnMainList = false)
@@ -87,9 +88,8 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
             })
         }
 
-        fun updateSenadorVoteOnPreList(senador: Politician,
-                                       userEmail: String,
-                                       politicianSelectorView: PoliticianSelectorMvpContract.View?) {
+        fun updateSenadorVoteOnPreList(senador: Politician, userEmail: String, politicianSelectorView: PoliticianSelectorMvpContract.View?) {
+
             if (senador.post == Politician.Post.SENADOR) {
                 val database = mDatabaseReference
                         .child(LOCATION_SENADORES_PRE_LIST)
@@ -103,9 +103,10 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
                             val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)!!
                             updatedSenador.email = senador.email
-                            updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
 
-                            if(updatedSenador.isOnMainList || (!updatedSenador.isOnMainList && updatedSenador.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
+                            updateVoteCountOnFirebase(updatedSenador)
+                            updateUserVoteList(userEmail, updatedSenador)
+                            if (updatedSenador.isOnMainList || (!updatedSenador.isOnMainList && updatedSenador.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
                                 updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
                             }
 
@@ -150,12 +151,12 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
     }
 
-    fun updateDeputadoVoteOnBothLists(deputado: Politician,
-                                      userEmail: String,
-                                      viewHolder: PoliticianListAdapter.PoliticianHolder?,
-                                      politicianSelectorView: PoliticianSelectorMvpContract.View?) {
+    fun handleDeputadoVoteOnDatabase(deputado: Politician,
+                                     userEmail: String,
+                                     viewHolder: PoliticianListAdapter.PoliticianHolder?,
+                                     politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-        fun changeIsDeputadoOnMainListStatus(email: String, isOnMainList: Boolean){
+        fun changeIsDeputadoOnMainListStatus(email: String, isOnMainList: Boolean) {
             val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(email.encodeEmail())
             val mutableMap = mutableMapOf<String, Any>()
             mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
@@ -190,7 +191,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                         changeIsDeputadoOnMainListStatus(deputado.email, isOnMainList = true)
                         viewHolder?.notifyPoliticianAddedToMainList(deputado.email)
 
-                    } else if(!dataSnapshot.exists()){
+                    } else if (!dataSnapshot.exists()) {
 
                         viewHolder?.notifyPoliticianRemovedFromMainList(deputado)
                         changeIsDeputadoOnMainListStatus(deputado.email, isOnMainList = false)
@@ -227,7 +228,9 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                             val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)!!
                             updatedDeputado.email = deputado.email
 
-                            if(updatedDeputado.isOnMainList || (!updatedDeputado.isOnMainList && updatedDeputado.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
+                            updateVoteCountOnFirebase(updatedDeputado)
+                            updateUserVoteList(userEmail, updatedDeputado)
+                            if (updatedDeputado.isOnMainList || (!updatedDeputado.isOnMainList && updatedDeputado.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
                                 updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
                             }
 
@@ -272,7 +275,80 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         updateDeputadoVoteOnPreList(deputado, userEmail, politicianSelectorView)
     }
 
-    val mListenerForSenadoresMainList = object : ValueEventListener {
+    private fun updateVoteCountOnFirebase(updatedPolitician: Politician) {
+
+        val database = mDatabaseReference.child(LOCATION_VOTE_COUNT)
+        val emailVotesHashMap = HashMap<String, Long>()
+        emailVotesHashMap[updatedPolitician.email.encodeEmail()] = updatedPolitician.votesNumber
+        database.updateChildren(emailVotesHashMap.toMap())
+    }
+
+    private fun updateUserVoteList(userEmail: String, updatedPolitician: Politician) {
+
+        val database = mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail())
+
+        database.runTransaction(object : Transaction.Handler {
+            override fun doTransaction(mutableData: MutableData): Transaction.Result {
+
+                val user: User = mutableData.getValue(User::class.java) ?: User()
+                val politicianEmail = updatedPolitician.email.encodeEmail()
+
+                if (updatedPolitician.condemnedBy.contains(userEmail.encodeEmail())) {
+                    user.condemnations[politicianEmail] = (ServerValue.TIMESTAMP)
+                } else {
+                    user.condemnations.remove(politicianEmail)
+                }
+
+                mutableData.value = user
+                return Transaction.success(mutableData)
+            }
+
+            override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
+
+            }
+        })
+
+    }
+
+    private val mListenerForUser = object: ValueEventListener{
+
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            val user: User?
+            if(dataSnapshot != null && dataSnapshot.exists()){
+                user = dataSnapshot.getValue(User::class.java) ?: User()
+            }else{
+                user = User()
+            }
+
+            mPublishUser.onNext(user)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            mPublishUser.onError(error.toException())
+        }
+    }
+
+    private val mListenerForVoteCountList = object: ValueEventListener{
+
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            val voteCountList = HashMap<String, Long>()
+
+            if(dataSnapshot != null && dataSnapshot.exists()){
+
+                dataSnapshot.children.forEach { voteCount ->
+                    voteCountList[voteCount.key] = voteCount.value as? Long ?: 0
+                }
+            }
+
+            mPublishVoteCountList.onNext(voteCountList)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            mPublishVoteCountList.onError(error.toException())
+        }
+    }
+
+    private val mListenerForSenadoresMainList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             if (mMainListSenadores.isNotEmpty()) mMainListSenadores.clear()
@@ -289,7 +365,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }
     }
 
-    val mListenerForSenadoresPreList = object : ValueEventListener {
+    private val mListenerForSenadoresPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             if (mPreListSenadores.isNotEmpty()) {
@@ -307,7 +383,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }
     }
 
-    val mListenerForDeputadosMainList = object : ValueEventListener {
+    private val mListenerForDeputadosMainList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             if (mMainListDeputados.isNotEmpty()) mMainListDeputados.clear()
@@ -322,7 +398,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }
     }
 
-    val mListenerForDeputadosPreList = object : ValueEventListener {
+    private val mListenerForDeputadosPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             if (mPreListDeputados.isNotEmpty()) {
@@ -339,6 +415,16 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         override fun onCancelled(error: DatabaseError) {
             mPublishDeputadosPreList.onError(error.toException())
         }
+    }
+
+    fun getUser(userEmail: String): PublishSubject<User>{
+        mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
+        return mPublishUser
+    }
+
+    fun getVoteCountList(): PublishSubject<HashMap<String, Long>>{
+        mDatabaseReference.child(LOCATION_VOTE_COUNT).addListenerForSingleValueEvent(mListenerForVoteCountList)
+        return mPublishVoteCountList
     }
 
     fun getSenadoresMainList(): PublishSubject<ArrayList<Politician>> {
@@ -376,7 +462,6 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         mDatabaseReference.removeEventListener(mListenerForDeputadosPreList)
 
     }
-
 
     private fun addSenadorOnMainList(senador: Politician) {
 
@@ -441,7 +526,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         })
     }
 
-    fun saveSenadoresOnPreList(senadores: ArrayList<Politician>) {
+    private fun saveSenadoresOnPreList(senadores: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
@@ -456,17 +541,17 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         })
     }
 
-    fun saveDeputadosOnMainList(deputados: ArrayList<Politician>) {
+    private fun saveDeputadosOnMainList(deputados: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
         deputados.filter { it.post == Politician.Post.DEPUTADO }
                 .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap(false)) }
 
-        database.updateChildren(mapSenadores, {_, _ -> })
+        database.updateChildren(mapSenadores, { _, _ -> })
     }
 
-    fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {
+    private fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()

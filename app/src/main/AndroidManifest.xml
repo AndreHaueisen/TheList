@@ -38,12 +38,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
+        <activity android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"
+            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
 
         <activity android:name=".f_information.mvp.InformationPresenterActivity"
-            android:theme="@style/DarkBackground"/>
+            android:theme="@style/DarkBackground"
+            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
 
-        <activity android:name=".g_login.LoginActivity"/>
+        <activity android:name=".g_login.LoginActivity"
+            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
+
+        <activity android:name=".h_user_vote_list.mvp.UserVoteListPresenterActivity"
+            android:theme="@style/DarkBackground"
+            android:parentActivityName=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

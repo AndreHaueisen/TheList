@@ -82,6 +82,14 @@ public class Politician implements Parcelable {
         this.condemnedBy = condemnedBy;
     }
 
+    public Politician(Post post, String name, long votesNumber, String email, byte[] image) {
+        this.post = post;
+        this.name = name;
+        this.votesNumber = votesNumber;
+        this.email = email;
+        this.image = image;
+    }
+
     public Politician(Post post, String name, long votesNumber, ArrayList<String> condemnedBy, @Nullable String email, byte[] image) {
         this.post = post;
         this.name = name;

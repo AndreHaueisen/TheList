@@ -54,9 +54,16 @@
     <string name="subject_email">App suggestions</string>
     <string name="send_email_title">Send email using…</string>
 
-    <!-- g_login strings-->
+    <!--g_login strings-->
     <string name="no_network">No network connection</string>
     <string name="unknown_error">Something went wrong. Try again</string>
+
+    <!--h_user_vote_list strings-->
+    <string name="your_votes">Your votes</string>
+    <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
+    <string name="small_caps_vote_title">votes</string>
+    <string name="no_one_banned_yet">You banned no one yet</string>
+    <string name="banned">Banned</string>
 
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>

@@ -81,9 +81,9 @@ class SinglePoliticianModel(val mContext: Context,
 
         userEmail?.let {
             if (politician.post.name == Politician.Post.SENADOR.name) {
-                mFirebaseRepository.updateSenadorVoteOnBothLists(politician, it, null, view)
+                mFirebaseRepository.handleSenadorVoteOnDatabase(politician, it, null, view)
             } else {
-                mFirebaseRepository.updateDeputadoVoteOnBothLists(politician, it, null, view)
+                mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, it, null, view)
             }
         }
 
