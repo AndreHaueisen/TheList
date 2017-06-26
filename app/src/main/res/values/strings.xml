@@ -42,6 +42,8 @@
     <string name="share_title">Ask for help using…</string>
     <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
     <string name="politician_already_banned">This politician is banned</string>
+    <string name="null_email_found">Something is wrong. Please login again</string>
+    <string name="vote_list">Vote list</string>
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">%1$d vote to be condemned</item>
         <item quantity="other">%1$d votes to be condemned</item>
@@ -61,9 +63,16 @@
     <!--h_user_vote_list strings-->
     <string name="your_votes">Your votes</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
-    <string name="small_caps_vote_title">votes</string>
     <string name="no_one_banned_yet">You banned no one yet</string>
     <string name="banned">Banned</string>
+    <plurals name="missing_to_banned">
+        <item quantity="one">Missing: %1$d vote</item>
+        <item quantity="other">Missing: %1$d votes</item>
+    </plurals>
+    <plurals name="votes">
+        <item quantity="one">Total: %1$d vote</item>
+        <item quantity="other">Total: %1$d votes</item>
+    </plurals>
 
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>

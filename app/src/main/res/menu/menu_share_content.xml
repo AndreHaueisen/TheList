@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_item_show_vote_list"
+        android:icon="@drawable/ic_view_list_24dp"
+        android:title="@string/vote_list"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/menu_item_share"
-        app:showAsAction="ifRoom"
-        android:title="@string/share"
+        android:actionProviderClass="android.widget.ShareActionProvider"
         android:icon="@drawable/ic_share_24dp"
-        android:actionProviderClass="android.widget.ShareActionProvider" />
+        android:title="@string/share"
+        app:showAsAction="ifRoom"/>
 </menu>

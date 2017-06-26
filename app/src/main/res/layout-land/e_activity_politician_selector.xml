@@ -62,8 +62,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:background="@color/colorPrimaryDark"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="48dp">
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/post_text_view"
@@ -163,16 +162,6 @@
             app:layout_constraintLeft_toRightOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@+id/textView"
             tools:text="110.110"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/vote_list_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_view_list_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-            app:layout_constraintLeft_toLeftOf="@+id/mold_view"
-            app:layout_constraintRight_toRightOf="@+id/mold_view"
-            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
 
         <ImageView
             android:id="@+id/badge_image_view"

@@ -17,7 +17,6 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <android.support.v7.widget.Toolbar

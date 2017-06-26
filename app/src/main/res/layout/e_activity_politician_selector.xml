@@ -164,20 +164,9 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/mold_view"
             app:layout_constraintLeft_toRightOf="@+id/textView"
-            app:layout_constraintRight_toLeftOf="@+id/vote_list_fab"
             app:layout_constraintTop_toTopOf="@+id/mold_view"
             app:layout_constraintVertical_bias="0.523"
             tools:text="110.110"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/vote_list_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_view_list_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-            app:layout_constraintLeft_toLeftOf="@+id/mold_view"
-            app:layout_constraintRight_toRightOf="@+id/mold_view"
-            app:layout_constraintTop_toTopOf="@+id/mold_view"/>
 
         <ImageView
             android:id="@+id/badge_image_view"

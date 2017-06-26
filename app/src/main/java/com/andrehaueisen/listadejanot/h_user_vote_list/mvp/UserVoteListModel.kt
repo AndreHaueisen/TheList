@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
-import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream
 class UserVoteListModel(val mContext: Context,
                         val mLoaderManager: LoaderManager,
                         val mFirebaseRepository: FirebaseRepository,
-                        val mFirebaseAuthenticator: FirebaseAuthenticator): LoaderManager.LoaderCallbacks<Cursor>, UserVoteListMvpContract.Model{
+                        val mFirebaseAuthenticator: FirebaseAuthenticator) : LoaderManager.LoaderCallbacks<Cursor>, UserVoteListMvpContract.Model {
 
     private val COLUMNS_INDEX_CARGO = 0
     private val COLUMNS_INDEX_NAME = 1
@@ -45,11 +45,12 @@ class UserVoteListModel(val mContext: Context,
     private val mOnUserVoteListReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mCompositeDisposable = CompositeDisposable()
 
-    fun initiateUserLoad(){
+    fun initiateUserLoad() {
         val userEmail = mFirebaseAuthenticator.getUserEmail()
-        if(userEmail == null){
-            mContext.startNewActivity(LoginActivity::class.java)
-        }else {
+        if (userEmail == null) {
+            mContext.showToast(mContext.getString(R.string.null_email_found))
+
+        } else {
             mOnUserReadyPublisher = mFirebaseRepository.getUser(userEmail)
             mOnUserReadyPublisher
                     .subscribeOn(Schedulers.io())
@@ -58,12 +59,16 @@ class UserVoteListModel(val mContext: Context,
         }
     }
 
-    private val mOnUserReadyObservable = object: Observer<User> {
+    private val mOnUserReadyObservable = object : Observer<User> {
 
         override fun onNext(user: User?) {
             mUser = user ?: User()
-            mOnVoteCountHashMapReadyPublisher = mFirebaseRepository.getVoteCountList()
-            getVoteCountHashMap()
+            if (mUser.condemnations.isNotEmpty()) {
+                mOnVoteCountHashMapReadyPublisher = mFirebaseRepository.getVoteCountList()
+                getVoteCountHashMap()
+            }else{
+                mOnUserVoteListReadyPublisher.onNext(arrayListOf<Politician>())
+            }
         }
 
         override fun onSubscribe(disposable: Disposable?) {
@@ -74,14 +79,14 @@ class UserVoteListModel(val mContext: Context,
         override fun onComplete() {}
     }
 
-    fun getVoteCountHashMap(){
+    fun getVoteCountHashMap() {
         mOnVoteCountHashMapReadyPublisher
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mOnVoteListCountReadyObservable)
     }
 
-    private val mOnVoteListCountReadyObservable = object: Observer<HashMap<String, Long>>{
+    private val mOnVoteListCountReadyObservable = object : Observer<HashMap<String, Long>> {
         override fun onNext(voteCountHashMap: HashMap<String, Long>?) {
             mVoteCountHashMap = voteCountHashMap ?: HashMap()
             initiateDataLoad()
@@ -95,7 +100,7 @@ class UserVoteListModel(val mContext: Context,
         override fun onComplete() {}
     }
 
-    private fun initiateDataLoad(){
+    private fun initiateDataLoad() {
         if (mLoaderManager.getLoader<Cursor>(LOADER_ID) == null) {
             mLoaderManager.initLoader(LOADER_ID, null, this)
 
@@ -135,7 +140,7 @@ class UserVoteListModel(val mContext: Context,
                     politician = Politician(
                             Politician.Post.DEPUTADO,
                             deputadoName,
-                            (mVoteCountHashMap[deputadoEmail.encodeEmail()] ?: 0) ,
+                            (mVoteCountHashMap[deputadoEmail.encodeEmail()] ?: 0),
                             deputadoEmail,
                             deputadoImage.resamplePic(100))
 
@@ -148,7 +153,7 @@ class UserVoteListModel(val mContext: Context,
                             senadorName,
                             mVoteCountHashMap[senadorEmail.encodeEmail()] ?: 0,
                             senadorEmail,
-                            senadorImage.resamplePic(90))
+                            senadorImage.resamplePic(100))
 
                 }
                 listOfVotedPoliticians.add(politician)
@@ -160,20 +165,22 @@ class UserVoteListModel(val mContext: Context,
         }
     }
 
-    fun loadUserVotesList() : Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }
+    fun loadUserVotesList(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }
     fun getUser() = mUser
 
     private fun ByteArray.resamplePic(quality: Int): ByteArray {
+        val THUMBNAIL_WIDTH = 110
+        val THUMBNAIL_HEIGHT = 110
 
         val bmp = BitmapFactory.decodeByteArray(this, 0, this.size)
         val stream = ByteArrayOutputStream()
-        val thumbnailBitmap = Bitmap.createScaledBitmap(bmp, 60, 60, false)
+        val thumbnailBitmap = Bitmap.createScaledBitmap(bmp, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, false)
         thumbnailBitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
 
         return stream.toByteArray()
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
         mCompositeDisposable.dispose()
     }
 

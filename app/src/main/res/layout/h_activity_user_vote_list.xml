@@ -9,18 +9,21 @@
         android:id="@+id/user_vote_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="@string/your_votes"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
         app:theme="@style/ToolbarStyle"
+        app:title="@string/your_votes"
         app:titleTextColor="@android:color/white">
 
     </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/empty_vote_list_text_view"
-        style="@style/BigRobotoBlackTextStyle"
+        style="@style/RobotoBlackTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
         android:text="@string/no_one_banned_yet"
         android:visibility="gone"/>
 

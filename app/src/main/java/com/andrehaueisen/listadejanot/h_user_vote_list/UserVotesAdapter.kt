@@ -14,8 +14,11 @@ import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
 import com.andrehaueisen.listadejanot.utilities.encodeEmail
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import java.text.SimpleDateFormat
+import com.facebook.FacebookSdk.getApplicationContext
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import java.util.*
+
+
 
 /**
  * Created by andre on 6/25/2017.
@@ -46,6 +49,7 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
         internal fun bindVotesToViews(userVote: Politician){
 
             mGlide.load(userVote.image)
+                    .bitmapTransform(CropCircleTransformation(mActivity))
                     .crossFade()
                     .placeholder(R.drawable.politician_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -53,24 +57,25 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
 
             val missingVotes = VOTES_TO_MAIN_LIST_THRESHOLD - userVote.votesNumber
             if(missingVotes > 0) {
-                mMissingVotesTextView.text = missingVotes.toString()
+                mMissingVotesTextView.text = mActivity.resources.getQuantityString(R.plurals.missing_to_banned, missingVotes.toInt(), missingVotes)
             }else{
                 mMissingVotesTextView.text = mActivity.getString(R.string.banned)
             }
 
-
-            mVoteDateTextView.text = convertTimeStamp(userVote.email)
+            mVoteDateTextView.text = formatDateText(userVote.email)
             mNameTextView.text = userVote.name
-            mTotalVotesTextView.text = userVote.votesNumber.toString()
+            mTotalVotesTextView.text = mActivity
+                    .resources
+                    .getQuantityString(R.plurals.votes, userVote.votesNumber.toInt(), userVote.votesNumber)
         }
 
-        private fun convertTimeStamp(userVoteEmail: String): String{
+        private fun formatDateText(userVoteEmail: String): String{
+
             val timestamp = mUser.condemnations[userVoteEmail.encodeEmail()] as Long
             val date = Date(timestamp)
-            val simpleDateFormat =  SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+            val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 
-            simpleDateFormat.format(date)
-            return date.toString()
+            return dateFormat.format(date)
         }
 
 

@@ -17,9 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-                   android:value="@string/facebook_app_id"
-                   tools:replace="android:value"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value"/>
 
         <provider
             android:name=".c_database.PoliticiansContentProvider"
@@ -29,8 +30,8 @@
 
         <activity
             android:name=".d_main_list.mvp.MainListPresenterActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/title_activity_main_list">
+            android:label="@string/title_activity_main_list"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -38,18 +39,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"
+        <activity
+            android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
 
-        <activity android:name=".f_information.mvp.InformationPresenterActivity"
-            android:theme="@style/DarkBackground"
+        <activity
+            android:name=".f_information.mvp.InformationPresenterActivity"
+            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"
+            android:theme="@style/DarkBackground"/>
+
+        <activity
+            android:name=".g_login.LoginActivity"
             android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
 
-        <activity android:name=".g_login.LoginActivity"
-            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
-
-        <activity android:name=".h_user_vote_list.mvp.UserVoteListPresenterActivity"
-            android:theme="@style/DarkBackground"
+        <activity
+            android:name=".h_user_vote_list.mvp.UserVoteListPresenterActivity"
             android:parentActivityName=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
 
         <provider
@@ -62,9 +67,10 @@
                 android:resource="@xml/file_provider_paths"/>
         </provider>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1698727047098274"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1698727047098274"
+            android:exported="true"/>
 
     </application>
 

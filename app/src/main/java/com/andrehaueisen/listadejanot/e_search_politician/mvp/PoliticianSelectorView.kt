@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -21,7 +20,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
-import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -62,7 +60,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     override fun setViews(isSavedState: Boolean) {
         setToolbar()
-        setVoteListFAB()
         setViewsInitialState()
 
         if (isSavedState) {
@@ -85,12 +82,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         }
     }
 
-    private fun setVoteListFAB(){
-        mPresenterActivity.vote_list_fab.setOnClickListener {
-            mPresenterActivity.startNewActivity(UserVoteListPresenterActivity::class.java)
-        }
-    }
-
     private fun setViewsInitialState() {
 
         with(mPresenterActivity) {
@@ -98,7 +89,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .expect(delete_text_image_button)
                     .toBe(alpha(0.0f))
                     .expect(constraint_layout)
-                    .toBe(outOfScreen(Gravity.START))
+                    .toBe(alpha(0.0f))
                     .expect(plus_one_text_view)
                     .toBe(alpha(0.0f))
                     .toAnimation()
@@ -233,7 +224,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                         .expect(select_politician_toolbar)
                         .toBe(atItsOriginalPosition())
                         .expect(constraint_layout)
-                        .toBe(atItsOriginalPosition())
+                        .toBe(alpha(1.0f))
                         .expect(delete_text_image_button)
                         .toBe(alpha(1.0f))
                         .toAnimation()
@@ -356,6 +347,10 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
+
+            R.id.menu_item_show_vote_list -> {
+                mPresenterActivity.showUserVoteListIfLogged()
+            }
 
             R.id.menu_item_share -> {
                 //TODO put link to appstore / make a better sharing message

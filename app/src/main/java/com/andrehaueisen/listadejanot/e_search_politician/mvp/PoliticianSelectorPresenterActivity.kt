@@ -10,6 +10,7 @@ import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
+import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import io.reactivex.MaybeObserver
@@ -151,6 +152,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View){
         if(mFirebaseAuthenticator.isUserLoggedIn()) {
             mSinglePoliticianModel.updatePoliticianVote(politician, view)
+        }else{
+            startNewActivity(LoginActivity::class.java)
+            finish()
+        }
+    }
+
+    override fun showUserVoteListIfLogged(){
+        if(mFirebaseAuthenticator.isUserLoggedIn()){
+            startNewActivity(UserVoteListPresenterActivity::class.java)
         }else{
             startNewActivity(LoginActivity::class.java)
             finish()

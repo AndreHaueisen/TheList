@@ -28,6 +28,7 @@ interface PoliticianSelectorMvpContract {
         fun subscribeToSinglePoliticianModel(politicianName: String)
 
         fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View)
+        fun showUserVoteListIfLogged()
     }
 
     interface Model{

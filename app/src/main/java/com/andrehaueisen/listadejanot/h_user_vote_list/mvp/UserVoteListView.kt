@@ -49,7 +49,6 @@ class UserVoteListView(val mPresenterActivity: UserVoteListPresenterActivity) : 
         with(mPresenterActivity) {
             setSupportActionBar(user_vote_list_toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowTitleEnabled(true)
         }
     }
 

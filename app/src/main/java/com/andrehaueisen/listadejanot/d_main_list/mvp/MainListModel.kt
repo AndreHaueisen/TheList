@@ -157,6 +157,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
         mDeputadosMainList.forEach { politiciansNames.add(it.name) }
         mSenadoresMainList.forEach { politiciansNames.add(it.name) }
 
+
         val selectionArgsPlaceholders = politiciansNames.createFormattedString("(", "?,", "?)", ignoreCollectionValues = true)
 
         return CursorLoader(context,

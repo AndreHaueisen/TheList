@@ -20,12 +20,14 @@
 
     <!--e_politician_selector strings-->
     <string name="dialog_title_loading_database">Carregando Políticos</string>
-    <string name="dialog_message_loading_database">Estamos procurando senadores e deputados. Não deixaremos que fujam</string>
+    <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
     <string name="share_boarding_message">Lista de Janot precisa da sua ajuda!\n\nO político %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
     <string name="politician_already_banned">Esse político já é considerado inelegível</string>
+    <string name="vote_list">Lista de votos</string>
+    <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">Falta %1$d voto para sua inelegibilidade</item>
         <item quantity="other">Faltam %1$d votos para sua inelegibilidade</item>
@@ -44,9 +46,16 @@
     <!--h_user_vote_list strings-->
     <string name="your_votes">Seus votos</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
-    <string name="small_caps_vote_title">votes</string>
     <string name="no_one_banned_yet">Você não votou em ningúem ainda</string>
     <string name="banned">Inelegível</string>
+    <plurals name="missing_to_banned">
+        <item quantity="one">Faltando: %1$d voto</item>
+        <item quantity="other">Faltando: %1$d votos</item>
+    </plurals>
+    <plurals name="votes">
+        <item quantity="one">Total: %1$d voto</item>
+        <item quantity="other">Total: %1$d votos</item>
+    </plurals>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>
