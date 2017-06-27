@@ -79,7 +79,7 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
                                     email = descriptionList.getElementsByAttributeValueMatching("href", Patterns.EMAIL_ADDRESS)[0].text()
                                 }
 
-                                val politician = Politician(Politician.Post.SENADOR, imageUrl, name, email)
+                                val politician = Politician(Politician.Post.SENADOR, imageUrl, name, email, true)
                                 senadorCounter++
                                 Log.i(LOG_TAG, "Adding $politician to buffer. Senador N: $senadorCounter")
                                 Observable.just(politician)
@@ -107,7 +107,7 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
                                         .toCamelCase()
                                 val email = personalInfoBox.getElementsByAttribute("href")[20].text()
 
-                                val politician = Politician(Politician.Post.DEPUTADO, imageUrl, name, email)
+                                val politician = Politician(Politician.Post.DEPUTADO, imageUrl, name, email, true)
                                 deputadoCounter++
                                 Log.i(LOG_TAG, "Adding $politician to buffer. Deputado N: $deputadoCounter")
 
@@ -142,6 +142,7 @@ class DataService(val mJsoupConnection: Connection, val context: Context) {
                             contentValues.put(politiciansEntry.COLUMN_IMAGE_URL, it.imageUrl)
                             contentValues.put(politiciansEntry.COLUMN_NAME, it.name)
                             contentValues.put(politiciansEntry.COLUMN_EMAIL, it.email)
+                            contentValues.put(politiciansEntry.COLUMN_IS_MAN, it.isMan)
                             contentValues.put(politiciansEntry.COLUMN_IMAGE, imageBytes)
 
                         }catch (mURLe : MalformedURLException) {
