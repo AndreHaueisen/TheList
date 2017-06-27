@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -89,7 +90,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .expect(delete_text_image_button)
                     .toBe(alpha(0.0f))
                     .expect(constraint_layout)
-                    .toBe(alpha(0.0f))
+                    .toBe(outOfScreen(Gravity.BOTTOM))
                     .expect(plus_one_text_view)
                     .toBe(alpha(0.0f))
                     .toAnimation()
@@ -208,7 +209,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .into(politician_image_view)
             politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
 
-            post_text_view.text = politician.post.name
+            post_text_view.text = Politician.getPostText(politician, mPresenterActivity)
             name_text_view.text = politician.name
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -224,7 +225,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                         .expect(select_politician_toolbar)
                         .toBe(atItsOriginalPosition())
                         .expect(constraint_layout)
-                        .toBe(alpha(1.0f))
+                        .toBe(atItsOriginalPosition())
                         .expect(delete_text_image_button)
                         .toBe(alpha(1.0f))
                         .toAnimation()

@@ -43,7 +43,7 @@ class AutoCompletionAdapter(mContext: Context,
             val postTextView = view.findViewById(R.id.post_text_view) as TextView
 
             nameTextView.text = politician.name
-            postTextView.text = politician.post.toString()
+            postTextView.text = Politician.getPostText(politician, context)
 
         }
 

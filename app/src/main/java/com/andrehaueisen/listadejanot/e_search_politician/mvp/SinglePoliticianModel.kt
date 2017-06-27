@@ -28,7 +28,8 @@ class SinglePoliticianModel(val mContext: Context,
     : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
 
     private val COLUMNS_INDEX_NAME = 0
-    private val COLUMNS_INDEX_IMAGE = 1
+    private val COLUMNS_INDEX_IS_MAN = 1
+    private val COLUMNS_INDEX_IMAGE = 2
 
     private var mSinglePoliticianPublisher: PublishSubject<Politician> = PublishSubject.create()
     private val mCompositeDisposable = CompositeDisposable()
@@ -63,9 +64,14 @@ class SinglePoliticianModel(val mContext: Context,
                 moveToFirst()
 
                 val politicianName = getString(COLUMNS_INDEX_NAME)
+                val politicianIsMan = getInt(COLUMNS_INDEX_IS_MAN) == 1
                 val politicianImage = getBlob(COLUMNS_INDEX_IMAGE)
 
-                val politician = mSelectorModel.getSearchablePoliticiansList().find { it.name == politicianName }?.also { it.image = politicianImage }
+                val politician = mSelectorModel.getSearchablePoliticiansList().find { it.name == politicianName }
+                        ?.also {
+                            it.image = politicianImage
+                            it.setIsMan(politicianIsMan)
+                        }
 
                 if (politician != null) {
                     mSinglePoliticianPublisher.onNext(politician)

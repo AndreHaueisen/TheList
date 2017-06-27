@@ -44,6 +44,10 @@
     <string name="politician_already_banned">This politician is banned</string>
     <string name="null_email_found">Something is wrong. Please login again</string>
     <string name="vote_list">Vote list</string>
+    <string name="senator">Senator</string>
+    <string name="senatora">Senator</string>
+    <string name="congressman">Congressman</string>
+    <string name="congresswoman">Congresswoman</string>
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">%1$d vote to be condemned</item>
         <item quantity="other">%1$d votes to be condemned</item>

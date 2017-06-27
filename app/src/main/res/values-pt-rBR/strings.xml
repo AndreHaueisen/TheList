@@ -19,22 +19,26 @@
     <string name="absolved_politician">%1$s merece um voto de confiança</string>
 
     <!--e_politician_selector strings-->
-    <string name="dialog_title_loading_database">Carregando Políticos</string>
+    <string name="dialog_title_loading_database">Carregando Parlamentares</string>
     <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
-    <string name="type_politician_name_hint">Nome do político</string>
+    <string name="type_politician_name_hint">Nome do parlamentar</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
-    <string name="share_boarding_message">Lista de Janot precisa da sua ajuda!\n\nO político %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
-    <string name="politician_already_banned">Esse político já é considerado inelegível</string>
+    <string name="share_boarding_message">Lista de Janot precisa da sua ajuda!\n\nO parlamentar %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
+    <string name="politician_already_banned">Esse parlamentar já é considerado inelegível</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
+    <string name="senator">Senador</string>
+    <string name="senatora">Senadora</string>
+    <string name="congressman">Deputado</string>
+    <string name="congresswoman">Deputada</string>
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">Falta %1$d voto para sua inelegibilidade</item>
         <item quantity="other">Faltam %1$d votos para sua inelegibilidade</item>
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - O político apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas fizerem o mesmo, ele irá para a lista oficial de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas fizerem o mesmo, ele irá para a lista oficial de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
     <string name="beta_warning">Adicionei 4 senadores e 3 deputados que apareceram na lista de Janot. O restante da lista é você quem vai ajudar a compor.\nO app está na versão de testes. Mande um email com sugestões e opiniões.</string>
     <string name="subject_email">Sugestões e opinião</string>
     <string name="send_email_title">Mande email usando…</string>
@@ -59,7 +63,7 @@
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>
-    <string name="description_politician_image">Imagem do político %1$s</string>
+    <string name="description_politician_image">Imagem do parlamentar %1$s</string>
     <string name="description_badge_honest_politician">Medalha de honestidade</string>
     <string name="description_badge_thief_politician">Medalha de ladrão</string>
 

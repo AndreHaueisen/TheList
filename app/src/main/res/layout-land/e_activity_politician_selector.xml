@@ -61,8 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:background="@color/colorPrimaryDark"
-        android:visibility="invisible">
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:id="@+id/post_text_view"

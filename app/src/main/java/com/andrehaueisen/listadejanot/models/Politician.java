@@ -1,9 +1,11 @@
 package com.andrehaueisen.listadejanot.models;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.andrehaueisen.listadejanot.R;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class Politician implements Parcelable {
     private Post post;
     @Exclude
     private String imageUrl;
+    @Exclude
+    private boolean isMan;
     @Exclude
     private String email;
     @Exclude
@@ -76,6 +80,13 @@ public class Politician implements Parcelable {
         this.email = email;
     }
 
+    public Politician(Post post, String name, boolean isMan, String email) {
+        this.post = post;
+        this.name = name;
+        this.isMan = isMan;
+        this.email = email;
+    }
+
     public Politician(String name, long votesNumber, ArrayList<String> condemnedBy) {
         this.name = name;
         this.votesNumber = votesNumber;
@@ -110,6 +121,7 @@ public class Politician implements Parcelable {
     protected Politician(Parcel in) {
         post = in.readParcelable(Post.class.getClassLoader());
         imageUrl = in.readString();
+        isMan = in.readByte() != 0x00;
         email = in.readString();
         name = in.readString();
         votesNumber = in.readLong();
@@ -140,6 +152,14 @@ public class Politician implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isMan() {
+        return isMan;
+    }
+
+    public void setIsMan(boolean man) {
+        isMan = man;
     }
 
     public String getEmail() {
@@ -200,10 +220,27 @@ public class Politician implements Parcelable {
         return simplePoliticianMap;
     }
 
+    public static String getPostText(Politician politician, Context context){
+        if(politician.post == Politician.Post.DEPUTADO){
+            if(politician.isMan){
+                return context.getString(R.string.congressman);
+            }else{
+                return context.getString(R.string.congresswoman);
+            }
+        }else {
+            if(politician.isMan){
+                return context.getString(R.string.senator);
+            }else{
+                return context.getString(R.string.senatora);
+            }
+        }
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(post, flags);
         dest.writeString(imageUrl);
+        dest.writeByte((byte) (isMan ? 0x01 : 0x00));
         dest.writeString(email);
         dest.writeString(name);
         dest.writeLong(votesNumber);
