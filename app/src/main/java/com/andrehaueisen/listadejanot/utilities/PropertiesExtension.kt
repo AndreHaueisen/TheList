@@ -30,13 +30,14 @@ val VOTES_TO_MAIN_LIST_THRESHOLD : Long = 2
 val DEFAULT_ANIMATIONS_DURATION : Long = 1000
 
 val DEFAULT_POLITICIANS_MAIN_LIST = listOf(
-        "dep.andressanchez@camara.leg.br",
         "dep.luciovieiralima@camara.leg.br",
         "dep.rodrigomaia@camara.leg.br",
+        "dep.rodrigorochaloures@camara.gov.br",
         "edison.lobao@senador.leg.br",
         "lindbergh.farias@senador.leg.br",
         "renan.calheiros@senador.leg.br",
-        "romero.juca@senador.leg.br")
+        "romero.juca@senador.leg.br",
+        "aecio.neves@senador.leg.br")
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 

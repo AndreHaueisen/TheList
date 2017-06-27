@@ -23,7 +23,7 @@ public class Politician implements Parcelable {
     @Exclude
     private String imageUrl;
     @Exclude
-    private boolean isMan;
+    private Boolean isMan;
     @Exclude
     private String email;
     @Exclude
@@ -80,7 +80,7 @@ public class Politician implements Parcelable {
         this.email = email;
     }
 
-    public Politician(Post post, String name, boolean isMan, String email) {
+    public Politician(Post post, String name, Boolean isMan, String email) {
         this.post = post;
         this.name = name;
         this.isMan = isMan;
@@ -154,11 +154,11 @@ public class Politician implements Parcelable {
         this.name = name;
     }
 
-    public boolean isMan() {
+    public Boolean isMan() {
         return isMan;
     }
 
-    public void setIsMan(boolean man) {
+    public void setIsMan(Boolean man) {
         isMan = man;
     }
 
