@@ -29,7 +29,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
         MainListMvpContract.Model,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val COLUMNS_INDEX_CARGO = 0
+    private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_EMAIL = 2
     private val COLUMNS_INDEX_IMAGE = 3
@@ -177,20 +177,26 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             if(mCompleteSenadoresMainList.isNotEmpty()) mCompleteSenadoresMainList.clear()
 
             for (i in 0..data.count - 1) {
-                if (data.getString(COLUMNS_INDEX_CARGO) == Politician.Post.DEPUTADO.name) {
+                val politicianPost = data.getString(COLUMNS_INDEX_POST)
+                val politicianName = data.getString(COLUMNS_INDEX_NAME)
+                val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
+                val politicianImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                    val deputadoName = data.getString(COLUMNS_INDEX_NAME)
-                    val deputadoEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val deputadoImage = data.getBlob(COLUMNS_INDEX_IMAGE)
+                when(politicianPost){
+                    Politician.Post.DEPUTADO.name ->
+                        mergeFirebaseDeputadoToDatabase(Politician.Post.DEPUTADO, politicianName, politicianEmail, politicianImage)
 
-                    mergeFirebaseDeputadoToDatabase(deputadoName, deputadoEmail, deputadoImage)
-                } else {
-                    val senadorName = data.getString(COLUMNS_INDEX_NAME)
-                    val senadorEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val senadorImage = data.getBlob(COLUMNS_INDEX_IMAGE)
+                    Politician.Post.DEPUTADA.name ->
+                        mergeFirebaseDeputadoToDatabase(Politician.Post.DEPUTADA, politicianName, politicianEmail, politicianImage)
 
-                    mergeFirebaseSenadorToDatabase(senadorName, senadorEmail, senadorImage)
+                    Politician.Post.SENADOR.name ->
+                        mergeFirebaseSenadorToDatabase(Politician.Post.SENADOR, politicianName, politicianEmail, politicianImage)
+
+                    Politician.Post.SENADORA.name ->
+                        mergeFirebaseSenadorToDatabase(Politician.Post.SENADORA, politicianName, politicianEmail, politicianImage)
+
                 }
+
                 data.moveToNext()
             }
             mFinalMainListDeputadosPublisher.onNext(mCompleteDeputadosMainList)
@@ -199,12 +205,12 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
         }
     }
 
-    private fun mergeFirebaseDeputadoToDatabase(deputadoName: String, deputadoEmail: String, deputadoImage: ByteArray) {
+    private fun mergeFirebaseDeputadoToDatabase(deputadoPost: Politician.Post, deputadoName: String, deputadoEmail: String, deputadoImage: ByteArray) {
         mDeputadosMainList
                 .find { mainListDeputado -> mainListDeputado.name == deputadoName }
                 .also { mainListDeputado ->
                     if (mainListDeputado != null) {
-                        mainListDeputado.post = Politician.Post.DEPUTADO
+                        mainListDeputado.post = deputadoPost
                         mainListDeputado.email = deputadoEmail
                         mainListDeputado.image = deputadoImage
                         mCompleteDeputadosMainList.add(mainListDeputado)
@@ -212,12 +218,12 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 }
     }
 
-    private fun mergeFirebaseSenadorToDatabase(senadorName: String, senadorEmail: String, senadorImage: ByteArray) {
+    private fun mergeFirebaseSenadorToDatabase(senadorPost: Politician.Post, senadorName: String, senadorEmail: String, senadorImage: ByteArray) {
         mSenadoresMainList
                 .find { mainListSenador -> mainListSenador.name == senadorName }
                 .also { mainListSenador ->
                     if (mainListSenador != null) {
-                        mainListSenador.post = Politician.Post.SENADOR
+                        mainListSenador.post = senadorPost
                         mainListSenador.email = senadorEmail
                         mainListSenador.image = senadorImage
                         mCompleteSenadoresMainList.add(mainListSenador)

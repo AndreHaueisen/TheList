@@ -32,7 +32,7 @@ class UserVoteListModel(val mContext: Context,
                         val mFirebaseRepository: FirebaseRepository,
                         val mFirebaseAuthenticator: FirebaseAuthenticator) : LoaderManager.LoaderCallbacks<Cursor>, UserVoteListMvpContract.Model {
 
-    private val COLUMNS_INDEX_CARGO = 0
+    private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_EMAIL = 2
     private val COLUMNS_INDEX_IMAGE = 3
@@ -66,7 +66,7 @@ class UserVoteListModel(val mContext: Context,
             if (mUser.condemnations.isNotEmpty()) {
                 mOnVoteCountHashMapReadyPublisher = mFirebaseRepository.getVoteCountList()
                 getVoteCountHashMap()
-            }else{
+            } else {
                 mOnUserVoteListReadyPublisher.onNext(arrayListOf<Politician>())
             }
         }
@@ -131,32 +131,34 @@ class UserVoteListModel(val mContext: Context,
             val listOfVotedPoliticians = arrayListOf<Politician>()
 
             for (i in 0..data.count - 1) {
-                val politician: Politician
-                if (data.getString(COLUMNS_INDEX_CARGO) == Politician.Post.DEPUTADO.name) {
 
-                    val deputadoName = data.getString(COLUMNS_INDEX_NAME)
-                    val deputadoEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val deputadoImage = data.getBlob(COLUMNS_INDEX_IMAGE)
-                    politician = Politician(
-                            Politician.Post.DEPUTADO,
-                            deputadoName,
-                            (mVoteCountHashMap[deputadoEmail.encodeEmail()] ?: 0),
-                            deputadoEmail,
-                            deputadoImage.resamplePic(100))
+                val politicianPost = data.getString(COLUMNS_INDEX_POST)
+                val politicianName = data.getString(COLUMNS_INDEX_NAME)
+                val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
+                val politicianImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                } else {
-                    val senadorName = data.getString(COLUMNS_INDEX_NAME)
-                    val senadorEmail = data.getString(COLUMNS_INDEX_EMAIL)
-                    val senadorImage = data.getBlob(COLUMNS_INDEX_IMAGE)
-                    politician = Politician(
-                            Politician.Post.SENADOR,
-                            senadorName,
-                            mVoteCountHashMap[senadorEmail.encodeEmail()] ?: 0,
-                            senadorEmail,
-                            senadorImage.resamplePic(100))
+                when (politicianPost) {
+                    Politician.Post.DEPUTADO.name -> {
+                        val politician = createPolitician(Politician.Post.DEPUTADO, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
 
+                    Politician.Post.DEPUTADA.name -> {
+                        val politician = createPolitician(Politician.Post.DEPUTADA, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
+
+                    Politician.Post.SENADOR.name -> {
+                        val politician = createPolitician(Politician.Post.SENADOR, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
+
+                    Politician.Post.SENADORA.name -> {
+                        val politician = createPolitician(Politician.Post.SENADORA, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
                 }
-                listOfVotedPoliticians.add(politician)
+
                 data.moveToNext()
             }
 
@@ -164,6 +166,10 @@ class UserVoteListModel(val mContext: Context,
             data.close()
         }
     }
+
+    private fun createPolitician(post: Politician.Post, politicianName: String, politicianEmail: String, politicianImage: ByteArray) =
+            Politician(post, politicianName, mVoteCountHashMap[politicianEmail.encodeEmail()] ?: 0, politicianEmail, politicianImage)
+
 
     fun loadUserVotesList(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }
     fun getUser() = mUser

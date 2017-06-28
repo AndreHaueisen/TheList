@@ -31,10 +31,9 @@ class PoliticianSelectorModel(val mContext: Context,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private val LOG_TAG: String = PoliticianSelectorModel::class.java.simpleName
-    private val COLUMNS_INDEX_CARGO = 0
+    private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_NAME = 1
-    private val COLUMNS_INDEX_IS_MAN = 2
-    private val COLUMNS_INDEX_EMAIL = 3
+    private val COLUMNS_INDEX_EMAIL = 2
 
     private val mCompositeDisposable = CompositeDisposable()
 
@@ -161,22 +160,24 @@ class PoliticianSelectorModel(val mContext: Context,
             data.moveToFirst()
 
             for (i in 0..data.count - 1) {
-                if (data.getString(COLUMNS_INDEX_CARGO) == Politician.Post.DEPUTADO.name) {
+                val politicianName = data.getString(COLUMNS_INDEX_NAME)
+                val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
 
-                    val deputadoName = data.getString(COLUMNS_INDEX_NAME)
-                    val deputadoIsMan = data.getInt(COLUMNS_INDEX_IS_MAN) == 1
-                    val deputadoEmail = data.getString(COLUMNS_INDEX_EMAIL)
+                when(data.getString(COLUMNS_INDEX_POST))
+                {
+                    Politician.Post.DEPUTADO.name ->
+                        addDeputadoToSearchableList(Politician.Post.DEPUTADO, politicianName, politicianEmail)
 
-                    addDeputadoToSearchableList(deputadoName, deputadoIsMan, deputadoEmail)
+                    Politician.Post.DEPUTADA.name ->
+                        addDeputadoToSearchableList(Politician.Post.DEPUTADA, politicianName, politicianEmail)
 
+                    Politician.Post.SENADOR.name ->
+                            addSenadorToSearchableList(Politician.Post.SENADOR, politicianName, politicianEmail)
 
-                } else {
-                    val senadorName = data.getString(COLUMNS_INDEX_NAME)
-                    val senadorIsMan = data.getInt(COLUMNS_INDEX_IS_MAN) == 1
-                    val senadorEmail = data.getString(COLUMNS_INDEX_EMAIL)
-
-                    addSenadorToSearchableList(senadorName, senadorIsMan, senadorEmail)
+                    Politician.Post.SENADORA.name ->
+                            addSenadorToSearchableList(Politician.Post.SENADORA, politicianName, politicianEmail)
                 }
+
                 data.moveToNext()
             }
             mFinalSearchablePoliticianPublisher.onNext(mSearchablePoliticianList)
@@ -184,8 +185,8 @@ class PoliticianSelectorModel(val mContext: Context,
         }
     }
 
-    private fun addDeputadoToSearchableList(deputadoName: String, isMan: Boolean, deputadoEmail: String) {
-        val deputado = Politician(Politician.Post.DEPUTADO, deputadoName, isMan,  deputadoEmail)
+    private fun addDeputadoToSearchableList(post: Politician.Post, deputadoName: String, deputadoEmail: String) {
+        val deputado = Politician(post, deputadoName,  deputadoEmail)
         try {
             mDeputadosPreList.first { it.name == deputadoName }
                     .also {
@@ -201,8 +202,8 @@ class PoliticianSelectorModel(val mContext: Context,
         }
     }
 
-    private fun addSenadorToSearchableList(senadorName: String, isMan: Boolean, senadorEmail: String) {
-        val senador = Politician(Politician.Post.SENADOR, senadorName, isMan, senadorEmail)
+    private fun addSenadorToSearchableList(post: Politician.Post, senadorName: String, senadorEmail: String) {
+        val senador = Politician(post, senadorName, senadorEmail)
         try {
             mSenadoresPreList.first { it.name == senadorName }
                     .also {

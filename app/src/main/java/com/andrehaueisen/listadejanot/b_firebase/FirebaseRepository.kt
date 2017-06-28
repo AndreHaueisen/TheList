@@ -90,7 +90,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
 
         fun updateSenadorVoteOnPreList(senador: Politician, userEmail: String, politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-            if (senador.post == Politician.Post.SENADOR) {
+            if (senador.post == Politician.Post.SENADOR || senador.post == Politician.Post.SENADORA) {
                 val database = mDatabaseReference
                         .child(LOCATION_SENADORES_PRE_LIST)
                         .child(senador.email.encodeEmail())
@@ -214,7 +214,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         fun updateDeputadoVoteOnPreList(deputado: Politician,
                                         userEmail: String,
                                         politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-            if (deputado.post == Politician.Post.DEPUTADO) {
+            if (deputado.post == Politician.Post.DEPUTADO || deputado.post == Politician.Post.DEPUTADA) {
                 val database = mDatabaseReference
                         .child(LOCATION_DEPUTADOS_PRE_LIST)
                         .child(deputado.email.encodeEmail())
@@ -512,7 +512,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        senadores.filter { it.post == Politician.Post.SENADOR }
+        senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
                 .forEach { senador -> mapSenadores.put("/${senador.email.encodeEmail()}/", senador.toSimpleMap(false)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
@@ -530,7 +530,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        senadores.filter { it.post == Politician.Post.SENADOR }
+        senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
                 .forEach { senador -> mapSenadores.put("/${senador.email.encodeEmail()}/", senador.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
@@ -545,7 +545,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        deputados.filter { it.post == Politician.Post.DEPUTADO }
+        deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA }
                 .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap(false)) }
 
         database.updateChildren(mapSenadores, { _, _ -> })
@@ -555,7 +555,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        deputados.filter { it.post == Politician.Post.DEPUTADO }
+        deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA}
                 .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {

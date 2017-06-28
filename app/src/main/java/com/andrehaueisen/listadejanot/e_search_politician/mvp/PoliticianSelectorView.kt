@@ -191,7 +191,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         val GLIDE_TRANSFORM_RADIUS: Int
         val GLIDE_TRANSFORM_MARGIN: Int
 
-        if (politician.post == Politician.Post.DEPUTADO) {
+        if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
             GLIDE_TRANSFORM_RADIUS = 2
             GLIDE_TRANSFORM_MARGIN = 2
 
@@ -209,7 +209,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .into(politician_image_view)
             politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
 
-            post_text_view.text = Politician.getPostText(politician, mPresenterActivity)
+            post_text_view.text = politician.post.name
             name_text_view.text = politician.name
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()

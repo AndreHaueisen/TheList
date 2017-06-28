@@ -51,12 +51,11 @@ val POLITICIANS_COLUMNS = arrayOf(
 val POLITICIANS_COLUMNS_NO_IMAGE = arrayOf(
         politiciansEntry.COLUMN_POST,
         politiciansEntry.COLUMN_NAME,
-        politiciansEntry.COLUMN_IS_MAN,
         politiciansEntry.COLUMN_EMAIL)
 
-val POLITICIANS_COLUMNS_NAME_IMAGE = arrayOf(
+val POLITICIANS_COLUMNS_NAME_NO_EMAIL = arrayOf(
+        politiciansEntry.COLUMN_POST,
         politiciansEntry.COLUMN_NAME,
-        politiciansEntry.COLUMN_IS_MAN,
         politiciansEntry.COLUMN_IMAGE)
 
 val PERMISSION_WRITE_EXTERNAL_STORAGE: Int = 10

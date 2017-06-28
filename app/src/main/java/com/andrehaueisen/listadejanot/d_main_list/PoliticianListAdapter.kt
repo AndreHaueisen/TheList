@@ -77,11 +77,12 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
     override fun getItemViewType(position: Int): Int {
 
-        if (politicianList[position].post == Politician.Post.DEPUTADO) {
-            return VIEW_TYPE_DEPUTADO
-        } else {
-            return VIEW_TYPE_SENADOR
+        when(politicianList[position].post!!){
+            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> return VIEW_TYPE_DEPUTADO
+
+            Politician.Post.SENADOR, Politician.Post.SENADORA -> return VIEW_TYPE_SENADOR
         }
+
     }
 
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -105,7 +106,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
             fun initiateVoteProcess(){
                 val userEmail = mFirebaseAuthenticator.getUserEmail()!!
-                if (politician.post == Politician.Post.DEPUTADO) {
+                if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
                     mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
                 } else {
                     mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)

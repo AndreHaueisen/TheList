@@ -12,7 +12,7 @@ import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN_NAME
 import com.andrehaueisen.listadejanot.utilities.LOADER_ID
-import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS_NAME_IMAGE
+import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS_NAME_NO_EMAIL
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 
@@ -27,8 +27,8 @@ class SinglePoliticianModel(val mContext: Context,
 
     : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val COLUMNS_INDEX_NAME = 0
-    private val COLUMNS_INDEX_IS_MAN = 1
+    private val COLUMNS_INDEX_POST = 0
+    private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_IMAGE = 2
 
     private var mSinglePoliticianPublisher: PublishSubject<Politician> = PublishSubject.create()
@@ -51,7 +51,7 @@ class SinglePoliticianModel(val mContext: Context,
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
         return CursorLoader(mContext,
                 politiciansEntry.CONTENT_URI,
-                POLITICIANS_COLUMNS_NAME_IMAGE,
+                POLITICIANS_COLUMNS_NAME_NO_EMAIL,
                 "${politiciansEntry.COLUMN_NAME} = ?",
                 arrayOf(politicianName),
                 null)
@@ -63,14 +63,27 @@ class SinglePoliticianModel(val mContext: Context,
             if (this != null && this.count != 0) {
                 moveToFirst()
 
+                val politicianPost = getString(COLUMNS_INDEX_POST)
                 val politicianName = getString(COLUMNS_INDEX_NAME)
-                val politicianIsMan = getInt(COLUMNS_INDEX_IS_MAN) == 1
                 val politicianImage = getBlob(COLUMNS_INDEX_IMAGE)
 
                 val politician = mSelectorModel.getSearchablePoliticiansList().find { it.name == politicianName }
-                        ?.also {
-                            it.image = politicianImage
-                            it.setIsMan(politicianIsMan)
+                        ?.also { politician ->
+                            politician.image = politicianImage
+
+                            when(politicianPost){
+                                Politician.Post.DEPUTADO.name ->
+                                    politician.post = Politician.Post.DEPUTADO
+
+                                Politician.Post.DEPUTADA.name ->
+                                        politician.post = Politician.Post.DEPUTADA
+
+                                Politician.Post.SENADOR.name ->
+                                        politician.post = Politician.Post.SENADOR
+
+                                Politician.Post.SENADORA.name ->
+                                        politician.post = Politician.Post.SENADORA
+                            }
                         }
 
                 if (politician != null) {
@@ -79,20 +92,21 @@ class SinglePoliticianModel(val mContext: Context,
             }
             this?.close()
         }
-
     }
 
     override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {
         val userEmail = mFirebaseAuthenticator.getUserEmail()
 
         userEmail?.let {
-            if (politician.post.name == Politician.Post.SENADOR.name) {
-                mFirebaseRepository.handleSenadorVoteOnDatabase(politician, it, null, view)
-            } else {
-                mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, it, null, view)
-            }
-        }
+            when(politician.post.name){
+                Politician.Post.DEPUTADO.name, Politician.Post.DEPUTADA.name ->
+                    mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, it, null, view)
 
+                Politician.Post.SENADOR.name, Politician.Post.SENADORA.name ->
+                    mFirebaseRepository.handleSenadorVoteOnDatabase(politician, it, null, view)
+            }
+
+        }
     }
 
     override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> {
