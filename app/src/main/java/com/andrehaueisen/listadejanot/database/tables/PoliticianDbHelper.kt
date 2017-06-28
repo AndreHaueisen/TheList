@@ -24,7 +24,6 @@ class PoliticianDbHelper(context: Context) : SQLiteOpenHelper(context, "politici
                         "${politiciansEntry.COLUMN_IMAGE_URL} TEXT, " +
                         "${politiciansEntry.COLUMN_NAME} TEXT NOT NULL, " +
                         "${politiciansEntry.COLUMN_EMAIL} TEXT, " +
-                        "${politiciansEntry.COLUMN_IS_MAN} INTEGER, " +
                         "${politiciansEntry.COLUMN_IMAGE} BLOB );"
 
         db?.execSQL(SQL_CREATE_POLITICIANS_TABLE)

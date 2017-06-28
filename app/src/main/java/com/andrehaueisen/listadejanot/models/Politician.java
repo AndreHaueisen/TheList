@@ -10,11 +10,10 @@ public class Politician {
     private String mImageUrl;
     private String mName;
     private String mEmail;
-    private boolean mIsMan;
     private byte[] mImage;
 
     public enum Post{
-        DEPUTADO, SENADOR
+        DEPUTADO, DEPUTADA, SENADOR, SENADORA
     }
 
     public Politician(Post cargo){
@@ -27,20 +26,18 @@ public class Politician {
         mName = name;
     }
 
-    public Politician(Post cargo, String imageUrl, String name, String email, boolean isMan) {
+    public Politician(Post cargo, String imageUrl, String name, String email) {
         mCargo = cargo;
         mImageUrl = imageUrl;
         mName = name;
         mEmail = email;
-        mIsMan = isMan;
     }
 
-    public Politician(Post cargo, String imageUrl, String name, String email, boolean isMan, byte[] image) {
+    public Politician(Post cargo, String imageUrl, String name, String email, byte[] image) {
         mCargo = cargo;
         mImageUrl = imageUrl;
         mName = name;
         mEmail = email;
-        mIsMan = isMan;
         mImage = image;
     }
 
@@ -82,13 +79,5 @@ public class Politician {
 
     public void setImage(byte[] image) {
         mImage = image;
-    }
-
-    public boolean isMan() {
-        return mIsMan;
-    }
-
-    public void setIsMan(boolean man) {
-        mIsMan = man;
     }
 }

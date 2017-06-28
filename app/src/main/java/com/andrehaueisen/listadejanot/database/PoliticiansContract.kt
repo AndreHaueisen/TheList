@@ -24,7 +24,6 @@ class PoliticiansContract {
             val COLUMN_IMAGE_URL = "image_url"
             val COLUMN_NAME = "name"
             val COLUMN_EMAIL = "email"
-            val COLUMN_IS_MAN = "is_man"
             val COLUMN_IMAGE = "image"
 
             val DEFAULT_SORT_ORDER = "$_ID DESC"
