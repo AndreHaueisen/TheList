@@ -135,7 +135,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                             senadorRemote.condemnedBy.remove(encodedEmail)
                         } else {
                             senadorRemote.votesNumber++
-                            senadorRemote.condemnedBy.add(encodedEmail)
+                            senadorRemote.condemnedBy[encodedEmail] = ServerValue.TIMESTAMP
                         }
 
                         mutableData.value = senadorRemote
@@ -261,7 +261,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
                             deputadoRemote.condemnedBy.remove(encodedEmail)
                         } else {
                             deputadoRemote.votesNumber++
-                            deputadoRemote.condemnedBy.add(encodedEmail)
+                            deputadoRemote.condemnedBy[encodedEmail] = ServerValue.TIMESTAMP
                         }
 
                         mutableData.value = deputadoRemote

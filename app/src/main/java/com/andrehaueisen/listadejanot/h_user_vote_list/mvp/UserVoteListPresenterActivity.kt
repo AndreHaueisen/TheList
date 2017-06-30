@@ -62,7 +62,7 @@ class UserVoteListPresenterActivity: AppCompatActivity(), UserVoteListMvpContrac
     }
 
     val mUserVoteListObserver = object: Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
@@ -70,11 +70,11 @@ class UserVoteListPresenterActivity: AppCompatActivity(), UserVoteListMvpContrac
 
         }
 
-        override fun onError(e: Throwable?) {
+        override fun onError(e: Throwable) {
 
         }
 
-        override fun onNext(userVoteList: ArrayList<Politician>?) {
+        override fun onNext(userVoteList: ArrayList<Politician>) {
             mUserVotesList = userVoteList ?: ArrayList()
             mUser = mModel.getUser()
             mView.notifyVotesListReady(mUser)

@@ -21,7 +21,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
-            .setEndListener {
+            .addEndListener {
                 ExpectAnim()
                         .expect(plusOneTextView)
                         .toBe(Expectations.alpha(0.0f),
@@ -30,7 +30,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                         .toAnimation()
                         .setDuration(DEFAULT_ANIMATIONS_DURATION)
                         .start()
-                        .setEndListener {
+                        .addEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
                             missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
                         }
@@ -44,7 +44,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
-    this.setStartListener {
+    this.addEndListener {
         votesNumberTextView.text = politician.votesNumber.toString()
         missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
     }
@@ -55,7 +55,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .start()
-            .setEndListener {
+            .addEndListener {
                 ExpectAnim()
                         .expect(plusOneTextView)
                         .toBe(Expectations.alpha(0.0f),

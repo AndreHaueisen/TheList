@@ -20,6 +20,7 @@
     <TextView
         android:id="@+id/empty_vote_list_text_view"
         style="@style/RobotoBlackTextStyle"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -10,10 +10,7 @@ import com.andrehaueisen.listadejanot.d_main_list.PoliticiansPagesAdapter
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.f_information.mvp.InformationPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_PAGER_ADAPTER
-import com.andrehaueisen.listadejanot.utilities.INTENT_DEPUTADOS_MAIN_LIST
-import com.andrehaueisen.listadejanot.utilities.INTENT_SENADORES_MAIN_LIST
-import com.andrehaueisen.listadejanot.utilities.startNewActivity
+import com.andrehaueisen.listadejanot.utilities.*
 import kotlinx.android.synthetic.main.d_activity_main_list.*
 
 
@@ -38,6 +35,12 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         setToolbar()
         setPagerAdapter()
         setBottomNavigationView()
+
+        with(mPresenterActivity) {
+            if (!isConnectedToInternet()) {
+                parent_coordinator_layout.showIndefiniteSnackbar(getString(R.string.no_network))
+            }
+        }
     }
 
     private fun setToolbar() {

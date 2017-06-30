@@ -70,7 +70,14 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 notifyPoliticianReady()
             }
         } else {
-            beginDatabaseLoadingAlertDialog()
+            with(mPresenterActivity){
+                if(isConnectedToInternet()){
+                    beginDatabaseLoadingAlertDialog()
+                }else{
+                    constraint_layout.showIndefiniteSnackbar(getString(R.string.no_network))
+                }
+            }
+
         }
 
     }
@@ -144,7 +151,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     private fun beginDatabaseLoadingAlertDialog() {
         mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
-                .setCancelable(false)
+                .setCancelable(true)
                 .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_janot_24dp))
                 .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
                 .setMessage(mPresenterActivity.getString(R.string.dialog_message_loading_database))

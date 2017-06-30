@@ -82,7 +82,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
@@ -91,7 +91,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                         mView?.notifySearchablePoliticiansNewList()
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
 
                     }
 
@@ -112,16 +112,16 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     }
 
     private val mSinglePoliticianObserver = object : MaybeObserver<Politician>{
-        override fun onError(t: Throwable?) {
+        override fun onError(t: Throwable) {
             Log.e(LOG_TAG, t.toString())
         }
 
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
             mSinglePoliticianModel.initiateSinglePoliticianLoad(mLastSelectedPoliticianName)
         }
 
-        override fun onSuccess(politician: Politician?) {
+        override fun onSuccess(politician: Politician) {
             mPolitician = politician
             mView?.notifyPoliticianReady()
         }

@@ -61,8 +61,8 @@ class UserVoteListModel(val mContext: Context,
 
     private val mOnUserReadyObservable = object : Observer<User> {
 
-        override fun onNext(user: User?) {
-            mUser = user ?: User()
+        override fun onNext(user: User) {
+            mUser = user
             if (mUser.condemnations.isNotEmpty()) {
                 mOnVoteCountHashMapReadyPublisher = mFirebaseRepository.getVoteCountList()
                 getVoteCountHashMap()
@@ -71,11 +71,11 @@ class UserVoteListModel(val mContext: Context,
             }
         }
 
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable?) {}
+        override fun onError(e: Throwable) {}
         override fun onComplete() {}
     }
 
@@ -87,16 +87,16 @@ class UserVoteListModel(val mContext: Context,
     }
 
     private val mOnVoteListCountReadyObservable = object : Observer<HashMap<String, Long>> {
-        override fun onNext(voteCountHashMap: HashMap<String, Long>?) {
+        override fun onNext(voteCountHashMap: HashMap<String, Long>) {
             mVoteCountHashMap = voteCountHashMap ?: HashMap()
             initiateDataLoad()
         }
 
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable?) {}
+        override fun onError(e: Throwable) {}
         override fun onComplete() {}
     }
 

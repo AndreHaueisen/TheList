@@ -51,7 +51,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimaryLight"
-        app:elevation="8dp"
+        app:elevation="4dp"
         app:itemIconTint="@drawable/selector_bottom_navigation"
         app:itemTextColor="@drawable/selector_bottom_navigation"
         app:menu="@menu/menu_bottom_navigation"/>

@@ -75,7 +75,7 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
             val date = Date(timestamp)
             val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 
-            return dateFormat.format(date)
+            return mActivity.getString(R.string.your_vote_date, dateFormat.format(date))
         }
 
 

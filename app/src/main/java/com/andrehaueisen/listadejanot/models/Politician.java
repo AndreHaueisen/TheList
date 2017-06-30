@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class Politician implements Parcelable {
 
     private String name;
     private long votesNumber;
-    private ArrayList<String> condemnedBy = new ArrayList<>();
+    private HashMap<String, Object> condemnedBy = new HashMap<>();
     private boolean isOnMainList;
 
 
@@ -76,7 +75,7 @@ public class Politician implements Parcelable {
         this.email = email;
     }
 
-    public Politician(String name, long votesNumber, ArrayList<String> condemnedBy) {
+    public Politician(String name, long votesNumber, HashMap<String, Object> condemnedBy) {
         this.name = name;
         this.votesNumber = votesNumber;
         this.condemnedBy = condemnedBy;
@@ -90,11 +89,11 @@ public class Politician implements Parcelable {
         this.image = image;
     }
 
-    public Politician(Post post, String name, long votesNumber, ArrayList<String> condemnedBy, @Nullable String email, byte[] image) {
+    public Politician(Post post, String name, long votesNumber, HashMap<String, Object> condemnedBy, @Nullable String email, byte[] image) {
         this.post = post;
         this.name = name;
         this.votesNumber = votesNumber;
-        this.condemnedBy.addAll(condemnedBy);
+        this.condemnedBy.putAll(condemnedBy);
         this.email = email;
         this.image = image;
     }
@@ -113,7 +112,6 @@ public class Politician implements Parcelable {
         email = in.readString();
         name = in.readString();
         votesNumber = in.readLong();
-        condemnedBy = in.createStringArrayList();
         image = in.createByteArray();
         isOnMainList = in.readByte() != 0x00;
     }
@@ -166,11 +164,11 @@ public class Politician implements Parcelable {
         this.image = image;
     }
 
-    public ArrayList<String> getCondemnedBy() {
+    public HashMap<String, Object> getCondemnedBy() {
         return condemnedBy;
     }
 
-    public void setCondemnedBy(ArrayList<String> condemnedBy) {
+    public void setCondemnedBy(HashMap<String, Object> condemnedBy) {
         this.condemnedBy = condemnedBy;
     }
 
@@ -207,7 +205,6 @@ public class Politician implements Parcelable {
         dest.writeString(email);
         dest.writeString(name);
         dest.writeLong(votesNumber);
-        dest.writeStringList(condemnedBy);
         dest.writeByteArray(image);
         dest.writeByte((byte) (isOnMainList ? 0x01 : 0x00));
     }

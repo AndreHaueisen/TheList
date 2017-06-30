@@ -53,7 +53,7 @@ class PoliticianSelectorModel(val mContext: Context,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
@@ -70,7 +70,7 @@ class PoliticianSelectorModel(val mContext: Context,
                         initiateDataLoad()
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
 
                     }
                 })
@@ -90,18 +90,16 @@ class PoliticianSelectorModel(val mContext: Context,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>?) {
-                        if(searchablePoliticiansList != null) {
-                            mSenadoresPreList = searchablePoliticiansList
-                            mOnListsReadyPublisher.onNext(true)
-                        }
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                        mSenadoresPreList = searchablePoliticiansList
+                        mOnListsReadyPublisher.onNext(true)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         Log.e(LOG_TAG, e.toString())
                         mOnListsReadyPublisher.onNext(false)
                     }
@@ -118,18 +116,16 @@ class PoliticianSelectorModel(val mContext: Context,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>?) {
-                        if (searchablePoliticiansList != null) {
-                            mDeputadosPreList = searchablePoliticiansList
-                            mOnListsReadyPublisher.onNext(true)
-                        }
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                        mDeputadosPreList = searchablePoliticiansList
+                        mOnListsReadyPublisher.onNext(true)
                     }
 
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         Log.e(LOG_TAG, e.toString())
                         mOnListsReadyPublisher.onNext(false)
                     }
@@ -163,8 +159,7 @@ class PoliticianSelectorModel(val mContext: Context,
                 val politicianName = data.getString(COLUMNS_INDEX_NAME)
                 val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
 
-                when(data.getString(COLUMNS_INDEX_POST))
-                {
+                when (data.getString(COLUMNS_INDEX_POST)) {
                     Politician.Post.DEPUTADO.name ->
                         addDeputadoToSearchableList(Politician.Post.DEPUTADO, politicianName, politicianEmail)
 
@@ -172,10 +167,10 @@ class PoliticianSelectorModel(val mContext: Context,
                         addDeputadoToSearchableList(Politician.Post.DEPUTADA, politicianName, politicianEmail)
 
                     Politician.Post.SENADOR.name ->
-                            addSenadorToSearchableList(Politician.Post.SENADOR, politicianName, politicianEmail)
+                        addSenadorToSearchableList(Politician.Post.SENADOR, politicianName, politicianEmail)
 
                     Politician.Post.SENADORA.name ->
-                            addSenadorToSearchableList(Politician.Post.SENADORA, politicianName, politicianEmail)
+                        addSenadorToSearchableList(Politician.Post.SENADORA, politicianName, politicianEmail)
                 }
 
                 data.moveToNext()
@@ -186,7 +181,7 @@ class PoliticianSelectorModel(val mContext: Context,
     }
 
     private fun addDeputadoToSearchableList(post: Politician.Post, deputadoName: String, deputadoEmail: String) {
-        val deputado = Politician(post, deputadoName,  deputadoEmail)
+        val deputado = Politician(post, deputadoName, deputadoEmail)
         try {
             mDeputadosPreList.first { it.name == deputadoName }
                     .also {
@@ -219,9 +214,9 @@ class PoliticianSelectorModel(val mContext: Context,
         }
     }
 
-    fun getSearchablePoliticiansList () = mSearchablePoliticianList
+    fun getSearchablePoliticiansList() = mSearchablePoliticianList
 
-    fun setSearchablePoliticiansList (originalPoliticiansList: ArrayList<Politician>){
+    fun setSearchablePoliticiansList(originalPoliticiansList: ArrayList<Politician>) {
         mSearchablePoliticianList = originalPoliticiansList
     }
 

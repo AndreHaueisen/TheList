@@ -61,11 +61,11 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             }
         }
 
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable?) {
+        override fun onError(e: Throwable) {
 
         }
 
@@ -96,11 +96,11 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         Log.e(LOG_TAG, e.toString())
                         mOnListsReadyPublisher.onNext(false)
                     }
@@ -122,11 +122,11 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable?) {
+                    override fun onSubscribe(disposable: Disposable) {
                         mCompositeDisposable.add(disposable)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         Log.e(LOG_TAG, e.toString())
                         mOnListsReadyPublisher.onNext(false)
                     }

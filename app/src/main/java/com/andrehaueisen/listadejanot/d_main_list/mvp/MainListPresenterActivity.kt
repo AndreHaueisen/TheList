@@ -55,7 +55,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     }
 
     private val mDeputadosMainListObserver = object : Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
@@ -63,7 +63,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
             mView?.notifyDeputadosNewList(deputados)
         }
 
-        override fun onError(t: Throwable?) {
+        override fun onError(t: Throwable) {
 
         }
 
@@ -73,7 +73,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
     }
 
     private val mSenadoresMainListObserver = object : Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable?) {
+        override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
@@ -81,7 +81,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
             mView?.notifySenadoresNewList(senadores)
         }
 
-        override fun onError(e: Throwable?) {
+        override fun onError(e: Throwable) {
 
         }
 

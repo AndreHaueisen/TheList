@@ -24,8 +24,8 @@
     <string name="type_politician_name_hint">Nome do parlamentar</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
-    <string name="share_boarding_message">Lista de Janot precisa da sua ajuda!\n\nO parlamentar %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
-    <string name="politician_already_banned">Esse parlamentar já é considerado inelegível</string>
+    <string name="share_boarding_message">Preciso da sua ajuda!\n\nO parlamentar %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
+    <string name="politician_already_banned">Parlamentar considerado inelegível</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
     <string name="senator">Senador</string>
@@ -38,8 +38,8 @@
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas fizerem o mesmo, ele irá para a lista oficial de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
-    <string name="beta_warning">Adicionei 4 senadores e 3 deputados que apareceram na lista de Janot. O restante da lista é você quem vai ajudar a compor.\nO app está na versão de testes. Mande um email com sugestões e opiniões.</string>
+    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="beta_warning">Os nomes mais notórios estão fixos na lista. O restante é você quem vai ajudar a compor.\nEstamos em versão de testes. Mande um email com sugestões e opiniões.</string>
     <string name="subject_email">Sugestões e opinião</string>
     <string name="send_email_title">Mande email usando…</string>
 
@@ -50,8 +50,9 @@
     <!--h_user_vote_list strings-->
     <string name="your_votes">Seus votos</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
-    <string name="no_one_banned_yet">Você não votou em ningúem ainda</string>
+    <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
     <string name="banned">Inelegível</string>
+    <string name="your_vote_date">Voto registrado dia %1$s</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Faltando: %1$d voto</item>
         <item quantity="other">Faltando: %1$d votos</item>

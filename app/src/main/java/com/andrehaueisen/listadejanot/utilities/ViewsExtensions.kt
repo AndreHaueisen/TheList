@@ -2,6 +2,8 @@ package com.andrehaueisen.listadejanot.utilities
 
 import android.content.res.Resources
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.support.design.widget.Snackbar
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
@@ -37,4 +39,8 @@ fun TextView.setMissingVotesText(resources: Resources, voteNumber: Long){
     }else{
         text = resources.getString(R.string.politician_already_banned)
     }
+}
+
+fun View.showIndefiniteSnackbar(message: String){
+    Snackbar.make(this, message, Snackbar.LENGTH_INDEFINITE).show()
 }
