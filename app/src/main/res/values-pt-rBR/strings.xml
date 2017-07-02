@@ -4,8 +4,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="add_vote">Inelegível</string>
-    <string name="remove_vote">Elegível</string>
+    <string name="vote_absolve">Inelegível</string>
+    <string name="vote_condemn">Elegível</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Inelegíveis</string>
     <string name="banned_senadores_title">Senadores Inelegíveis</string>
@@ -13,7 +13,14 @@
     <string name="deputado_condemned">Deputado inelegível</string>
     <string name="senador_absolved">Senador elegível</string>
     <string name="deputado_absolved">Deputado inelegível</string>
+
+    <string name="senadores_sorted_by_name">Senadores por nome</string>
+    <string name="senadores_sorted_by_vote_number">Senadores por número do votos</string>
+    <string name="deputados_sorted_by_name">Deputados por nome</string>
+    <string name="deputados_sorted_by_vote_number">Deputados por número de votos</string>
+
     <string name="add_politician">Add Politician</string>
+    <string name="sort_list">Ordenar Lista</string>
     <string name="information">Informações</string>
     <string name="logout">Trocar Conta</string>
     <string name="absolved_politician">%1$s merece um voto de confiança</string>
@@ -53,6 +60,8 @@
     <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
     <string name="banned">Inelegível</string>
     <string name="your_vote_date">Voto registrado dia %1$s</string>
+    <string name="remove_vote">Remover voto</string>
+    <string name="place_vote">Refazer voto</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Faltando: %1$d voto</item>
         <item quantity="other">Faltando: %1$d votos</item>

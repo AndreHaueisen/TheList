@@ -74,7 +74,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 if(isConnectedToInternet()){
                     beginDatabaseLoadingAlertDialog()
                 }else{
-                    constraint_layout.showIndefiniteSnackbar(getString(R.string.no_network))
+                    constraint_layout.showSnackbar(getString(R.string.no_network))
                 }
             }
 

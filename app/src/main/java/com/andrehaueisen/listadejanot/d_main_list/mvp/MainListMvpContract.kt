@@ -24,10 +24,12 @@ interface MainListMvpContract{
 
     interface SenadoresView {
         fun notifySenadoresNewList(senadores: ArrayList<Politician>)
+        fun sortSenadoresList()
     }
 
     interface DeputadosView {
         fun notifyDeputadosNewList(deputados: ArrayList<Politician>)
+        fun sortDeputadosList()
     }
 
     interface Presenter {

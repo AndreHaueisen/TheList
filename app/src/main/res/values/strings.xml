@@ -10,8 +10,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="add_vote">Absolve</string>
-    <string name="remove_vote">Condemn</string>
+    <string name="vote_absolve">Absolve</string>
+    <string name="vote_condemn">Condemn</string>
 
     <string name="votes_title">Votes</string>
 
@@ -26,7 +26,13 @@
     <string name="senador_absolved">Senador absolved</string>
     <string name="deputado_absolved">Deputado absolved</string>
 
+    <string name="senadores_sorted_by_name">Senators by name</string>
+    <string name="senadores_sorted_by_vote_number">Senators by vote number</string>
+    <string name="deputados_sorted_by_name">Congressmen by name</string>
+    <string name="deputados_sorted_by_vote_number">Congressmen by vote number</string>
+
     <string name="add_politician">Add Politician</string>
+    <string name="sort_list">Sort List</string>
     <string name="information">Information</string>
     <string name="logout">Logout</string>
 
@@ -70,6 +76,8 @@
     <string name="no_one_banned_yet">You banned no one yet</string>
     <string name="banned">Banned</string>
     <string name="your_vote_date">Vote registered on %1$s</string>
+    <string name="remove_vote">Remove vote</string>
+    <string name="place_vote">Place vote</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Missing: %1$d vote</item>
         <item quantity="other">Missing: %1$d votes</item>

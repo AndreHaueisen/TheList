@@ -38,7 +38,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
         with(mPresenterActivity) {
             if (!isConnectedToInternet()) {
-                parent_coordinator_layout.showIndefiniteSnackbar(getString(R.string.no_network))
+                parent_coordinator_layout.showSnackbar(getString(R.string.no_network))
             }
         }
     }

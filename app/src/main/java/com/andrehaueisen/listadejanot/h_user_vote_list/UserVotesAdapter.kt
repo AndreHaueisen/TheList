@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
 import com.andrehaueisen.listadejanot.R
+import com.andrehaueisen.listadejanot.a_application.BaseApplication
+import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
+import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
-import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
-import com.andrehaueisen.listadejanot.utilities.encodeEmail
+import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.facebook.FacebookSdk.getApplicationContext
@@ -25,9 +29,17 @@ import java.util.*
  */
 class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>, val mUser: User): RecyclerView.Adapter<UserVotesAdapter.VoteHolder>() {
 
+    private val mFirebaseRepository: FirebaseRepository
+    private val mFirebaseAuthenticator: FirebaseAuthenticator
     private val mGlide = Glide.with(mActivity)
 
     override fun getItemCount() = mUserVotes.size
+
+    init {
+        val appComponent = BaseApplication.get(mActivity).getAppComponent()
+        mFirebaseRepository = appComponent.loadFirebaseRepository()
+        mFirebaseAuthenticator = appComponent.loadFirebaseAuthenticator()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup?, viewType: Int): VoteHolder {
         val voteView = LayoutInflater.from(mActivity).inflate(R.layout.item_vote_resume, viewGroup, false)
@@ -40,11 +52,12 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
 
     inner class VoteHolder(voteView: View): RecyclerView.ViewHolder(voteView){
 
-        val mThumbnailImage: ImageView = voteView.findViewById(R.id.face_thumbnail_image_view) as ImageView
-        val mNameTextView: TextView = voteView.findViewById(R.id.name_text_view) as TextView
-        val mVoteDateTextView: TextView = voteView.findViewById(R.id.vote_date_text_view) as TextView
-        val mTotalVotesTextView: TextView = voteView.findViewById(R.id.total_votes_text_view) as TextView
-        val mMissingVotesTextView: TextView = voteView.findViewById(R.id.missing_votes_text_view) as TextView
+        private val mThumbnailImage: ImageView = voteView.findViewById(R.id.face_thumbnail_image_view) as ImageView
+        private val mNameTextView: TextView = voteView.findViewById(R.id.name_text_view) as TextView
+        private val mVoteDateTextView: TextView = voteView.findViewById(R.id.vote_date_text_view) as TextView
+        private val mTotalVotesTextView: TextView = voteView.findViewById(R.id.total_votes_text_view) as TextView
+        private val mMissingVotesTextView: TextView = voteView.findViewById(R.id.missing_votes_text_view) as TextView
+        private val mVoteButton: ToggleButton = itemView.findViewById(R.id.review_vote_toggle_button) as ToggleButton
 
         internal fun bindVotesToViews(userVote: Politician){
 
@@ -67,6 +80,38 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
             mTotalVotesTextView.text = mActivity
                     .resources
                     .getQuantityString(R.plurals.votes, userVote.votesNumber.toInt(), userVote.votesNumber)
+
+            configureVoteButton(userVote)
+        }
+
+        private fun configureVoteButton(userVote: Politician){
+
+            fun initiateVoteProcess(){
+                val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+                if (userVote.post == Politician.Post.DEPUTADO || userVote.post == Politician.Post.DEPUTADA) {
+                    mFirebaseRepository.handleDeputadoVoteOnDatabase(userVote, userEmail, null, null)
+                } else {
+                    mFirebaseRepository.handleSenadorVoteOnDatabase(userVote, userEmail, null, null)
+                }
+            }
+
+            mVoteButton.isChecked = true
+            mVoteButton.setOnClickListener {
+                if (mActivity.isConnectedToInternet()) {
+
+                    if (mFirebaseAuthenticator.isUserLoggedIn()) {
+                        initiateVoteProcess()
+
+                    } else {
+                        mActivity.startNewActivity(LoginActivity::class.java)
+                        mActivity.finish()
+                    }
+
+                }else{
+                    mActivity.showToast(mActivity.getString(R.string.no_network))
+                    mVoteButton.isChecked = !mVoteButton.isChecked
+                }
+            }
         }
 
         private fun formatDateText(userVoteEmail: String): String{

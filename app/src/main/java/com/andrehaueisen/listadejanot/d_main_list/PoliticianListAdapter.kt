@@ -3,6 +3,8 @@ package com.andrehaueisen.listadejanot.d_main_list
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -77,7 +80,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
     override fun getItemViewType(position: Int): Int {
 
-        when(politicianList[position].post!!){
+        when (politicianList[position].post!!) {
             Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> return VIEW_TYPE_DEPUTADO
 
             Politician.Post.SENADOR, Politician.Post.SENADORA -> return VIEW_TYPE_SENADOR
@@ -93,51 +96,89 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         private val mPlusOneAnimationTextView: TextView = itemView.findViewById(R.id.plus_one_text_view) as TextView
         private val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view) as TextView
         private val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
-        private val mVotesNumberTextView : TextView = itemView.findViewById(R.id.votes_number_text_view) as TextView
+        private val mVotesNumberTextView: TextView = itemView.findViewById(R.id.votes_number_text_view) as TextView
         private val mAnimatedBadgeImageView: ImageView = itemView.findViewById(R.id.badge_image_view) as ImageView
         private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_toggle_button) as ToggleButton
+        private val mSearchOnWebButton: ImageButton = itemView.findViewById(R.id.search_on_web_button) as ImageButton
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
+        private var mIsSearchOnWebButtonVisible = false
 
         internal fun bindDataToView(politician: Politician) {
+
+            fun setVoteButtonClickListener() {
+                mVoteButton.setOnClickListener {
+
+                    fun initiateVoteProcess() {
+                        val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+                        if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
+                            mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
+                        } else {
+                            mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
+                        }
+                    }
+
+                    if (activity.isConnectedToInternet()) {
+
+                        if (mFirebaseAuthenticator.isUserLoggedIn()) {
+                            initiateVoteProcess()
+
+                        } else {
+                            activity.startNewActivity(LoginActivity::class.java)
+                            activity.finish()
+                        }
+
+                    } else {
+                        activity.showToast(activity.getString(R.string.no_network))
+                        mVoteButton.isChecked = !mVoteButton.isChecked
+                    }
+                }
+            }
+            fun setSearchOnWebButtonClickListener() {
+                mSearchOnWebButton.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_WEB_SEARCH)
+                    intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
+                    activity.startActivity(intent)
+                }
+            }
+            fun setPoliticianImageViewClickListener() {
+                mPoliticianImageView.setOnClickListener {
+                    if (mIsSearchOnWebButtonVisible) {
+                        ExpectAnim()
+                                .expect(mSearchOnWebButton)
+                                .toBe(Expectations.atItsOriginalPosition())
+                                .toAnimation()
+                                .setDuration(DEFAULT_ANIMATIONS_DURATION)
+                                .start()
+                                .addEndListener { mIsSearchOnWebButtonVisible = !mIsSearchOnWebButtonVisible }
+                    } else {
+                        ExpectAnim()
+                                .expect(mSearchOnWebButton)
+                                .toBe(Expectations.toRightOf(mPoliticianImageView))
+                                .toAnimation()
+                                .setDuration(DEFAULT_ANIMATIONS_DURATION)
+                                .start()
+                                .addEndListener { mIsSearchOnWebButtonVisible = !mIsSearchOnWebButtonVisible }
+                    }
+                }
+            }
 
             setInitialVisualStatus(politician)
             setInitialDataStatus(politician)
 
-            fun initiateVoteProcess(){
-                val userEmail = mFirebaseAuthenticator.getUserEmail()!!
-                if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
-                    mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
-                } else {
-                    mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
-                }
-            }
+            setVoteButtonClickListener()
+            setSearchOnWebButtonClickListener()
+            setPoliticianImageViewClickListener()
 
-            mVoteButton.setOnClickListener {
-                if (activity.isConnectedToInternet()) {
-
-                    if (mFirebaseAuthenticator.isUserLoggedIn()) {
-                        initiateVoteProcess()
-
-                    } else {
-                        activity.startNewActivity(LoginActivity::class.java)
-                        activity.finish()
-                    }
-
-                }else{
-                    activity.showToast(activity.getString(R.string.no_network))
-                    mVoteButton.isChecked = !mVoteButton.isChecked
-                }
-            }
         }
 
-        private fun setInitialVisualStatus(politician: Politician){
+        private fun setInitialVisualStatus(politician: Politician) {
 
             fun hasUserVotedOnThisPolitician() = politician.condemnedBy.contains(mFirebaseAuthenticator.getUserEmail()?.encodeEmail())
 
             if (hasUserVotedOnThisPolitician()) {
-                mCardView.setCardBackgroundColor( ContextCompat.getColor(activity, R.color.colorAccentDark) )
-                mMoldView.setBackgroundColor( ContextCompat.getColor(activity, R.color.colorAccent) )
+                mCardView.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccentDark))
+                mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent))
                 mVoteButton.isChecked = true
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
                 mAnimatedBadgeImageView.animateVectorDrawable(
@@ -151,8 +192,8 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                         .toAnimation().setNow()
 
             } else {
-                mCardView.setCardBackgroundColor( ContextCompat.getColor(activity, R.color.colorPrimaryDark) )
-                mMoldView.setBackgroundColor( ContextCompat.getColor(activity, R.color.colorPrimary) )
+                mCardView.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
+                mMoldView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary))
                 mVoteButton.isChecked = false
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
                 mAnimatedBadgeImageView.animateVectorDrawable(
@@ -169,7 +210,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     .setNow()
         }
 
-        private fun setInitialDataStatus(politician: Politician){
+        private fun setInitialDataStatus(politician: Politician) {
 
             mGlide.load(politician.image)
                     .crossFade()
@@ -221,24 +262,26 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
         }
 
-        fun notifyPoliticianAddedToMainList(email: String){
-            if(politicianList.indexOfFirst { listPolitician -> listPolitician.email == email } == -1){
+        fun notifyPoliticianAddedToMainList(email: String) {
+            if (politicianList.indexOfFirst { listPolitician -> listPolitician.email == email } == -1) {
                 (activity as MainListPresenterActivity).subscribeToModel()
             }
         }
 
-        fun notifyPoliticianRemovedFromMainList(removedPolitician: Politician){
+        fun notifyPoliticianRemovedFromMainList(removedPolitician: Politician) {
 
             politicianList
                     .indexOfFirst { listPolitician -> listPolitician.email == removedPolitician.email }
-                    .also { index -> if(index != -1) {
-                        val politician = politicianList[index]
-                        activity.showToast(activity.getString(R.string.absolved_politician, politician.name))
+                    .also { index ->
+                        if (index != -1) {
+                            val politician = politicianList[index]
+                            activity.showToast(activity.getString(R.string.absolved_politician, politician.name))
 
-                        politicianList.removeAt(index)
-                        notifyItemRemoved(index)
+                            politicianList.removeAt(index)
+                            notifyItemRemoved(index)
 
-                    } }
+                        }
+                    }
 
         }
     }

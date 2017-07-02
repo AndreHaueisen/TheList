@@ -41,6 +41,6 @@ fun TextView.setMissingVotesText(resources: Resources, voteNumber: Long){
     }
 }
 
-fun View.showIndefiniteSnackbar(message: String){
-    Snackbar.make(this, message, Snackbar.LENGTH_INDEFINITE).show()
+fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINITE){
+    Snackbar.make(this, message, duration).show()
 }

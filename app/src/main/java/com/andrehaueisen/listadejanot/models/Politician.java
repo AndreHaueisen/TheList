@@ -2,10 +2,12 @@ package com.andrehaueisen.listadejanot.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  * Created by andre on 4/15/2017.
  */
 
-public class Politician implements Parcelable {
+public class Politician implements Parcelable, Comparable<Politician> {
 
     @Exclude
     private Post post;
@@ -178,6 +180,29 @@ public class Politician implements Parcelable {
 
     public void setIsOnMainList(boolean onMainList) {
         isOnMainList = onMainList;
+    }
+
+    @Override
+    public int compareTo(@NonNull Politician politician) {
+        return Comparators.NAME.compare(this, politician);
+    }
+
+    public static class Comparators {
+
+        public static Comparator<Politician> NAME = new Comparator<Politician>() {
+            @Override
+            public int compare(Politician politician1, Politician politician2) {
+                return politician1.name.compareTo(politician2.name);
+            }
+        };
+
+        public static Comparator<Politician> VOTE_NUMBER = new Comparator<Politician>() {
+            @Override
+            public int compare(Politician politician1, Politician politician2) {
+                return (int) (politician2.votesNumber - politician1.votesNumber) ;
+            }
+        };
+
     }
 
     @Override

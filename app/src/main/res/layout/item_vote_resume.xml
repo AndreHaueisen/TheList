@@ -7,18 +7,18 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryLight"
     android:paddingBottom="4dp"
-    android:paddingTop="4dp">
+    android:paddingTop="4dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
         android:id="@+id/face_thumbnail_image_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="@+id/review_vote_toggle_button"
+        app:layout_constraintRight_toRightOf="@+id/review_vote_toggle_button"
+        app:layout_constraintTop_toTopOf="@+id/name_text_view"/>
 
     <TextView
         android:id="@+id/name_text_view"
@@ -29,7 +29,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:maxLines="2"
-        app:layout_constraintLeft_toRightOf="@+id/face_thumbnail_image_view"
+        app:layout_constraintLeft_toRightOf="@+id/review_vote_toggle_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Aecio Neves"/>
@@ -42,7 +42,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/face_thumbnail_image_view"
+        app:layout_constraintLeft_toRightOf="@+id/review_vote_toggle_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_text_view"
         tools:text="142 Votes"/>
@@ -54,23 +54,39 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:text="@string/missing_votes_to_condemnation"
-        app:layout_constraintLeft_toRightOf="@+id/face_thumbnail_image_view"
+        app:layout_constraintLeft_toRightOf="@+id/review_vote_toggle_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_votes_text_view"/>
 
     <TextView
         android:id="@+id/vote_date_text_view"
         style="@style/RobotoRegularTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/review_vote_toggle_button"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/missing_votes_text_view"
+        tools:text="10, Janeiro, 2017"/>
+
+    <ToggleButton
+        android:id="@+id/review_vote_toggle_button"
+        style="@android:style/Widget.Material.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/white"
+        android:textOff="@string/place_vote"
+        android:textOn="@string/remove_vote"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/face_thumbnail_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/missing_votes_text_view"
-        tools:text="10, Janeiro, 2017"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_thumbnail_image_view"/>
 
 </android.support.constraint.ConstraintLayout>

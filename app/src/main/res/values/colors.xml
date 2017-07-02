@@ -8,5 +8,6 @@
     <color name="colorAccentDark">#7f0000</color>
     <color name="colorAccentLight">#f05545</color>
     <color name="colorAccentSmooth">#ffbeb2</color>
+    <color name="colorPrimaryLightTransparent">#96e7dfdf</color>
 
 </resources>

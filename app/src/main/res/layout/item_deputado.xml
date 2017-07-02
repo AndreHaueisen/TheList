@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/mold_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,13 +32,13 @@
                 android:layout_width="150dp"
                 android:layout_height="195dp"
                 android:layout_gravity="top|center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#fff"
                 android:elevation="3dp"
                 android:scaleType="centerCrop"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription"/>
 
             <TextView
@@ -47,10 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:textAlignment="center"
+                app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"
+                app:layout_constraintRight_toRightOf="@+id/politician_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
                 tools:text="Aecio Neves"/>
 
             <TextView
@@ -59,11 +62,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="12dp"
-                tools:layout_editor_absoluteY="155dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"
+                app:layout_constraintRight_toRightOf="@+id/politician_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/name_text_view"
                 tools:text="asdasfd@gmail.com"/>
 
-        </LinearLayout>
+            <ImageButton
+                android:id="@+id/search_on_web_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="110dp"
+                android:backgroundTint="@color/colorPrimaryLightTransparent"
+                android:elevation="1dp"
+                android:padding="16dp"
+                android:src="@drawable/ic_search_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
+                app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"/>
+
+        </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView"
@@ -102,9 +121,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mold_view"
+            tools:ignore="ContentDescription"
             tools:layout_height="48dp"
-            tools:layout_width="48dp"
-            tools:ignore="ContentDescription"/>
+            tools:layout_width="48dp"/>
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"
@@ -114,8 +133,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:textColor="@android:color/white"
-            android:textOff="@string/remove_vote"
-            android:textOn="@string/add_vote"
+            android:textOff="@string/vote_condemn"
+            android:textOn="@string/vote_absolve"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 

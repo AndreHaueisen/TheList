@@ -21,6 +21,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.*
 
 /**
  * Created by andre on 4/21/2017.
@@ -199,6 +200,9 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
                 data.moveToNext()
             }
+
+            Collections.sort(mCompleteDeputadosMainList, Politician.Comparators.NAME)
+            Collections.sort(mCompleteSenadoresMainList, Politician.Comparators.NAME)
             mFinalMainListDeputadosPublisher.onNext(mCompleteDeputadosMainList)
             mFinalMainListSenadoresPublisher.onNext(mCompleteSenadoresMainList)
             data.close()
