@@ -2,8 +2,10 @@ package com.andrehaueisen.listadejanot.e_search_politician.mvp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -54,6 +56,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
     private var mTempFilePath: String = ""
+    private var mIsShowingExtraButtons = false
 
     init {
         mPresenterActivity.setContentView(R.layout.e_activity_politician_selector)
@@ -70,10 +73,10 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 notifyPoliticianReady()
             }
         } else {
-            with(mPresenterActivity){
-                if(isConnectedToInternet()){
+            with(mPresenterActivity) {
+                if (isConnectedToInternet()) {
                     beginDatabaseLoadingAlertDialog()
-                }else{
+                } else {
                     constraint_layout.showSnackbar(getString(R.string.no_network))
                 }
             }
@@ -190,6 +193,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 configureInitialAbsolveStatus(politician)
             }
             setVoteButtonClickListener(politician)
+
+            if(mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                setPoliticianImageClickListener()
+            }
+            setShareButtonClickListener(politician)
+            setSearchOnWebButtonClickListener(politician)
         }
     }
 
@@ -261,8 +270,8 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     .toBe(sameCenterAs(votes_number_text_view, true, true))
                     .toAnimation().setNow()
 
-            constraint_layout.setBackgroundColor( ContextCompat.getColor(this, R.color.colorAccentDark) )
-            mold_view.setBackgroundColor( ContextCompat.getColor(this, R.color.colorAccent) )
+            constraint_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccentDark))
+            mold_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
 
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -279,8 +288,8 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private fun configureInitialAbsolveStatus(politician: Politician) {
 
         with(mPresenterActivity) {
-            constraint_layout.setBackgroundColor( ContextCompat.getColor(this, R.color.colorPrimaryDark) )
-            mold_view.setBackgroundColor( ContextCompat.getColor(this, R.color.colorPrimary) )
+            constraint_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+            mold_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
 
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -303,6 +312,99 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     showToast(getString(R.string.no_network))
                     add_to_vote_count_toggle_button.isChecked = !add_to_vote_count_toggle_button.isChecked
                 }
+            }
+        }
+    }
+
+    fun setPoliticianImageClickListener() {
+        with(mPresenterActivity) {
+            politician_image_view.setOnClickListener {
+                if (mIsShowingExtraButtons) {
+                    ExpectAnim()
+                            .expect(share_button)
+                            .toBe(atItsOriginalPosition())
+                            .expect(search_on_web_button)
+                            .toBe(atItsOriginalPosition())
+                            .toAnimation()
+                            .setDuration(QUICK_ANIMATIONS_DURATION)
+                            .start()
+                            .addEndListener { mIsShowingExtraButtons = !mIsShowingExtraButtons }
+                } else {
+                    ExpectAnim()
+                            .expect(share_button)
+                            .toBe(toRightOf(politician_image_view))
+                            .expect(search_on_web_button)
+                            .toBe(toRightOf(politician_image_view))
+                            .toAnimation()
+                            .setDuration(QUICK_ANIMATIONS_DURATION)
+                            .start()
+                            .addEndListener { mIsShowingExtraButtons = !mIsShowingExtraButtons }
+                }
+            }
+        }
+    }
+
+    fun setSearchOnWebButtonClickListener(politician: Politician) {
+        mPresenterActivity.search_on_web_button.setOnClickListener {
+            val intent = Intent(Intent.ACTION_WEB_SEARCH)
+            intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
+            mPresenterActivity.startActivity(intent)
+        }
+
+    }
+
+    fun setShareButtonClickListener(politician: Politician?) {
+        mPresenterActivity.share_button.setOnClickListener {
+            //TODO put link to appstore / make a better sharing message
+
+            if (politician != null) {
+
+                fun getTemporaryFile(): File {
+
+                    val tempFile = File(mPresenterActivity.filesDir, "politicianTempImage")
+                    if (!tempFile.exists()) {
+                        tempFile.mkdirs()
+                    }
+
+                    val tempPic = File(tempFile, "politician_pic.png")
+                    var outStream: FileOutputStream? = null
+
+                    try {
+                        outStream = FileOutputStream(tempPic)
+                        val mBitmap = BitmapFactory.decodeByteArray(politician.image, 0, politician.image.size)
+                        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+
+                    } finally {
+                        try {
+                            outStream?.close()
+
+                        } catch (ioe: IOException) {
+                            ioe.printStackTrace()
+                        }
+                    }
+
+                    return tempPic
+                }
+
+                fun getShareIntent(uri: Uri) = with(Intent()) {
+
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, politician.name))
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    type = "image/*"
+
+                    this
+                }
+
+                val tempFile = getTemporaryFile()
+                mTempFilePath = tempFile.path
+                val uri = FileProvider.getUriForFile(mPresenterActivity, "${mPresenterActivity.applicationContext.packageName}.fileprovider", getTemporaryFile())
+                mPresenterActivity.startActivity(Intent.createChooser(getShareIntent(uri),
+                        mPresenterActivity.getString(R.string.share_title)))
             }
         }
     }
@@ -349,7 +451,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?) {
-        mPresenterActivity.menuInflater.inflate(R.menu.menu_share_content, menu)
+        mPresenterActivity.menuInflater.inflate(R.menu.menu_politician_selector, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -358,59 +460,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
             R.id.menu_item_show_vote_list -> {
                 mPresenterActivity.showUserVoteListIfLogged()
-            }
-
-            R.id.menu_item_share -> {
-                //TODO put link to appstore / make a better sharing message
-                val politician = mPresenterActivity.getSinglePolitician()
-                if (politician != null) {
-
-                    fun getTemporaryFile(): File {
-
-                        val tempFile = File(mPresenterActivity.filesDir, "politicianTempImage")
-                        if (!tempFile.exists()) {
-                            tempFile.mkdirs()
-                        }
-
-                        val tempPic = File(tempFile, "politician_pic.png")
-                        var outStream: FileOutputStream? = null
-
-                        try {
-                            outStream = FileOutputStream(tempPic)
-                            val mBitmap = BitmapFactory.decodeByteArray(politician.image, 0, politician.image.size)
-                            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-
-                        } finally {
-                            try {
-                                outStream?.close()
-
-                            } catch (ioe: IOException) {
-                                ioe.printStackTrace()
-                            }
-                        }
-
-                        return tempPic
-                    }
-                    fun getShareIntent(uri: Uri) = with(Intent()) {
-
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_STREAM, uri)
-                        putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, politician.name))
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        type = "image/*"
-
-                        this
-                    }
-
-                    val tempFile = getTemporaryFile()
-                    mTempFilePath = tempFile.path
-                    val uri = FileProvider.getUriForFile(mPresenterActivity, "${mPresenterActivity.applicationContext.packageName}.fileprovider", getTemporaryFile())
-                    mPresenterActivity.startActivity(Intent.createChooser(getShareIntent(uri),
-                            mPresenterActivity.getString(R.string.share_title)))
-                }
             }
         }
 

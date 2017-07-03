@@ -27,18 +27,8 @@ inline fun <reified T: Activity> Context.startActivity(){
 fun Context.getAppropriateLayoutManager(): RecyclerView.LayoutManager{
 
     val SPAN_COUNT = 2
-    val dm = applicationContext.resources.displayMetrics
-    val screenWidth = dm.widthPixels / dm.density
-    val screenHeight = dm.heightPixels / dm.density
 
-    val smallestWidth: Float
-    if (screenWidth < screenHeight) {
-        smallestWidth =  screenWidth
-    } else {
-        smallestWidth = screenHeight
-    }
-
-    if(smallestWidth < 600){
+    if(resources.configuration.smallestScreenWidthDp < 600){
         return LinearLayoutManager(this)
     }else{
         return GridLayoutManager(this, SPAN_COUNT)

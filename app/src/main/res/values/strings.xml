@@ -54,6 +54,7 @@
     <string name="senatora">Senator</string>
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
+    <string name="search_on_web">Search on web</string>
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">%1$d vote to be condemned</item>
         <item quantity="other">%1$d votes to be condemned</item>

@@ -58,9 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
         android:layout_marginBottom="128dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="128dp"
         android:padding="16dp"
         app:cardBackgroundColor="@color/colorPrimaryDark"
@@ -74,10 +74,11 @@
 
             <ImageView
                 android:id="@+id/politician_image_view"
-                android:layout_width="200dp"
-                android:layout_height="260dp"
+                android:layout_width="180dp"
+                android:layout_height="234dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
+                android:elevation="2dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -88,8 +89,9 @@
                 android:id="@+id/badge_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginEnd="12dp"
+                android:elevation="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
                 app:layout_constraintRight_toRightOf="@+id/politician_image_view"
                 tools:ignore="ContentDescription"
@@ -99,7 +101,6 @@
             <TextView
                 android:id="@+id/post_text_view"
                 style="@style/BigRobotoBlackTextStyle"
-                android:textSize="32sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -107,6 +108,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:textSize="32sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
@@ -123,21 +125,51 @@
                 app:layout_constraintLeft_toLeftOf="@+id/post_text_view"
                 app:layout_constraintRight_toRightOf="@+id/post_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/post_text_view"
-                tools:text="Aecio Neves"/>
+                tools:text="Aecio Neves"
+                android:layout_marginBottom="4dp"/>
 
             <TextView
                 android:id="@+id/email_text_view"
                 style="@style/RobotoRegularTextStyle"
-                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="8dp"
+                android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="@+id/name_text_view"
                 app:layout_constraintRight_toRightOf="@+id/name_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/name_text_view"
                 tools:text="asdasfd@gmail.com"/>
+
+            <ImageButton
+                android:id="@+id/search_on_web_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="140dp"
+                android:backgroundTint="@color/colorPrimaryLightTransparent"
+                android:contentDescription="@string/search_on_web"
+                android:elevation="1dp"
+                android:padding="16dp"
+                android:src="@drawable/ic_search_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
+                app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"
+                android:layout_marginLeft="140dp"/>
+
+            <ImageButton
+                android:id="@+id/share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="140dp"
+                android:backgroundTint="@color/colorPrimaryLightTransparent"
+                android:contentDescription="@string/share"
+                android:elevation="1dp"
+                android:padding="16dp"
+                android:src="@drawable/ic_share_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/search_on_web_button"
+                app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"/>
 
             <View
                 android:id="@+id/mold_view"
@@ -152,10 +184,10 @@
             <TextView
                 android:id="@+id/missing_votes_text_view"
                 style="@style/RobotoItalicBlackTextStyle"
-                android:textSize="21sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:textSize="21sp"
                 app:layout_constraintBottom_toTopOf="@+id/mold_view"
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintLeft_toLeftOf="parent"
