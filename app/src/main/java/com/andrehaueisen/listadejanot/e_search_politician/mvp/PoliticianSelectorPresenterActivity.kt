@@ -33,10 +33,12 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
-    lateinit private var mOriginalSearchablePoliticiansList : ArrayList<Politician>
     private val mCompositeDisposable = CompositeDisposable()
 
+    lateinit private var mOriginalSearchablePoliticiansList : ArrayList<Politician>
     lateinit private var mLastSelectedPoliticianName : String
+
+    private var mNameFromNotification: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,10 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         if(intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)){
             deputadosMainList.addAll(intent.getParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST))
+        }
+
+        if(intent.hasExtra(INTENT_POLITICIAN_NAME)){
+            mNameFromNotification = intent.getStringExtra(INTENT_POLITICIAN_NAME)
         }
 
         DaggerPoliticianSelectorComponent.builder()
@@ -89,15 +95,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                     override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
                         mOriginalSearchablePoliticiansList = searchablePoliticiansList
                         mView?.notifySearchablePoliticiansNewList()
+
+                        if(mNameFromNotification != null){
+                            mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
+                        }
                     }
 
-                    override fun onError(e: Throwable) {
+                    override fun onError(e: Throwable) {}
 
-                    }
-
-                    override fun onComplete() {
-
-                    }
+                    override fun onComplete() {}
                 })
 
     }

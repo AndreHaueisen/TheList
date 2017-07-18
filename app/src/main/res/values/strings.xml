@@ -6,6 +6,10 @@
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
     <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>
 
+    <!--MessagingService strings-->
+    <string name="notification_title">New politician banned</string>
+    <string name="notification_text">%1$s should not receive your vote</string>
+
     <!--d_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>

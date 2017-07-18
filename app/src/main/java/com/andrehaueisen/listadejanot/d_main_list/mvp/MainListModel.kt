@@ -205,6 +205,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             Collections.sort(mCompleteSenadoresMainList, Politician.Comparators.NAME)
             mFinalMainListDeputadosPublisher.onNext(mCompleteDeputadosMainList)
             mFinalMainListSenadoresPublisher.onNext(mCompleteSenadoresMainList)
+            //TODO publisher should call on complete
             data.close()
         }
     }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--MessagingService strings-->
+    <string name="notification_title">Outro político se tornou inelegível</string>
+    <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
+
     <!--d_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>

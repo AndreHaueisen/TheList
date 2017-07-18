@@ -34,15 +34,18 @@
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity"/>
+            android:parentActivityName=".d_main_list.mvp.MainListPresenterActivity">
+            <intent-filter>
+                <action android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".f_information.mvp.InformationPresenterActivity"
@@ -56,6 +59,20 @@
         <activity
             android:name=".h_user_vote_list.mvp.UserVoteListPresenterActivity"
             android:parentActivityName=".e_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
+
+        <service
+            android:name=".a_application.InstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".a_application.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

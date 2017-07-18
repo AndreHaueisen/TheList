@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.a_application.dagger
 
+import android.content.Context
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,7 @@ class ApplicationModule(val mDatabaseReference: DatabaseReference, val mFirebase
 
     @ApplicationScope
     @Provides
-    fun provideFirebaseAuthenticator() : FirebaseAuthenticator {
-        return FirebaseAuthenticator(mDatabaseReference, mFirebaseAuth)
+    fun provideFirebaseAuthenticator(context: Context) : FirebaseAuthenticator {
+        return FirebaseAuthenticator(context, mDatabaseReference, mFirebaseAuth)
     }
 }

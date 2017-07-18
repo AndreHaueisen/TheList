@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "232985405425-lv6ikg5vlp0fv62m50tjsaphhfkolctp.apps.googleusercontent.com",
+          "client_id": "232985405425-vqcr60dm60gqiincipod5fv63vjfe03u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.andrehaueisen.listadejanot",
-            "certificate_hash": "d2439469212e1df185b2b679fc21c2b9c41a13af"
+            "certificate_hash": "be0e0505f427e9133a4ae44f8626ecd549cfe662"
+          }
+        },
+        {
+          "client_id": "232985405425-i0buso1nh5g2ud5eiv29s72i86lbaa3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andrehaueisen.listadejanot",
+            "certificate_hash": "b8504565d0918950af82daa1519fb83ae8aca361"
           }
         },
         {

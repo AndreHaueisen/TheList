@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.utilities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.ConnectivityManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -45,4 +46,25 @@ fun Context.isConnectedToInternet(): Boolean{
 
 fun Context.showToast(message: String){
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+inline fun <reified T: Any> Context.putValueOnSharedPreferences(key: String, data: T){
+
+    val editor = this.getSharedPreferences(SHARED_PREFERENCES, 0).edit()
+
+    when(data::class){
+        String::class -> editor.putString(key, data as String)
+        Int::class -> editor.putInt(key, data as Int)
+        Boolean::class -> editor.putBoolean(key, data as Boolean)
+        Long::class -> editor.putLong(key, data as Long)
+        Float::class -> editor.putFloat(key, data as Float)
+        Set::class -> editor.putStringSet(key, data as Set<String>)
+    }
+
+    editor.apply()
+}
+
+fun  Context.pullStringFromSharedPreferences(key: String): String{
+    val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
+    return sharedPreference.getString(key, null)
 }

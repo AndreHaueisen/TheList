@@ -4,6 +4,7 @@ import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 
 val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
 val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
+val INTENT_POLITICIAN_NAME = "intent_politician_name"
 val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
 val BUNDLE_DEPUTADOS = "deputados_list"
 val BUNDLE_SENADORES = "senadores_list"
@@ -15,6 +16,7 @@ val BUNDLE_USER_VOTES_LIST = "politicians_list"
 val BUNDLE_USER = "user"
 
 val LOCATION_UID_MAPPINGS = "UID_mappings"
+val LOCATION_MESSAGE_TOKENS = "Message_tokens"
 val LOCATION_DEPUTADOS_MAIN_LIST = "Deputados_main_list"
 val LOCATION_SENADORES_MAIN_LIST = "Senadores_main_list"
 val LOCATION_DEPUTADOS_PRE_LIST = "Deputados_pre_list"
@@ -26,9 +28,12 @@ val CHILD_LOCATION_VOTES_NUMBER = "votesNumber"
 val CHILD_LOCATION_CONDEMNED_BY = "condemnedBy"
 val CHILD_LOCATION_CONDEMNATIONS = "condemnations"
 
-val VOTES_TO_MAIN_LIST_THRESHOLD: Long = 2
+val VOTES_TO_MAIN_LIST_THRESHOLD: Long = 1
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
+
+val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
+val SHARED_MESSAGE_TOKEN = "message_token"
 
 val DEFAULT_POLITICIANS_MAIN_LIST = listOf(
         "dep.luciovieiralima@camara.leg.br",

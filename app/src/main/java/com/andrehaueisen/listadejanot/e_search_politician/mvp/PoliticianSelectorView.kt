@@ -89,6 +89,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         with(mPresenterActivity) {
             val toolbar = select_politician_toolbar
             setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
     }
@@ -141,6 +142,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                 subscribeToSinglePoliticianModel(politicianName)
             }
         }
+    }
+
+    fun performOnCompleteTextViewAutoSearch(politicianName: String){
+        mPresenterActivity.auto_complete_text_view.setText(politicianName)
+        dismissKeyBoard()
+        mPresenterActivity.subscribeToSinglePoliticianModel(politicianName)
     }
 
     fun setOnDeleteTextClickListener() {
