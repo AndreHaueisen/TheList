@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.e_search_politician.mvp
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -13,14 +14,17 @@ import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
+import com.github.florent37.expectanim.ExpectAnim
+import com.github.florent37.expectanim.core.Expectations
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 import javax.inject.Inject
 
-class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter{
+class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
 
     private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
 
@@ -35,8 +39,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     private var mPolitician: Politician? = null
     private val mCompositeDisposable = CompositeDisposable()
 
-    lateinit private var mOriginalSearchablePoliticiansList : ArrayList<Politician>
-    lateinit private var mLastSelectedPoliticianName : String
+    lateinit private var mOriginalSearchablePoliticiansList: ArrayList<Politician>
+    lateinit private var mLastSelectedPoliticianName: String
 
     private var mNameFromNotification: String? = null
 
@@ -46,15 +50,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         val senadoresMainList = ArrayList<Politician>()
         val deputadosMainList = ArrayList<Politician>()
 
-        if (intent.hasExtra(INTENT_SENADORES_MAIN_LIST)){
+        if (intent.hasExtra(INTENT_SENADORES_MAIN_LIST)) {
             senadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST))
         }
 
-        if(intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)){
+        if (intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)) {
             deputadosMainList.addAll(intent.getParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST))
         }
 
-        if(intent.hasExtra(INTENT_POLITICIAN_NAME)){
+        if (intent.hasExtra(INTENT_POLITICIAN_NAME)) {
             mNameFromNotification = intent.getStringExtra(INTENT_POLITICIAN_NAME)
         }
 
@@ -64,16 +68,16 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .build()
                 .inject(this)
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = false)
             mSelectorModel.connectToFirebase()
             subscribeToPoliticianSelectorModel()
 
-        }else{
+        } else {
             mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS)
             mSelectorModel.setSearchablePoliticiansList(mOriginalSearchablePoliticiansList)
-            if(savedInstanceState.containsKey(BUNDLE_POLITICIAN)) {
+            if (savedInstanceState.containsKey(BUNDLE_POLITICIAN)) {
                 mPolitician = savedInstanceState.getParcelable(BUNDLE_POLITICIAN)
             }
 
@@ -82,30 +86,55 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+
+        intent?.let {
+            if (intent.hasExtra(INTENT_POLITICIAN_NAME)) {
+                mNameFromNotification = intent.getStringExtra(INTENT_POLITICIAN_NAME)
+                mSelectorModel.connectToFirebase()
+                subscribeToPoliticianSelectorModel()
+            }
+        }
+
+        super.onNewIntent(intent)
+    }
+
     override fun subscribeToPoliticianSelectorModel() {
         mSelectorModel.loadSearchablePoliticiansList()
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+                .subscribe(mMaybeListObserver)
+    }
 
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                        mOriginalSearchablePoliticiansList = searchablePoliticiansList
-                        mView?.notifySearchablePoliticiansNewList()
+    private val mMaybeListObserver = object: MaybeObserver<ArrayList<Politician>>{
 
-                        if(mNameFromNotification != null){
-                            mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
-                        }
-                    }
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
 
-                    override fun onError(e: Throwable) {}
+        override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+            mOriginalSearchablePoliticiansList = searchablePoliticiansList
+            mView?.notifySearchablePoliticiansNewList()
 
-                    override fun onComplete() {}
-                })
+            if (mNameFromNotification != null) {
+                mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
+            }else{
+                ExpectAnim()
+                        .expect(select_politician_toolbar)
+                        .toBe(Expectations.centerInParent(false, true))
+                        .toAnimation().setDuration(DEFAULT_ANIMATIONS_DURATION)
+                        .start()
+            }
+        }
 
+        override fun onComplete() {
+
+        }
+
+        override fun onError(error: Throwable) {
+            Log.e(LOG_TAG, error.message)
+        }
     }
 
     override fun subscribeToSinglePoliticianModel(politicianName: String){
@@ -149,25 +178,25 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS, mOriginalSearchablePoliticiansList)
-        if(mPolitician != null){
+        if (mPolitician != null) {
             outState.putParcelable(BUNDLE_POLITICIAN, mPolitician)
         }
         super.onSaveInstanceState(outState)
     }
 
-    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View){
-        if(mFirebaseAuthenticator.isUserLoggedIn()) {
+    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {
+        if (mFirebaseAuthenticator.isUserLoggedIn()) {
             mSinglePoliticianModel.updatePoliticianVote(politician, view)
-        }else{
+        } else {
             startNewActivity(LoginActivity::class.java)
             finish()
         }
     }
 
-    override fun showUserVoteListIfLogged(){
-        if(mFirebaseAuthenticator.isUserLoggedIn()){
+    override fun showUserVoteListIfLogged() {
+        if (mFirebaseAuthenticator.isUserLoggedIn()) {
             startNewActivity(UserVoteListPresenterActivity::class.java)
-        }else{
+        } else {
             startNewActivity(LoginActivity::class.java)
             finish()
         }

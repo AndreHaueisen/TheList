@@ -11,6 +11,7 @@
     <string name="title_governadores">Governadores</string>
     <string name="vote_absolve">Inelegível</string>
     <string name="vote_condemn">Elegível</string>
+    <string name="refreshing_votes_title">Atualizando...</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Inelegíveis</string>
     <string name="banned_senadores_title">Senadores Inelegíveis</string>
@@ -19,10 +20,10 @@
     <string name="senador_absolved">Senador elegível</string>
     <string name="deputado_absolved">Deputado inelegível</string>
 
-    <string name="senadores_sorted_by_name">Senadores por nome</string>
-    <string name="senadores_sorted_by_vote_number">Senadores por número do votos</string>
-    <string name="deputados_sorted_by_name">Deputados por nome</string>
-    <string name="deputados_sorted_by_vote_number">Deputados por número de votos</string>
+    <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
+    <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>
+    <string name="deputados_sorted_by_name">Deputados organizados por nome</string>
+    <string name="deputados_sorted_by_vote_number">Deputados organizados por número de votos</string>
 
     <string name="add_politician">Add Politician</string>
     <string name="sort_list">Ordenar Lista</string>
@@ -36,10 +37,12 @@
     <string name="type_politician_name_hint">Nome do parlamentar</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
-    <string name="share_boarding_message">Preciso da sua ajuda!\n\nO parlamentar %1$s merece ser banido das urnas.\n"Me ajude com seu voto.</string>
+    <string name="share_boarding_message">Precisamos da sua ajuda!\n\n%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
     <string name="politician_already_banned">Parlamentar considerado inelegível</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
+    <string name="determiner_male">O</string>
+    <string name="determiner_female">A</string>
     <string name="senator">Senador</string>
     <string name="senatora">Senadora</string>
     <string name="congressman">Deputado</string>

@@ -35,7 +35,7 @@ class MessagingService: FirebaseMessagingService() {
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val notificationBuilder = Notification.Builder(this)
-        notificationBuilder.setSmallIcon(R.drawable.ic_janot_24dp)
+        notificationBuilder.setSmallIcon(R.drawable.ic_broom_24dp)
         notificationBuilder.setColor(Color.argb(1, RED, GREEN, BLUE))
         notificationBuilder.setContentTitle(contentTitle)
         notificationBuilder.setContentText(contentText)

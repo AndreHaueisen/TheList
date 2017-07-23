@@ -195,7 +195,7 @@
                 tools:text="499 votes to be condemned"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/vote_title_text_view"
                 style="@style/RobotoBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/mold_view"
-                app:layout_constraintLeft_toRightOf="@+id/textView"
+                app:layout_constraintLeft_toRightOf="@+id/vote_title_text_view"
                 app:layout_constraintTop_toTopOf="@+id/mold_view"
                 app:layout_constraintVertical_bias="0.523"
                 tools:text="110.110"/>

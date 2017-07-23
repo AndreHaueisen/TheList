@@ -2,6 +2,7 @@ package com.andrehaueisen.listadejanot.e_search_politician.mvp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -124,11 +125,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             setOnDeleteTextClickListener()
 
             dismissAlertDialog()
-            ExpectAnim()
-                    .expect(select_politician_toolbar)
-                    .toBe(centerInParent(false, true))
-                    .toAnimation().setDuration(DEFAULT_ANIM_DURATION)
-                    .start()
         }
     }
 
@@ -144,7 +140,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         }
     }
 
-    fun performOnCompleteTextViewAutoSearch(politicianName: String){
+    fun performOnCompleteTextViewAutoSearch(politicianName: String) {
         mPresenterActivity.auto_complete_text_view.setText(politicianName)
         dismissKeyBoard()
         mPresenterActivity.subscribeToSinglePoliticianModel(politicianName)
@@ -162,7 +158,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private fun beginDatabaseLoadingAlertDialog() {
         mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
                 .setCancelable(true)
-                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_janot_24dp))
+                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_urn_broom_24dp))
                 .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
                 .setMessage(mPresenterActivity.getString(R.string.dialog_message_loading_database))
                 .create()
@@ -201,7 +197,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             }
             setVoteButtonClickListener(politician)
 
-            if(mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 setPoliticianImageClickListener()
             }
             setShareButtonClickListener(politician)
@@ -314,6 +310,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
         with(mPresenterActivity) {
             add_to_vote_count_toggle_button.setOnClickListener {
                 if (isConnectedToInternet()) {
+                    ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
                     updatePoliticianVote(politician, this@PoliticianSelectorView)
                 } else {
                     showToast(getString(R.string.no_network))
@@ -362,7 +359,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     fun setShareButtonClickListener(politician: Politician?) {
         mPresenterActivity.share_button.setOnClickListener {
-            //TODO put link to appstore / make a better sharing message
+            //TODO put link to playstore / make a better sharing message
 
             if (politician != null) {
 
@@ -398,9 +395,39 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
                 fun getShareIntent(uri: Uri) = with(Intent()) {
 
+                    val post: String
+                    val determiner: String
+
+                    when (politician.post) {
+                        Politician.Post.DEPUTADO -> {
+                            post = mPresenterActivity.getString(R.string.congressman)
+                            determiner = mPresenterActivity.getString(R.string.determiner_male)
+                        }
+
+                        Politician.Post.DEPUTADA -> {
+                            post = mPresenterActivity.getString(R.string.congresswoman)
+                            determiner = mPresenterActivity.getString(R.string.determiner_female)
+                        }
+
+                        Politician.Post.SENADOR -> {
+                            post = mPresenterActivity.getString(R.string.senator)
+                            determiner = mPresenterActivity.getString(R.string.determiner_male)
+                        }
+
+                        Politician.Post.SENADORA -> {
+                            post = mPresenterActivity.getString(R.string.senatora)
+                            determiner = mPresenterActivity.getString(R.string.determiner_female)
+                        }
+
+                        else -> {
+                            post = "PLACE HOLDER"
+                            determiner = mPresenterActivity.getString(R.string.determiner_male)
+                        }
+                    }
+
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_STREAM, uri)
-                    putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, politician.name))
+                    putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, determiner, post, politician.name))
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     type = "image/*"
 
@@ -433,7 +460,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     useInitialToFinalFlow = true)
             badge_image_view.contentDescription = getString(R.string.description_badge_thief_politician)
 
-            ExpectAnim().plusOneCondemnAnimation(window.decorView.rootView, politician)
+            startCountAnimation(politician, isUpVote = true)
         }
     }
 
@@ -453,7 +480,46 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = false)
             badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
-            ExpectAnim().minusOneAbsolveAnimation(window.decorView.rootView, politician)
+            startCountAnimation(politician, isUpVote = false)
+        }
+    }
+
+    private fun startCountAnimation(politician: Politician, isUpVote: Boolean) {
+        val updatedVoteCount = politician.votesNumber
+        val currentVoteCount = mPresenterActivity.votes_number_text_view.text.toString().toInt()
+
+        fun initiateVoteExpectAnim(){
+            if(isUpVote) {
+                ExpectAnim().plusOneCondemnAnimation(mPresenterActivity.window.decorView.rootView, politician)
+            }else{
+                ExpectAnim().minusOneAbsolveAnimation(mPresenterActivity.window.decorView.rootView, politician)
+            }
+        }
+
+        if(updatedVoteCount.toInt() == currentVoteCount + 1 || updatedVoteCount.toInt() == currentVoteCount - 1){
+            initiateVoteExpectAnim()
+
+        }else {
+            val MAX_VALUE_TO_ANIMATE: Long
+            if (isUpVote) {
+                MAX_VALUE_TO_ANIMATE = updatedVoteCount - 1
+            } else {
+                MAX_VALUE_TO_ANIMATE = updatedVoteCount + 1
+            }
+
+            val animator = ValueAnimator.ofInt(currentVoteCount, MAX_VALUE_TO_ANIMATE.toInt())
+
+            animator.duration = QUICK_ANIMATIONS_DURATION
+            animator.addUpdateListener { animation ->
+
+                val animatedValue = animation.animatedValue.toString()
+                mPresenterActivity.votes_number_text_view.text = animatedValue
+                val isLastValue = animatedValue == MAX_VALUE_TO_ANIMATE.toString()
+                if (isLastValue) {
+                    initiateVoteExpectAnim()
+                }
+            }
+            animator.start()
         }
     }
 

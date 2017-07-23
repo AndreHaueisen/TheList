@@ -2,6 +2,7 @@ package com.andrehaueisen.listadejanot.d_main_list
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.SearchManager
 import android.content.Intent
@@ -111,6 +112,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
                     fun initiateVoteProcess() {
                         val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+                        ExpectAnim().startRefreshingTitleAnimation(itemView)
                         if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
                             mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
                         } else {
@@ -134,6 +136,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     }
                 }
             }
+
             fun setSearchOnWebButtonClickListener() {
                 mSearchOnWebButton.setOnClickListener {
                     val intent = Intent(Intent.ACTION_WEB_SEARCH)
@@ -141,6 +144,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     activity.startActivity(intent)
                 }
             }
+
             fun setPoliticianImageViewClickListener() {
                 mPoliticianImageView.setOnClickListener {
                     if (mIsSearchOnWebButtonVisible) {
@@ -233,9 +237,8 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             animatorSet.playTogether(mCardObjectAnimatorAbsolve, mMoldViewObjectAnimatorAbsolve)
             animatorSet.start()
 
-            mVotesNumberTextView.text = politician.votesNumber.toString()
             mPlusOneAnimationTextView.text = activity.getString(R.string.minus_one)
-            ExpectAnim().minusOneAbsolveAnimation(itemView, politician)
+            startCountAnimation(politician, isUpVote = false)
             mAnimatedBadgeImageView.animateVectorDrawable(
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
@@ -252,14 +255,53 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             animatorSet.playTogether(mCardObjectAnimatorCondemn, mMoldViewObjectAnimatorCondemn)
             animatorSet.start()
 
-            mVotesNumberTextView.text = politician.votesNumber.toString()
             mPlusOneAnimationTextView.text = activity.getString(R.string.plus_one)
-            ExpectAnim().plusOneCondemnAnimation(itemView, politician)
+            startCountAnimation(politician, isUpVote = true)
+
             mAnimatedBadgeImageView.animateVectorDrawable(
                     mPoliticianThiefAnimation,
                     mThiefPoliticianAnimation,
                     useInitialToFinalFlow = true)
             mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
+        }
+
+        private fun startCountAnimation(politician: Politician, isUpVote: Boolean) {
+            val updatedVoteCount = politician.votesNumber
+            val currentVoteCount = mVotesNumberTextView.text.toString().toInt()
+
+            fun initiateVoteExpectAnim(){
+                if(isUpVote) {
+                    ExpectAnim().plusOneCondemnAnimation(itemView, politician)
+                }else{
+                    ExpectAnim().minusOneAbsolveAnimation(itemView, politician)
+                }
+            }
+
+            if(updatedVoteCount.toInt() == currentVoteCount + 1 || updatedVoteCount.toInt() == currentVoteCount - 1){
+                initiateVoteExpectAnim()
+
+            }else {
+                val MAX_VALUE_TO_ANIMATE: Long
+                if (isUpVote) {
+                    MAX_VALUE_TO_ANIMATE = updatedVoteCount - 1
+                } else {
+                    MAX_VALUE_TO_ANIMATE = updatedVoteCount + 1
+                }
+
+                val animator = ValueAnimator.ofInt(currentVoteCount, MAX_VALUE_TO_ANIMATE.toInt())
+
+                animator.duration = QUICK_ANIMATIONS_DURATION
+                animator.addUpdateListener { animation ->
+
+                    val animatedValue = animation.animatedValue.toString()
+                    mVotesNumberTextView.text = animatedValue
+                    val isLastValue = animatedValue == MAX_VALUE_TO_ANIMATE.toString()
+                    if (isLastValue) {
+                        initiateVoteExpectAnim()
+                    }
+                }
+                animator.start()
+            }
         }
 
         fun notifyPoliticianAddedToMainList(email: String) {

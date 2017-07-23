@@ -175,7 +175,7 @@
                 app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/vote_title_text_view"
                 style="@style/RobotoBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -192,9 +192,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintLeft_toRightOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toBottomOf="@+id/vote_title_text_view"
+                app:layout_constraintLeft_toRightOf="@+id/vote_title_text_view"
+                app:layout_constraintTop_toTopOf="@+id/vote_title_text_view"
                 tools:text="110.110"/>
 
             <ImageView

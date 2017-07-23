@@ -61,13 +61,12 @@ class PoliticianSelectorModel(val mContext: Context,
                         if (isListSearchComplete) {
                             mListCounter++
                         }
-                        if (mListCounter == 2) {
-                            mOnListsReadyPublisher.onComplete()
+                        if (mListCounter % 2 == 0) {
+                            initiateDataLoad()
                         }
                     }
 
                     override fun onComplete() {
-                        initiateDataLoad()
                     }
 
                     override fun onError(e: Throwable) {
@@ -152,6 +151,10 @@ class PoliticianSelectorModel(val mContext: Context,
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
 
+        if(mSearchablePoliticianList.isNotEmpty()){
+            mSearchablePoliticianList.clear()
+        }
+
         if (data != null && data.count != 0) {
             data.moveToFirst()
 
@@ -221,7 +224,7 @@ class PoliticianSelectorModel(val mContext: Context,
     }
 
     override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> {
-        return Observable.defer { mFinalSearchablePoliticianPublisher }
+        return mFinalSearchablePoliticianPublisher
     }
 
     override fun onDestroy() {

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name" translatable="false">Lista de Janot</string>
-    <string name="title_activity_main_list" translatable="false">Lista de Janot</string>
+    <string name="app_name" translatable="false">Urna Limpa</string>
+    <string name="title_activity_main_list" translatable="false">Urna Limpa</string>
     <string name="facebook_app_id" translatable="false">1698727047098274</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1698727047098274</string>
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
@@ -17,6 +17,7 @@
     <string name="vote_absolve">Absolve</string>
     <string name="vote_condemn">Condemn</string>
 
+    <string name="refreshing_votes_title">Refreshing...</string>
     <string name="votes_title">Votes</string>
 
     <string name="font_roboto_black" translatable="false">sans-serif-black</string>
@@ -50,10 +51,12 @@
     <string name="minus_one" translatable="false">-1</string>
     <string name="share">Share</string>
     <string name="share_title">Ask for help using…</string>
-    <string name="share_boarding_message">List de Janot needs your help!\n\nI think the politician %1$s deserves to be banished.\n"Help me with your vote.</string>
+    <string name="share_boarding_message">We needs your help!\n\n%1$s %2$s %3$s deserves to be banished.\n"Help us with your vote.</string>
     <string name="politician_already_banned">This politician is banned</string>
     <string name="null_email_found">Something is wrong. Please login again</string>
     <string name="vote_list">Vote list</string>
+    <string name="determiner_male">The</string>
+    <string name="determiner_female">The</string>
     <string name="senator">Senator</string>
     <string name="senatora">Senator</string>
     <string name="congressman">Congressman</string>

@@ -85,7 +85,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/vote_title_text_view"
             style="@style/RobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,9 +105,9 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.454"
-            app:layout_constraintLeft_toLeftOf="@+id/textView"
-            app:layout_constraintRight_toRightOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintLeft_toLeftOf="@+id/vote_title_text_view"
+            app:layout_constraintRight_toRightOf="@+id/vote_title_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/vote_title_text_view"
             app:layout_constraintVertical_bias="0.0"
             tools:text="110.110"/>
 

@@ -7,7 +7,7 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
 
-fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician) {
+fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician) {
 
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
@@ -20,6 +20,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                     Expectations.centerBetweenViews(addVoteCountToggleButton, votesNumberTextView, true, true))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
+            .setStartDelay(200)
             .start()
             .addEndListener {
                 ExpectAnim()
@@ -33,11 +34,12 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView : View, politician: Politician
                         .addEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
                             missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
+                            ExpectAnim().stopRefreshingTitleAnimation(parentView)
                         }
             }
 }
 
-fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politician) {
+fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician) {
 
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
     val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
@@ -54,6 +56,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
                     Expectations.centerBetweenViews(votesNumberTextView, addVoteCountToggleButton, true, true))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
+            .setStartDelay(500)
             .start()
             .addEndListener {
                 ExpectAnim()
@@ -64,10 +67,51 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView : View, politician: Politicia
                         .toAnimation()
                         .setDuration(DEFAULT_ANIMATIONS_DURATION)
                         .start()
+                ExpectAnim().stopRefreshingTitleAnimation(parentView)
             }
 }
 
-fun ExpectAnim.fadeOutSingleView(view: View){
+fun ExpectAnim.startRefreshingTitleAnimation(parentView: View){
+    val voteTitleTextView = parentView.findViewById(R.id.vote_title_text_view) as TextView
+
+    this.expect(voteTitleTextView)
+            .toBe(Expectations.scale(0F, 0F))
+            .toAnimation()
+            .setDuration(VERY_QUICK_ANIMATIONS_DURATION)
+            .start()
+            .addEndListener {
+                voteTitleTextView.text = parentView.context.getString(R.string.refreshing_votes_title)
+                ExpectAnim()
+                        .expect(voteTitleTextView)
+                        .toBe(Expectations.atItsOriginalScale())
+                        .toAnimation()
+                        .setDuration(VERY_QUICK_ANIMATIONS_DURATION)
+                        .start()
+            }
+}
+
+fun ExpectAnim.stopRefreshingTitleAnimation(parentView: View){
+    val voteTitleTextView = parentView.findViewById(R.id.vote_title_text_view) as TextView
+
+    this.expect(voteTitleTextView)
+            .toBe(Expectations.scale(0F, 0F))
+            .toAnimation()
+            .setDuration(VERY_QUICK_ANIMATIONS_DURATION)
+            .start()
+            .addEndListener {
+                voteTitleTextView.text = parentView.context.getString(R.string.votes_title)
+                ExpectAnim()
+                        .expect(voteTitleTextView)
+                        .toBe(Expectations.atItsOriginalScale())
+                        .toAnimation()
+                        .setDuration(VERY_QUICK_ANIMATIONS_DURATION)
+                        .start()
+            }
+
+
+}
+
+fun ExpectAnim.fadeOutSingleView(view: View) {
     this.expect(view)
             .toBe(Expectations.alpha(0.0f))
             .toAnimation()
@@ -75,7 +119,7 @@ fun ExpectAnim.fadeOutSingleView(view: View){
             .start()
 }
 
-fun ExpectAnim.fadeInSingleView(view: View){
+fun ExpectAnim.fadeInSingleView(view: View) {
     this.expect(view)
             .toBe(Expectations.alpha(1.0f))
             .toAnimation()
