@@ -99,6 +99,8 @@ class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>
             mVoteButton.setOnClickListener {
                 if (mActivity.isConnectedToInternet()) {
 
+                    mActivity.setResult(Activity.RESULT_OK)
+
                     if (mFirebaseAuthenticator.isUserLoggedIn()) {
                         initiateVoteProcess()
 

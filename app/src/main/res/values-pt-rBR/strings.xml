@@ -11,7 +11,7 @@
     <string name="title_governadores">Governadores</string>
     <string name="vote_absolve">Inelegível</string>
     <string name="vote_condemn">Elegível</string>
-    <string name="refreshing_votes_title">Atualizando...</string>
+    <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Inelegíveis</string>
     <string name="banned_senadores_title">Senadores Inelegíveis</string>
@@ -55,7 +55,7 @@
 
     <!--f_information strings-->
     <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
-    <string name="beta_warning">Os nomes mais notórios estão fixos na lista. O restante é você quem vai ajudar a compor.\nEstamos em versão de testes. Mande um email com sugestões e opiniões.</string>
+    <string name="beta_warning">Na lista há três nomes fixos. O restante é você quem vai ajudar a compor.\nEstamos em versão de testes. Mande um email com sugestões e opiniões.</string>
     <string name="subject_email">Sugestões e opinião</string>
     <string name="send_email_title">Mande email usando…</string>
 

@@ -17,7 +17,7 @@
     <string name="vote_absolve">Absolve</string>
     <string name="vote_condemn">Condemn</string>
 
-    <string name="refreshing_votes_title">Refreshing...</string>
+    <string name="refreshing_votes_title">Refreshing</string>
     <string name="votes_title">Votes</string>
 
     <string name="font_roboto_black" translatable="false">sans-serif-black</string>

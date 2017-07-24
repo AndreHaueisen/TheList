@@ -17,7 +17,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician)
     this.expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
                     Expectations.scale(1.5f, 1.5f),
-                    Expectations.centerBetweenViews(addVoteCountToggleButton, votesNumberTextView, true, true))
+                    Expectations.toRightOf(votesNumberTextView))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .setStartDelay(200)
@@ -27,7 +27,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician)
                         .expect(plusOneTextView)
                         .toBe(Expectations.alpha(0.0f),
                                 Expectations.atItsOriginalScale(),
-                                Expectations.sameCenterAs(votesNumberTextView, true, true))
+                                Expectations.atItsOriginalPosition())
                         .toAnimation()
                         .setDuration(DEFAULT_ANIMATIONS_DURATION)
                         .start()
@@ -53,7 +53,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician
             .expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
                     Expectations.scale(1.5f, 1.5f),
-                    Expectations.centerBetweenViews(votesNumberTextView, addVoteCountToggleButton, true, true))
+                    Expectations.toRightOf(votesNumberTextView))
             .toAnimation()
             .setDuration(DEFAULT_ANIMATIONS_DURATION)
             .setStartDelay(500)

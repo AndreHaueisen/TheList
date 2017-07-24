@@ -75,7 +75,7 @@ class UserVoteListPresenterActivity: AppCompatActivity(), UserVoteListMvpContrac
         }
 
         override fun onNext(userVoteList: ArrayList<Politician>) {
-            mUserVotesList = userVoteList ?: ArrayList()
+            mUserVotesList = userVoteList
             mUser = mModel.getUser()
             mView.notifyVotesListReady(mUser)
         }

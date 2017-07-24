@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.e_search_politician.mvp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -25,6 +26,8 @@ import kotlinx.android.synthetic.main.e_activity_politician_selector.*
 import javax.inject.Inject
 
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
+
+    val ACTIVITY_REQUEST_CODE = 1
 
     private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
 
@@ -71,8 +74,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = false)
-            mSelectorModel.connectToFirebase()
-            subscribeToPoliticianSelectorModel()
+            refreshPoliticianData()
 
         } else {
             mOriginalSearchablePoliticiansList = savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS)
@@ -86,13 +88,17 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
+    private fun refreshPoliticianData() {
+        mSelectorModel.connectToFirebase()
+        subscribeToPoliticianSelectorModel()
+    }
+
     override fun onNewIntent(intent: Intent?) {
 
         intent?.let {
             if (intent.hasExtra(INTENT_POLITICIAN_NAME)) {
                 mNameFromNotification = intent.getStringExtra(INTENT_POLITICIAN_NAME)
-                mSelectorModel.connectToFirebase()
-                subscribeToPoliticianSelectorModel()
+                refreshPoliticianData()
             }
         }
 
@@ -107,7 +113,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .subscribe(mMaybeListObserver)
     }
 
-    private val mMaybeListObserver = object: MaybeObserver<ArrayList<Politician>>{
+    private val mMaybeListObserver = object : MaybeObserver<ArrayList<Politician>> {
 
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
@@ -117,9 +123,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mOriginalSearchablePoliticiansList = searchablePoliticiansList
             mView?.notifySearchablePoliticiansNewList()
 
-            if (mNameFromNotification != null) {
-                mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
-            }else{
+            val politicianName = auto_complete_text_view.text.toString()
+            if (mNameFromNotification != null || politicianName.isNotEmpty()) {
+                if(mNameFromNotification != null) {
+                    mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
+                }else{
+                    mView?.performOnCompleteTextViewAutoSearch(politicianName)
+                }
+
+            } else {
                 ExpectAnim()
                         .expect(select_politician_toolbar)
                         .toBe(Expectations.centerInParent(false, true))
@@ -137,7 +149,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
-    override fun subscribeToSinglePoliticianModel(politicianName: String){
+    override fun subscribeToSinglePoliticianModel(politicianName: String) {
         mLastSelectedPoliticianName = politicianName
         mSinglePoliticianModel.loadSinglePoliticianPublisher()
                 .firstElement()
@@ -146,7 +158,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .subscribe(mSinglePoliticianObserver)
     }
 
-    private val mSinglePoliticianObserver = object : MaybeObserver<Politician>{
+    private val mSinglePoliticianObserver = object : MaybeObserver<Politician> {
         override fun onError(t: Throwable) {
             Log.e(LOG_TAG, t.toString())
         }
@@ -195,10 +207,19 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     override fun showUserVoteListIfLogged() {
         if (mFirebaseAuthenticator.isUserLoggedIn()) {
-            startNewActivity(UserVoteListPresenterActivity::class.java)
+            val intent = Intent(this, UserVoteListPresenterActivity::class.java)
+            startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
+
         } else {
             startNewActivity(LoginActivity::class.java)
             finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode == ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            refreshPoliticianData()
         }
     }
 

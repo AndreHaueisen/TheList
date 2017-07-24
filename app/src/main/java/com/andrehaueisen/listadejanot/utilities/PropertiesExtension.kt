@@ -28,7 +28,7 @@ val CHILD_LOCATION_VOTES_NUMBER = "votesNumber"
 val CHILD_LOCATION_CONDEMNED_BY = "condemnedBy"
 val CHILD_LOCATION_CONDEMNATIONS = "condemnations"
 
-val VOTES_TO_MAIN_LIST_THRESHOLD: Long = 1
+val VOTES_TO_MAIN_LIST_THRESHOLD: Long = 10
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
@@ -37,13 +37,8 @@ val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 val SHARED_MESSAGE_TOKEN = "message_token"
 
 val DEFAULT_POLITICIANS_MAIN_LIST = listOf(
-        "dep.luciovieiralima@camara.leg.br",
-        "dep.rodrigomaia@camara.leg.br",
         "dep.rodrigorochaloures@camara.gov.br",
-        "edison.lobao@senador.leg.br",
-        "lindbergh.farias@senador.leg.br",
         "renan.calheiros@senador.leg.br",
-        "romero.juca@senador.leg.br",
         "aecio.neves@senador.leg.br")
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()

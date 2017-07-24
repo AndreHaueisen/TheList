@@ -72,12 +72,12 @@
 
             <ImageButton
                 android:id="@+id/search_on_web_button"
-                android:backgroundTint="@color/colorPrimaryLightTransparent"
-                android:padding="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="110dp"
+                android:backgroundTint="@color/colorPrimaryLightTransparent"
                 android:elevation="1dp"
+                android:padding="16dp"
                 android:src="@drawable/ic_search_24dp"
                 app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
                 app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"/>
@@ -104,11 +104,9 @@
             android:layout_marginTop="4dp"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintLeft_toLeftOf="@+id/vote_title_text_view"
             app:layout_constraintRight_toRightOf="@+id/vote_title_text_view"
             app:layout_constraintTop_toBottomOf="@+id/vote_title_text_view"
-            app:layout_constraintVertical_bias="0.0"
             tools:text="110.110"/>
 
         <ImageView
@@ -143,13 +141,11 @@
             style="@style/RobotoBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
             android:text="@string/plus_one"
-            app:layout_constraintBottom_toBottomOf="@+id/add_to_vote_count_toggle_button"
-            app:layout_constraintLeft_toLeftOf="@+id/add_to_vote_count_toggle_button"
-            app:layout_constraintRight_toRightOf="@+id/add_to_vote_count_toggle_button"
-            app:layout_constraintTop_toTopOf="@+id/add_to_vote_count_toggle_button"/>
+            app:layout_constraintBottom_toBottomOf="@+id/votes_number_text_view"
+            app:layout_constraintLeft_toLeftOf="@+id/votes_number_text_view"
+            app:layout_constraintTop_toTopOf="@+id/votes_number_text_view"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
