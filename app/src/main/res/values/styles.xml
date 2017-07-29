@@ -20,8 +20,15 @@
         <item name="android:textColorHint">@color/colorPrimaryLight</item>
     </style>
 
-    <style name="ToggleButtonStyle" parent="@android:style/Widget.Material.Button.Borderless">
-        <item name="android:textAppearance">@style/RobotoBlackTextStyle</item>
+    <style name="ToggleButtonStyle" parent="@android:style/Widget.Material.Button">
+        <item name="android:textAppearance">@style/RobotoRegularTextStyle</item>
+    </style>
+
+    <style name="RobotoThinItalicTextStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@string/font_roboto_thin</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RobotoRegularToolbarTextStyle" parent="TextAppearance.AppCompat.Title">

@@ -10,4 +10,6 @@
     <color name="colorAccentSmooth">#ffbeb2</color>
     <color name="colorPrimaryLightTransparent">#96e7dfdf</color>
 
+    <color name="colorBackgroundTransparent">#5a64666a</color>
+
 </resources>

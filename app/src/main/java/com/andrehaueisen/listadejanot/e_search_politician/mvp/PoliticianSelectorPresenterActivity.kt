@@ -15,8 +15,6 @@ import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
-import com.github.florent37.expectanim.ExpectAnim
-import com.github.florent37.expectanim.core.Expectations
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -130,14 +128,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 }else{
                     mView?.performOnCompleteTextViewAutoSearch(politicianName)
                 }
-
-            } else {
-                ExpectAnim()
-                        .expect(select_politician_toolbar)
-                        .toBe(Expectations.centerInParent(false, true))
-                        .toAnimation().setDuration(DEFAULT_ANIMATIONS_DURATION)
-                        .start()
             }
+
         }
 
         override fun onComplete() {

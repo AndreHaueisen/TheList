@@ -10,14 +10,15 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.TransitionDrawable
 import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -49,10 +50,12 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private val mPoliticianThiefAnimation = mPresenterActivity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
     private val mThiefPoliticianAnimation = mPresenterActivity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
 
-    private val mConstraintAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(mPresenterActivity, R.color.colorAccentDark, R.color.colorPrimaryDark, "backgroundColor")
-    private val mMoldViewObjectAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "backgroundColor")
-    private val mConstraintAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(mPresenterActivity, R.color.colorPrimaryDark, R.color.colorAccentDark, "backgroundColor")
-    private val mMoldViewObjectAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "backgroundColor")
+    private val mPostTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimaryDark, "textColor")
+    private val mPostTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimaryDark, R.color.colorAccent, "textColor")
+    private val mNameTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimaryDark, "textColor")
+    private val mNameTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimaryDark, R.color.colorAccent, "textColor")
+    private val mEmailTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimaryDark, "textColor")
+    private val mEmailTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimaryDark, R.color.colorAccent, "textColor")
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
@@ -101,8 +104,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             ExpectAnim()
                     .expect(delete_text_image_button)
                     .toBe(alpha(0.0f))
-                    .expect(constraint_layout)
-                    .toBe(outOfScreen(Gravity.BOTTOM))
                     .expect(plus_one_text_view)
                     .toBe(alpha(0.0f))
                     .toAnimation()
@@ -240,11 +241,8 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
         with(mPresenterActivity) {
             if (mIsInitialRequest) {
+                constraint_layout.visibility = View.VISIBLE
                 ExpectAnim()
-                        .expect(select_politician_toolbar)
-                        .toBe(atItsOriginalPosition())
-                        .expect(constraint_layout)
-                        .toBe(atItsOriginalPosition())
                         .expect(delete_text_image_button)
                         .toBe(alpha(1.0f))
                         .toAnimation()
@@ -268,13 +266,15 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private fun configureInitialCondemnStatus(politician: Politician) {
         with(mPresenterActivity) {
 
-            ExpectAnim()
-                    .expect(plus_one_text_view)
-                    .toBe(sameCenterAs(votes_number_text_view, true, true))
-                    .toAnimation().setNow()
+            post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+            name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+            email_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
 
-            constraint_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccentDark))
-            mold_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+            val constraintTransition =  constraint_layout.background as TransitionDrawable
+            constraintTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
+
+            val badgeTransition = badge_image_view.background as TransitionDrawable
+            badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -291,8 +291,10 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
     private fun configureInitialAbsolveStatus(politician: Politician) {
 
         with(mPresenterActivity) {
-            constraint_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
-            mold_view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
+            post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+            name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+            email_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
 
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -445,13 +447,20 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     override fun initiateCondemnAnimations(politician: Politician) {
         with(mPresenterActivity) {
-            mConstraintAnimatorCondemn.target = constraint_layout
-            mMoldViewObjectAnimatorCondemn.target = mold_view
+            mPostTextAnimatorCondemn.target = name_text_view
+            mNameTextAnimatorCondemn.target = post_text_view
+            mEmailTextAnimatorCondemn.target= email_text_view
 
             val animatorSet = AnimatorSet()
             animatorSet.interpolator = AccelerateDecelerateInterpolator()
-            animatorSet.playTogether(mConstraintAnimatorCondemn, mMoldViewObjectAnimatorCondemn)
+            animatorSet.playTogether(mPostTextAnimatorCondemn, mNameTextAnimatorCondemn, mEmailTextAnimatorCondemn)
             animatorSet.start()
+
+            val transition =  constraint_layout.background as TransitionDrawable
+            transition.startTransition(DEFAULT_ANIM_DURATION.toInt())
+
+            val badgeTransition = badge_image_view.background as TransitionDrawable
+            badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
             plus_one_text_view.text = mPresenterActivity.getString(R.string.plus_one)
             badge_image_view.animateVectorDrawable(
@@ -466,13 +475,20 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
 
     override fun initiateAbsolveAnimations(politician: Politician) {
         with(mPresenterActivity) {
-            mConstraintAnimatorAbsolve.target = constraint_layout
-            mMoldViewObjectAnimatorAbsolve.target = mold_view
+            mPostTextAnimatorAbsolve.target = name_text_view
+            mNameTextAnimatorAbsolve.target = post_text_view
+            mEmailTextAnimatorAbsolve.target = email_text_view
 
             val animatorSet = AnimatorSet()
             animatorSet.interpolator = AccelerateDecelerateInterpolator()
-            animatorSet.playTogether(mConstraintAnimatorAbsolve, mMoldViewObjectAnimatorAbsolve)
+            animatorSet.playTogether(mPostTextAnimatorAbsolve, mNameTextAnimatorAbsolve, mEmailTextAnimatorAbsolve)
             animatorSet.start()
+
+            val transition =  constraint_layout.background as TransitionDrawable
+            transition.reverseTransition(DEFAULT_ANIM_DURATION.toInt())
+
+            val badgeTransition = badge_image_view.background as TransitionDrawable
+            badgeTransition.reverseTransition(DEFAULT_ANIM_DURATION.toInt())
 
             plus_one_text_view.text = mPresenterActivity.getString(R.string.minus_one)
             badge_image_view.animateVectorDrawable(

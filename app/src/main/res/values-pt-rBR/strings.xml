@@ -49,8 +49,8 @@
     <string name="congresswoman">Deputada</string>
     <string name="search_on_web">Procurar na web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Falta %1$d voto para sua inelegibilidade</item>
-        <item quantity="other">Faltam %1$d votos para sua inelegibilidade</item>
+        <item quantity="one">%1$d voto para inelegibilidade</item>
+        <item quantity="other">%1$d votos para inelegibilidade</item>
     </plurals>
 
     <!--f_information strings-->

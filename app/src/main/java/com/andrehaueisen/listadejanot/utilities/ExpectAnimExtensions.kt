@@ -10,7 +10,6 @@ import com.github.florent37.expectanim.core.Expectations
 fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician) {
 
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
-    val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 
@@ -42,7 +41,6 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician)
 fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician) {
 
     val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
-    val addVoteCountToggleButton = parentView.findViewById(R.id.add_to_vote_count_toggle_button)
     val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
     val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
 

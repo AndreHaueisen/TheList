@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.support.v4.content.ContextCompat
 
-fun ObjectAnimator.animateBackgroundToColor(activity: Activity, initialColor: Int, finalColor: Int, propertyName: String): ObjectAnimator{
+fun ObjectAnimator.animatePropertyToColor(activity: Activity, initialColor: Int, finalColor: Int, propertyName: String): ObjectAnimator{
 
     this.propertyName = propertyName
     this.setIntValues(ContextCompat.getColor(activity, initialColor), ContextCompat.getColor(activity, finalColor))

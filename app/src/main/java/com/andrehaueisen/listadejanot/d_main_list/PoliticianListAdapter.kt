@@ -45,11 +45,11 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
     private val VIEW_TYPE_SENADOR = 1
     private val mGlide = Glide.with(activity)
 
-    private val mCardObjectAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorAccentDark, R.color.colorPrimaryDark, "cardBackgroundColor")
-    private val mMoldViewObjectAnimatorAbsolve = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorAccent, R.color.colorPrimary, "backgroundColor")
+    private val mCardObjectAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(activity, R.color.colorAccentDark, R.color.colorPrimaryDark, "cardBackgroundColor")
+    private val mMoldViewObjectAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(activity, R.color.colorAccent, R.color.colorPrimary, "backgroundColor")
 
-    private val mCardObjectAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorPrimaryDark, R.color.colorAccentDark, "cardBackgroundColor")
-    private val mMoldViewObjectAnimatorCondemn = ObjectAnimator().animateBackgroundToColor(activity, R.color.colorPrimary, R.color.colorAccent, "backgroundColor")
+    private val mCardObjectAnimatorCondemn = ObjectAnimator().animatePropertyToColor(activity, R.color.colorPrimaryDark, R.color.colorAccentDark, "cardBackgroundColor")
+    private val mMoldViewObjectAnimatorCondemn = ObjectAnimator().animatePropertyToColor(activity, R.color.colorPrimary, R.color.colorAccent, "backgroundColor")
 
     init {
         val appComponent = BaseApplication.get(activity).getAppComponent()
