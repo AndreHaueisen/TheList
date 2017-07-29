@@ -37,7 +37,7 @@
     <string name="type_politician_name_hint">Nome do parlamentar</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
-    <string name="share_boarding_message">Precisamos da sua ajuda!\n\n%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
+    <string name="share_boarding_message">%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
     <string name="politician_already_banned">Parlamentar considerado inelegível</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
@@ -55,9 +55,7 @@
 
     <!--f_information strings-->
     <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
-    <string name="beta_warning">Na lista há três nomes fixos. O restante é você quem vai ajudar a compor.\nEstamos em versão de testes. Mande um email com sugestões e opiniões.</string>
-    <string name="subject_email">Sugestões e opinião</string>
-    <string name="send_email_title">Mande email usando…</string>
+    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos será reiniciado se for necessário.</string>
 
     <!-- g_login strings-->
     <string name="no_network">Sem internet</string>

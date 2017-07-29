@@ -49,14 +49,6 @@
                 android:text="@string/beta_warning"
                 android:textSize="22sp"/>
 
-            <TextView
-                android:id="@+id/my_email_text_view"
-                style="@style/RobotoItalicBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
-                android:textSize="22sp"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

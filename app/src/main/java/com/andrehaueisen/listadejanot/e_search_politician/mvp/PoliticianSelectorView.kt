@@ -296,6 +296,9 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             email_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
 
+            constraint_layout.background = ContextCompat.getDrawable(this, R.drawable.transition_background)
+            badge_image_view.background  = ContextCompat.getDrawable(this, R.drawable.transition_badge_background)
+
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
             add_to_vote_count_toggle_button.isChecked = false
@@ -356,7 +359,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
             mPresenterActivity.startActivity(intent)
         }
-
     }
 
     fun setShareButtonClickListener(politician: Politician?) {
