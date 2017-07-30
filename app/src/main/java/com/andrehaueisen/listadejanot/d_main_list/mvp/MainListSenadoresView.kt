@@ -76,7 +76,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         Observable.just(mSenadorList)
                 .doOnComplete {
                     mSenadoresRecyclerView.adapter.notifyDataSetChanged()
-                    mSenadoresRecyclerView.showSnackbar(message, Snackbar.LENGTH_LONG)
+                    mSenadoresRecyclerView.showSnackbar(message, Snackbar.LENGTH_SHORT)
                 }
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

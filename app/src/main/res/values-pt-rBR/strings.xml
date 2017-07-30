@@ -2,30 +2,30 @@
 <resources>
 
     <!--MessagingService strings-->
-    <string name="notification_title">Outro político se tornou inelegível</string>
+    <string name="notification_title">Outro político é considerado suspeito</string>
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
 
     <!--d_main_list strings-->
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Inelegível</string>
-    <string name="vote_condemn">Elegível</string>
+    <string name="vote_absolve">Suspeito</string>
+    <string name="vote_condemn">Confiável</string>
     <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
-    <string name="banned_deputados_title">Deputados Inelegíveis</string>
-    <string name="banned_senadores_title">Senadores Inelegíveis</string>
-    <string name="senador_condemned">Senador inelegível</string>
-    <string name="deputado_condemned">Deputado inelegível</string>
-    <string name="senador_absolved">Senador elegível</string>
-    <string name="deputado_absolved">Deputado inelegível</string>
+    <string name="banned_deputados_title">Deputados Suspeitos</string>
+    <string name="banned_senadores_title">Senadores Suspeitos</string>
+    <string name="senador_condemned">Senador suspeito</string>
+    <string name="deputado_condemned">Deputado suspeito</string>
+    <string name="senador_absolved">Senador confiável</string>
+    <string name="deputado_absolved">Deputado confiável</string>
 
     <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
     <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>
     <string name="deputados_sorted_by_name">Deputados organizados por nome</string>
     <string name="deputados_sorted_by_vote_number">Deputados organizados por número de votos</string>
 
-    <string name="add_politician">Add Politician</string>
+    <string name="add_politician">Adicionar político</string>
     <string name="sort_list">Ordenar Lista</string>
     <string name="information">Informações</string>
     <string name="logout">Trocar Conta</string>
@@ -38,7 +38,7 @@
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
     <string name="share_boarding_message">%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
-    <string name="politician_already_banned">Parlamentar considerado inelegível</string>
+    <string name="politician_already_banned">Parlamentar considerado suspeito</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
     <string name="determiner_male">O</string>
@@ -49,12 +49,12 @@
     <string name="congresswoman">Deputada</string>
     <string name="search_on_web">Procurar na web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">%1$d voto para inelegibilidade</item>
-        <item quantity="other">%1$d votos para inelegibilidade</item>
+        <item quantity="one">%1$d voto para ser considerado suspeito</item>
+        <item quantity="other">%1$d votos para ser considerado suspeito</item>
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo inelegível\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de inelegíveis\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo suspeito\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de suspeitos\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
     <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos será reiniciado se for necessário.</string>
 
     <!-- g_login strings-->
@@ -65,7 +65,7 @@
     <string name="your_votes">Seus votos</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
-    <string name="banned">Inelegível</string>
+    <string name="banned">Suspeito</string>
     <string name="your_vote_date">Voto registrado dia %1$s</string>
     <string name="remove_vote">Remover voto</string>
     <string name="place_vote">Refazer voto</string>

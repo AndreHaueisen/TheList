@@ -210,7 +210,7 @@
             android:layout_height="48dp"
             android:background="@null"
             android:completionThreshold="1"
-            android:dropDownAnchor="@id/search_constraint_layout"
+            android:dropDownAnchor="@id/select_politician_toolbar"
             android:dropDownSelector="@color/colorAccentLight"
             android:hint="@string/type_politician_name_hint"
             android:padding="8dp"

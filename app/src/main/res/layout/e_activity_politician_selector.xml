@@ -208,6 +208,7 @@
             android:dropDownSelector="@color/colorAccentLight"
             android:hint="@string/type_politician_name_hint"
             android:padding="8dp"
+            android:dropDownAnchor="@id/select_politician_toolbar"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
             android:theme="@style/Autocomplete"

@@ -11,8 +11,8 @@ android {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 3
-        versionName "0.7.5"
+        versionCode 5
+        versionName "0.8.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
