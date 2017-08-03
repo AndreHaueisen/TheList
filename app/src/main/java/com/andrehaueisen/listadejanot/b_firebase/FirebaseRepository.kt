@@ -22,11 +22,16 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     private val mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mPublishUser: PublishSubject<User> = PublishSubject.create()
     private val mPublishVoteCountList: PublishSubject<HashMap<String, Long>> = PublishSubject.create()
+    private val mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>> = PublishSubject.create()
 
     private val mMainListSenadores = ArrayList<Politician>()
     private val mPreListSenadores = ArrayList<Politician>()
     private val mMainListDeputados = ArrayList<Politician>()
     private val mPreListDeputados = ArrayList<Politician>()
+
+    enum class FirebaseAction{
+        CHILD_ADDED, CHILD_REMOVED, CHILD_CHANGED
+    }
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
@@ -417,6 +422,40 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }
     }
 
+    private val mListenerForOpinionsList = object : ChildEventListener {
+
+        override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+
+            if(dataSnapshot != null && dataSnapshot.exists()) {
+                val pair = Pair(FirebaseAction.CHILD_CHANGED, dataSnapshot)
+                mPublishOpinionsList.onNext(pair)
+            }
+        }
+
+        override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+
+            if(dataSnapshot != null && dataSnapshot.exists()){
+                val pair = Pair(FirebaseAction.CHILD_ADDED, dataSnapshot)
+                mPublishOpinionsList.onNext(pair)
+            }
+        }
+
+        override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
+            if(dataSnapshot != null && dataSnapshot.exists()) {
+                val pair = Pair(FirebaseAction.CHILD_REMOVED, dataSnapshot)
+                mPublishOpinionsList.onNext(pair)
+            }
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {
+
+        }
+
+        override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) {
+
+        }
+    }
+
     fun getUser(userEmail: String): PublishSubject<User>{
         mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
         return mPublishUser
@@ -455,12 +494,49 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         return mPublishDeputadosPreList
     }
 
+    fun getPoliticianOpinions(politicianEmail: String): PublishSubject<Pair<FirebaseAction, DataSnapshot>>{
+        mDatabaseReference
+                .child(LOCATION_OPINIONS_ON_POLITICIANS)
+                .child(politicianEmail.encodeEmail())
+                .addChildEventListener(mListenerForOpinionsList)
+
+        return mPublishOpinionsList
+    }
+
     fun onDestroy() {
         mDatabaseReference.removeEventListener(mListenerForSenadoresMainList)
         mDatabaseReference.removeEventListener(mListenerForSenadoresPreList)
         mDatabaseReference.removeEventListener(mListenerForDeputadosMainList)
         mDatabaseReference.removeEventListener(mListenerForDeputadosPreList)
 
+    }
+
+    fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String){
+        //val opinionMap = mutableMapOf<String, Any>()
+
+        //opinionMap.put(userEmail.encodeEmail(), opinion)
+        mDatabaseReference
+                .child(LOCATION_OPINIONS_ON_POLITICIANS)
+                .child(politicianEmail.encodeEmail())
+                .child(userEmail.encodeEmail())
+                .setValue(opinion)
+    }
+
+    fun removeOpinion(politicianEmail: String, userEmail: String?){
+        userEmail?.let {
+            mDatabaseReference
+                    .child(LOCATION_OPINIONS_ON_POLITICIANS)
+                    .child(politicianEmail.encodeEmail())
+                    .child(userEmail.encodeEmail())
+                    .removeValue()
+        }
+    }
+
+    fun killFirebaseListener(politicianEmail: String){
+        mDatabaseReference
+                .child(LOCATION_OPINIONS_ON_POLITICIANS)
+                .child(politicianEmail.encodeEmail())
+                .removeEventListener(mListenerForOpinionsList)
     }
 
     private fun addSenadorOnMainList(senador: Politician) {
@@ -498,7 +574,6 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         }))
 
     }
-
 
     private fun removeSenadorFromMainList(senador: Politician) {
         mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail()).removeValue()

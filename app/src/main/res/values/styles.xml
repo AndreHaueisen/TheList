@@ -57,6 +57,15 @@
         <item name="android:fontFamily">@string/font_roboto_regular</item>
     </style>
 
+    <style name="OpinionsDialog" parent="android:Theme.Dialog">
+        <!--<item name="android:windowBackground">@drawable/custom_dialog_background</item>-->
+        <!--<item name="android:windowAnimationStyle">true</item>-->
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>-->
+
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

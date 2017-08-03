@@ -94,7 +94,7 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             val toolbar = select_politician_toolbar
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowTitleEnabled(false)
+            supportActionBar?.setTitle(getString(R.string.search_politician_title))
         }
     }
 

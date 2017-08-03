@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.d_main_list.mvp
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
@@ -11,7 +12,6 @@ import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.getAppropriateLayoutManager
 import com.andrehaueisen.listadejanot.utilities.showSnackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,7 +48,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
 
         val deputadosAdapter = PoliticianListAdapter(activity, mDeputadosList)
 
-        mDeputadosRecyclerView.layoutManager = context.getAppropriateLayoutManager()
+        mDeputadosRecyclerView.layoutManager = LinearLayoutManager(activity)
         mDeputadosRecyclerView.adapter = deputadosAdapter
     }
 

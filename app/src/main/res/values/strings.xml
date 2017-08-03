@@ -44,7 +44,13 @@
 
     <string name="absolved_politician">%1$s deserves a chance</string>
 
+    <string name="opinions">Opinions</string>
+    <string name="no_opinion_yet">No opinion yet</string>
+    <string name="your_opinion_title">Your last  registered opinion</string>
+    <string name="your_opinion_hint">Place your current opinion</string>
+
     <!--e_politician_selector strings-->
+    <string name="search_politician_title">Search Politician</string>
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
     <string name="type_politician_name_hint">Politician Name</string>
@@ -102,6 +108,8 @@
     <string name="description_politician_image">Politician %1$s image</string>
     <string name="description_badge_honest_politician">Honest badge</string>
     <string name="description_badge_thief_politician">Thief badge</string>
+    <string name="description_send_opinion_button">Send opinion</string>
+    <string name="description_delete_opinion_button">Delete opinion</string>
 
 
 </resources>

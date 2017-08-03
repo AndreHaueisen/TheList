@@ -20,6 +20,7 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
     fun isUserLoggedIn() = mFirebaseAuth.currentUser != null
 
     fun getUserEmail() = mFirebaseAuth.currentUser?.email
+    fun getUserName() = mFirebaseAuth.currentUser?.displayName
 
     fun startLoginFlow(activity: Activity) = activity.startActivityForResult(
             AuthUI.getInstance()

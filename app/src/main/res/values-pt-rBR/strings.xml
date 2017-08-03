@@ -31,7 +31,13 @@
     <string name="logout">Trocar Conta</string>
     <string name="absolved_politician">%1$s merece um voto de confiança</string>
 
+    <string name="opinions">Opiniões</string>
+    <string name="no_opinion_yet">Nenhuma opinião ainda</string>
+    <string name="your_opinion_title">Sua última opinião registrada</string>
+    <string name="your_opinion_hint">Deixe sua opinião</string>
+
     <!--e_politician_selector strings-->
+    <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Parlamentares</string>
     <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
     <string name="type_politician_name_hint">Nome do parlamentar</string>
@@ -83,5 +89,7 @@
     <string name="description_politician_image">Imagem do parlamentar %1$s</string>
     <string name="description_badge_honest_politician">Medalha de honestidade</string>
     <string name="description_badge_thief_politician">Medalha de ladrão</string>
+    <string name="description_send_opinion_button">Enviar opinião</string>
+    <string name="description_delete_opinion_button">Deletar opinião</string>
 
 </resources>

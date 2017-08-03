@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.d_main_list.mvp
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
@@ -11,7 +12,6 @@ import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_SENADORES
-import com.andrehaueisen.listadejanot.utilities.getAppropriateLayoutManager
 import com.andrehaueisen.listadejanot.utilities.showSnackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -49,7 +49,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         mSenadoresRecyclerView.setHasFixedSize(true)
 
         val senadoresAdapter = PoliticianListAdapter(activity, mSenadorList)
-        mSenadoresRecyclerView.layoutManager = context.getAppropriateLayoutManager()
+        mSenadoresRecyclerView.layoutManager = LinearLayoutManager(activity)
         mSenadoresRecyclerView.adapter = senadoresAdapter
     }
 
