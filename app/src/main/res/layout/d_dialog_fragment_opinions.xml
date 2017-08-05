@@ -5,14 +5,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:background="@drawable/shape_login_background">
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/politician_image_view"
+            android:layout_width="85dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/politician_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:maxLines="2"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/empty_opinions_list_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/no_opinion_yet"
         android:textAlignment="center"
         android:textSize="16sp"
@@ -20,14 +50,22 @@
         app:layout_constraintBottom_toTopOf="@+id/your_opinion_title_text_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/opinions_recycler_view"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/your_opinion_title_text_view"/>
 
     <TextView
         android:id="@+id/your_opinion_title_text_view"
         style="@style/RobotoRegularTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_rounded_rectangle"
         android:paddingBottom="4dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
@@ -36,6 +74,7 @@
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/current_opinion_text_view"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:visibility="visible"/>
@@ -45,14 +84,13 @@
         style="@style/RobotoThinItalicTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1px"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="8dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
+        android:layout_marginBottom="8dp"
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/opinion_text_input_layout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/delete_text_image_button"
         tools:visibility="visible"/>
@@ -61,27 +99,23 @@
         android:id="@+id/delete_text_image_button"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
+        android:background="@null"
         android:contentDescription="@string/description_delete_opinion_button"
         android:padding="8dp"
         android:src="@drawable/ic_close_24dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/current_opinion_text_view"
+        app:layout_constraintBottom_toTopOf="@+id/send_opinion_image_button"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/your_opinion_title_text_view"
-        app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/opinion_text_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="8dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
+        android:background="@null"
         android:textAlignment="center"
-        app:counterMaxLength="300"
+        android:visibility="gone"
+        app:counterMaxLength="1000"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -90,11 +124,14 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:hint="@string/your_opinion_hint"
             android:inputType="textMultiLine|textCapSentences"
             android:maxLength="300"
+            android:padding="8dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/light_grey"/>
+            android:textColorHint="@color/light_grey"
+            android:visibility="gone"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -106,25 +143,18 @@
         android:contentDescription="@string/description_send_opinion_button"
         android:padding="8dp"
         android:src="@drawable/ic_send_24dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_opinion_text_view"/>
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/opinionsRecyclerView"
+        android:id="@+id/opinions_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/your_opinion_title_text_view"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"/>
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout"/>
 
 </android.support.constraint.ConstraintLayout>

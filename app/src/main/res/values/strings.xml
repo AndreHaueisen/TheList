@@ -48,6 +48,7 @@
     <string name="no_opinion_yet">No opinion yet</string>
     <string name="your_opinion_title">Your last  registered opinion</string>
     <string name="your_opinion_hint">Place your current opinion</string>
+    <string name="dialog_title">Opinions on %1$s</string>
 
     <!--e_politician_selector strings-->
     <string name="search_politician_title">Search Politician</string>

@@ -147,6 +147,8 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
                     val bundle = Bundle()
                     bundle.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
+                    bundle.putString(BUNDLE_POLITICIAN_NAME, politician.name)
+                    bundle.putByteArray(BUNDLE_POLITICIAN_IMAGE, politician.image)
                     if(mFirebaseAuthenticator.getUserEmail() != null){
                         bundle.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                     }

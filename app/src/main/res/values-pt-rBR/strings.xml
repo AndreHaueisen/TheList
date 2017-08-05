@@ -35,6 +35,7 @@
     <string name="no_opinion_yet">Nenhuma opinião ainda</string>
     <string name="your_opinion_title">Sua última opinião registrada</string>
     <string name="your_opinion_hint">Deixe sua opinião</string>
+    <string name="dialog_title">Opiniões sobre %1$s</string>
 
     <!--e_politician_selector strings-->
     <string name="search_politician_title">Procurar político</string>

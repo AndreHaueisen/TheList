@@ -15,6 +15,7 @@ val BUNDLE_POLITICIAN = "politician"
 val BUNDLE_USER_VOTES_LIST = "politicians_list"
 val BUNDLE_USER = "user"
 val BUNDLE_POLITICIAN_EMAIL = "politician_email"
+val BUNDLE_POLITICIAN_IMAGE = "politician_image"
 val BUNDLE_USER_EMAIL = "user_email"
 
 val LOCATION_UID_MAPPINGS = "UID_mappings"

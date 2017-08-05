@@ -22,7 +22,7 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     private val mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mPublishUser: PublishSubject<User> = PublishSubject.create()
     private val mPublishVoteCountList: PublishSubject<HashMap<String, Long>> = PublishSubject.create()
-    private val mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>> = PublishSubject.create()
+    private lateinit var mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>>
 
     private val mMainListSenadores = ArrayList<Politician>()
     private val mPreListSenadores = ArrayList<Politician>()
@@ -495,6 +495,8 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
     }
 
     fun getPoliticianOpinions(politicianEmail: String): PublishSubject<Pair<FirebaseAction, DataSnapshot>>{
+        mPublishOpinionsList  = PublishSubject.create()
+
         mDatabaseReference
                 .child(LOCATION_OPINIONS_ON_POLITICIANS)
                 .child(politicianEmail.encodeEmail())
@@ -503,18 +505,18 @@ class FirebaseRepository(val mDatabaseReference: DatabaseReference) {
         return mPublishOpinionsList
     }
 
+    fun completePublishOptionsList(){
+        mPublishOpinionsList.onComplete()
+    }
+
     fun onDestroy() {
         mDatabaseReference.removeEventListener(mListenerForSenadoresMainList)
         mDatabaseReference.removeEventListener(mListenerForSenadoresPreList)
         mDatabaseReference.removeEventListener(mListenerForDeputadosMainList)
         mDatabaseReference.removeEventListener(mListenerForDeputadosPreList)
-
     }
 
     fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String){
-        //val opinionMap = mutableMapOf<String, Any>()
-
-        //opinionMap.put(userEmail.encodeEmail(), opinion)
         mDatabaseReference
                 .child(LOCATION_OPINIONS_ON_POLITICIANS)
                 .child(politicianEmail.encodeEmail())

@@ -16,6 +16,12 @@ class OpinionsAdapter(val activity: Activity, opinionsMap: HashMap<String, Strin
     private var opinions = opinionsMap.values.toMutableList()
     private var emailKeys = opinionsMap.keys.toMutableSet()
 
+    fun resetData(){
+        opinions.clear()
+        emailKeys.clear()
+        notifyDataSetChanged()
+    }
+
     fun addItem(opinion: String, emailKey: String){
         opinions.add(opinion)
         emailKeys.add(emailKey)
