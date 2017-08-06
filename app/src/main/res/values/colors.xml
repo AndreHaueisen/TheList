@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimaryLight">#366255</color>
     <color name="colorPrimary">#09382c</color>
-    <color name="colorPrimaryDark">#002000</color>
+    <color name="colorPrimaryDark">#001800</color>
     <color name="colorPrimaryLightTransparent">#96e1e7df</color>
 
     <color name="colorAccent">#a41b1b</color>
@@ -12,9 +12,9 @@
 
     <color name="colorBackgroundTransparent">#5a64666a</color>
 
-    <color name="colorBackgroundMiddle">#a1a1a1</color>
-    <color name="colorBackgroundEnd">#494949</color>
-    <color name="light_grey">#aeaeae</color>
+    <color name="colorSecondary">#a1a1a1</color>
+    <color name="colorSecondaryDark">#494949</color>
+    <color name="colorSecondaryLight">#aeaeae</color>
 
     <color name="colorSemiTransparentAbsolve">#4109382c</color>
     <color name="colorSemiTransparentCondemn">#32931711</color>

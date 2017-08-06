@@ -130,7 +130,7 @@
             android:maxLength="300"
             android:padding="8dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/light_grey"
+            android:textColorHint="@color/colorSecondaryLight"
             android:visibility="gone"/>
 
     </android.support.design.widget.TextInputLayout>

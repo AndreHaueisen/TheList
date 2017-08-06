@@ -14,8 +14,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Absolve</string>
-    <string name="vote_condemn">Condemn</string>
+    <string name="vote_absolve">ABSOLVE</string>
+    <string name="vote_condemn">CONDEMN</string>
 
     <string name="refreshing_votes_title">Refreshing</string>
     <string name="votes_title">Votes</string>
@@ -71,8 +71,8 @@
     <string name="congresswoman">Congresswoman</string>
     <string name="search_on_web">Search on web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">%1$d vote to be condemned</item>
-        <item quantity="other">%1$d votes to be condemned</item>
+        <item quantity="one">Missing %1$d vote to be condemned</item>
+        <item quantity="other">Missing %1$d votes to be condemned</item>
     </plurals>
 
     <!--f_information strings-->

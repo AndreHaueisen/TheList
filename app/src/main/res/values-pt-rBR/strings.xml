@@ -9,8 +9,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Suspeito</string>
-    <string name="vote_condemn">Confiável</string>
+    <string name="vote_absolve">SUSPEITO</string>
+    <string name="vote_condemn">CONFIÁVEL</string>
     <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Suspeitos</string>
@@ -56,8 +56,8 @@
     <string name="congresswoman">Deputada</string>
     <string name="search_on_web">Procurar na web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">%1$d voto para ser considerado suspeito</item>
-        <item quantity="other">%1$d votos para ser considerado suspeito</item>
+        <item quantity="one">Faltam %1$d voto para ser considerado suspeito</item>
+        <item quantity="other">Faltam %1$d votos para ser considerado suspeito</item>
     </plurals>
 
     <!--f_information strings-->

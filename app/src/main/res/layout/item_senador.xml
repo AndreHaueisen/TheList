@@ -111,12 +111,9 @@
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"
-            style="@android:style/Widget.Material.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ButtonBorderlessStyle"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:textColor="@color/colorPrimary"
             android:textOff="@string/vote_condemn"
             android:textOn="@string/vote_absolve"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
+import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
@@ -35,6 +36,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mSinglePoliticianModel: SinglePoliticianModel
     @Inject
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
+    @Inject
+    lateinit var mFirebaseRepository: FirebaseRepository
 
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
@@ -70,7 +73,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .inject(this)
 
         if (savedInstanceState == null) {
-            mView = PoliticianSelectorView(this)
+            mView = PoliticianSelectorView(this, mFirebaseRepository)
             mView!!.setViews(isSavedState = false)
             refreshPoliticianData()
 
@@ -81,7 +84,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 mPolitician = savedInstanceState.getParcelable(BUNDLE_POLITICIAN)
             }
 
-            mView = PoliticianSelectorView(this)
+            mView = PoliticianSelectorView(this, mFirebaseRepository)
             mView!!.setViews(isSavedState = true)
         }
     }
