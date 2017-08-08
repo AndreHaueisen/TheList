@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_camara_deputados"
         android:title="@string/title_deputados"/>
 
+    <item
+        android:id="@+id/navigation_governadores"
+        android:icon="@drawable/ic_view_list_24dp"
+        android:title="@string/title_governadores"/>
+
 </menu>

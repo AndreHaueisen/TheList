@@ -39,9 +39,11 @@ class PoliticianSelectorModel(val mContext: Context,
 
     private var mSenadoresPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private var mDeputadosPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private var mGovernadoresPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private lateinit var mSenadoresPreList: ArrayList<Politician>
     private lateinit var mDeputadosPreList: ArrayList<Politician>
+    private lateinit var mGovernadoresPreList: ArrayList<Politician>
 
     private var mSearchablePoliticianList = ArrayList<Politician>()
     private val mFinalSearchablePoliticianPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
@@ -61,7 +63,7 @@ class PoliticianSelectorModel(val mContext: Context,
                         if (isListSearchComplete) {
                             mListCounter++
                         }
-                        if (mListCounter % 2 == 0) {
+                        if (mListCounter % 3 == 0) {
                             initiateDataLoad()
                         }
                     }
@@ -78,9 +80,11 @@ class PoliticianSelectorModel(val mContext: Context,
     fun connectToFirebase() {
         mSenadoresPreListPublisher = mFirebaseRepository.getSenadoresPreList()
         mDeputadosPreListPublisher = mFirebaseRepository.getDeputadosPreList()
+        mGovernadoresPreListPublisher = mFirebaseRepository.getGovernadoresPreList()
 
         getSenadoresPreList()
         getDeputadosPreList()
+        getGovernadoresPreList()
     }
 
     private fun getSenadoresPreList() {
@@ -129,9 +133,31 @@ class PoliticianSelectorModel(val mContext: Context,
                         mOnListsReadyPublisher.onNext(false)
                     }
 
-                    override fun onComplete() {
+                    override fun onComplete() {}
+                })
+    }
 
+    private fun getGovernadoresPreList(){
+        mGovernadoresPreListPublisher
+                .firstElement()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : MaybeObserver<ArrayList<Politician>>{
+                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                        mGovernadoresPreList = searchablePoliticiansList
+                        mOnListsReadyPublisher.onNext(true)
                     }
+
+                    override fun onSubscribe(disposable: Disposable) {
+                        mCompositeDisposable.add(disposable)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e(LOG_TAG, e.toString())
+                        mOnListsReadyPublisher.onNext(false)
+                    }
+
+                    override fun onComplete() {}
                 })
     }
 
@@ -174,6 +200,12 @@ class PoliticianSelectorModel(val mContext: Context,
 
                     Politician.Post.SENADORA.name ->
                         addSenadorToSearchableList(Politician.Post.SENADORA, politicianName, politicianEmail)
+
+                    Politician.Post.GOVERNADOR.name ->
+                        addGovernadorToSearchableList(Politician.Post.GOVERNADOR, politicianName, politicianEmail)
+
+                    Politician.Post.GOVERNADORA.name ->
+                        addGovernadorToSearchableList(Politician.Post.GOVERNADORA, politicianName, politicianEmail)
                 }
 
                 data.moveToNext()
@@ -214,6 +246,22 @@ class PoliticianSelectorModel(val mContext: Context,
 
         } catch (noSuchElement: NoSuchElementException) {
             mSearchablePoliticianList.add(senador)
+        }
+    }
+
+    private fun addGovernadorToSearchableList(post: Politician.Post, governadorName: String, governadorEmail: String){
+        val governador = Politician(post, governadorName, governadorEmail)
+        try{
+            mGovernadoresPreList.first { it.name == governadorName }
+                    .also{
+                        governador.votesNumber = it.votesNumber
+                        governador.condemnedBy = it.condemnedBy
+                        mGovernadoresPreList.remove(it)
+                    }
+
+            mSearchablePoliticianList.add(governador)
+        } catch (noSuckElement: NoSuchElementException){
+            mSearchablePoliticianList.add(governador)
         }
     }
 

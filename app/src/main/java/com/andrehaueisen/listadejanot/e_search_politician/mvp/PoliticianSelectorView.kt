@@ -284,9 +284,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
             plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
 
-            /*val constraintTransition = constraint_layout.background as TransitionDrawable
-            constraintTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())*/
-
             val badgeTransition = badge_image_view.background as TransitionDrawable
             badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
@@ -313,7 +310,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
             votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
 
-            //constraint_layout.background = ContextCompat.getDrawable(this, R.drawable.transition_background)
             badge_image_view.background = ContextCompat.getDrawable(this, R.drawable.transition_badge_background)
 
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
@@ -461,6 +457,16 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                             determiner = mPresenterActivity.getString(R.string.determiner_female)
                         }
 
+                        Politician.Post.GOVERNADOR -> {
+                            post = mPresenterActivity.getString(R.string.governor)
+                            determiner = mPresenterActivity.getString(R.string.determiner_male)
+                        }
+
+                        Politician.Post.GOVERNADORA -> {
+                            post = mPresenterActivity.getString(R.string.governora)
+                            determiner = mPresenterActivity.getString(R.string.determiner_female)
+                        }
+
                         else -> {
                             post = "PLACE HOLDER"
                             determiner = mPresenterActivity.getString(R.string.determiner_male)
@@ -505,9 +511,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mPlusOneTextAnimatorCondemn)
             animatorSet.start()
 
-            /*val transition = constraint_layout.background as TransitionDrawable
-            transition.startTransition(DEFAULT_ANIM_DURATION.toInt())*/
-
             val badgeTransition = badge_image_view.background as TransitionDrawable
             badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
@@ -541,9 +544,6 @@ class PoliticianSelectorView(val mPresenterActivity: PoliticianSelectorPresenter
                     mVoteNumberTextAnimatorAbsolve,
                     mPlusOneTextAnimatorAbsolve)
             animatorSet.start()
-
-            /*val transition = constraint_layout.background as TransitionDrawable
-            transition.reverseTransition(DEFAULT_ANIM_DURATION.toInt())*/
 
             val badgeTransition = badge_image_view.background as TransitionDrawable
             badgeTransition.reverseTransition(DEFAULT_ANIM_DURATION.toInt())

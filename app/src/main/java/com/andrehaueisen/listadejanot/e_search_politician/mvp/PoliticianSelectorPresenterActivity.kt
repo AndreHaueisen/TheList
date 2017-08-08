@@ -53,6 +53,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         val senadoresMainList = ArrayList<Politician>()
         val deputadosMainList = ArrayList<Politician>()
+        val governadoresMainList = ArrayList<Politician>()
 
         if (intent.hasExtra(INTENT_SENADORES_MAIN_LIST)) {
             senadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST))
@@ -60,6 +61,10 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         if (intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)) {
             deputadosMainList.addAll(intent.getParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST))
+        }
+
+        if (intent.hasExtra(INTENT_GOVERNADORES_MAIN_LIST)){
+            governadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST))
         }
 
         if (intent.hasExtra(INTENT_POLITICIAN_NAME)) {

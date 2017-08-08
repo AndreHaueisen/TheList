@@ -15,6 +15,7 @@ interface MainListMvpContract{
         fun setViews()
         fun notifySenadoresNewList(senadores: ArrayList<Politician>)
         fun notifyDeputadosNewList(deputados: ArrayList<Politician>)
+        fun notifyGovernadoresNewList(governadores: ArrayList<Politician>)
 
         fun onCreateOptionsMenu(menu: Menu?)
         fun onOptionsItemSelected(item: MenuItem?): Boolean
@@ -32,6 +33,11 @@ interface MainListMvpContract{
         fun sortDeputadosList()
     }
 
+    interface GovernadoresView {
+        fun notifyGovernadoresNewList(governadores: ArrayList<Politician>)
+        fun sortGovernadoresList()
+    }
+
     interface Presenter {
 
         fun subscribeToModel()
@@ -42,6 +48,7 @@ interface MainListMvpContract{
         fun initiateDataLoad()
         fun loadSenadoresMainList(): Observable<ArrayList<Politician>>
         fun loadDeputadosMainList(): Observable<ArrayList<Politician>>
+        fun loadGovernadoresMainList(): Observable<ArrayList<Politician>>
 
         fun onDestroy()
     }

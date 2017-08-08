@@ -26,16 +26,21 @@
 
     <string name="banned_deputados_title">Banned Deputados</string>
     <string name="banned_senadores_title">Banned Senadores</string>
+    <string name="banned_governadores_title">Banned Governadores</string>
 
     <string name="senador_condemned">Senador condemned</string>
     <string name="deputado_condemned">Deputado condemned</string>
+    <string name="governador_condemned">Governador condemned</string>
     <string name="senador_absolved">Senador absolved</string>
     <string name="deputado_absolved">Deputado absolved</string>
+    <string name="governador_absolved">Governador absolved</string>
 
-    <string name="senadores_sorted_by_name">Senators by name</string>
-    <string name="senadores_sorted_by_vote_number">Senators by vote number</string>
-    <string name="deputados_sorted_by_name">Congressmen by name</string>
-    <string name="deputados_sorted_by_vote_number">Congressmen by vote number</string>
+    <string name="senadores_sorted_by_name">Senators sorted by name</string>
+    <string name="senadores_sorted_by_vote_number">Senators sorted by vote number</string>
+    <string name="deputados_sorted_by_name">Congressmen sorted by name</string>
+    <string name="deputados_sorted_by_vote_number">Congressmen sorted by vote number</string>
+    <string name="governadores_sorted_by_name">Governors sorted by name</string>
+    <string name="governadores_sorted_by_vote_number">Governors sorted by vote number</string>
 
     <string name="add_politician">Add Politician</string>
     <string name="sort_list">Sort List</string>
@@ -67,12 +72,14 @@
     <string name="determiner_female">The</string>
     <string name="senator">Senator</string>
     <string name="senatora">Senator</string>
+    <string name="governor">Governor</string>
+    <string name="governora">Governor</string>
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
     <string name="search_on_web">Search on web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Missing %1$d vote to be condemned</item>
-        <item quantity="other">Missing %1$d votes to be condemned</item>
+        <item quantity="one">Missing %1$d vote to main list</item>
+        <item quantity="other">Missing %1$d votes to main list</item>
     </plurals>
 
     <!--f_information strings-->

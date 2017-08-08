@@ -15,20 +15,25 @@
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Suspeitos</string>
     <string name="banned_senadores_title">Senadores Suspeitos</string>
+    <string name="banned_governadores_title">Governadores Suspeitos</string>
     <string name="senador_condemned">Senador suspeito</string>
     <string name="deputado_condemned">Deputado suspeito</string>
+    <string name="governador_condemned">Governador suspeito</string>
     <string name="senador_absolved">Senador confiável</string>
     <string name="deputado_absolved">Deputado confiável</string>
+    <string name="governador_absolved">Governador confiável</string>
 
     <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
     <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>
     <string name="deputados_sorted_by_name">Deputados organizados por nome</string>
     <string name="deputados_sorted_by_vote_number">Deputados organizados por número de votos</string>
+    <string name="governadores_sorted_by_name">Governadores organizados por nome</string>
+    <string name="governadores_sorted_by_vote_number">Governadores organizados por número do votos</string>
 
     <string name="add_politician">Adicionar político</string>
     <string name="sort_list">Ordenar Lista</string>
     <string name="information">Informações</string>
-    <string name="logout">Trocar Conta</string>
+    <string name="logout">Sair</string>
     <string name="absolved_politician">%1$s merece um voto de confiança</string>
 
     <string name="opinions">Opiniões</string>
@@ -54,10 +59,12 @@
     <string name="senatora">Senadora</string>
     <string name="congressman">Deputado</string>
     <string name="congresswoman">Deputada</string>
+    <string name="governor">Governador</string>
+    <string name="governora">Governadora</string>
     <string name="search_on_web">Procurar na web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Faltam %1$d voto para ser considerado suspeito</item>
-        <item quantity="other">Faltam %1$d votos para ser considerado suspeito</item>
+        <item quantity="one">Faltam %1$d voto para a lista principal</item>
+        <item quantity="other">Faltam %1$d votos para a lista principal</item>
     </plurals>
 
     <!--f_information strings-->

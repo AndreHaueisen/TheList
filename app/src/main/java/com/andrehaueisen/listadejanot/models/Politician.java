@@ -33,7 +33,7 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
 
     public enum Post implements Parcelable {
-        DEPUTADO, DEPUTADA, SENADOR, SENADORA;
+        DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {

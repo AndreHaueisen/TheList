@@ -22,6 +22,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     private var mBundle: Bundle? = null
     private var mMainListSenadores: ArrayList<Politician>? = null
     private var mMainListDeputados: ArrayList<Politician>? = null
+    private var mMainListGovernadores: ArrayList<Politician>? = null
 
     init {
         mPresenterActivity.setContentView(R.layout.d_activity_main_list)
@@ -71,6 +72,10 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
                         mPresenterActivity.navigation.selectedItemId = R.id.navigation_deputados
                         mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_deputados_title)
                     }
+                    2 -> {
+                        mPresenterActivity.navigation.selectedItemId = R.id.navigation_governadores
+                        mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_governadores_title)
+                    }
                 }
             }
         })
@@ -92,6 +97,12 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
                 R.id.navigation_deputados -> {
                     mPresenterActivity.politicians_pager_adapter.setCurrentItem(1, true)
                     mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_deputados_title)
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+                R.id.navigation_governadores ->{
+                    mPresenterActivity.politicians_pager_adapter.setCurrentItem(2, true)
+                    mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_governadores_title)
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -128,6 +139,15 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
                     }
                     intent.putParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
                 }
+
+                mMainListGovernadores?.let {
+                    val noPicGovernadoresList = ArrayList<Politician>()
+                     it.forEach {
+                         val governador = Politician(it.post, it.name, it.email)
+                         noPicGovernadoresList.add(governador)
+                     }
+                     intent.putParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST, noPicGovernadoresList)
+                }
                 mPresenterActivity.startActivity(intent)
             }
 
@@ -153,6 +173,12 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         mMainListSenadores = senadores
         val senadorFragment = (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter).getItem(0)
         (senadorFragment as MainListSenadoresView).notifySenadoresNewList(senadores)
+    }
+
+    override fun notifyGovernadoresNewList(governadores: ArrayList<Politician>){
+        mMainListGovernadores = governadores
+        val governadorFragment = (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter).getItem(2)
+        (governadorFragment as MainListGovernadoresView).notifyGovernadoresNewList(governadores)
     }
 
     override fun onSaveInstanceState(): Bundle {

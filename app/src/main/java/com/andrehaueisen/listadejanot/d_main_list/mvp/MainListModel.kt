@@ -22,6 +22,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by andre on 4/21/2017.
@@ -41,15 +42,19 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     lateinit private var mSenadoresMainListObservable: PublishSubject<ArrayList<Politician>>
     lateinit private var mDeputadosMainListObservable: PublishSubject<ArrayList<Politician>>
+    lateinit private var mGorvenadoresMainListObservable: PublishSubject<ArrayList<Politician>>
 
     private lateinit var mSenadoresMainList: ArrayList<Politician>
     private lateinit var mDeputadosMainList: ArrayList<Politician>
+    private lateinit var mGovernadoresMainList: ArrayList<Politician>
 
     private val mCompleteSenadoresMainList = ArrayList<Politician>()
     private val mCompleteDeputadosMainList = ArrayList<Politician>()
+    private val mCompleteGovernadoresMainList = ArrayList<Politician>()
 
     private val mFinalMainListSenadoresPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mFinalMainListDeputadosPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private val mFinalMainListGovernadoresPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private val mOnListsReadyPublisher: PublishSubject<Boolean> = PublishSubject.create()
     private val mOnListReadyObserver = object: Observer<Boolean>{
@@ -57,7 +62,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             if (isListSearchComplete) {
                 mListCounter++
             }
-            if (mListCounter != 0 && mListCounter % 2 == 0) {
+            if (mListCounter != 0 && mListCounter % 3 == 0) {
                 initiateDataLoad()
             }
         }
@@ -86,9 +91,11 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
     fun connectToFirebase() {
         mSenadoresMainListObservable = mFirebaseRepository.getSenadoresMainList()
         mDeputadosMainListObservable = mFirebaseRepository.getDeputadosMainList()
+        mGorvenadoresMainListObservable = mFirebaseRepository.getGovernadoresMainList()
 
         getSenadoresMainList()
         getDeputadosMainList()
+        getGovernadoresMainList()
     }
 
     private fun getSenadoresMainList() {
@@ -143,6 +150,32 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 })
     }
 
+    private fun getGovernadoresMainList(){
+        mGorvenadoresMainListObservable
+                .firstElement()
+                .subscribeOn(Schedulers.io())
+                .observeOn((AndroidSchedulers.mainThread()))
+                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                    override fun onSubscribe(disposable: Disposable) {
+                        mCompositeDisposable.add(disposable)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e(LOG_TAG, e.toString())
+                        mOnListsReadyPublisher.onNext(false)
+                    }
+
+                    override fun onSuccess(governadoresMainList: ArrayList<Politician>) {
+                        mGovernadoresMainList = governadoresMainList
+                        mOnListsReadyPublisher.onNext(true)
+                    }
+
+                    override fun onComplete() {
+
+                    }
+                })
+    }
+
     override fun initiateDataLoad() {
         if (loaderManager.getLoader<Cursor>(LOADER_ID) == null) {
             loaderManager.initLoader(LOADER_ID, null, this)
@@ -157,6 +190,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
         val politiciansNames = ArrayList<String>()
         mDeputadosMainList.forEach { politiciansNames.add(it.name) }
         mSenadoresMainList.forEach { politiciansNames.add(it.name) }
+        mGovernadoresMainList.forEach { politiciansNames.add(it.name) }
 
 
         val selectionArgsPlaceholders = politiciansNames.createFormattedString("(", "?,", "?)", ignoreCollectionValues = true)
@@ -176,6 +210,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
             if(mCompleteDeputadosMainList.isNotEmpty()) mCompleteDeputadosMainList.clear()
             if(mCompleteSenadoresMainList.isNotEmpty()) mCompleteSenadoresMainList.clear()
+            if(mCompleteGovernadoresMainList.isNotEmpty()) mCompleteGovernadoresMainList.clear()
 
             for (i in 0..data.count - 1) {
                 val politicianPost = data.getString(COLUMNS_INDEX_POST)
@@ -196,6 +231,12 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                     Politician.Post.SENADORA.name ->
                         mergeFirebaseSenadorToDatabase(Politician.Post.SENADORA, politicianName, politicianEmail, politicianImage)
 
+                    Politician.Post.GOVERNADOR.name ->
+                        mergeFirebaseGovernadorToDatabase(Politician.Post.GOVERNADOR, politicianName, politicianEmail, politicianImage)
+
+                    Politician.Post.GOVERNADORA.name ->
+                        mergeFirebaseGovernadorToDatabase(Politician.Post.GOVERNADORA, politicianName, politicianEmail, politicianImage)
+
                 }
 
                 data.moveToNext()
@@ -203,8 +244,10 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
             Collections.sort(mCompleteDeputadosMainList, Politician.Comparators.NAME)
             Collections.sort(mCompleteSenadoresMainList, Politician.Comparators.NAME)
+            Collections.sort(mCompleteGovernadoresMainList, Politician.Comparators.NAME)
             mFinalMainListDeputadosPublisher.onNext(mCompleteDeputadosMainList)
             mFinalMainListSenadoresPublisher.onNext(mCompleteSenadoresMainList)
+            mFinalMainListGovernadoresPublisher.onNext(mCompleteGovernadoresMainList)
             //TODO publisher should call on complete
             data.close()
         }
@@ -236,6 +279,19 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 }
     }
 
+    private fun mergeFirebaseGovernadorToDatabase(governadorPost: Politician.Post, governadorName: String, governadorEmail: String, governadorImage: ByteArray){
+        mGovernadoresMainList
+                .find { mainListGovernador -> mainListGovernador.name == governadorName }
+                .also { mainListGovernador ->
+                    if(mainListGovernador != null){
+                        mainListGovernador.post = governadorPost
+                        mainListGovernador.email = governadorEmail
+                        mainListGovernador.image = governadorImage
+                        mCompleteGovernadoresMainList.add(mainListGovernador)
+                    }
+                }
+    }
+
     override fun loadSenadoresMainList(): Observable<ArrayList<Politician>> {
         return Observable.defer { mFinalMainListSenadoresPublisher }
     }
@@ -243,6 +299,10 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     override fun loadDeputadosMainList(): Observable<ArrayList<Politician>> {
         return Observable.defer { mFinalMainListDeputadosPublisher }
+    }
+
+    override fun loadGovernadoresMainList(): Observable<ArrayList<Politician>>{
+        return Observable.defer { mFinalMainListGovernadoresPublisher }
     }
 
     override fun onDestroy() {

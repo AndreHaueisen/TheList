@@ -157,6 +157,16 @@ class UserVoteListModel(val mContext: Context,
                         val politician = createPolitician(Politician.Post.SENADORA, politicianName, politicianEmail, politicianImage.resamplePic(100))
                         listOfVotedPoliticians.add(politician)
                     }
+
+                    Politician.Post.GOVERNADOR.name -> {
+                        val politician = createPolitician(Politician.Post.GOVERNADOR, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
+
+                    Politician.Post.GOVERNADORA.name -> {
+                        val politician = createPolitician(Politician.Post.GOVERNADORA, politicianName, politicianEmail, politicianImage.resamplePic(100))
+                        listOfVotedPoliticians.add(politician)
+                    }
                 }
 
                 data.moveToNext()

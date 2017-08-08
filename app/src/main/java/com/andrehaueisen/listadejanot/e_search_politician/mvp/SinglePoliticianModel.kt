@@ -71,18 +71,24 @@ class SinglePoliticianModel(val mContext: Context,
                         ?.also { politician ->
                             politician.image = politicianImage
 
-                            when(politicianPost){
+                            when (politicianPost) {
                                 Politician.Post.DEPUTADO.name ->
                                     politician.post = Politician.Post.DEPUTADO
 
                                 Politician.Post.DEPUTADA.name ->
-                                        politician.post = Politician.Post.DEPUTADA
+                                    politician.post = Politician.Post.DEPUTADA
 
                                 Politician.Post.SENADOR.name ->
-                                        politician.post = Politician.Post.SENADOR
+                                    politician.post = Politician.Post.SENADOR
 
                                 Politician.Post.SENADORA.name ->
-                                        politician.post = Politician.Post.SENADORA
+                                    politician.post = Politician.Post.SENADORA
+
+                                Politician.Post.GOVERNADOR.name ->
+                                    politician.post = Politician.Post.GOVERNADOR
+
+                                Politician.Post.GOVERNADORA.name ->
+                                    politician.post = Politician.Post.GOVERNADORA
                             }
                         }
 
@@ -98,12 +104,15 @@ class SinglePoliticianModel(val mContext: Context,
         val userEmail = mFirebaseAuthenticator.getUserEmail()
 
         userEmail?.let {
-            when(politician.post.name){
+            when (politician.post.name) {
                 Politician.Post.DEPUTADO.name, Politician.Post.DEPUTADA.name ->
                     mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, it, null, view)
 
                 Politician.Post.SENADOR.name, Politician.Post.SENADORA.name ->
                     mFirebaseRepository.handleSenadorVoteOnDatabase(politician, it, null, view)
+
+                Politician.Post.GOVERNADOR.name, Politician.Post.SENADORA.name ->
+                    mFirebaseRepository.handleGovernadorVoteOnDatabase(politician, it, null, view)
             }
 
         }

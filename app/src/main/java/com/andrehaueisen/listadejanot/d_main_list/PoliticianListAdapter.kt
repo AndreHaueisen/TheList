@@ -46,6 +46,7 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
     private val VIEW_TYPE_DEPUTADO = 0
     private val VIEW_TYPE_SENADOR = 1
+    private val VIEW_TYPE_GOVERNADOR = 2
     private val mGlide = Glide.with(activity)
 
     private val mCardObjectAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(activity, R.color.colorSemiTransparentCondemn, R.color.colorSemiTransparentAbsolve, "cardBackgroundColor")
@@ -67,11 +68,15 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
         val view: View
         if (viewType == VIEW_TYPE_DEPUTADO) {
             view = inflater.inflate(R.layout.item_deputado, parent, false)
-            return PoliticianHolder(view)
-        } else {
+
+        } else if(viewType == VIEW_TYPE_SENADOR) {
             view = inflater.inflate(R.layout.item_senador, parent, false)
-            return PoliticianHolder(view)
+
+        }else{
+            view = inflater.inflate(R.layout.item_governador, parent, false)
         }
+
+        return PoliticianHolder(view)
     }
 
     override fun onBindViewHolder(holder: PoliticianHolder, position: Int) {
@@ -85,6 +90,8 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> return VIEW_TYPE_DEPUTADO
 
             Politician.Post.SENADOR, Politician.Post.SENADORA -> return VIEW_TYPE_SENADOR
+
+            Politician.Post.GOVERNADOR,Politician.Post.GOVERNADORA -> return VIEW_TYPE_GOVERNADOR
         }
 
     }
@@ -214,9 +221,21 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
         private fun setInitialDataStatus(politician: Politician) {
 
+            val RADIUS: Int
+            val MARGIN: Int
+
+            if(politician.post == Politician.Post.SENADOR || politician.post == Politician.Post.SENADORA){
+                RADIUS = 10
+                MARGIN = 5
+
+            }else{
+                RADIUS = 6
+                MARGIN = 4
+            }
+
             mGlide.load(politician.image)
                     .crossFade()
-                    .bitmapTransform(RoundedCornersTransformation(activity, 8, 4))
+                    .bitmapTransform(RoundedCornersTransformation(activity, RADIUS, MARGIN))
                     .placeholder(R.drawable.politician_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(mPoliticianImageView)

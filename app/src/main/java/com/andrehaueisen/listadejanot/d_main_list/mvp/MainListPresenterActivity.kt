@@ -90,6 +90,24 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         }
     }
 
+    private val mGovernadoresMainListObserver = object: Observer<ArrayList<Politician>>{
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onNext(governadores: ArrayList<Politician>) {
+            mView?.notifyGovernadoresNewList(governadores)
+        }
+
+        override fun onError(e: Throwable) {
+
+        }
+
+        override fun onComplete() {
+
+        }
+    }
+
     override fun subscribeToModel() {
         mModel.loadDeputadosMainList()
                 .subscribeOn(Schedulers.io())
@@ -100,6 +118,11 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mSenadoresMainListObserver)
+
+        mModel.loadGovernadoresMainList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mGovernadoresMainListObserver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

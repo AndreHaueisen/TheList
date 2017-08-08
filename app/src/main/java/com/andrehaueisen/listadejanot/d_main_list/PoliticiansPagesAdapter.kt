@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListDeputadosView
+import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListGovernadoresView
 import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListSenadoresView
 
 /**
@@ -16,12 +17,14 @@ class PoliticiansPagesAdapter(fragmentManager: FragmentManager) : FragmentPagerA
     init {
         val senadoresFragment = MainListSenadoresView.newInstance()
         val deputadosFragment = MainListDeputadosView.newInstance()
+        val governadoresFragment = MainListGovernadoresView.newInstance()
 
-        mFragmentsList = List(2, { index ->
+        mFragmentsList = List(3, { index ->
 
             when (index) {
                 0 -> senadoresFragment
                 1 -> deputadosFragment
+                2 -> governadoresFragment
                 else -> senadoresFragment
             }
         })

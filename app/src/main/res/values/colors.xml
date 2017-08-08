@@ -12,11 +12,11 @@
 
     <color name="colorBackgroundTransparent">#5a64666a</color>
 
-    <color name="colorSecondary">#a1a1a1</color>
+    <color name="colorSecondary">#848484</color>
     <color name="colorSecondaryDark">#494949</color>
     <color name="colorSecondaryLight">#aeaeae</color>
 
     <color name="colorSemiTransparentAbsolve">#4109382c</color>
-    <color name="colorSemiTransparentCondemn">#32931711</color>
+    <color name="colorSemiTransparentCondemn">#32ba1f17</color>
 
 </resources>
