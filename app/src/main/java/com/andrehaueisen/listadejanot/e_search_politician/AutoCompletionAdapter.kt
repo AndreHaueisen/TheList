@@ -39,11 +39,11 @@ class AutoCompletionAdapter(mContext: Context,
         val politician = getItem(position)
 
         if (politician != null) {
-            val nameTextView = view?.findViewById(R.id.name_text_view) as TextView
-            val postTextView = view.findViewById(R.id.post_text_view) as TextView
+            val nameTextView = view?.findViewById<TextView>(R.id.name_text_view)
+            val postTextView = view?.findViewById<TextView>(R.id.post_text_view)
 
-            nameTextView.text = politician.name
-            postTextView.text = politician.post.name
+            nameTextView?.text = politician.name
+            postTextView?.text = politician.post.name
 
         }
 

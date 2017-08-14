@@ -52,7 +52,7 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINIT
     Snackbar.make(this, message, duration)
             .apply {
                 view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply { height = SNACKBAR_HEIGHT_PX }
-                val textView = view.findViewById(android.support.design.R.id.snackbar_text) as TextView
+                val textView = view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
             }
             .show()

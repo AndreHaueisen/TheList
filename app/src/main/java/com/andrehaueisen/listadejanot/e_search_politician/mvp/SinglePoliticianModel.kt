@@ -104,17 +104,16 @@ class SinglePoliticianModel(val mContext: Context,
         val userEmail = mFirebaseAuthenticator.getUserEmail()
 
         userEmail?.let {
-            when (politician.post.name) {
-                Politician.Post.DEPUTADO.name, Politician.Post.DEPUTADA.name ->
+            when (politician.post) {
+                Politician.Post.DEPUTADO, Politician.Post.DEPUTADA ->
                     mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, it, null, view)
 
-                Politician.Post.SENADOR.name, Politician.Post.SENADORA.name ->
+                Politician.Post.SENADOR, Politician.Post.SENADORA ->
                     mFirebaseRepository.handleSenadorVoteOnDatabase(politician, it, null, view)
 
-                Politician.Post.GOVERNADOR.name, Politician.Post.SENADORA.name ->
+                Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA ->
                     mFirebaseRepository.handleGovernadorVoteOnDatabase(politician, it, null, view)
             }
-
         }
     }
 
@@ -126,7 +125,5 @@ class SinglePoliticianModel(val mContext: Context,
         if (!mCompositeDisposable.isDisposed) mCompositeDisposable.dispose()
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>?) {
-
-    }
+    override fun onLoaderReset(loader: Loader<Cursor>?) {}
 }

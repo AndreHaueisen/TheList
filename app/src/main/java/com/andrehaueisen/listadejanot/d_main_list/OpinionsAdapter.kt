@@ -58,8 +58,8 @@ class OpinionsAdapter(val activity: Activity, opinionsMap: HashMap<String, Strin
 
     inner class OpinionViewHolder(view: View): RecyclerView.ViewHolder(view){
 
-        private val opinionTextView = view.findViewById(R.id.opinion_text_view) as TextView
-        private val userNameTextView = view.findViewById(R.id.opinion_owner_text_view) as TextView
+        private val opinionTextView = view.findViewById<TextView>(R.id.opinion_text_view)
+        private val userNameTextView = view.findViewById<TextView>(R.id.opinion_owner_text_view)
 
         fun onBindView(position: Int){
             opinionTextView.text = opinions[position]

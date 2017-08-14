@@ -21,7 +21,6 @@ class PoliticiansContract {
 
             val _ID = "_id"
             val COLUMN_POST = "cargo"
-            val COLUMN_IMAGE_URL = "image_url"
             val COLUMN_NAME = "name"
             val COLUMN_EMAIL = "email"
             val COLUMN_IMAGE = "image"

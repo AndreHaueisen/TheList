@@ -76,15 +76,17 @@ class OpinionsDialog() : DialogFragment() {
 
         val view = inflater?.inflate(R.layout.d_dialog_fragment_opinions, container, false)
 
-        mPoliticianImageView = view?.findViewById(R.id.politician_image_view) as ImageView
-        mEmptyListTextView = view.findViewById(R.id.empty_opinions_list_text_view) as TextView
-        mCurrentOpinionTitleTextView = view.findViewById(R.id.your_opinion_title_text_view) as TextView
-        mCurrentOpinionTextView = view.findViewById(R.id.current_opinion_text_view) as TextView
-        mPoliticianNameTextView = view.findViewById(R.id.politician_name_text_view) as TextView
-        mOpinionsRecyclerView = view.findViewById(R.id.opinions_recycler_view) as RecyclerView
-        mDeleteOpinionImageButton = view.findViewById(R.id.delete_text_image_button) as ImageButton
-        mSendOpinionImageButton = view.findViewById(R.id.send_opinion_image_button) as ImageButton
-        mOpinionTextInput = view.findViewById(R.id.opinion_text_input_layout) as TextInputLayout
+        view?.let {
+            mPoliticianImageView = view.findViewById<ImageView>(R.id.politician_image_view)
+            mEmptyListTextView = view.findViewById<TextView>(R.id.empty_opinions_list_text_view)
+            mCurrentOpinionTitleTextView = view.findViewById<TextView>(R.id.your_opinion_title_text_view)
+            mCurrentOpinionTextView = view.findViewById<TextView>(R.id.current_opinion_text_view)
+            mPoliticianNameTextView = view.findViewById<TextView>(R.id.politician_name_text_view)
+            mOpinionsRecyclerView = view.findViewById<RecyclerView>(R.id.opinions_recycler_view)
+            mDeleteOpinionImageButton = view.findViewById<ImageButton>(R.id.delete_text_image_button)
+            mSendOpinionImageButton = view.findViewById<ImageButton>(R.id.send_opinion_image_button)
+            mOpinionTextInput = view.findViewById<TextInputLayout>(R.id.opinion_text_input_layout)
+        }
 
         setRecyclerView(mOpinionsRecyclerView)
         setImageButtons(mPoliticianEmail, mUserEmail)

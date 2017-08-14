@@ -9,9 +9,9 @@ import com.github.florent37.expectanim.core.Expectations
 
 fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician) {
 
-    val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
-    val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
+    val plusOneTextView = parentView.findViewById<TextView>(R.id.plus_one_text_view)
+    val votesNumberTextView = parentView.findViewById<TextView>(R.id.votes_number_text_view)
+    val missingVotesTextView = parentView.findViewById<TextView?>(R.id.missing_votes_text_view)
 
     this.expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),
@@ -40,9 +40,9 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician)
 
 fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician) {
 
-    val plusOneTextView = parentView.findViewById(R.id.plus_one_text_view)
-    val votesNumberTextView = parentView.findViewById(R.id.votes_number_text_view) as TextView
-    val missingVotesTextView = parentView.findViewById(R.id.missing_votes_text_view) as TextView?
+    val plusOneTextView = parentView.findViewById<TextView>(R.id.plus_one_text_view)
+    val votesNumberTextView = parentView.findViewById<TextView>(R.id.votes_number_text_view)
+    val missingVotesTextView = parentView.findViewById<TextView?>(R.id.missing_votes_text_view)
 
     this.addEndListener {
         votesNumberTextView.text = politician.votesNumber.toString()
@@ -70,7 +70,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician
 }
 
 fun ExpectAnim.startRefreshingTitleAnimation(parentView: View){
-    val voteTitleTextView = parentView.findViewById(R.id.vote_title_text_view) as TextView
+    val voteTitleTextView = parentView.findViewById<TextView>(R.id.vote_title_text_view)
 
     this.expect(voteTitleTextView)
             .toBe(Expectations.scale(0F, 0F))
@@ -89,7 +89,7 @@ fun ExpectAnim.startRefreshingTitleAnimation(parentView: View){
 }
 
 fun ExpectAnim.stopRefreshingTitleAnimation(parentView: View){
-    val voteTitleTextView = parentView.findViewById(R.id.vote_title_text_view) as TextView
+    val voteTitleTextView = parentView.findViewById<TextView>(R.id.vote_title_text_view)
 
     this.expect(voteTitleTextView)
             .toBe(Expectations.scale(0F, 0F))

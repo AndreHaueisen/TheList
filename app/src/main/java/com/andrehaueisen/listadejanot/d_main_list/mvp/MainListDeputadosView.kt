@@ -43,7 +43,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     }
 
     private fun setRecyclerView(view: View) {
-        mDeputadosRecyclerView = view.findViewById(R.id.deputados_recycler_view) as RecyclerView
+        mDeputadosRecyclerView = view.findViewById<RecyclerView>(R.id.deputados_recycler_view)
         mDeputadosRecyclerView.setHasFixedSize(true)
 
         val deputadosAdapter = PoliticianListAdapter(activity, mDeputadosList)

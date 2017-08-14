@@ -98,15 +98,15 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val mCardView: CardView = itemView.findViewById(R.id.card_view) as CardView
-        private val mPoliticianImageView: ImageView = itemView.findViewById(R.id.politician_image_view) as ImageView
-        private val mPlusOneAnimationTextView: TextView = itemView.findViewById(R.id.plus_one_text_view) as TextView
-        private val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view) as TextView
-        private val mEmailTextView = itemView.findViewById(R.id.email_text_view) as TextView
-        private val mVotesNumberTextView: TextView = itemView.findViewById(R.id.votes_number_text_view) as TextView
-        private val mAnimatedBadgeImageView: ImageView = itemView.findViewById(R.id.badge_image_view) as ImageView
-        private val mOpinionsButton: Button = itemView.findViewById(R.id.opinion_button) as Button
-        private val mVoteButton: ToggleButton = itemView.findViewById(R.id.add_to_vote_count_toggle_button) as ToggleButton
+        private val mCardView: CardView = itemView.findViewById<CardView>(R.id.card_view)
+        private val mPoliticianImageView: ImageView = itemView.findViewById<ImageView>(R.id.politician_image_view)
+        private val mPlusOneAnimationTextView: TextView = itemView.findViewById<TextView>(R.id.plus_one_text_view)
+        private val mNameTextView: TextView = itemView.findViewById<TextView>(R.id.name_text_view)
+        private val mEmailTextView = itemView.findViewById<TextView>(R.id.email_text_view) as TextView
+        private val mVotesNumberTextView: TextView = itemView.findViewById<TextView>(R.id.votes_number_text_view)
+        private val mAnimatedBadgeImageView: ImageView = itemView.findViewById<ImageView>(R.id.badge_image_view)
+        private val mOpinionsButton: Button = itemView.findViewById<Button>(R.id.opinion_button)
+        private val mVoteButton: ToggleButton = itemView.findViewById<ToggleButton>(R.id.add_to_vote_count_toggle_button)
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.politician_thief_animated_vector) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.thief_politician_animated_vector) as AnimatedVectorDrawable
 
@@ -118,10 +118,15 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
                     fun initiateVoteProcess() {
                         val userEmail = mFirebaseAuthenticator.getUserEmail()!!
                         ExpectAnim().startRefreshingTitleAnimation(itemView)
-                        if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
-                            mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
-                        } else {
-                            mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
+                        when(politician.post){
+                            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA ->
+                                mFirebaseRepository.handleDeputadoVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
+
+                            Politician.Post.SENADOR, Politician.Post.SENADORA ->
+                                mFirebaseRepository.handleSenadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
+
+                            Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA ->
+                                mFirebaseRepository.handleGovernadorVoteOnDatabase(politician, userEmail, this@PoliticianHolder, null)
                         }
                     }
 
@@ -224,13 +229,13 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
             val RADIUS: Int
             val MARGIN: Int
 
-            if(politician.post == Politician.Post.SENADOR || politician.post == Politician.Post.SENADORA){
-                RADIUS = 10
-                MARGIN = 5
+            if(politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA){
+                RADIUS = 5
+                MARGIN = 2
 
             }else{
-                RADIUS = 6
-                MARGIN = 4
+                RADIUS = 10
+                MARGIN = 5
             }
 
             mGlide.load(politician.image)

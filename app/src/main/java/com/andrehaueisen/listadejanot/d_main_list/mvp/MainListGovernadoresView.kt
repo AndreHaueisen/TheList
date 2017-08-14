@@ -12,7 +12,6 @@ import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_GOVERNADORES
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_SENADORES
 import com.andrehaueisen.listadejanot.utilities.showSnackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,7 +44,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     }
 
     private fun setRecyclerView(view: View) {
-        mGovernadoresRecyclerView = view.findViewById(R.id.governadores_recycler_view) as RecyclerView
+        mGovernadoresRecyclerView = view.findViewById<RecyclerView>(R.id.governadores_recycler_view)
         mGovernadoresRecyclerView.setHasFixedSize(true)
 
         val governadoresAdapter = PoliticianListAdapter(activity, mGovernadorList)

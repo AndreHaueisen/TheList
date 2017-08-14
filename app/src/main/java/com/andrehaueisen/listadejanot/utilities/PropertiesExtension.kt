@@ -47,7 +47,7 @@ val SHARED_MESSAGE_TOKEN = "message_token"
 val DEFAULT_POLITICIANS_MAIN_LIST = listOf(
         "dep.rodrigorochaloures@camara.gov.br",
         "renan.calheiros@senador.leg.br",
-        "aecio.neves@senador.leg.br")
+        "gabinete@ouvidoriageral.mg.gov.br")
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 

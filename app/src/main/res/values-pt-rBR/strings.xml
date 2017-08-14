@@ -68,8 +68,8 @@
     </plurals>
 
     <!--f_information strings-->
-    <string name="understand_app_motivation">1 - O parlamentar apareceu no noticiário por corrupção\n2 - Vote para torná-lo suspeito\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de suspeitos\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
-    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos será reiniciado se for necessário.</string>
+    <string name="understand_app_motivation">1 - O parlamentar ou governador foi denunciado por algum crime\n2 - Vote para torná-lo suspeito\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de suspeitos\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
 
     <!-- g_login strings-->
     <string name="no_network">Sem internet</string>

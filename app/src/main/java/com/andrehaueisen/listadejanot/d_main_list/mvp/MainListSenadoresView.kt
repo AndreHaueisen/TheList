@@ -45,7 +45,7 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     }
 
     private fun setRecyclerView(view: View) {
-        mSenadoresRecyclerView = view.findViewById(R.id.senadores_recycler_view) as RecyclerView
+        mSenadoresRecyclerView = view.findViewById<RecyclerView>(R.id.senadores_recycler_view)
         mSenadoresRecyclerView.setHasFixedSize(true)
 
         val senadoresAdapter = PoliticianListAdapter(activity, mSenadorList)

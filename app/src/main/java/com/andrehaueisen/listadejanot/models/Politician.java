@@ -20,8 +20,6 @@ public class Politician implements Parcelable, Comparable<Politician> {
     @Exclude
     private Post post;
     @Exclude
-    private String imageUrl;
-    @Exclude
     private String email;
     @Exclude
     private byte[] image;
@@ -102,7 +100,6 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
     public Politician(Post post, String imageUrl, String name, @Nullable String email, byte[] image) {
         this.post = post;
-        this.imageUrl = imageUrl;
         this.name = name;
         this.email = email;
         this.image = image;
@@ -110,7 +107,6 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
     protected Politician(Parcel in) {
         post = in.readParcelable(Post.class.getClassLoader());
-        imageUrl = in.readString();
         email = in.readString();
         name = in.readString();
         votesNumber = in.readLong();
@@ -124,14 +120,6 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
     public void setPost(Post post) {
         this.post = post;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -226,7 +214,6 @@ public class Politician implements Parcelable, Comparable<Politician> {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(post, flags);
-        dest.writeString(imageUrl);
         dest.writeString(email);
         dest.writeString(name);
         dest.writeLong(votesNumber);
