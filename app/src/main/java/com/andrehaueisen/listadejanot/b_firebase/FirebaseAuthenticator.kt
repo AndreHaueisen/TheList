@@ -12,7 +12,7 @@ import com.google.firebase.database.*
 /**
  * Created by andre on 6/8/2017.
  */
-class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, val mFirebaseAuth: FirebaseAuth) {
+class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth) {
 
     private val LOG_TAG = FirebaseAuthenticator::class.java.simpleName
     private val REQUEST_CODE = 0
@@ -57,11 +57,11 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
                 override fun onDataChange(dataSnapshot: DataSnapshot?) {
                     val tokensMap: MutableMap<String, Any>
 
-                    if (dataSnapshot != null && dataSnapshot.exists()) {
+                    tokensMap = if (dataSnapshot != null && dataSnapshot.exists()) {
                         val genericTypeIndicator = object : GenericTypeIndicator<MutableMap<String, Any>>() {}
-                        tokensMap = dataSnapshot.getValue(genericTypeIndicator) ?: mutableMapOf()
+                        dataSnapshot.getValue(genericTypeIndicator) ?: mutableMapOf()
                     } else {
-                        tokensMap = mutableMapOf()
+                        mutableMapOf()
                     }
 
                     tokensMap.put(email, token)
@@ -71,8 +71,6 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
         }
     }
 
-    fun logout() {
-        mFirebaseAuth.signOut()
-    }
+    fun logout() = mFirebaseAuth.signOut()
 
 }

@@ -18,28 +18,28 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorAccent"
-        android:layout_margin="8dp">
-
-        <TextView
-            android:id="@+id/app_motivation_text_view"
-            style="@style/RobotoRegularTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:textSize="18sp"/>
-
-    </android.support.v7.widget.CardView>
 
     <TextView
-        style="@style/RobotoRegularTextStyle"
+        android:id="@+id/app_motivation_text_view"
+        style="@style/LatoRegularTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/beta_warning"
         android:textSize="18sp"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/colorAccent">
+
+        <TextView
+            style="@style/LatoLightTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/beta_warning"
+            android:textSize="18sp"/>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

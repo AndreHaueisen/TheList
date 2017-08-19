@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_login_background"
+    android:background="@null"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -39,6 +39,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
+        android:background="@drawable/shape_login_background"
         android:id="@+id/politicians_pager_adapter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

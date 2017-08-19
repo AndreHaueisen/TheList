@@ -13,19 +13,15 @@ import dagger.Provides
  * Created by andre on 5/11/2017.
  */
 @Module
-class PoliticianSelectorModule(val mLoaderManager: LoaderManager) {
+class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
 
     @PoliticianSelectorScope
     @Provides
-    fun provideLoaderManager() : LoaderManager {
-        return mLoaderManager
-    }
+    fun provideLoaderManager() : LoaderManager = mLoaderManager
 
     @PoliticianSelectorScope
     @Provides
-    fun provideSelectorModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository) : PoliticianSelectorModel {
-        return PoliticianSelectorModel(context, loaderManager, firebaseRepository)
-    }
+    fun provideSelectorModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository) : PoliticianSelectorModel = PoliticianSelectorModel(context, loaderManager, firebaseRepository)
 
     @PoliticianSelectorScope
     @Provides
@@ -34,9 +30,6 @@ class PoliticianSelectorModule(val mLoaderManager: LoaderManager) {
             loaderManager: LoaderManager,
             firebaseRepository: FirebaseRepository,
             firebaseAuthenticator: FirebaseAuthenticator,
-            selectorModel: PoliticianSelectorModel): SinglePoliticianModel {
-
-        return SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel)
-    }
+            selectorModel: PoliticianSelectorModel): SinglePoliticianModel = SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel)
 
 }

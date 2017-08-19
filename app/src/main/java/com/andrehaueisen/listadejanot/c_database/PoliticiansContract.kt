@@ -32,9 +32,7 @@ class PoliticiansContract {
 
             val CONTENT_URI : Uri = BASE_CONTENT_URI.buildUpon().appendPath(PATH_POLITICIANS).build()
 
-            fun buildUriWithId(id: Long) : Uri{
-                return ContentUris.withAppendedId(CONTENT_URI, id)
-            }
+            fun buildUriWithId(id: Long) : Uri = ContentUris.withAppendedId(CONTENT_URI, id)
 
         }
     }

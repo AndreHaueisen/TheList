@@ -24,8 +24,8 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/11/2017.
  */
-class PoliticianSelectorModel(val mContext: Context,
-                              val mLoaderManager: LoaderManager,
+class PoliticianSelectorModel(private val mContext: Context,
+                              private val mLoaderManager: LoaderManager,
                               val mFirebaseRepository: FirebaseRepository) :
         PoliticianSelectorMvpContract.Model,
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -68,12 +68,9 @@ class PoliticianSelectorModel(val mContext: Context,
                         }
                     }
 
-                    override fun onComplete() {
-                    }
+                    override fun onComplete() = Unit
 
-                    override fun onError(e: Throwable) {
-
-                    }
+                    override fun onError(e: Throwable) = Unit
                 })
     }
 
@@ -87,79 +84,71 @@ class PoliticianSelectorModel(val mContext: Context,
         getGovernadoresPreList()
     }
 
-    private fun getSenadoresPreList() {
-        mSenadoresPreListPublisher
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+    private fun getSenadoresPreList() = mSenadoresPreListPublisher
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                        mSenadoresPreList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
+                override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                    mSenadoresPreList = searchablePoliticiansList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-                    override fun onComplete() {
+                override fun onComplete() = Unit
+            })
 
-                    }
-                })
-    }
+    private fun getDeputadosPreList() = mDeputadosPreListPublisher
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                    mDeputadosPreList = searchablePoliticiansList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-    private fun getDeputadosPreList() {
-        mDeputadosPreListPublisher
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                        mDeputadosPreList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
+                override fun onComplete() = Unit
+            })
 
-                    override fun onComplete() {}
-                })
-    }
+    private fun getGovernadoresPreList() = mGovernadoresPreListPublisher
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MaybeObserver<ArrayList<Politician>>{
+                override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                    mGovernadoresPreList = searchablePoliticiansList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-    private fun getGovernadoresPreList(){
-        mGovernadoresPreListPublisher
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>>{
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                        mGovernadoresPreList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
-
-                    override fun onComplete() {}
-                })
-    }
+                override fun onComplete() = Unit
+            })
 
     override fun initiateDataLoad() {
         if (mLoaderManager.getLoader<Cursor>(LOADER_ID) == null) {
@@ -184,7 +173,7 @@ class PoliticianSelectorModel(val mContext: Context,
         if (data != null && data.count != 0) {
             data.moveToFirst()
 
-            for (i in 0..data.count - 1) {
+            for (i in 0 until data.count) {
                 val politicianName = data.getString(COLUMNS_INDEX_NAME)
                 val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
 
@@ -271,16 +260,12 @@ class PoliticianSelectorModel(val mContext: Context,
         mSearchablePoliticianList = originalPoliticiansList
     }
 
-    override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> {
-        return mFinalSearchablePoliticianPublisher
-    }
+    override fun loadSearchablePoliticiansList(): Observable<ArrayList<Politician>> = mFinalSearchablePoliticianPublisher
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mFirebaseRepository.onDestroy()
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>?) {
-
-    }
+    override fun onLoaderReset(loader: Loader<Cursor>?) = Unit
 }

@@ -29,7 +29,7 @@
 
         <TextView
             android:id="@+id/name_text_view"
-            style="@style/RobotoRegularTextStyle"
+            style="@style/RobotoBlackTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
             android:layout_marginTop="16dp"
             android:maxLines="2"
             android:textAlignment="center"
-            android:textSize="17sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,14 +45,15 @@
 
         <TextView
             android:id="@+id/email_text_view"
-            style="@style/RobotoRegularTextStyle"
+            style="@style/LatoRegularTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="6dp"
             android:maxLines="2"
             android:textAlignment="center"
+            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name_text_view"
@@ -60,20 +61,22 @@
 
         <TextView
             android:id="@+id/vote_title_text_view"
-            style="@style/RobotoRegularTextStyle"
+            style="@style/LatoLightTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/votes_title"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/politician_image_view"
+            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/politician_image_view"/>
 
         <TextView
             android:id="@+id/votes_number_text_view"
-            style="@style/RobotoRegularTextStyle"
+            style="@style/LatoLightTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -85,32 +88,28 @@
 
         <ImageView
             android:id="@+id/badge_image_view"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/transition_badge_background"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
-            app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/politician_image_view"
             app:layout_constraintTop_toTopOf="@+id/politician_image_view"
-            tools:ignore="ContentDescription"
-            tools:layout_height="36dp"
-            tools:layout_width="36dp"/>
+            tools:ignore="ContentDescription"/>
 
         <Button
             android:id="@+id/opinion_button"
-            style="@android:style/Widget.Material.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            style="@style/ButtonBorderlessRobotoStyle"
             android:layout_marginTop="8dp"
             android:text="@string/opinions"
-            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/add_to_vote_count_toggle_button"
             app:layout_constraintTop_toBottomOf="@+id/politician_image_view"/>
 
         <ToggleButton
             android:id="@+id/add_to_vote_count_toggle_button"
-            style="@style/ButtonBorderlessStyle"
+            style="@style/ButtonBorderlessRobotoStyle"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:textOff="@string/vote_condemn"
@@ -121,7 +120,7 @@
 
         <TextView
             android:id="@+id/plus_one_text_view"
-            style="@style/RobotoBlackTextStyle"
+            style="@style/LatoLightTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"

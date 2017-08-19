@@ -8,8 +8,8 @@ import io.reactivex.disposables.CompositeDisposable
 
 class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract.Presenter {
 
-    var mView: InformationView? = null
-    val mCompositeDisposable = CompositeDisposable()
+    private var mView: InformationView? = null
+    private val mCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +19,7 @@ class InformationPresenterActivity : AppCompatActivity(), InformationMvpContract
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
-    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean = super.onCreateOptionsMenu(menu)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         mView?.onOptionsItemSelected(item)

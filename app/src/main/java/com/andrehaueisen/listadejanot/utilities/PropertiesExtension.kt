@@ -68,5 +68,6 @@ val POLITICIANS_COLUMNS_NAME_NO_EMAIL = arrayOf(
         politiciansEntry.COLUMN_NAME,
         politiciansEntry.COLUMN_IMAGE)
 
-val PERMISSION_WRITE_EXTERNAL_STORAGE: Int = 10
+val NOTIFICATION_CHANNEL_ID = "com.andrehaueisen.listadejanot.notificationChannel"
+val NEW_POLITICIAN_CHANNEL = "new_politician_channel"
 

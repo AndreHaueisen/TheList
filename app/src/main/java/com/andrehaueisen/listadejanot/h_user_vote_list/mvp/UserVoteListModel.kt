@@ -27,10 +27,10 @@ import java.io.ByteArrayOutputStream
 /**
  * Created by andre on 6/20/2017.
  */
-class UserVoteListModel(val mContext: Context,
-                        val mLoaderManager: LoaderManager,
+class UserVoteListModel(private val mContext: Context,
+                        private val mLoaderManager: LoaderManager,
                         val mFirebaseRepository: FirebaseRepository,
-                        val mFirebaseAuthenticator: FirebaseAuthenticator) : LoaderManager.LoaderCallbacks<Cursor>, UserVoteListMvpContract.Model {
+                        private val mFirebaseAuthenticator: FirebaseAuthenticator) : LoaderManager.LoaderCallbacks<Cursor> {
 
     private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_NAME = 1
@@ -75,16 +75,14 @@ class UserVoteListModel(val mContext: Context,
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable) {}
-        override fun onComplete() {}
+        override fun onError(e: Throwable) = Unit
+        override fun onComplete() = Unit
     }
 
-    fun getVoteCountHashMap() {
-        mOnVoteCountHashMapReadyPublisher
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mOnVoteListCountReadyObservable)
-    }
+    fun getVoteCountHashMap() = mOnVoteCountHashMapReadyPublisher
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(mOnVoteListCountReadyObservable)
 
     private val mOnVoteListCountReadyObservable = object : Observer<HashMap<String, Long>> {
         override fun onNext(voteCountHashMap: HashMap<String, Long>) {
@@ -96,8 +94,8 @@ class UserVoteListModel(val mContext: Context,
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable) {}
-        override fun onComplete() {}
+        override fun onError(e: Throwable) = Unit
+        override fun onComplete() = Unit
     }
 
     private fun initiateDataLoad() {
@@ -130,7 +128,7 @@ class UserVoteListModel(val mContext: Context,
 
             val listOfVotedPoliticians = arrayListOf<Politician>()
 
-            for (i in 0..data.count - 1) {
+            for (i in 0 until data.count) {
 
                 val politicianPost = data.getString(COLUMNS_INDEX_POST)
                 val politicianName = data.getString(COLUMNS_INDEX_NAME)
@@ -196,11 +194,7 @@ class UserVoteListModel(val mContext: Context,
         return stream.toByteArray()
     }
 
-    fun onDestroy() {
-        mCompositeDisposable.dispose()
-    }
+    fun onDestroy() = mCompositeDisposable.dispose()
 
-    override fun onLoaderReset(p0: Loader<Cursor>?) {
-
-    }
+    override fun onLoaderReset(p0: Loader<Cursor>?) = Unit
 }

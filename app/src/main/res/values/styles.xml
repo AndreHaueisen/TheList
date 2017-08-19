@@ -18,21 +18,39 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
-    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:background">@color/colorPrimaryLight</item>
-        <item name="android:textColorHint">@color/colorPrimaryLight</item>
+    <style name="Autocomplete" parent="@android:style/Widget.Material.AutoCompleteTextView">
+        <item name="android:fontFamily">@font/lato_light</item>
+        <item name="android:dropDownSelector">@color/colorAccentDark</item>
+        <item name="android:textColorHint">@color/colorSecondaryLight</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ButtonStyle" parent="@android:style/Widget.Material.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/colorPrimaryLight</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="ButtonColoredStyle" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ButtonBorderlessStyle" parent="@android:style/Widget.Material.Button.Borderless">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/lato</item>
+    </style>
+
+    <style name="ButtonBorderlessRobotoStyle" parent="ButtonBorderlessStyle">
+        <item name="android:fontFamily">@string/font_roboto_thin</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="RobotoThinItalicTextStyle">
@@ -45,6 +63,10 @@
     <style name="RobotoRegularToolbarTextStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@string/font_roboto_regular</item>
+    </style>
+
+    <style name="RobotoMediumTextStyle" parent="RobotoRegularTextStyle">
+        <item name="fontFamily">@string/font_roboto_medium</item>
     </style>
 
     <style name="RobotoBlackTextStyle">
@@ -65,6 +87,27 @@
     <style name="RobotoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@string/font_roboto_regular</item>
+    </style>
+
+    <style name="LatoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato</item>
+    </style>
+
+    <style name="LatoBoldTextStyle" parent="LatoRegularTextStyle">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="LatoThinTextStyle" parent="LatoRegularTextStyle">
+        <item name="android:fontFamily">@font/lato_thin</item>
+    </style>
+
+    <style name="LatoItalicTextStyle" parent="LatoRegularTextStyle">
+        <item name="android:fontFamily">@font/lato_italic</item>
+    </style>
+
+    <style name="LatoLightTextStyle" parent="LatoRegularTextStyle">
+        <item name="android:fontFamily">@font/lato_light</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

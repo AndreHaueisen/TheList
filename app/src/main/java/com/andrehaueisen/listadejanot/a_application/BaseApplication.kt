@@ -15,9 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 class BaseApplication : Application(){
 
     companion object{
-        fun get(activity: Activity) : BaseApplication {
-            return activity.application as BaseApplication
-        }
+        fun get(activity: Activity) : BaseApplication = activity.application as BaseApplication
 
     }
 
@@ -40,7 +38,5 @@ class BaseApplication : Application(){
 
     }
 
-    fun getAppComponent() : ApplicationComponent{
-        return mComponent
-    }
+    fun getAppComponent() : ApplicationComponent = mComponent
 }

@@ -63,13 +63,9 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
             mView?.notifyDeputadosNewList(deputados)
         }
 
-        override fun onError(t: Throwable) {
+        override fun onError(t: Throwable) = Unit
 
-        }
-
-        override fun onComplete() {
-
-        }
+        override fun onComplete() = Unit
     }
 
     private val mSenadoresMainListObserver = object : Observer<ArrayList<Politician>>{
@@ -81,13 +77,9 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
             mView?.notifySenadoresNewList(senadores)
         }
 
-        override fun onError(e: Throwable) {
+        override fun onError(e: Throwable) = Unit
 
-        }
-
-        override fun onComplete() {
-
-        }
+        override fun onComplete() = Unit
     }
 
     private val mGovernadoresMainListObserver = object: Observer<ArrayList<Politician>>{
@@ -99,13 +91,9 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
             mView?.notifyGovernadoresNewList(governadores)
         }
 
-        override fun onError(e: Throwable) {
+        override fun onError(e: Throwable) = Unit
 
-        }
-
-        override fun onComplete() {
-
-        }
+        override fun onComplete() = Unit
     }
 
     override fun subscribeToModel() {

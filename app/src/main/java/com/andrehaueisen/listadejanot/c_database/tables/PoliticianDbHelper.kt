@@ -77,9 +77,7 @@ class PoliticianDbHelper(val context: Context) : SQLiteOpenHelper(context, "poli
         super.close()
     }
 
-    override fun onCreate(db: SQLiteDatabase?) {
-    }
+    override fun onCreate(db: SQLiteDatabase?) = Unit
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-    }
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = Unit
 }

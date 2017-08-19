@@ -27,7 +27,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by andre on 4/21/2017.
  */
-class MainListModel(val context: Context, val loaderManager: LoaderManager, val mFirebaseRepository: FirebaseRepository) :
+class MainListModel(val context: Context, private val loaderManager: LoaderManager, val mFirebaseRepository: FirebaseRepository) :
         MainListMvpContract.Model,
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -42,7 +42,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
 
     lateinit private var mSenadoresMainListObservable: PublishSubject<ArrayList<Politician>>
     lateinit private var mDeputadosMainListObservable: PublishSubject<ArrayList<Politician>>
-    lateinit private var mGorvenadoresMainListObservable: PublishSubject<ArrayList<Politician>>
+    lateinit private var mGovernadoresMainListObservable: PublishSubject<ArrayList<Politician>>
 
     private lateinit var mSenadoresMainList: ArrayList<Politician>
     private lateinit var mDeputadosMainList: ArrayList<Politician>
@@ -71,12 +71,9 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onError(e: Throwable) {
+        override fun onError(e: Throwable) = Unit
 
-        }
-
-        override fun onComplete() {
-        }
+        override fun onComplete() = Unit
     }
 
     private var mListCounter = 0
@@ -91,90 +88,78 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
     fun connectToFirebase() {
         mSenadoresMainListObservable = mFirebaseRepository.getSenadoresMainList()
         mDeputadosMainListObservable = mFirebaseRepository.getDeputadosMainList()
-        mGorvenadoresMainListObservable = mFirebaseRepository.getGovernadoresMainList()
+        mGovernadoresMainListObservable = mFirebaseRepository.getGovernadoresMainList()
 
         getSenadoresMainList()
         getDeputadosMainList()
         getGovernadoresMainList()
     }
 
-    private fun getSenadoresMainList() {
-        mSenadoresMainListObservable
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+    private fun getSenadoresMainList() = mSenadoresMainListObservable
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-                    override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                        mSenadoresMainList = searchablePoliticiansList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
+                override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
+                    mSenadoresMainList = searchablePoliticiansList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-                    override fun onComplete() {
+                override fun onComplete() = Unit
+            })
 
-                    }
-                })
-    }
+    private fun getDeputadosMainList() = mDeputadosMainListObservable
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-    private fun getDeputadosMainList() {
-        mDeputadosMainListObservable
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
+                override fun onSuccess(deputadosMainList: ArrayList<Politician>) {
+                    mDeputadosMainList = deputadosMainList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-                    override fun onSuccess(deputadosMainList: ArrayList<Politician>) {
-                        mDeputadosMainList = deputadosMainList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
+                override fun onComplete() = Unit
+            })
 
-                    override fun onComplete() {
+    private fun getGovernadoresMainList() = mGovernadoresMainListObservable
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn((AndroidSchedulers.mainThread()))
+            .subscribe(object : MaybeObserver<ArrayList<Politician>> {
+                override fun onSubscribe(disposable: Disposable) {
+                    mCompositeDisposable.add(disposable)
+                }
 
-                    }
-                })
-    }
+                override fun onError(e: Throwable) {
+                    Log.e(LOG_TAG, e.toString())
+                    mOnListsReadyPublisher.onNext(false)
+                }
 
-    private fun getGovernadoresMainList(){
-        mGorvenadoresMainListObservable
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn((AndroidSchedulers.mainThread()))
-                .subscribe(object : MaybeObserver<ArrayList<Politician>> {
-                    override fun onSubscribe(disposable: Disposable) {
-                        mCompositeDisposable.add(disposable)
-                    }
+                override fun onSuccess(governadoresMainList: ArrayList<Politician>) {
+                    mGovernadoresMainList = governadoresMainList
+                    mOnListsReadyPublisher.onNext(true)
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.e(LOG_TAG, e.toString())
-                        mOnListsReadyPublisher.onNext(false)
-                    }
-
-                    override fun onSuccess(governadoresMainList: ArrayList<Politician>) {
-                        mGovernadoresMainList = governadoresMainList
-                        mOnListsReadyPublisher.onNext(true)
-                    }
-
-                    override fun onComplete() {
-
-                    }
-                })
-    }
+                override fun onComplete() = Unit
+            })
 
     override fun initiateDataLoad() {
         if (loaderManager.getLoader<Cursor>(LOADER_ID) == null) {
@@ -212,7 +197,7 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
             if(mCompleteSenadoresMainList.isNotEmpty()) mCompleteSenadoresMainList.clear()
             if(mCompleteGovernadoresMainList.isNotEmpty()) mCompleteGovernadoresMainList.clear()
 
-            for (i in 0..data.count - 1) {
+            for (i in 0 until data.count) {
                 val politicianPost = data.getString(COLUMNS_INDEX_POST)
                 val politicianName = data.getString(COLUMNS_INDEX_NAME)
                 val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
@@ -292,25 +277,20 @@ class MainListModel(val context: Context, val loaderManager: LoaderManager, val 
                 }
     }
 
-    override fun loadSenadoresMainList(): Observable<ArrayList<Politician>> {
-        return Observable.defer { mFinalMainListSenadoresPublisher }
-    }
+    override fun loadSenadoresMainList(): Observable<ArrayList<Politician>> =
+            Observable.defer { mFinalMainListSenadoresPublisher }
 
 
-    override fun loadDeputadosMainList(): Observable<ArrayList<Politician>> {
-        return Observable.defer { mFinalMainListDeputadosPublisher }
-    }
+    override fun loadDeputadosMainList(): Observable<ArrayList<Politician>> =
+            Observable.defer { mFinalMainListDeputadosPublisher }
 
-    override fun loadGovernadoresMainList(): Observable<ArrayList<Politician>>{
-        return Observable.defer { mFinalMainListGovernadoresPublisher }
-    }
+    override fun loadGovernadoresMainList(): Observable<ArrayList<Politician>> =
+            Observable.defer { mFinalMainListGovernadoresPublisher }
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mFirebaseRepository.onDestroy()
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>?) {
-
-    }
+    override fun onLoaderReset(loader: Loader<Cursor>?) = Unit
 }

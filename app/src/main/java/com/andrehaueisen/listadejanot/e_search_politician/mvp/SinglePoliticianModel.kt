@@ -19,11 +19,11 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/16/2017.
  */
-class SinglePoliticianModel(val mContext: Context,
-                            val mLoaderManager: LoaderManager,
+class SinglePoliticianModel(private val mContext: Context,
+                            private val mLoaderManager: LoaderManager,
                             val mFirebaseRepository: FirebaseRepository,
                             val mFirebaseAuthenticator: FirebaseAuthenticator,
-                            val mSelectorModel: PoliticianSelectorModel)
+                            private val mSelectorModel: PoliticianSelectorModel)
 
     : PoliticianSelectorMvpContract.IndividualPoliticianModel, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -117,13 +117,12 @@ class SinglePoliticianModel(val mContext: Context,
         }
     }
 
-    override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> {
-        return mSinglePoliticianPublisher
-    }
+    override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> =
+            mSinglePoliticianPublisher
 
     override fun onDestroy() {
         if (!mCompositeDisposable.isDisposed) mCompositeDisposable.dispose()
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>?) {}
+    override fun onLoaderReset(loader: Loader<Cursor>?) = Unit
 }

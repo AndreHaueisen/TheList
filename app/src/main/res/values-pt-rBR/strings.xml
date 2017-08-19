@@ -9,8 +9,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">SUSPEITO</string>
-    <string name="vote_condemn">CONFIÁVEL</string>
+    <string name="vote_absolve">Suspeito</string>
+    <string name="vote_condemn">Confiável</string>
     <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Suspeitos</string>

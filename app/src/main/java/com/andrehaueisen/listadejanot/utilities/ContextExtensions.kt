@@ -29,10 +29,10 @@ fun Context.getAppropriateLayoutManager(): RecyclerView.LayoutManager{
 
     val SPAN_COUNT = 2
 
-    if(resources.configuration.smallestScreenWidthDp < 600){
-        return LinearLayoutManager(this)
+    return if(resources.configuration.smallestScreenWidthDp < 600){
+        LinearLayoutManager(this)
     }else{
-        return GridLayoutManager(this, SPAN_COUNT)
+        GridLayoutManager(this, SPAN_COUNT)
     }
 }
 
@@ -44,9 +44,7 @@ fun Context.isConnectedToInternet(): Boolean{
 
 }
 
-fun Context.showToast(message: String){
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-}
+fun Context.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 inline fun <reified T: Any> Context.putValueOnSharedPreferences(key: String, data: T){
 

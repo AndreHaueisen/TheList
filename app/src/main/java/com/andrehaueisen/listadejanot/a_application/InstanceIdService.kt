@@ -21,13 +21,9 @@ class InstanceIdService : FirebaseInstanceIdService() {
         saveTokenOnSharedPreferences(refreshedToken)
     }
 
-    override fun handleIntent(intent: Intent?) {
-        super.handleIntent(intent)
-    }
+    override fun handleIntent(intent: Intent?) = super.handleIntent(intent)
 
-    private fun saveTokenOnSharedPreferences(token: String){
-        applicationContext.putValueOnSharedPreferences(SHARED_MESSAGE_TOKEN, token)
-    }
+    private fun saveTokenOnSharedPreferences(token: String) = applicationContext.putValueOnSharedPreferences(SHARED_MESSAGE_TOKEN, token)
 
 
 }

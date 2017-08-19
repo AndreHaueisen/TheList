@@ -177,7 +177,7 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
     public static class Comparators {
 
-        public static Comparator<Politician> NAME = new Comparator<Politician>() {
+        public static final Comparator<Politician> NAME = new Comparator<Politician>() {
             @Override
             public int compare(Politician politician1, Politician politician2) {
                 return politician1.name.compareTo(politician2.name);

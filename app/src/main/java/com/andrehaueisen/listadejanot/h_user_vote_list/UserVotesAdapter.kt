@@ -27,7 +27,7 @@ import java.util.*
 /**
  * Created by andre on 6/25/2017.
  */
-class UserVotesAdapter(val mActivity: Activity, val mUserVotes: List<Politician>, val mUser: User): RecyclerView.Adapter<UserVotesAdapter.VoteHolder>() {
+class UserVotesAdapter(val mActivity: Activity, private val mUserVotes: List<Politician>, val mUser: User): RecyclerView.Adapter<UserVotesAdapter.VoteHolder>() {
 
     private val mFirebaseRepository: FirebaseRepository
     private val mFirebaseAuthenticator: FirebaseAuthenticator

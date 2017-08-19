@@ -50,9 +50,7 @@ class AutoCompletionAdapter(mContext: Context,
         return view!!
     }
 
-    override fun getFilter(): Filter {
-        return mPoliticianFilter
-    }
+    override fun getFilter(): Filter = mPoliticianFilter
 
     inner class PoliticiansFilter : Filter() {
 
@@ -70,16 +68,14 @@ class AutoCompletionAdapter(mContext: Context,
             return results
         }
 
-        override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-
-            if (results.count > 0) {
-                mNonReliablePoliticiansList.clear()
-                mNonReliablePoliticiansList.addAll(results.values as ArrayList<Politician>)
-                notifyDataSetChanged()
-            } else {
-                notifyDataSetInvalidated()
-            }
-        }
+        override fun publishResults(constraint: CharSequence?, results: FilterResults) =
+                if (results.count > 0) {
+                    mNonReliablePoliticiansList.clear()
+                    mNonReliablePoliticiansList.addAll(results.values as ArrayList<Politician>)
+                    notifyDataSetChanged()
+                } else {
+                    notifyDataSetInvalidated()
+                }
     }
 
     private fun String.stripAccents(): String {

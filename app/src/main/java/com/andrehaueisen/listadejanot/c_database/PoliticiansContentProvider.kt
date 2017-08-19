@@ -42,9 +42,9 @@ class PoliticiansContentProvider : ContentProvider() {
     override fun getType(uri: Uri?): String {
         val match = mUriMatcher.match(uri)
 
-        when (match) {
-            POLITICIANS -> return PoliticiansContract.Companion.PoliticiansEntry().CONTENT_TYPE
-            POLITICIAN_SPECIFIC -> return PoliticiansContract.Companion.PoliticiansEntry().CONTENT_ITEM_TYPE
+        return when (match) {
+            POLITICIANS -> PoliticiansContract.Companion.PoliticiansEntry().CONTENT_TYPE
+            POLITICIAN_SPECIFIC -> PoliticiansContract.Companion.PoliticiansEntry().CONTENT_ITEM_TYPE
             else -> throw UnsupportedOperationException("Uri unknown: ${uri.toString()}")
         }
     }

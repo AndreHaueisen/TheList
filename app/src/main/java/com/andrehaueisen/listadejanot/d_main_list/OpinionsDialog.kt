@@ -175,9 +175,9 @@ class OpinionsDialog() : DialogFragment() {
             }
         }
 
-        override fun onComplete() {}
+        override fun onComplete() = Unit
 
-        override fun onError(p0: Throwable) {}
+        override fun onError(p0: Throwable) = Unit
     }
 
     override fun onAttach(activity: Activity?) {
@@ -198,7 +198,6 @@ class OpinionsDialog() : DialogFragment() {
 
             Glide.with(activity).load(politicianImage)
                     .crossFade()
-                    .bitmapTransform(CropCircleTransformation(activity))
                     .placeholder(R.drawable.politician_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(mPoliticianImageView)
@@ -319,13 +318,9 @@ class OpinionsDialog() : DialogFragment() {
             mOpinion = editable?.toString()
         }
 
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
     }
 
 

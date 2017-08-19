@@ -13,17 +13,13 @@ import dagger.Provides
  */
 @UserVoteListScope
 @Module
-class UserVoteListModule(val loaderManager: LoaderManager){
+class UserVoteListModule(private val loaderManager: LoaderManager){
 
     @UserVoteListScope
     @Provides
-    fun provideLoaderManager(): LoaderManager{
-        return loaderManager
-    }
+    fun provideLoaderManager(): LoaderManager = loaderManager
 
     @UserVoteListScope
     @Provides
-    fun provideUserVoteListModel(context: Context, firebaseRepository: FirebaseRepository, firebaseAuthenticator: FirebaseAuthenticator): UserVoteListModel{
-        return UserVoteListModel(context, loaderManager, firebaseRepository, firebaseAuthenticator)
-    }
+    fun provideUserVoteListModel(context: Context, firebaseRepository: FirebaseRepository, firebaseAuthenticator: FirebaseAuthenticator): UserVoteListModel = UserVoteListModel(context, loaderManager, firebaseRepository, firebaseAuthenticator)
 }

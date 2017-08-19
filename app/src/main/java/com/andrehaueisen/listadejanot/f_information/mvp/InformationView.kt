@@ -9,30 +9,26 @@ import kotlinx.android.synthetic.main.f_activity_information_presenter.*
 /**
  * Created by andre on 6/5/2017.
  */
-class InformationView(val mPresenterActivity: InformationPresenterActivity) : InformationMvpContract.View {
+class InformationView(private val mPresenterActivity: InformationPresenterActivity) : InformationMvpContract.View {
 
     init {
         mPresenterActivity.setContentView(R.layout.f_activity_information_presenter)
     }
 
-    override fun setViews() {
-
-        with(mPresenterActivity) {
-            fun setToolbar() {
-                val actionBar = information_toolbar
-                setSupportActionBar(actionBar)
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                supportActionBar?.setDisplayShowTitleEnabled(true)
-            }
-
-            fun setMotivationTextView(){
-                app_motivation_text_view.text = mPresenterActivity.getString(R.string.understand_app_motivation, VOTES_TO_MAIN_LIST_THRESHOLD)
-            }
-
-            setToolbar()
-            setMotivationTextView()
+    override fun setViews() = with(mPresenterActivity) {
+        fun setToolbar() {
+            val actionBar = information_toolbar
+            setSupportActionBar(actionBar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowTitleEnabled(true)
         }
 
+        fun setMotivationTextView(){
+            app_motivation_text_view.text = mPresenterActivity.getString(R.string.understand_app_motivation, VOTES_TO_MAIN_LIST_THRESHOLD)
+        }
+
+        setToolbar()
+        setMotivationTextView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) {

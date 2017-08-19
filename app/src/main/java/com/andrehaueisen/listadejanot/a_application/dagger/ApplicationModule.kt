@@ -12,17 +12,14 @@ import dagger.Provides
  * Created by andre on 5/3/2017.
  */
 @Module
-class ApplicationModule(val mDatabaseReference: DatabaseReference, val mFirebaseAuth: FirebaseAuth) {
+class ApplicationModule(private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth) {
 
     @ApplicationScope
     @Provides
-    fun provideFirebaseRepository() : FirebaseRepository {
-        return FirebaseRepository(mDatabaseReference)
-    }
+    fun provideFirebaseRepository() : FirebaseRepository = FirebaseRepository(mDatabaseReference)
 
     @ApplicationScope
     @Provides
-    fun provideFirebaseAuthenticator(context: Context) : FirebaseAuthenticator {
-        return FirebaseAuthenticator(context, mDatabaseReference, mFirebaseAuth)
-    }
+    fun provideFirebaseAuthenticator(context: Context) : FirebaseAuthenticator =
+            FirebaseAuthenticator(context, mDatabaseReference, mFirebaseAuth)
 }

@@ -12,17 +12,13 @@ import dagger.Provides
  */
 
 @Module
-class MainListModule(val loaderManager: LoaderManager){
+class MainListModule(private val loaderManager: LoaderManager){
 
     @MainListScope
     @Provides
-    fun provideLoaderManager() : LoaderManager{
-        return loaderManager
-    }
+    fun provideLoaderManager() : LoaderManager = loaderManager
 
     @MainListScope
     @Provides
-    fun provideMainListModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository) : MainListModel {
-        return MainListModel(context, loaderManager, firebaseRepository)
-    }
+    fun provideMainListModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository) : MainListModel = MainListModel(context, loaderManager, firebaseRepository)
 }

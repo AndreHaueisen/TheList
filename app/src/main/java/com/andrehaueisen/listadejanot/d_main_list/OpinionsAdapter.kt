@@ -52,9 +52,7 @@ class OpinionsAdapter(val activity: Activity, opinionsMap: HashMap<String, Strin
         holder?.onBindView(position)
     }
 
-    override fun getItemCount(): Int {
-        return opinions.size
-    }
+    override fun getItemCount(): Int = opinions.size
 
     inner class OpinionViewHolder(view: View): RecyclerView.ViewHolder(view){
 

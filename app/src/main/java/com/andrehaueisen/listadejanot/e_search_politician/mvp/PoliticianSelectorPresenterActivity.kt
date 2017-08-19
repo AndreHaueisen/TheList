@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
 
-    val ACTIVITY_REQUEST_CODE = 1
+    private val ACTIVITY_REQUEST_CODE = 1
 
     private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
 
@@ -111,13 +111,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         super.onNewIntent(intent)
     }
 
-    override fun subscribeToPoliticianSelectorModel() {
-        mSelectorModel.loadSearchablePoliticiansList()
-                .firstElement()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mMaybeListObserver)
-    }
+    override fun subscribeToPoliticianSelectorModel() = mSelectorModel.loadSearchablePoliticiansList()
+            .firstElement()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(mMaybeListObserver)
 
     private val mMaybeListObserver = object : MaybeObserver<ArrayList<Politician>> {
 
@@ -140,9 +138,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         }
 
-        override fun onComplete() {
-
-        }
+        override fun onComplete() = Unit
 
         override fun onError(error: Throwable) {
             Log.e(LOG_TAG, error.message)
@@ -173,9 +169,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView?.notifyPoliticianReady()
         }
 
-        override fun onComplete() {
-
-        }
+        override fun onComplete() = Unit
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -196,24 +190,20 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         super.onSaveInstanceState(outState)
     }
 
-    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) {
-        if (mFirebaseAuthenticator.isUserLoggedIn()) {
-            mSinglePoliticianModel.updatePoliticianVote(politician, view)
-        } else {
-            startNewActivity(LoginActivity::class.java)
-            finish()
-        }
+    override fun updatePoliticianVote(politician: Politician, view: PoliticianSelectorMvpContract.View) = if (mFirebaseAuthenticator.isUserLoggedIn()) {
+        mSinglePoliticianModel.updatePoliticianVote(politician, view)
+    } else {
+        startNewActivity(LoginActivity::class.java)
+        finish()
     }
 
-    override fun showUserVoteListIfLogged() {
-        if (mFirebaseAuthenticator.isUserLoggedIn()) {
-            val intent = Intent(this, UserVoteListPresenterActivity::class.java)
-            startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
+    override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
+        val intent = Intent(this, UserVoteListPresenterActivity::class.java)
+        startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
 
-        } else {
-            startNewActivity(LoginActivity::class.java)
-            finish()
-        }
+    } else {
+        startNewActivity(LoginActivity::class.java)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

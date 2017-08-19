@@ -26,9 +26,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     private var mIsSortedByName = true
 
     companion object NewInstance {
-        fun newInstance(): MainListGovernadoresView {
-            return MainListGovernadoresView()
-        }
+        fun newInstance(): MainListGovernadoresView = MainListGovernadoresView()
     }
 
     private lateinit var mGovernadoresRecyclerView: RecyclerView
@@ -116,7 +114,5 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
         super.onSaveInstanceState(outState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
+    override fun onDestroy() = super.onDestroy()
 }

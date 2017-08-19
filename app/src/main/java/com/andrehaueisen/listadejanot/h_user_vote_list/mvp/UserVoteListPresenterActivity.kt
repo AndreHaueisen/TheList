@@ -21,7 +21,7 @@ import javax.inject.Inject
 /**
  * Created by andre on 6/20/2017.
  */
-class UserVoteListPresenterActivity: AppCompatActivity(), UserVoteListMvpContract.Presenter {
+class UserVoteListPresenterActivity: AppCompatActivity() {
 
     @Inject
     lateinit var mModel: UserVoteListModel
@@ -54,25 +54,19 @@ class UserVoteListPresenterActivity: AppCompatActivity(), UserVoteListMvpContrac
         }
     }
 
-    fun subscribeToUserVotesList() {
-        mModel.loadUserVotesList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mUserVoteListObserver)
-    }
+    private fun subscribeToUserVotesList() = mModel.loadUserVotesList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(mUserVoteListObserver)
 
-    val mUserVoteListObserver = object: Observer<ArrayList<Politician>>{
+    private val mUserVoteListObserver = object: Observer<ArrayList<Politician>>{
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
 
-        override fun onComplete() {
+        override fun onComplete() = Unit
 
-        }
-
-        override fun onError(e: Throwable) {
-
-        }
+        override fun onError(e: Throwable) = Unit
 
         override fun onNext(userVoteList: ArrayList<Politician>) {
             mUserVotesList = userVoteList

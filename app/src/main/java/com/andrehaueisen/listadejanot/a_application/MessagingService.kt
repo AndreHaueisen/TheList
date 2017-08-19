@@ -1,6 +1,7 @@
 package com.andrehaueisen.listadejanot.a_application
 
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -9,13 +10,16 @@ import android.graphics.Color
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.utilities.INTENT_POLITICIAN_NAME
+import com.andrehaueisen.listadejanot.utilities.NEW_POLITICIAN_CHANNEL
+import com.andrehaueisen.listadejanot.utilities.NOTIFICATION_CHANNEL_ID
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+
 
 /**
  * Created by andre on 7/17/2017.
  */
-class MessagingService: FirebaseMessagingService() {
+class MessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -33,8 +37,9 @@ class MessagingService: FirebaseMessagingService() {
         val GREEN = 0
         val BLUE = 0
 
+        val notificationBuilder = getNotificationBuilder()
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        val notificationBuilder = Notification.Builder(this)
+
         notificationBuilder.setSmallIcon(R.drawable.ic_broom_24dp)
         notificationBuilder.setColor(Color.argb(1, RED, GREEN, BLUE))
         notificationBuilder.setContentTitle(contentTitle)
@@ -44,5 +49,48 @@ class MessagingService: FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
+    }
+
+    private fun getNotificationBuilder(): Notification.Builder = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (!channelExists()) {
+            createNotificationChannel()
+        }
+        Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
+
+    } else {
+        Notification.Builder(this)
+    }
+
+    private fun channelExists(): Boolean {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID)
+
+            return channel != null
+        }
+
+        return false
+    }
+
+    private fun createNotificationChannel() {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            val channelId = NOTIFICATION_CHANNEL_ID
+            val channelName = NEW_POLITICIAN_CHANNEL
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val notificationChannel = NotificationChannel(channelId, channelName, importance)
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.setShowBadge(true)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
     }
 }

@@ -54,13 +54,9 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         mPresenterActivity.politicians_pager_adapter.adapter = PoliticiansPagesAdapter(mPresenterActivity.supportFragmentManager)
         mPresenterActivity.politicians_pager_adapter.offscreenPageLimit = 2
         mPresenterActivity.politicians_pager_adapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
+            override fun onPageScrollStateChanged(state: Int) = Unit
 
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
             override fun onPageSelected(position: Int) {
                 when (position) {
@@ -84,37 +80,33 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         }
     }
 
-    private fun setBottomNavigationView() {
-        mPresenterActivity.navigation.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
+    private fun setBottomNavigationView() = mPresenterActivity.navigation.setOnNavigationItemSelectedListener { menuItem ->
+        when (menuItem.itemId) {
 
-                R.id.navigation_senadores -> {
-                    mPresenterActivity.politicians_pager_adapter.setCurrentItem(0, true)
-                    mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_senadores_title)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.navigation_deputados -> {
-                    mPresenterActivity.politicians_pager_adapter.setCurrentItem(1, true)
-                    mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_deputados_title)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.navigation_governadores ->{
-                    mPresenterActivity.politicians_pager_adapter.setCurrentItem(2, true)
-                    mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_governadores_title)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                else -> false
+            R.id.navigation_senadores -> {
+                mPresenterActivity.politicians_pager_adapter.setCurrentItem(0, true)
+                mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_senadores_title)
+                return@setOnNavigationItemSelectedListener true
             }
 
+            R.id.navigation_deputados -> {
+                mPresenterActivity.politicians_pager_adapter.setCurrentItem(1, true)
+                mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_deputados_title)
+                return@setOnNavigationItemSelectedListener true
+            }
+
+            R.id.navigation_governadores ->{
+                mPresenterActivity.politicians_pager_adapter.setCurrentItem(2, true)
+                mPresenterActivity.toolbar_title.text = mPresenterActivity.getString(R.string.banned_governadores_title)
+                return@setOnNavigationItemSelectedListener true
+            }
+
+            else -> false
         }
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?) {
-        mPresenterActivity.menuInflater.inflate(R.menu.menu_main_list, menu)
-    }
+    override fun onCreateOptionsMenu(menu: Menu?) = mPresenterActivity.menuInflater.inflate(R.menu.menu_main_list, menu)
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 

@@ -8,12 +8,10 @@ import dagger.Provides
  * Created by andre on 4/15/2017.
  */
 @Module
-class ContextModule(val mContext: Context) {
+class ContextModule(private val mContext: Context) {
 
     @ApplicationScope
     @Provides
-    fun provideContext() : Context{
-        return mContext
-    }
+    fun provideContext() : Context = mContext
 
 }

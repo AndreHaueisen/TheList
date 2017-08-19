@@ -52,30 +52,33 @@
 
                 <TextView
                     android:id="@+id/post_text_view"
-                    style="@style/BigRobotoBlackTextStyle"
+                    style="@style/LatoBoldTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textSize="32sp"
                     app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
                     app:layout_constraintTop_toTopOf="@+id/politician_image_view"
                     tools:text="SENADOR"/>
 
                 <TextView
                     android:id="@+id/name_text_view"
-                    style="@style/RobotoBlackTextStyle"
+                    style="@style/LatoRegularTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:textSize="22sp"
                     app:layout_constraintLeft_toLeftOf="@+id/post_text_view"
                     app:layout_constraintTop_toBottomOf="@+id/post_text_view"
                     tools:text="Aecio Neves"/>
 
                 <TextView
                     android:id="@+id/email_text_view"
-                    style="@style/RobotoRegularTextStyle"
+                    style="@style/LatoLightTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:textSize="20sp"
                     app:layout_constraintLeft_toLeftOf="@+id/name_text_view"
                     app:layout_constraintTop_toBottomOf="@+id/name_text_view"
                     tools:text="asdasfd@gmail.com"/>
@@ -103,7 +106,7 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/transition_badge_background"
                     android:elevation="2dp"
-                    android:padding="6dp"
+                    android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
                     app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"
                     tools:ignore="ContentDescription"/>
@@ -113,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/button_neutral"
                     android:contentDescription="@string/share"
                     android:padding="16dp"
                     android:src="@drawable/ic_share_24dp"
@@ -126,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/button_neutral"
                     android:contentDescription="@string/search_on_web"
                     android:padding="16dp"
                     android:src="@drawable/ic_search_24dp"
@@ -135,7 +138,7 @@
 
                 <TextView
                     android:id="@+id/missing_votes_text_view"
-                    style="@style/RobotoRegularTextStyle"
+                    style="@style/LatoRegularTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -143,7 +146,7 @@
                     android:maxLines="3"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"
+                    android:textSize="32sp"
                     app:layout_constraintBottom_toTopOf="@+id/search_on_web_button"
                     app:layout_constraintLeft_toRightOf="@+id/politician_image_view"
                     app:layout_constraintRight_toRightOf="parent"
@@ -152,22 +155,22 @@
 
                 <TextView
                     android:id="@+id/vote_title_text_view"
-                    style="@style/BigRobotoBlackTextStyle"
+                    style="@style/LatoBoldTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/votes_title"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     app:layout_constraintBottom_toBottomOf="@+id/votes_number_text_view"
                     app:layout_constraintRight_toLeftOf="@+id/votes_number_text_view"
                     app:layout_constraintTop_toTopOf="@+id/votes_number_text_view"/>
 
                 <TextView
                     android:id="@+id/votes_number_text_view"
-                    style="@style/BigRobotoBlackTextStyle"
+                    style="@style/LatoBoldTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="16dp"
                     android:textSize="22sp"
                     app:layout_constraintRight_toRightOf="parent"
@@ -176,9 +179,9 @@
 
                 <ToggleButton
                     android:id="@+id/add_to_vote_count_toggle_button"
-                    style="@style/ButtonStyle"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
+                    style="@style/ButtonBorderlessStyle"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:textOff="@string/vote_condemn"
                     android:textOn="@string/vote_absolve"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -186,21 +189,21 @@
 
                 <Button
                     android:id="@+id/opinions_button"
-                    style="@style/ButtonStyle"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
+                    style="@style/ButtonBorderlessStyle"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="0dp"
                     android:text="@string/opinions"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/add_to_vote_count_toggle_button"/>
 
                 <TextView
                     android:id="@+id/plus_one_text_view"
-                    style="@style/BigRobotoBlackTextStyle"
+                    style="@style/LatoBoldTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingEnd="16dp"
                     android:text="@string/plus_one"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     app:layout_constraintBottom_toBottomOf="@+id/votes_number_text_view"
                     app:layout_constraintLeft_toLeftOf="@+id/votes_number_text_view"
                     app:layout_constraintRight_toRightOf="parent"
@@ -213,21 +216,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                android:background="@color/colorPrimaryDark">
+                android:background="@color/colorSecondaryDark">
 
                 <AutoCompleteTextView
                     android:id="@+id/auto_complete_text_view"
+                    style="@style/Autocomplete"
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:background="@null"
                     android:completionThreshold="1"
                     android:dropDownAnchor="@id/select_politician_toolbar"
-                    android:dropDownSelector="@color/colorAccentLight"
                     android:hint="@string/type_politician_name_hint"
                     android:padding="16dp"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
-                    android:theme="@style/Autocomplete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/delete_text_image_button"

@@ -12,7 +12,7 @@ import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListSenadoresView
  */
 class PoliticiansPagesAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
-    val mFragmentsList: List<Fragment>
+    private val mFragmentsList: List<Fragment>
 
     init {
         val senadoresFragment = MainListSenadoresView.newInstance()
@@ -30,11 +30,8 @@ class PoliticiansPagesAdapter(fragmentManager: FragmentManager) : FragmentPagerA
         })
     }
 
-    override fun getItem(position: Int): Fragment {
-        return mFragmentsList[position]
-    }
+    override fun getItem(position: Int): Fragment = mFragmentsList[position]
 
-    override fun getCount(): Int {
-        return mFragmentsList.size
-    }
+    override fun getCount(): Int = mFragmentsList.size
+
 }
