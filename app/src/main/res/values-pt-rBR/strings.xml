@@ -22,6 +22,7 @@
     <string name="senador_absolved">Senador confiável</string>
     <string name="deputado_absolved">Deputado confiável</string>
     <string name="governador_absolved">Governador confiável</string>
+    <string name="empty_main_list">Ninguém na lista principal ainda. Clique na lupa para votar</string>
 
     <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
     <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>

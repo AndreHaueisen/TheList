@@ -132,7 +132,7 @@
                     android:backgroundTint="@color/button_neutral"
                     android:contentDescription="@string/search_on_web"
                     android:padding="16dp"
-                    android:src="@drawable/ic_search_24dp"
+                    android:src="@drawable/ic_open_in_new_24dp"
                     app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
                     app:layout_constraintLeft_toRightOf="@+id/politician_image_view"/>
 

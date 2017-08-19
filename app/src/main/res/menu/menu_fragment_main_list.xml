@@ -6,7 +6,7 @@
         android:orderInCategory="2"
         android:id="@+id/action_sort_list"
         android:title="@string/sort_list"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sort_24dp"/>
 
 </menu>

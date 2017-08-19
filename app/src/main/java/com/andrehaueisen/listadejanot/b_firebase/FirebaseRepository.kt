@@ -85,7 +85,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
-                    if (senador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD && !DEFAULT_POLITICIANS_MAIN_LIST.contains(senador1.email)) {
+                    if (senador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }
@@ -207,7 +207,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
-                    if (deputado1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD && !DEFAULT_POLITICIANS_MAIN_LIST.contains(deputado1.email)) {
+                    if (deputado1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }
@@ -330,7 +330,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
-                    if (governador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD && !DEFAULT_POLITICIANS_MAIN_LIST.contains(governador1.email)) {
+                    if (governador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }

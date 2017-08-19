@@ -113,7 +113,7 @@
             android:contentDescription="@string/search_on_web"
             android:elevation="1dp"
             android:padding="16dp"
-            android:src="@drawable/ic_search_24dp"
+            android:src="@drawable/ic_open_in_new_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/politician_image_view"
             app:layout_constraintLeft_toLeftOf="@+id/politician_image_view"/>
 

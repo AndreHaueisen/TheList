@@ -1,18 +1,18 @@
 package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.showSnackbar
+import com.andrehaueisen.listadejanot.utilities.showToast
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -30,10 +30,12 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     }
 
     private lateinit var mDeputadosRecyclerView: RecyclerView
+    private lateinit var mEmptyListTextView: TextView
     private val mDeputadosList = ArrayList<Politician>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.d_fragment_main_list_deputados, container, false)
+        mEmptyListTextView = view.findViewById(R.id.empty_main_list_text_view)
         setHasOptionsMenu(true)
         setRecyclerView(view)
 
@@ -53,8 +55,22 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
         if (mDeputadosList.isNotEmpty()) mDeputadosList.clear()
 
-        mDeputadosList.addAll(deputados)
-        mDeputadosRecyclerView.adapter.notifyDataSetChanged()
+        changeVisibilityStatus(deputados)
+
+        if(deputados.isNotEmpty()) {
+            mDeputadosList.addAll(deputados)
+            mDeputadosRecyclerView.adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun changeVisibilityStatus(data: ArrayList<Politician>){
+        if(data.isEmpty()){
+            mEmptyListTextView.visibility = View.VISIBLE
+            mDeputadosRecyclerView.visibility = View.GONE
+        }else{
+            mEmptyListTextView.visibility = View.GONE
+            mDeputadosRecyclerView.visibility = View.VISIBLE
+        }
     }
 
     override fun sortDeputadosList() {
@@ -73,7 +89,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
         Observable.just(mDeputadosList)
                 .doOnComplete {
                     mDeputadosRecyclerView.adapter.notifyDataSetChanged()
-                    mDeputadosRecyclerView.showSnackbar(message, Snackbar.LENGTH_SHORT)
+                    context.showToast(message)
                 }
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -102,6 +118,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             mDeputadosList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_DEPUTADOS))
+            changeVisibilityStatus(mDeputadosList)
             mDeputadosRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mDeputadosRecyclerView.adapter.notifyDataSetChanged()
             savedInstanceState.clear()

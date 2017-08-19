@@ -57,13 +57,18 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
     private val mFinalMainListGovernadoresPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private val mOnListsReadyPublisher: PublishSubject<Boolean> = PublishSubject.create()
-    private val mOnListReadyObserver = object: Observer<Boolean>{
+    private val mOnListReadyObserver = object : Observer<Boolean> {
         override fun onNext(isListSearchComplete: Boolean) {
             if (isListSearchComplete) {
                 mListCounter++
             }
-            if (mListCounter != 0 && mListCounter % 3 == 0) {
+
+            if (mListCounter != 0 && mListCounter % 3 == 0 && !areAllMainListsEmpty()) {
                 initiateDataLoad()
+            }else{
+                mFinalMainListDeputadosPublisher.onNext(mCompleteDeputadosMainList)
+                mFinalMainListSenadoresPublisher.onNext(mCompleteSenadoresMainList)
+                mFinalMainListGovernadoresPublisher.onNext(mCompleteGovernadoresMainList)
             }
         }
 
@@ -75,6 +80,8 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
 
         override fun onComplete() = Unit
     }
+
+    private fun areAllMainListsEmpty(): Boolean = mGovernadoresMainList.isEmpty() && mSenadoresMainList.isEmpty() && mDeputadosMainList.isEmpty()
 
     private var mListCounter = 0
 
@@ -112,6 +119,7 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
                 override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
                     mSenadoresMainList = searchablePoliticiansList
                     mOnListsReadyPublisher.onNext(true)
+
                 }
 
                 override fun onComplete() = Unit
@@ -193,9 +201,9 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
         if (data != null && data.count != 0) {
             data.moveToFirst()
 
-            if(mCompleteDeputadosMainList.isNotEmpty()) mCompleteDeputadosMainList.clear()
-            if(mCompleteSenadoresMainList.isNotEmpty()) mCompleteSenadoresMainList.clear()
-            if(mCompleteGovernadoresMainList.isNotEmpty()) mCompleteGovernadoresMainList.clear()
+            if (mCompleteDeputadosMainList.isNotEmpty()) mCompleteDeputadosMainList.clear()
+            if (mCompleteSenadoresMainList.isNotEmpty()) mCompleteSenadoresMainList.clear()
+            if (mCompleteGovernadoresMainList.isNotEmpty()) mCompleteGovernadoresMainList.clear()
 
             for (i in 0 until data.count) {
                 val politicianPost = data.getString(COLUMNS_INDEX_POST)
@@ -203,7 +211,7 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
                 val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
                 val politicianImage = data.getBlob(COLUMNS_INDEX_IMAGE)
 
-                when(politicianPost){
+                when (politicianPost) {
                     Politician.Post.DEPUTADO.name ->
                         mergeFirebaseDeputadoToDatabase(Politician.Post.DEPUTADO, politicianName, politicianEmail, politicianImage)
 
@@ -264,11 +272,11 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
                 }
     }
 
-    private fun mergeFirebaseGovernadorToDatabase(governadorPost: Politician.Post, governadorName: String, governadorEmail: String, governadorImage: ByteArray){
+    private fun mergeFirebaseGovernadorToDatabase(governadorPost: Politician.Post, governadorName: String, governadorEmail: String, governadorImage: ByteArray) {
         mGovernadoresMainList
                 .find { mainListGovernador -> mainListGovernador.name == governadorName }
                 .also { mainListGovernador ->
-                    if(mainListGovernador != null){
+                    if (mainListGovernador != null) {
                         mainListGovernador.post = governadorPost
                         mainListGovernador.email = governadorEmail
                         mainListGovernador.image = governadorImage

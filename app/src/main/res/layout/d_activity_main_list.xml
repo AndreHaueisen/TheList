@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     android:id="@+id/parent_coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null"
+    android:background="@drawable/shape_login_background"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -39,13 +39,26 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:background="@drawable/shape_login_background"
         android:id="@+id/politicians_pager_adapter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="?android:attr/actionBarSize"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
+        app:layout_constraintBottom_toTopOf="@+id/navigation">
     </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/search_politician_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_search_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -56,6 +69,9 @@
         app:elevation="4dp"
         app:itemIconTint="@drawable/selector_bottom_navigation"
         app:itemTextColor="@drawable/selector_bottom_navigation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom_navigation"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

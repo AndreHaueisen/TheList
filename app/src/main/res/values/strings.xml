@@ -19,6 +19,7 @@
 
     <string name="refreshing_votes_title">Refreshing</string>
     <string name="votes_title">Votes</string>
+    <string name="empty_main_list">No one in the main list yet. Try the search icon to vote</string>
 
     <string name="font_roboto_black" translatable="false">sans-serif-black</string>
     <string name="font_roboto_regular" translatable="false">sans-serif</string>

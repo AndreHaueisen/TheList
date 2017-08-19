@@ -36,10 +36,11 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
         setToolbar()
         setPagerAdapter()
         setBottomNavigationView()
+        setSearchFAB()
 
         with(mPresenterActivity) {
             if (!isConnectedToInternet()) {
-                parent_coordinator_layout.showSnackbar(getString(R.string.no_network))
+                mPresenterActivity.showToast((getString(R.string.no_network)))
             }
         }
     }
@@ -106,42 +107,45 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
     }
 
+    private fun setSearchFAB(){
+        mPresenterActivity.search_politician_fab.setOnClickListener {
+            val intent = Intent(mPresenterActivity, PoliticianSelectorPresenterActivity::class.java)
+
+            mMainListDeputados?.let {
+                val noPicDeputadosList = ArrayList<Politician>()
+                it.forEach {
+                    val deputado = Politician(it.post, it.name, it.email)
+                    noPicDeputadosList.add(deputado)
+                }
+                intent.putParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
+            }
+
+            mMainListSenadores?.let {
+                val noPicSenadoresList = ArrayList<Politician>()
+                it.forEach {
+                    val senador = Politician(it.post, it.name, it.email)
+                    noPicSenadoresList.add(senador)
+                }
+                intent.putParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
+            }
+
+            mMainListGovernadores?.let {
+                val noPicGovernadoresList = ArrayList<Politician>()
+                it.forEach {
+                    val governador = Politician(it.post, it.name, it.email)
+                    noPicGovernadoresList.add(governador)
+                }
+                intent.putParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST, noPicGovernadoresList)
+            }
+            mPresenterActivity.startActivity(intent)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?) = mPresenterActivity.menuInflater.inflate(R.menu.menu_main_list, menu)
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
-            R.id.action_add_politician_to_main_list -> {
-                val intent = Intent(mPresenterActivity, PoliticianSelectorPresenterActivity::class.java)
-
-                mMainListDeputados?.let {
-                    val noPicDeputadosList = ArrayList<Politician>()
-                    it.forEach {
-                        val deputado = Politician(it.post, it.name, it.email)
-                        noPicDeputadosList.add(deputado)
-                    }
-                    intent.putParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
-                }
-
-                mMainListSenadores?.let {
-                    val noPicSenadoresList = ArrayList<Politician>()
-                    it.forEach {
-                        val senador = Politician(it.post, it.name, it.email)
-                        noPicSenadoresList.add(senador)
-                    }
-                    intent.putParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
-                }
-
-                mMainListGovernadores?.let {
-                    val noPicGovernadoresList = ArrayList<Politician>()
-                     it.forEach {
-                         val governador = Politician(it.post, it.name, it.email)
-                         noPicGovernadoresList.add(governador)
-                     }
-                     intent.putParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST, noPicGovernadoresList)
-                }
-                mPresenterActivity.startActivity(intent)
-            }
 
             R.id.action_app_info -> {
                 mPresenterActivity.startNewActivity(InformationPresenterActivity::class.java)

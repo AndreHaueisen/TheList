@@ -1,18 +1,18 @@
 package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_GOVERNADORES
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.showSnackbar
+import com.andrehaueisen.listadejanot.utilities.showToast
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -30,11 +30,14 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     }
 
     private lateinit var mGovernadoresRecyclerView: RecyclerView
+    private lateinit var mEmptyListTextView: TextView
+
     private val mGovernadorList = ArrayList<Politician>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.d_fragment_main_list_governadores, container, false)
+        mEmptyListTextView = view.findViewById(R.id.empty_main_list_text_view)
         setHasOptionsMenu(true)
         setRecyclerView(view)
 
@@ -53,8 +56,23 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     override fun notifyGovernadoresNewList(governadores: ArrayList<Politician>) {
         if (mGovernadorList.isNotEmpty()) mGovernadorList.clear()
 
-        mGovernadorList.addAll(governadores)
-        mGovernadoresRecyclerView.adapter.notifyDataSetChanged()
+        changeVisibilityStatus(governadores)
+
+        if(governadores.isNotEmpty()) {
+
+            mGovernadorList.addAll(governadores)
+            mGovernadoresRecyclerView.adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun changeVisibilityStatus(data: ArrayList<Politician>){
+        if(data.isEmpty()){
+            mEmptyListTextView.visibility = View.VISIBLE
+            mGovernadoresRecyclerView.visibility = View.GONE
+        }else{
+            mEmptyListTextView.visibility = View.GONE
+            mGovernadoresRecyclerView.visibility = View.VISIBLE
+        }
     }
 
     override fun sortGovernadoresList() {
@@ -73,7 +91,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
         Observable.just(mGovernadorList)
                 .doOnComplete {
                     mGovernadoresRecyclerView.adapter.notifyDataSetChanged()
-                    mGovernadoresRecyclerView.showSnackbar(message, Snackbar.LENGTH_SHORT)
+                    context.showToast(message)
                 }
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -101,6 +119,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             mGovernadorList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_GOVERNADORES))
+            changeVisibilityStatus(mGovernadorList)
             mGovernadoresRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mGovernadoresRecyclerView.adapter.notifyDataSetChanged()
             savedInstanceState.clear()
