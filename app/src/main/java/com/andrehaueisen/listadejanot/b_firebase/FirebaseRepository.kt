@@ -754,7 +754,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
         })
     }
 
-    private fun saveSenadoresOnPreList(senadores: ArrayList<Politician>) {
+    fun saveSenadoresOnPreList(senadores: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
@@ -779,7 +779,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
         database.updateChildren(mapSenadores, { _, _ -> })
     }
 
-    private fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {
+    fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
@@ -793,5 +793,20 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
             }
         })
 
+    }
+
+    fun saveGovernadoresOnPreList(governadores: ArrayList<Politician>){
+        val database = mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST)
+
+        val mapSenadores = mutableMapOf<String, Any>()
+        governadores.filter { it.post == Politician.Post.GOVERNADOR || it.post == Politician.Post.GOVERNADORA}
+                .forEach { governador -> mapSenadores.put("/${governador.email.encodeEmail()}/", governador.toSimpleMap(true)) }
+
+        database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
+
+            override fun onComplete(error: DatabaseError?, reference: DatabaseReference?) {
+                Log.e(LOG_TAG, error.toString())
+            }
+        })
     }
 }
