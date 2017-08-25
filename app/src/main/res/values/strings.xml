@@ -110,6 +110,14 @@
         <item quantity="other">Total: %1$d votes</item>
     </plurals>
 
+    <!-- i_opinions strings-->
+    <string name="delete_opinion_dialog_title">Delete current opinion?</string>
+    <string name="opinion_dialog_button_positive">Confirm</string>
+    <string name="opinion_dialog_button_negative">Cancel</string>
+
+    <string name="replace_opinion_dialog_title">Replace current opinion?</string>
+    <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
+
     <!--Sync strings-->
     <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>
     <string name="sync_account_type" translatable="false">com.andrehaueisen.listadejanot.account</string>
@@ -121,6 +129,15 @@
     <string name="description_badge_thief_politician">Thief badge</string>
     <string name="description_send_opinion_button">Send opinion</string>
     <string name="description_delete_opinion_button">Delete opinion</string>
+
+    <!--Transition strings-->
+    <string name="transition_image" translatable="false">image_transition</string>
+    <string name="transition_name" translatable="false">name_transition</string>
+    <string name="transition_toolbar" translatable="false">toolbar_transition</string>
+    <string name="transition_search" translatable="false">search_transition</string>
+
+    <!--Transactions strings-->
+    <string name="fragment_opinions" translatable="false">fragment_opinions</string>
 
 
 </resources>

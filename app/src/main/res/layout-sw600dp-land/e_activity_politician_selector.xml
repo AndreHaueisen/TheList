@@ -16,6 +16,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
+        android:transitionName="@string/transition_toolbar"
         android:theme="@style/AppTheme.AppBarOverlay">
 
     </android.support.v7.widget.Toolbar>
@@ -68,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:textSize="22sp"
+                    android:transitionName="@string/transition_name"
                     app:layout_constraintLeft_toLeftOf="@+id/post_text_view"
                     app:layout_constraintTop_toBottomOf="@+id/post_text_view"
                     tools:text="Aecio Neves"/>
@@ -93,6 +95,7 @@
                     android:layout_marginTop="16dp"
                     android:elevation="2dp"
                     android:scaleType="centerCrop"
+                    android:transitionName="@string/transition_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -224,7 +227,6 @@
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:background="@null"
-                    android:completionThreshold="1"
                     android:dropDownAnchor="@id/select_politician_toolbar"
                     android:hint="@string/type_politician_name_hint"
                     android:padding="16dp"

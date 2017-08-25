@@ -1,6 +1,7 @@
 package com.andrehaueisen.listadejanot.d_main_list.mvp
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,7 +13,7 @@ import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_DEPUTADOS
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.showToast
+import com.andrehaueisen.listadejanot.utilities.showSnackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -89,7 +90,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
         Observable.just(mDeputadosList)
                 .doOnComplete {
                     mDeputadosRecyclerView.adapter.notifyDataSetChanged()
-                    context.showToast(message)
+                    mDeputadosRecyclerView.showSnackbar(message, Snackbar.LENGTH_SHORT)
                 }
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

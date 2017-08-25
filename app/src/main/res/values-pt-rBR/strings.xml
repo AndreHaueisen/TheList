@@ -47,7 +47,7 @@
     <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Parlamentares</string>
     <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
-    <string name="type_politician_name_hint">Nome do parlamentar</string>
+    <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
     <string name="share_boarding_message">%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
@@ -92,6 +92,14 @@
         <item quantity="one">Total: %1$d voto</item>
         <item quantity="other">Total: %1$d votos</item>
     </plurals>
+
+    <!-- i_opinions strings-->
+    <string name="delete_opinion_dialog_title">Excluir opinião atual?</string>
+    <string name="opinion_dialog_button_positive">Confirmar</string>
+    <string name="opinion_dialog_button_negative">Cancelar</string>
+
+    <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>
+    <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político. Confirmar substituição?</string>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>

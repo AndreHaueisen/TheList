@@ -3,7 +3,6 @@ package com.andrehaueisen.listadejanot.e_search_politician.mvp
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.app.FragmentTransaction
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -14,6 +13,7 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
@@ -27,8 +27,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.d_main_list.OpinionsDialog
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
+import com.andrehaueisen.listadejanot.i_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -204,7 +204,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             } else {
                 configureInitialAbsolveStatus(politician)
             }
-            setButtonsClickListener(politician, mFirebaseRepository)
+            setButtonsClickListener(politician)
 
             if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 setPoliticianImageClickListener()
@@ -316,7 +316,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
     }
 
-    private fun setButtonsClickListener(politician: Politician, firebaseRepository: FirebaseRepository) =
+    private fun setButtonsClickListener(politician: Politician) =
             with(mPresenterActivity) {
                 add_to_vote_count_toggle_button.setOnClickListener {
                     if (isConnectedToInternet()) {
@@ -330,23 +330,21 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 opinions_button.setOnClickListener {
 
-                    val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-                    val prev = fragmentManager.findFragmentByTag("dialog")
-                    if (prev != null) {
-                        fragmentTransaction.remove(prev)
-                    }
-                    fragmentTransaction.addToBackStack(null)
-
-                    val bundle = Bundle()
-                    bundle.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
-                    bundle.putString(BUNDLE_POLITICIAN_NAME, politician.name)
-                    bundle.putByteArray(BUNDLE_POLITICIAN_IMAGE, politician.image)
+                    val extras = Bundle()
+                    extras.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
+                    extras.putString(BUNDLE_POLITICIAN_NAME, politician.name)
+                    extras.putByteArray(BUNDLE_POLITICIAN_IMAGE, politician.image)
                     if (mFirebaseAuthenticator.getUserEmail() != null) {
-                        bundle.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
+                        extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                     }
 
-                    val dialogFragment = OpinionsDialog.newInstance(bundle, firebaseRepository)
-                    dialogFragment.show(fragmentTransaction, "dialog")
+                    val toolbarPair = android.support.v4.util.Pair<View, String>(select_politician_toolbar, getString(R.string.transition_toolbar))
+                    val imagePair = android.support.v4.util.Pair<View, String>(politician_image_view, getString(R.string.transition_image))
+                    val namePair = android.support.v4.util.Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
+
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbarPair, imagePair, namePair)
+
+                    startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
                 }
             }
 

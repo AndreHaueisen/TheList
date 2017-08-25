@@ -30,7 +30,7 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
                             AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
                             AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build(),
                             AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                    .setLogo(R.drawable.ic_launcher_big)
+                    .setLogo(R.drawable.ic_launcher)
                     .setTheme(R.style.LogInTheme)
                     .build(), REQUEST_CODE)
 

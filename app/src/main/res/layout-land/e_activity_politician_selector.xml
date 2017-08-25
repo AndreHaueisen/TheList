@@ -16,6 +16,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
+        android:transitionName="@string/transition_toolbar"
         android:theme="@style/AppTheme.AppBarOverlay">
     </android.support.v7.widget.Toolbar>
 
@@ -45,6 +46,7 @@
             android:id="@+id/name_text_view"
             style="@style/LatoRegularTextStyle"
             android:layout_width="0dp"
+            android:transitionName="@string/transition_name"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="18sp"
@@ -67,6 +69,7 @@
             android:id="@+id/politician_image_view"
             android:layout_width="180dp"
             android:layout_height="0dp"
+            android:transitionName="@string/transition_image"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
@@ -204,7 +207,6 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:background="@null"
-            android:completionThreshold="1"
             android:dropDownAnchor="@id/select_politician_toolbar"
             android:hint="@string/type_politician_name_hint"
             android:padding="8dp"

@@ -7,6 +7,7 @@
         <item name="colorControlActivated">@color/colorPrimaryLight</item>
         <item name="colorControlHighlight">@color/colorPrimaryLight</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowContentTransitions">true</item>
         <!--<item name="android:navigationBarColor">@color/colorPrimary</item>-->
     </style>
 
@@ -23,6 +24,7 @@
         <item name="android:dropDownSelector">@color/colorAccentDark</item>
         <item name="android:textColorHint">@color/colorSecondaryLight</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:completionThreshold">3</item>
     </style>
 
     <style name="ButtonStyle" parent="@android:style/Widget.Material.Button">

@@ -1,6 +1,5 @@
 package com.andrehaueisen.listadejanot.d_main_list.mvp
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.Menu
@@ -40,7 +39,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
         with(mPresenterActivity) {
             if (!isConnectedToInternet()) {
-                mPresenterActivity.showToast((getString(R.string.no_network)))
+                parent_coordinator_layout.showSnackbar(getString(R.string.no_network))
             }
         }
     }
@@ -108,36 +107,44 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
     }
 
     private fun setSearchFAB(){
-        mPresenterActivity.search_politician_fab.setOnClickListener {
-            val intent = Intent(mPresenterActivity, PoliticianSelectorPresenterActivity::class.java)
 
-            mMainListDeputados?.let {
-                val noPicDeputadosList = ArrayList<Politician>()
-                it.forEach {
-                    val deputado = Politician(it.post, it.name, it.email)
-                    noPicDeputadosList.add(deputado)
-                }
-                intent.putParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
-            }
+        with(mPresenterActivity) {
+            search_politician_fab.setOnClickListener { fab ->
+                val extras = Bundle()
 
-            mMainListSenadores?.let {
-                val noPicSenadoresList = ArrayList<Politician>()
-                it.forEach {
-                    val senador = Politician(it.post, it.name, it.email)
-                    noPicSenadoresList.add(senador)
+                mMainListDeputados?.let {
+                    val noPicDeputadosList = ArrayList<Politician>()
+                    it.forEach {
+                        val deputado = Politician(it.post, it.name, it.email)
+                        noPicDeputadosList.add(deputado)
+                    }
+                    extras.putParcelableArrayList(INTENT_DEPUTADOS_MAIN_LIST, noPicDeputadosList)
                 }
-                intent.putParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
-            }
 
-            mMainListGovernadores?.let {
-                val noPicGovernadoresList = ArrayList<Politician>()
-                it.forEach {
-                    val governador = Politician(it.post, it.name, it.email)
-                    noPicGovernadoresList.add(governador)
+                mMainListSenadores?.let {
+                    val noPicSenadoresList = ArrayList<Politician>()
+                    it.forEach {
+                        val senador = Politician(it.post, it.name, it.email)
+                        noPicSenadoresList.add(senador)
+                    }
+                    extras.putParcelableArrayList(INTENT_SENADORES_MAIN_LIST, noPicSenadoresList)
                 }
-                intent.putParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST, noPicGovernadoresList)
+
+                mMainListGovernadores?.let {
+                    val noPicGovernadoresList = ArrayList<Politician>()
+                    it.forEach {
+                        val governador = Politician(it.post, it.name, it.email)
+                        noPicGovernadoresList.add(governador)
+                    }
+                    extras.putParcelableArrayList(INTENT_GOVERNADORES_MAIN_LIST, noPicGovernadoresList)
+                }
+
+                //TODO check for a solution for the transition bug
+                /*val searchPair = Pair.create(search_politician_fab as View, getString(R.string.transition_search))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(mPresenterActivity, searchPair)*/
+
+                startNewActivity(PoliticianSelectorPresenterActivity::class.java, null, extras/*, options.toBundle()*/)
             }
-            mPresenterActivity.startActivity(intent)
         }
     }
 

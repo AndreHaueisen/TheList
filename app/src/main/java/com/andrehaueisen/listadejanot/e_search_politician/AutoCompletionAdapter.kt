@@ -60,7 +60,7 @@ class AutoCompletionAdapter(mContext: Context,
 
             val filteredConstraint = constraint?.toString()?.stripAccents()
             if (filteredConstraint != null) {
-                val filteredList = mOriginalPoliticianList.filter { it.name.stripAccents().startsWith(filteredConstraint, true) }
+                val filteredList = mOriginalPoliticianList.filter { it.name.stripAccents().contains(filteredConstraint, true) }
                 results.values = filteredList
                 results.count = filteredList.size
             }

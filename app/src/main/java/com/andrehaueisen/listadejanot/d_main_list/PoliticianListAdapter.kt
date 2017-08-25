@@ -3,13 +3,12 @@ package com.andrehaueisen.listadejanot.d_main_list
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.app.Activity
-import android.app.FragmentTransaction
 import android.app.SearchManager
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -27,6 +26,7 @@ import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListPresenterActivity
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
+import com.andrehaueisen.listadejanot.i_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
@@ -40,7 +40,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 /**
  * Created by andre on 4/24/2017.
  */
-class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<PoliticianListAdapter.PoliticianHolder>() {
+class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<PoliticianListAdapter.PoliticianHolder>() {
 
     private val mFirebaseRepository: FirebaseRepository
     private val mFirebaseAuthenticator: FirebaseAuthenticator
@@ -135,23 +135,15 @@ class PoliticianListAdapter(val activity: Activity, val politicianList: ArrayLis
 
             fun setOpinionsButtonClickListener() = mOpinionsButton.setOnClickListener {
 
-                val fragmentTransaction: FragmentTransaction = activity.fragmentManager.beginTransaction()
-                val prev = activity.fragmentManager.findFragmentByTag("dialog")
-                if (prev != null) {
-                    fragmentTransaction.remove(prev)
-                }
-                fragmentTransaction.addToBackStack(null)
-
-                val bundle = Bundle()
-                bundle.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
-                bundle.putString(BUNDLE_POLITICIAN_NAME, politician.name)
-                bundle.putByteArray(BUNDLE_POLITICIAN_IMAGE, politician.image)
+                val extras = Bundle()
+                extras.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
+                extras.putString(BUNDLE_POLITICIAN_NAME, politician.name)
+                extras.putByteArray(BUNDLE_POLITICIAN_IMAGE, politician.image)
                 if(mFirebaseAuthenticator.getUserEmail() != null){
-                    bundle.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
+                    extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                 }
 
-                val dialogFragment = OpinionsDialog.newInstance(bundle, mFirebaseRepository)
-                dialogFragment.show(fragmentTransaction, "dialog")
+                activity.startNewActivity(OpinionsActivity::class.java, null, extras)
             }
 
             fun setPoliticianImageViewClickListener() = mPoliticianImageView.setOnClickListener {

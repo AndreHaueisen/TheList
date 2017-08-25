@@ -5,18 +5,29 @@ import android.content.Context
 import android.content.Intent
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 
 
-fun <T: Activity> Context.startNewActivity(classToInit: Class<T>, flags: List<Int>? = null){
+fun <T: Activity> Context.startNewActivity(classToInit: Class<T>, flags: List<Int>? = null, extras: Bundle? = null, options: Bundle? = null){
+
     val intent = Intent(this, classToInit)
     flags?.let {
         flags.forEach { flag -> intent.flags = flag }
     }
-    this.startActivity(intent)
+
+    if(extras != null) {
+        intent.putExtras(extras)
+    }
+
+    if(options != null){
+        this. startActivity(intent, options)
+    }else {
+        this.startActivity(intent)
+    }
 }
 
 //Leave here for Kotlin study
