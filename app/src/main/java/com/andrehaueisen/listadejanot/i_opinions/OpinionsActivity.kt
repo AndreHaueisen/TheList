@@ -129,9 +129,7 @@ class OpinionsActivity : AppCompatActivity() {
 
     private fun setCurrentOpinion(){
         current_opinion_text_view.setOnClickListener{ opinionView ->
-            val opinionAlertDialog = AlertDialog.Builder(this)
-            opinionAlertDialog.setMessage((opinionView as TextView).text)
-            opinionAlertDialog.setNeutralButton(android.R.string.ok, {dialog, _ -> dialog.dismiss() })
+            val opinionAlertDialog = AlertDialog.Builder(this).createNeutralDialog(null, (opinionView as TextView).text.toString() )
             opinionAlertDialog.show()
         }
     }

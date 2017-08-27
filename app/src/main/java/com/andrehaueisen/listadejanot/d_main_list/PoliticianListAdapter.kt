@@ -7,19 +7,18 @@ import android.app.SearchManager
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.TransitionDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.ToggleButton
+import android.widget.*
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
@@ -90,7 +89,8 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
         private val mPoliticianImageView: ImageView = itemView.findViewById<ImageView>(R.id.politician_image_view)
         private val mPlusOneAnimationTextView: TextView = itemView.findViewById<TextView>(R.id.plus_one_text_view)
         private val mNameTextView: TextView = itemView.findViewById<TextView>(R.id.name_text_view)
-        private val mEmailTextView = itemView.findViewById<TextView>(R.id.email_text_view) as TextView
+        private val mSearchButton = itemView.findViewById<ImageButton>(R.id.search_on_web_button) as ImageButton
+        private val mEmailButton = itemView.findViewById<ImageButton>(R.id.email_button)
         private val mVotesNumberTextView: TextView = itemView.findViewById<TextView>(R.id.votes_number_text_view)
         private val mAnimatedBadgeImageView: ImageView = itemView.findViewById<ImageView>(R.id.badge_image_view)
         private val mOpinionsButton: Button = itemView.findViewById<Button>(R.id.opinion_button)
@@ -146,20 +146,49 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
                 activity.startNewActivity(OpinionsActivity::class.java, null, extras)
             }
 
-            fun setPoliticianImageViewClickListener() = mPoliticianImageView.setOnClickListener {
-                val intent = Intent(Intent.ACTION_WEB_SEARCH)
-                intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
-                activity.startActivity(intent)
+            fun setSearchButtonClickListener() = mSearchButton.setOnClickListener{
+                with(activity) {
+                    val intent = Intent(Intent.ACTION_WEB_SEARCH)
+                    intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
 
+                    if (intent.resolveActivity(packageManager) != null){
+                        startActivity(intent)
+                    }else{
+                        val alertDialog = AlertDialog.Builder(this)
+                                .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_browser_app))
+                        alertDialog.show()
+                    }
+
+                }
             }
+
+            fun setEmailButtonClickListener() = mEmailButton.setOnClickListener {
+
+                with(activity) {
+                    val intent = Intent(Intent.ACTION_SENDTO)
+
+                    intent.data = Uri.parse("mailto:")
+                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(politician.email))
+
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(Intent.createChooser(intent, getString(R.string.intent_email_chooser)))
+
+                    } else {
+                        val alertDialog = AlertDialog.Builder(this)
+                                .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_email_app))
+                        alertDialog.show()
+                    }
+                }
+            }
+
 
             setInitialVisualStatus(politician)
             setInitialDataStatus(politician)
 
             setVoteButtonClickListener()
             setOpinionsButtonClickListener()
-            setPoliticianImageViewClickListener()
-
+            setSearchButtonClickListener()
+            setEmailButtonClickListener()
         }
 
         private fun setInitialVisualStatus(politician: Politician) {
@@ -220,7 +249,6 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
             mPoliticianImageView.contentDescription = activity.getString(R.string.description_politician_image, politician.name)
             mNameTextView.text = politician.name
             mVotesNumberTextView.text = politician.votesNumber.toString()
-            mEmailTextView.text = politician.email
 
         }
 

@@ -60,8 +60,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val mPostTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
     private val mNameTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
     private val mNameTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mEmailTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mEmailTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
     private val mVoteTitleTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
     private val mVoteTitleTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
     private val mVoteNumberTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
@@ -211,6 +209,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             }
             setShareButtonClickListener(politician)
             setSearchOnWebButtonClickListener(politician)
+            setEmailButtonClickListener(politician)
         }
     }
 
@@ -241,7 +240,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             name_text_view.text = politician.name
             missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
-            email_text_view.text = politician.email
         }
     }
 
@@ -276,7 +274,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         select_politician_toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccentDark))
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        email_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -299,7 +296,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         select_politician_toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        email_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -356,6 +352,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         .toBe(atItsOriginalPosition())
                         .expect(search_on_web_button)
                         .toBe(atItsOriginalPosition())
+                        .expect(email_button)
+                        .toBe(atItsOriginalPosition())
                         .toAnimation()
                         .setDuration(QUICK_ANIMATIONS_DURATION)
                         .start()
@@ -366,6 +364,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         .toBe(toRightOf(politician_image_view))
                         .expect(search_on_web_button)
                         .toBe(toRightOf(politician_image_view))
+                        .expect(email_button)
+                        .toBe(toRightOf(politician_image_view))
                         .toAnimation()
                         .setDuration(QUICK_ANIMATIONS_DURATION)
                         .start()
@@ -373,13 +373,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             }
         }
     }
-
-    private fun setSearchOnWebButtonClickListener(politician: Politician) =
-            mPresenterActivity.search_on_web_button.setOnClickListener {
-                val intent = Intent(Intent.ACTION_WEB_SEARCH)
-                intent.putExtra(SearchManager.QUERY, "${politician.name} corrupção")
-                mPresenterActivity.startActivity(intent)
-            }
 
     private fun setShareButtonClickListener(politician: Politician?) =
             mPresenterActivity.share_button.setOnClickListener {
@@ -476,11 +469,45 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 }
             }
 
+    private fun setSearchOnWebButtonClickListener(politician: Politician) =
+            with(mPresenterActivity) {
+                search_on_web_button.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_WEB_SEARCH)
+                    intent.putExtra(SearchManager.QUERY, getString(R.string.name_plus_corruption, politician.name))
+
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+
+                    } else {
+                        val alertDialog = AlertDialog.Builder(mPresenterActivity)
+                                .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_browser_app))
+                        alertDialog.show()
+                    }
+                }
+            }
+
+    private fun setEmailButtonClickListener(politician: Politician) = mPresenterActivity.email_button.setOnClickListener {
+        with(mPresenterActivity) {
+            val intent = Intent(Intent.ACTION_SENDTO)
+
+            intent.data = Uri.parse("mailto:")
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(politician.email))
+
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(Intent.createChooser(intent, getString(R.string.intent_email_chooser)))
+
+            } else {
+                val alertDialog = AlertDialog.Builder(mPresenterActivity)
+                        .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_email_app))
+                alertDialog.show()
+            }
+        }
+    }
+
     override fun initiateCondemnAnimations(politician: Politician) = with(mPresenterActivity) {
         mToolbarAnimatorCondemn.target = select_politician_toolbar
         mPostTextAnimatorCondemn.target = name_text_view
         mNameTextAnimatorCondemn.target = post_text_view
-        mEmailTextAnimatorCondemn.target = email_text_view
         mVoteTitleTextAnimatorCondemn.target = vote_title_text_view
         mVoteNumberTextAnimatorCondemn.target = votes_number_text_view
         mPlusOneTextAnimatorCondemn.target = plus_one_text_view
@@ -494,7 +521,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 mToolbarAnimatorCondemn,
                 mPostTextAnimatorCondemn,
                 mNameTextAnimatorCondemn,
-                mEmailTextAnimatorCondemn,
                 mVoteTitleTextAnimatorCondemn,
                 mVoteNumberTextAnimatorCondemn,
                 mPlusOneTextAnimatorCondemn,
@@ -522,7 +548,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         mToolbarAnimatorAbsolve.target = select_politician_toolbar
         mPostTextAnimatorAbsolve.target = name_text_view
         mNameTextAnimatorAbsolve.target = post_text_view
-        mEmailTextAnimatorAbsolve.target = email_text_view
         mVoteTitleTextAnimatorAbsolve.target = vote_title_text_view
         mVoteNumberTextAnimatorAbsolve.target = votes_number_text_view
         mPlusOneTextAnimatorAbsolve.target = plus_one_text_view
@@ -536,7 +561,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 mToolbarAnimatorAbsolve,
                 mPostTextAnimatorAbsolve,
                 mNameTextAnimatorAbsolve,
-                mEmailTextAnimatorAbsolve,
                 mVoteTitleTextAnimatorAbsolve,
                 mVoteNumberTextAnimatorAbsolve,
                 mPlusOneTextAnimatorAbsolve,

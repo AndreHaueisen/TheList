@@ -2,7 +2,7 @@
 <resources>
 
     <!--MessagingService strings-->
-    <string name="notification_title">Outro político é considerado suspeito</string>
+    <string name="notification_title">Mais um político foi considerado suspeito</string>
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
 
     <!--d_main_list strings-->
@@ -22,7 +22,9 @@
     <string name="senador_absolved">Senador confiável</string>
     <string name="deputado_absolved">Deputado confiável</string>
     <string name="governador_absolved">Governador confiável</string>
-    <string name="empty_main_list">Ninguém na lista principal ainda. Clique na lupa para votar</string>
+    <string name="empty_main_list_senator">Nenhum senador na lista principal ainda. Clique na lupa para procurar</string>
+    <string name="empty_main_list_congressman">Nenhum deputado na lista principal ainda. Clique na lupa procurar</string>
+    <string name="empty_main_list_governor">Nenhum governador na lista principal ainda. Clique na lupa para procurar</string>
 
     <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
     <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>
@@ -43,7 +45,14 @@
     <string name="your_opinion_hint">Deixe sua opinião</string>
     <string name="dialog_title">Opiniões sobre %1$s</string>
 
+    <string name="intent_email_chooser">Enviar email usando</string>
+
     <!--e_politician_selector strings-->
+    <string name="dialog_title_no_app_detected">Nenhum app encontrado</string>
+    <string name="dialog_message_no_email_app">Baixe um app de email para completar a ação</string>
+    <string name="dialog_message_no_browser_app">Baixe um navegador para completar a ação</string>
+    <string name="name_plus_corruption">%1$s corrupção</string>
+
     <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Parlamentares</string>
     <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
@@ -108,5 +117,6 @@
     <string name="description_badge_thief_politician">Medalha de ladrão</string>
     <string name="description_send_opinion_button">Enviar opinião</string>
     <string name="description_delete_opinion_button">Deletar opinião</string>
+    <string name="description_email_politician">Mande email para o político</string>
 
 </resources>
