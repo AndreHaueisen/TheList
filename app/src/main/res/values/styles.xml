@@ -22,7 +22,7 @@
     <style name="Autocomplete" parent="@android:style/Widget.Material.AutoCompleteTextView">
         <item name="android:fontFamily">@font/lato_light</item>
         <item name="android:dropDownSelector">@color/colorAccentDark</item>
-        <item name="android:textColorHint">@color/colorSecondaryLight</item>
+        <item name="android:textColorHint">@color/colorSecondarySmooth</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:completionThreshold">3</item>
     </style>
@@ -43,10 +43,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="ButtonBorderlessStyle" parent="@android:style/Widget.Material.Button.Borderless">
+    <style name="ButtonBorderlessStyle" parent="@android:style/Widget.Material.Button.Borderless.Colored">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/lato</item>
     </style>
 

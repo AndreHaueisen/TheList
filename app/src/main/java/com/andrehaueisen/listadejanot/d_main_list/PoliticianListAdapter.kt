@@ -18,7 +18,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
@@ -93,14 +96,14 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
         private val mEmailButton = itemView.findViewById<ImageButton>(R.id.email_button)
         private val mVotesNumberTextView: TextView = itemView.findViewById<TextView>(R.id.votes_number_text_view)
         private val mAnimatedBadgeImageView: ImageView = itemView.findViewById<ImageView>(R.id.badge_image_view)
-        private val mOpinionsButton: Button = itemView.findViewById<Button>(R.id.opinion_button)
-        private val mVoteButton: ToggleButton = itemView.findViewById<ToggleButton>(R.id.add_to_vote_count_toggle_button)
+        private val mOpinionsButton: ImageButton = itemView.findViewById<ImageButton>(R.id.opinions_button)
+        private val mVoteButton: RadioRealButtonGroup = itemView.findViewById<RadioRealButtonGroup>(R.id.vote_radio_group)
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.anim_politician_thief) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.anim_thief_politician) as AnimatedVectorDrawable
 
         internal fun bindDataToView(politician: Politician) {
 
-            fun setVoteButtonClickListener() = mVoteButton.setOnClickListener {
+            fun setVoteButtonClickListener() = mVoteButton.setOnPositionChangedListener { _, _, _ ->
 
                 fun initiateVoteProcess() {
                     val userEmail = mFirebaseAuthenticator.getUserEmail()!!
@@ -129,7 +132,6 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
                 } else {
                     activity.showToast(activity.getString(R.string.no_network))
-                    mVoteButton.isChecked = !mVoteButton.isChecked
                 }
             }
 
@@ -197,10 +199,10 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
             if (hasUserVotedOnThisPolitician()) {
                 mCardView.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.colorSemiTransparentCondemn))
-                mVoteButton.isChecked = true
 
                 val badgeTransition = mAnimatedBadgeImageView.background as TransitionDrawable
                 badgeTransition.startTransition(DEFAULT_ANIMATIONS_DURATION.toInt())
+                mVoteButton.position = 0
 
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
                 mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
@@ -211,7 +213,7 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
             } else {
                 mCardView.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.colorSemiTransparentAbsolve))
-                mVoteButton.isChecked = false
+                mVoteButton.position = 1
 
                 mAnimatedBadgeImageView.background = ContextCompat.getDrawable(activity, R.drawable.transition_badge_background)
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)

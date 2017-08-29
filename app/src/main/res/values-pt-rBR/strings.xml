@@ -118,5 +118,7 @@
     <string name="description_send_opinion_button">Enviar opinião</string>
     <string name="description_delete_opinion_button">Deletar opinião</string>
     <string name="description_email_politician">Mande email para o político</string>
+    <string name="description_opinions_on_politician">Opiniões sobre o político</string>
+    <string name="description_search_politician">Pesquise um político</string>
 
 </resources>

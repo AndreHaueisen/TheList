@@ -14,8 +14,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Absolve</string>
-    <string name="vote_condemn">Condemn</string>
+    <string name="vote_absolve">Innocent</string>
+    <string name="vote_condemn">Guilty</string>
 
     <string name="refreshing_votes_title">Refreshing</string>
     <string name="votes_title">Votes</string>
@@ -139,6 +139,8 @@
     <string name="description_send_opinion_button">Send opinion</string>
     <string name="description_delete_opinion_button">Delete opinion</string>
     <string name="description_email_politician">Email politician</string>
+    <string name="description_opinions_on_politician">Opinions on this politician</string>
+    <string name="description_search_politician">Search politician</string>
 
     <!--Transition strings-->
     <string name="transition_image" translatable="false">image_transition</string>
