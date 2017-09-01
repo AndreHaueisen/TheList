@@ -47,9 +47,6 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
     private val mFirebaseRepository: FirebaseRepository
     private val mFirebaseAuthenticator: FirebaseAuthenticator
 
-    private val VIEW_TYPE_DEPUTADO = 0
-    private val VIEW_TYPE_SENADOR = 1
-    private val VIEW_TYPE_GOVERNADOR = 2
     private val mGlide = Glide.with(activity)
 
     private val mCardObjectAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(activity, R.color.colorSemiTransparentCondemn, R.color.colorSemiTransparentAbsolve, "cardBackgroundColor")
@@ -66,25 +63,13 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoliticianHolder {
 
         val inflater = LayoutInflater.from(activity)
-        val view: View
-        view = when (viewType) {
-            VIEW_TYPE_DEPUTADO -> inflater.inflate(R.layout.item_deputado, parent, false)
-            VIEW_TYPE_SENADOR -> inflater.inflate(R.layout.item_senador, parent, false)
-            else -> inflater.inflate(R.layout.item_governador, parent, false)
-        }
+        val view = inflater.inflate(R.layout.item_politician, parent, false)
 
         return PoliticianHolder(view)
     }
 
     override fun onBindViewHolder(holder: PoliticianHolder, position: Int) = holder.bindDataToView(politicianList[position])
 
-    override fun getItemViewType(position: Int): Int = when (politicianList[position].post!!) {
-        Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> VIEW_TYPE_DEPUTADO
-
-        Politician.Post.SENADOR, Politician.Post.SENADORA -> VIEW_TYPE_SENADOR
-
-        Politician.Post.GOVERNADOR,Politician.Post.GOVERNADORA -> VIEW_TYPE_GOVERNADOR
-    }
 
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

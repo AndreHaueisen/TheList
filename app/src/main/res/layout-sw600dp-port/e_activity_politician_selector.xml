@@ -72,6 +72,26 @@
             android:background="@drawable/shape_white_to_secondary">
 
             <TextView
+                android:id="@+id/orientation_text_view"
+                style="@style/RobotoMediumTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="0dp"
+                android:drawableStart="@drawable/ic_arrow_upward_24dp"
+                android:text="@string/type_name_orientation"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
                 android:id="@+id/post_text_view"
                 style="@style/LatoBoldTextStyle"
                 android:layout_width="wrap_content"
@@ -79,6 +99,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="SENADOR"/>
@@ -86,13 +107,14 @@
             <TextView
                 android:id="@+id/name_text_view"
                 style="@style/LatoRegularTextStyle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:textSize="22sp"
                 android:transitionName="@string/transition_name"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/post_text_view"
+                app:layout_constraintStart_toStartOf="@+id/post_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/post_text_view"
                 tools:text="Aecio Neves"/>
 
@@ -109,7 +131,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_text_view"
-                app:layout_constraintVertical_bias="0.13999999"
+                app:layout_constraintVertical_bias="0.19"
                 tools:ignore="ContentDescription"/>
 
             <ImageView
@@ -188,12 +210,12 @@
                 style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:maxLines="3"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/vote_radio_group"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/vote_title_text_view"
                 tools:text="499 votes to be condemned"/>
 
             <TextView
@@ -206,8 +228,10 @@
                 android:text="@string/votes_title"
                 android:textSize="26sp"
                 android:visibility="invisible"
-                app:layout_constraintRight_toLeftOf="@+id/votes_number_text_view"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintBottom_toTopOf="@+id/vote_radio_group"
+                app:layout_constraintEnd_toStartOf="@+id/votes_number_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/politician_image_view"
+                app:layout_constraintVertical_bias="0.25"/>
 
             <TextView
                 android:id="@+id/votes_number_text_view"
@@ -217,7 +241,9 @@
                 android:layout_marginEnd="12dp"
                 android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="@+id/vote_title_text_view"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/politician_image_view"
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintStart_toStartOf="@+id/politician_image_view"
                 app:layout_constraintTop_toTopOf="@+id/vote_title_text_view"
                 tools:text="110.110"/>
 
@@ -236,7 +262,7 @@
 
             <co.ceryle.radiorealbutton.RadioRealButtonGroup
                 android:id="@+id/vote_radio_group"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:layout_marginEnd="0dp"
@@ -247,31 +273,28 @@
                 app:rrbg_animateSelector="accelerateDecelerate"
                 app:rrbg_animateTexts_enter="accelerateDecelerate"
                 app:rrbg_backgroundColor="@android:color/transparent"
-                app:rrbg_dividerSize="4dp"
                 app:rrbg_selectorBringToFront="true"
-                app:rrbg_selectorColor="@color/colorPrimaryLightTransparent"
-                app:rrbg_selectorSize="1dp">
+                app:rrbg_selectorColor="@color/colorDarkTransparent"
+                app:rrbg_selectorSize="3dp">
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hapticFeedbackEnabled="true"
-                    app:rrb_backgroundColor="@color/colorAccent"
+                    app:rrb_backgroundColor="@color/colorAccentLight"
                     app:rrb_ripple="true"
                     app:rrb_rippleColor="@color/colorAccentDark"
-                    app:rrb_text="@string/vote_absolve"
+                    app:rrb_text="@string/vote_condemn"
                     app:rrb_textColor="@color/colorAccentSmooth"
                     app:rrb_textColorTo="@android:color/white"
                     app:rrb_textSize="15sp"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="wrap_content"
                     app:rrb_backgroundColor="@color/colorPrimaryLight"
                     app:rrb_ripple="true"
                     app:rrb_rippleColor="@color/colorPrimary"
-                    app:rrb_text="@string/vote_condemn"
+                    app:rrb_text="@string/vote_absolve"
                     app:rrb_textColor="@color/colorPrimarySmooth"
                     app:rrb_textColorTo="@android:color/white"
                     app:rrb_textSize="15sp"/>

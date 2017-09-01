@@ -90,6 +90,8 @@ class MainListModel(val context: Context, private val loaderManager: LoaderManag
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mOnListReadyObserver)
+
+        mFirebaseRepository.refreshMinimumVotesForMainList()
     }
 
     fun connectToFirebase() {

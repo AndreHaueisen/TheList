@@ -9,8 +9,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Suspeito</string>
-    <string name="vote_condemn">Confiável</string>
+    <string name="vote_absolve">Confiável</string>
+    <string name="vote_condemn">Suspeito</string>
     <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Suspeitos</string>
@@ -53,6 +53,7 @@
     <string name="dialog_message_no_browser_app">Baixe um navegador para completar a ação</string>
     <string name="name_plus_corruption">%1$s corrupção</string>
 
+    <string name="type_name_orientation">Clique na barra para digitar o nome do político</string>
     <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Parlamentares</string>
     <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
@@ -73,8 +74,8 @@
     <string name="governora">Governadora</string>
     <string name="search_on_web">Procurar na web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Faltam %1$d voto para a lista principal</item>
-        <item quantity="other">Faltam %1$d votos para a lista principal</item>
+        <item quantity="one">Falta %1$d voto para ser suspeito</item>
+        <item quantity="other">Faltam %1$d votos para ser suspeito</item>
     </plurals>
 
     <!--f_information strings-->

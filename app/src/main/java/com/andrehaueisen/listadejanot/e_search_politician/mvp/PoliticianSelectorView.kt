@@ -69,11 +69,11 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val mMissingVoteTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
     private val mMissingVoteTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
 
-
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
     private var mTempFilePath: String = ""
     private var mIsShowingExtraButtons = false
+    private var mLastButtonPosition = 0
 
     init {
         mPresenterActivity.setContentView(R.layout.e_activity_politician_selector)
@@ -233,7 +233,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             post_text_view.text = politician.post.name
             name_text_view.text = politician.name
-            missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
+            missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
         }
     }
@@ -250,6 +250,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 opinions_button.visibility = View.VISIBLE
                 vote_radio_group.visibility = View.VISIBLE
                 vote_title_text_view.visibility = View.VISIBLE
+                orientation_text_view.visibility = View.INVISIBLE
 
                 ExpectAnim()
                         .expect(delete_text_image_button)
@@ -285,9 +286,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val badgeTransition = badge_image_view.background as TransitionDrawable
         badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
-        missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
+        missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
         votes_number_text_view.text = politician.votesNumber.toString()
-        vote_radio_group.position = 0
+        mLastButtonPosition = 0
+        vote_radio_group.position = mLastButtonPosition
         badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
         badge_image_view.contentDescription = getString(R.string.description_badge_thief_politician)
     }
@@ -304,21 +306,28 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         badge_image_view.background = ContextCompat.getDrawable(this, R.drawable.transition_badge_background)
 
-        missing_votes_text_view.setMissingVotesText(this.resources, politician.votesNumber)
+        missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
         votes_number_text_view.text = politician.votesNumber.toString()
-        vote_radio_group.position = 1
+        mLastButtonPosition = 1
+        vote_radio_group.position = mLastButtonPosition
         badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
         badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
     }
 
     private fun setButtonsClickListener(politician: Politician) =
             with(mPresenterActivity) {
-                vote_radio_group.setOnPositionChangedListener { _, _, _ ->
-                    if (isConnectedToInternet()) {
-                        ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
-                        updatePoliticianVote(politician, this@PoliticianSelectorView)
-                    } else {
-                        showToast(getString(R.string.no_network))
+
+                vote_radio_group.setOnClickedButtonListener { _, position ->
+
+                    if(position != mLastButtonPosition){
+                        if (isConnectedToInternet()) {
+                            ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
+                            updatePoliticianVote(politician, this@PoliticianSelectorView)
+                        } else {
+                            showToast(getString(R.string.no_network))
+                        }
+
+                        mLastButtonPosition = position
                     }
                 }
 

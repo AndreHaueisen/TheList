@@ -32,7 +32,7 @@ fun ExpectAnim.plusOneCondemnAnimation(parentView: View, politician: Politician)
                         .start()
                         .addEndListener {
                             votesNumberTextView.text = politician.votesNumber.toString()
-                            missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
+                            missingVotesTextView?.setMissingVotesText(parentView.context, politician.votesNumber)
                             ExpectAnim().stopRefreshingTitleAnimation(parentView)
                         }
             }
@@ -46,7 +46,7 @@ fun ExpectAnim.minusOneAbsolveAnimation(parentView: View, politician: Politician
 
     this.addEndListener {
         votesNumberTextView.text = politician.votesNumber.toString()
-        missingVotesTextView?.setMissingVotesText(parentView.context.resources, politician.votesNumber)
+        missingVotesTextView?.setMissingVotesText(parentView.context, politician.votesNumber)
     }
             .expect(plusOneTextView)
             .toBe(Expectations.alpha(1.0f),

@@ -1,6 +1,6 @@
 package com.andrehaueisen.listadejanot.utilities
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
@@ -34,9 +34,11 @@ fun ImageView.animateVectorDrawable(initialAnimation: AnimatedVectorDrawable,
     }
 }
 
-fun TextView.setMissingVotesText(resources: Resources, voteNumber: Long){
+fun TextView.setMissingVotesText(context: Context, voteNumber: Long){
 
-    val missingVoteNumber = (VOTES_TO_MAIN_LIST_THRESHOLD - voteNumber).toInt()
+    val resources = context.resources
+    val minimumVotesToMainList = context.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+    val missingVoteNumber = (minimumVotesToMainList - voteNumber).toInt()
     text = if(missingVoteNumber > 0){
         resources.getQuantityString(R.plurals.missing_votes_to_threshold, missingVoteNumber, missingVoteNumber)
     }else{

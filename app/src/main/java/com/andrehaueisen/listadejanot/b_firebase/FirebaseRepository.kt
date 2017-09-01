@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.b_firebase
 
+import android.content.Context
 import android.util.Log
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorMvpContract
@@ -12,7 +13,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/3/2017.
  */
-class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
+class FirebaseRepository(private val mContext: Context, private val mDatabaseReference: DatabaseReference) {
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
@@ -36,7 +37,6 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
     enum class FirebaseAction{
         CHILD_ADDED, CHILD_REMOVED, CHILD_CHANGED
     }
-
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
     fun handleSenadorVoteOnDatabase(senador: Politician,
@@ -85,7 +85,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
-                    if (senador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
+                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                    if (senador1.votesNumber < minimumVotesToMainList) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }
@@ -115,7 +116,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                             updateVoteCountOnFirebase(updatedSenador)
                             updateUserVoteList(userEmail, updatedSenador)
-                            if (updatedSenador.isOnMainList || (!updatedSenador.isOnMainList && updatedSenador.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
+                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                            if (updatedSenador.isOnMainList || (!updatedSenador.isOnMainList && updatedSenador.votesNumber >= minimumVotesToMainList)) {
                                 updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
                             }
 
@@ -206,8 +208,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
                 }
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
-
-                    if (deputado1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
+                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                    if (deputado1.votesNumber < minimumVotesToMainList) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }
@@ -236,7 +238,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                             updateVoteCountOnFirebase(updatedDeputado)
                             updateUserVoteList(userEmail, updatedDeputado)
-                            if (updatedDeputado.isOnMainList || (!updatedDeputado.isOnMainList && updatedDeputado.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
+                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                            if (updatedDeputado.isOnMainList || (!updatedDeputado.isOnMainList && updatedDeputado.votesNumber >= minimumVotesToMainList)) {
                                 updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
                             }
 
@@ -330,7 +333,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                 override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
-                    if (governador1.votesNumber < VOTES_TO_MAIN_LIST_THRESHOLD) {
+                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                    if (governador1.votesNumber < minimumVotesToMainList) {
                         mutableData.value = null
                         return Transaction.success(mutableData)
                     }
@@ -359,7 +363,8 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
                             updateVoteCountOnFirebase(updatedGovernador)
                             updateUserVoteList(userEmail, updatedGovernador)
-                            if (updatedGovernador.isOnMainList || (!updatedGovernador.isOnMainList && updatedGovernador.votesNumber >= VOTES_TO_MAIN_LIST_THRESHOLD)) {
+                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+                            if (updatedGovernador.isOnMainList || (!updatedGovernador.isOnMainList && updatedGovernador.votesNumber >= minimumVotesToMainList)) {
                                 updateGovernadorVoteOnMainList(updatedGovernador, userEmail, viewHolder)
                             }
 
@@ -597,6 +602,19 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
         override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) = Unit
     }
 
+    private val mListenerForMinimumVotesToMainList = object : ValueEventListener{
+
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            val minimumVoteToMailList: Int = dataSnapshot?.getValue(Int::class.java) ?: 0
+            val sharedPreferencesEditor = mContext.getSharedPreferences(SHARED_PREFERENCES, 0).edit()
+
+            sharedPreferencesEditor.putInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, minimumVoteToMailList)
+            sharedPreferencesEditor.apply()
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {}
+    }
+
     fun getUser(userEmail: String): PublishSubject<User>{
         mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
         return mPublishUser
@@ -660,6 +678,10 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
+    fun refreshMinimumVotesForMainList(){
+        mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).addValueEventListener(mListenerForMinimumVotesToMainList)
+    }
+
     fun onDestroy() {
         mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).removeEventListener(mListenerForSenadoresMainList)
         mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).removeEventListener(mListenerForSenadoresPreList)
@@ -667,6 +689,7 @@ class FirebaseRepository(private val mDatabaseReference: DatabaseReference) {
         mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_MAIN_LIST).removeEventListener(mListenerForGovernadoresMainList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
+        mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).removeEventListener(mListenerForMinimumVotesToMainList)
     }
 
     fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String){

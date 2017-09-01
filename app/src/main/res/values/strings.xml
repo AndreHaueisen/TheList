@@ -11,9 +11,9 @@
     <string name="notification_text">%1$s should not receive your vote</string>
 
     <!--d_main_list strings-->
-    <string name="title_senadores">Senadores</string>
-    <string name="title_deputados">Deputados</string>
-    <string name="title_governadores">Governadores</string>
+    <string name="title_senadores">Senators</string>
+    <string name="title_deputados">Congressmen</string>
+    <string name="title_governadores">Governors</string>
     <string name="vote_absolve">Innocent</string>
     <string name="vote_condemn">Guilty</string>
 
@@ -29,16 +29,16 @@
     <string name="font_roboto_thin" translatable="false">sans-serif-thin</string>
     <string name="font_roboto_medium" translatable="false">sans-serif-medium</string>
 
-    <string name="banned_deputados_title">Banned Deputados</string>
-    <string name="banned_senadores_title">Banned Senadores</string>
-    <string name="banned_governadores_title">Banned Governadores</string>
+    <string name="banned_deputados_title">Banned Congressmen</string>
+    <string name="banned_senadores_title">Banned Senators</string>
+    <string name="banned_governadores_title">Banned Governors</string>
 
-    <string name="senador_condemned">Senador condemned</string>
-    <string name="deputado_condemned">Deputado condemned</string>
-    <string name="governador_condemned">Governador condemned</string>
-    <string name="senador_absolved">Senador absolved</string>
-    <string name="deputado_absolved">Deputado absolved</string>
-    <string name="governador_absolved">Governador absolved</string>
+    <string name="senador_condemned">Senator condemned</string>
+    <string name="deputado_condemned">Congressman condemned</string>
+    <string name="governador_condemned">Governor condemned</string>
+    <string name="senador_absolved">Senator absolved</string>
+    <string name="deputado_absolved">Congressman absolved</string>
+    <string name="governador_absolved">Governor absolved</string>
 
     <string name="senadores_sorted_by_name">Senators sorted by name</string>
     <string name="senadores_sorted_by_vote_number">Senators sorted by vote number</string>
@@ -68,6 +68,7 @@
     <string name="dialog_message_no_browser_app">Download a browser to complete this action</string>
     <string name="name_plus_corruption">%1$s corruption</string>
 
+    <string name="type_name_orientation">Click above to type the politician\'s name</string>
     <string name="search_politician_title">Search Politician</string>
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
@@ -90,8 +91,8 @@
     <string name="congresswoman">Congresswoman</string>
     <string name="search_on_web">Search on web</string>
     <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Missing %1$d vote to main list</item>
-        <item quantity="other">Missing %1$d votes to main list</item>
+        <item quantity="one">Missing %1$d vote to be condemned</item>
+        <item quantity="other">Missing %1$d votes to be condemned</item>
     </plurals>
 
     <!--f_information strings-->

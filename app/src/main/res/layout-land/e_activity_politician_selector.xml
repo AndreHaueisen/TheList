@@ -61,6 +61,26 @@
         android:background="@drawable/shape_white_to_secondary">
 
         <TextView
+            android:id="@+id/orientation_text_view"
+            style="@style/RobotoMediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="0dp"
+            android:drawableStart="@drawable/ic_arrow_upward_24dp"
+            android:text="@string/type_name_orientation"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
             android:id="@+id/post_text_view"
             style="@style/LatoBoldTextStyle"
             android:layout_width="wrap_content"
@@ -213,40 +233,42 @@
 
         <co.ceryle.radiorealbutton.RadioRealButtonGroup
             android:id="@+id/vote_radio_group"
-            android:layout_width="0dp"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:rrbg_animateSelector="accelerateDecelerate"
             app:rrbg_animateTexts_enter="accelerateDecelerate"
             app:rrbg_backgroundColor="@android:color/transparent"
-            app:rrbg_dividerSize="4dp"
+            app:rrbg_radius="2dp"
             app:rrbg_selectorBringToFront="true"
-            app:rrbg_selectorColor="@color/colorPrimaryLightTransparent"
-            app:rrbg_selectorSize="1dp">
+            app:rrbg_selectorColor="@color/colorDarkTransparent"
+            app:rrbg_selectorSize="3dp">
 
             <co.ceryle.radiorealbutton.RadioRealButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hapticFeedbackEnabled="true"
-                app:rrb_backgroundColor="@color/colorAccent"
+                app:rrb_backgroundColor="@color/colorAccentLight"
                 app:rrb_ripple="true"
                 app:rrb_rippleColor="@color/colorAccentDark"
-                app:rrb_text="@string/vote_absolve"
+                app:rrb_text="@string/vote_condemn"
                 app:rrb_textColor="@color/colorAccentSmooth"
                 app:rrb_textColorTo="@android:color/white"
                 app:rrb_textSize="15sp"/>
 
             <co.ceryle.radiorealbutton.RadioRealButton
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
+                android:layout_height="wrap_content"
                 app:rrb_backgroundColor="@color/colorPrimaryLight"
                 app:rrb_ripple="true"
                 app:rrb_rippleColor="@color/colorPrimary"
-                app:rrb_text="@string/vote_condemn"
+                app:rrb_text="@string/vote_absolve"
                 app:rrb_textColor="@color/colorPrimarySmooth"
                 app:rrb_textColorTo="@android:color/white"
                 app:rrb_textSize="15sp"/>

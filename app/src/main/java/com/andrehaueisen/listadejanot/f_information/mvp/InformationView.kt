@@ -2,7 +2,8 @@ package com.andrehaueisen.listadejanot.f_information.mvp
 
 import android.view.MenuItem
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.utilities.VOTES_TO_MAIN_LIST_THRESHOLD
+import com.andrehaueisen.listadejanot.utilities.SHARED_MINIMUM_VALUE_TO_MAIN_LIST
+import com.andrehaueisen.listadejanot.utilities.pullIntFromSharedPreferences
 import kotlinx.android.synthetic.main.f_activity_information_presenter.*
 
 
@@ -24,7 +25,8 @@ class InformationView(private val mPresenterActivity: InformationPresenterActivi
         }
 
         fun setMotivationTextView(){
-            app_motivation_text_view.text = mPresenterActivity.getString(R.string.understand_app_motivation, VOTES_TO_MAIN_LIST_THRESHOLD)
+            val minVoteNumberToMainList = mPresenterActivity.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+            app_motivation_text_view.text = mPresenterActivity.getString(R.string.understand_app_motivation, minVoteNumberToMainList)
         }
 
         setToolbar()

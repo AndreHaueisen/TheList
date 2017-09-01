@@ -67,8 +67,8 @@ class UserVotesAdapter(val mActivity: Activity, private val mUserVotes: List<Pol
                     .placeholder(R.drawable.politician_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(mThumbnailImage)
-
-            val missingVotes = VOTES_TO_MAIN_LIST_THRESHOLD - userVote.votesNumber
+            val minimumVotesToMainList = mActivity.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
+            val missingVotes = minimumVotesToMainList - userVote.votesNumber
             if(missingVotes > 0) {
                 mMissingVotesTextView.text = mActivity.resources.getQuantityString(R.plurals.missing_to_banned, missingVotes.toInt(), missingVotes)
             }else{

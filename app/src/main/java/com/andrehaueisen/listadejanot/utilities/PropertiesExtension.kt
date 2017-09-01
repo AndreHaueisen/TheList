@@ -32,18 +32,19 @@ val LOCATION_GOVERNADORES_PRE_LIST = "Governadores_pre_list"
 val LOCATION_USERS = "Users"
 val LOCATION_VOTE_COUNT = "Vote_count"
 val LOCATION_OPINIONS_ON_POLITICIANS = "Opinions_on_politicians"
+val LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST = "Min_votes_for_main_list"
 val CHILD_LOCATION_IS_ON_MAIN_LIST = "isOnMainList"
 val CHILD_LOCATION_VOTES_NUMBER = "votesNumber"
 val CHILD_LOCATION_CONDEMNED_BY = "condemnedBy"
 val CHILD_LOCATION_CONDEMNATIONS = "condemnations"
 
-val VOTES_TO_MAIN_LIST_THRESHOLD: Long = 5
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
 
 val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 val SHARED_MESSAGE_TOKEN = "message_token"
+val SHARED_MINIMUM_VALUE_TO_MAIN_LIST = "main_list_minimum_value"
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 
