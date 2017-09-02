@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="new_minimum_votes_value">Número mínimo de votos foi alterado para %1$d</string>
+
     <!--MessagingService strings-->
     <string name="notification_title">Mais um político foi considerado suspeito</string>
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
@@ -56,7 +58,7 @@
     <string name="type_name_orientation">Clique na barra para digitar o nome do político</string>
     <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Parlamentares</string>
-    <string name="dialog_message_loading_database">Carregando lista de senadores e deputados.</string>
+    <string name="dialog_message_loading_database">Carregando lista de políticos.</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>

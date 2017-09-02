@@ -6,6 +6,8 @@
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
     <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>
 
+    <string name="new_minimum_votes_value">Minimum vote number was altered to %1$d</string>
+
     <!--MessagingService strings-->
     <string name="notification_title">New politician banned</string>
     <string name="notification_text">%1$s should not receive your vote</string>
@@ -71,7 +73,7 @@
     <string name="type_name_orientation">Click above to type the politician\'s name</string>
     <string name="search_politician_title">Search Politician</string>
     <string name="dialog_title_loading_database">Loading politicians</string>
-    <string name="dialog_message_loading_database">We need a moment to load politicians you can condemn</string>
+    <string name="dialog_message_loading_database">Load politicians</string>
     <string name="type_politician_name_hint">Politician Name</string>
     <string name="plus_one" translatable="false">+1</string>
     <string name="minus_one" translatable="false">-1</string>

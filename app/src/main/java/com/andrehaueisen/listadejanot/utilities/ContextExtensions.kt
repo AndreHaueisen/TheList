@@ -55,7 +55,7 @@ fun Context.isConnectedToInternet(): Boolean{
 
 }
 
-fun Context.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+fun Context.showToast(message: String, duration: Int = Toast.LENGTH_LONG) = Toast.makeText(this, message, duration).show()
 
 inline fun <reified T: Any> Context.putValueOnSharedPreferences(key: String, data: T){
 

@@ -2,6 +2,7 @@ package com.andrehaueisen.listadejanot.b_firebase
 
 import android.content.Context
 import android.util.Log
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorMvpContract
 import com.andrehaueisen.listadejanot.models.Politician
@@ -610,6 +611,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
             sharedPreferencesEditor.putInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, minimumVoteToMailList)
             sharedPreferencesEditor.apply()
+
+            mContext.showToast(mContext.getString(R.string.new_minimum_votes_value, minimumVoteToMailList))
         }
 
         override fun onCancelled(p0: DatabaseError?) {}
