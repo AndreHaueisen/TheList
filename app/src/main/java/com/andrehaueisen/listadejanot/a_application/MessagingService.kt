@@ -14,6 +14,7 @@ import com.andrehaueisen.listadejanot.utilities.NEW_POLITICIAN_CHANNEL
 import com.andrehaueisen.listadejanot.utilities.NOTIFICATION_CHANNEL_ID
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.util.*
 
 
 /**
@@ -38,7 +39,8 @@ class MessagingService : FirebaseMessagingService() {
         val BLUE = 0
 
         val notificationBuilder = getNotificationBuilder()
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val uniqueId : Int = ((Date().time / 1000L).toInt() % Integer.MAX_VALUE)
+        val pendingIntent = PendingIntent.getActivity(this, uniqueId, intent, PendingIntent.FLAG_ONE_SHOT)
 
         notificationBuilder.setSmallIcon(R.drawable.ic_broom_24dp)
         notificationBuilder.setColor(Color.argb(1, RED, GREEN, BLUE))
@@ -48,7 +50,7 @@ class MessagingService : FirebaseMessagingService() {
         notificationBuilder.setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(0, notificationBuilder.build())
+        notificationManager.notify(uniqueId, notificationBuilder.build())
     }
 
     private fun getNotificationBuilder(): Notification.Builder = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

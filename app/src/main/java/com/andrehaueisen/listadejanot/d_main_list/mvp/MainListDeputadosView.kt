@@ -34,6 +34,10 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     private lateinit var mEmptyListTextView: TextView
     private val mDeputadosList = ArrayList<Politician>()
 
+    interface DeputadosDataFetcher{
+        fun subscribeToDeputados()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.d_fragment_main_list_deputados, container, false)
         mEmptyListTextView = view.findViewById(R.id.empty_main_list_text_view)
@@ -41,6 +45,14 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
         setRecyclerView(view)
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if(!(activity as MainListPresenterActivity).mIsScreenRotation) {
+            (activity as DeputadosDataFetcher).subscribeToDeputados()
+        }
     }
 
     private fun setRecyclerView(view: View) {
@@ -67,9 +79,9 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     private fun changeVisibilityStatus(data: ArrayList<Politician>){
         if(data.isEmpty()){
             mEmptyListTextView.visibility = View.VISIBLE
-            mDeputadosRecyclerView.visibility = View.GONE
+            mDeputadosRecyclerView.visibility = View.INVISIBLE
         }else{
-            mEmptyListTextView.visibility = View.GONE
+            mEmptyListTextView.visibility = View.INVISIBLE
             mDeputadosRecyclerView.visibility = View.VISIBLE
         }
     }

@@ -36,6 +36,10 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     private lateinit var mEmptyListTextView: TextView
     private val mSenadorList = ArrayList<Politician>()
 
+    interface SenadoresDataFetcher{
+        fun subscribeToSenadores()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.d_fragment_main_list_senadores, container, false)
@@ -44,6 +48,15 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
         setRecyclerView(view)
 
         return view
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        if(!(activity as MainListPresenterActivity).mIsScreenRotation) {
+            (activity as MainListSenadoresView.SenadoresDataFetcher).subscribeToSenadores()
+        }
     }
 
     private fun setRecyclerView(view: View) {
@@ -70,9 +83,9 @@ class MainListSenadoresView : Fragment(), MainListMvpContract.SenadoresView {
     private fun changeVisibilityStatus(data: ArrayList<Politician>){
         if(data.isEmpty()){
             mEmptyListTextView.visibility = View.VISIBLE
-            mSenadoresRecyclerView.visibility = View.GONE
+            mSenadoresRecyclerView.visibility = View.INVISIBLE
         }else{
-            mEmptyListTextView.visibility = View.GONE
+            mEmptyListTextView.visibility = View.INVISIBLE
             mSenadoresRecyclerView.visibility = View.VISIBLE
         }
     }

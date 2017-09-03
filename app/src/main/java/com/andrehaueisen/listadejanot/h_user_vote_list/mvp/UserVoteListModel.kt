@@ -69,6 +69,7 @@ class UserVoteListModel(private val mContext: Context,
             } else {
                 mOnUserVoteListReadyPublisher.onNext(arrayListOf<Politician>())
             }
+            mOnUserReadyPublisher.onComplete()
         }
 
         override fun onSubscribe(disposable: Disposable) {
@@ -171,6 +172,7 @@ class UserVoteListModel(private val mContext: Context,
             }
 
             mOnUserVoteListReadyPublisher.onNext(listOfVotedPoliticians)
+            mOnUserVoteListReadyPublisher.onComplete()
             data.close()
         }
     }

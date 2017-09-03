@@ -57,8 +57,7 @@
 
     <string name="type_name_orientation">Clique na barra para digitar o nome do político</string>
     <string name="search_politician_title">Procurar político</string>
-    <string name="dialog_title_loading_database">Carregando Parlamentares</string>
-    <string name="dialog_message_loading_database">Carregando lista de políticos.</string>
+    <string name="dialog_title_loading_database">Carregando Políticos</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhar</string>
     <string name="share_title">Peça ajuda usando…</string>
@@ -89,13 +88,13 @@
     <string name="unknown_error">Algo deu errado. Tente novamente</string>
 
     <!--h_user_vote_list strings-->
-    <string name="your_votes">Seus votos</string>
+    <string name="your_votes">Seus suspeitos</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
     <string name="banned">Suspeito</string>
     <string name="your_vote_date">Voto registrado dia %1$s</string>
-    <string name="remove_vote">Remover voto</string>
-    <string name="place_vote">Refazer voto</string>
+    <string name="remove_vote">Remover</string>
+    <string name="place_vote">Recolocar</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Faltando: %1$d voto</item>
         <item quantity="other">Faltando: %1$d votos</item>

@@ -18,14 +18,14 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
-    private val mPublishSenadoresMainList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishSenadoresPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishDeputadosMainList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishGovernadoresMainList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishGovernadoresPreList: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private val mPublishUser: PublishSubject<User> = PublishSubject.create()
-    private val mPublishVoteCountList: PublishSubject<HashMap<String, Long>> = PublishSubject.create()
+    private lateinit var mPublishSenadoresMainList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishSenadoresPreList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishDeputadosMainList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishGovernadoresMainList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishGovernadoresPreList: PublishSubject<ArrayList<Politician>>
+    private lateinit var mPublishUser: PublishSubject<User>
+    private lateinit var mPublishVoteCountList: PublishSubject<HashMap<String, Long>>
     private lateinit var mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>>
 
     private val mMainListSenadores = ArrayList<Politician>()
@@ -75,7 +75,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                         }
 
                         changeIsSenadorOnMainListStatus(senador1.email, isOnMainList = true)
-                        viewHolder?.notifyPoliticianAddedToMainList(senador1.email)
+                        //viewHolder?.notifyPoliticianAddedToMainList(Politician.Post.SENADOR, senador1.email)
 
                     } else if (!dataSnapshot.exists()) {
 
@@ -199,7 +199,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                         }
 
                         changeIsDeputadoOnMainListStatus(deputado1.email, isOnMainList = true)
-                        viewHolder?.notifyPoliticianAddedToMainList(deputado1.email)
+                        //viewHolder?.notifyPoliticianAddedToMainList(Politician.Post.DEPUTADO, deputado1.email)
 
                     } else if (!dataSnapshot.exists()) {
 
@@ -323,7 +323,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                         }
 
                         changeIsGovernadorOnMainListStatus(governador1.email, isOnMainList = true)
-                        viewHolder?.notifyPoliticianAddedToMainList(governador1.email)
+                        //viewHolder?.notifyPoliticianAddedToMainList(Politician.Post.GOVERNADOR, governador1.email)
 
                     } else if (!dataSnapshot.exists()) {
 
@@ -607,34 +607,48 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             val minimumVoteToMailList: Int = dataSnapshot?.getValue(Int::class.java) ?: 0
-            val sharedPreferencesEditor = mContext.getSharedPreferences(SHARED_PREFERENCES, 0).edit()
 
+            val sharedPreferences = mContext.getSharedPreferences(SHARED_PREFERENCES, 0)
+            val lastMinimumVoteToMailList = sharedPreferences.getInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, 0)
+
+            if (minimumVoteToMailList != lastMinimumVoteToMailList)
+                mContext.showToast(mContext.getString(R.string.new_minimum_votes_value, minimumVoteToMailList))
+
+            val sharedPreferencesEditor = sharedPreferences.edit()
             sharedPreferencesEditor.putInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, minimumVoteToMailList)
             sharedPreferencesEditor.apply()
-
-            mContext.showToast(mContext.getString(R.string.new_minimum_votes_value, minimumVoteToMailList))
         }
 
         override fun onCancelled(p0: DatabaseError?) {}
     }
 
     fun getUser(userEmail: String): PublishSubject<User>{
+        mPublishUser = PublishSubject.create()
+
         mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
         return mPublishUser
     }
 
     fun getVoteCountList(): PublishSubject<HashMap<String, Long>>{
+        mPublishVoteCountList = PublishSubject.create()
         mDatabaseReference.child(LOCATION_VOTE_COUNT).addListenerForSingleValueEvent(mListenerForVoteCountList)
+
         return mPublishVoteCountList
     }
 
     fun getSenadoresMainList(): PublishSubject<ArrayList<Politician>> {
-        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).addListenerForSingleValueEvent(mListenerForSenadoresMainList)
+        mPublishSenadoresMainList = PublishSubject.create()
+
+        mDatabaseReference
+                .child(LOCATION_SENADORES_MAIN_LIST)
+                .addListenerForSingleValueEvent(mListenerForSenadoresMainList)
 
         return mPublishSenadoresMainList
     }
 
     fun getSenadoresPreList(): PublishSubject<ArrayList<Politician>> {
+        mPublishSenadoresPreList = PublishSubject.create()
+
         mDatabaseReference
                 .child(LOCATION_SENADORES_PRE_LIST)
                 .addListenerForSingleValueEvent(mListenerForSenadoresPreList)
@@ -643,12 +657,18 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     }
 
     fun getDeputadosMainList(): PublishSubject<ArrayList<Politician>> {
-        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).addListenerForSingleValueEvent(mListenerForDeputadosMainList)
+        mPublishDeputadosMainList = PublishSubject.create()
+
+        mDatabaseReference
+                .child(LOCATION_DEPUTADOS_MAIN_LIST)
+                .addListenerForSingleValueEvent(mListenerForDeputadosMainList)
 
         return mPublishDeputadosMainList
     }
 
     fun getDeputadosPreList(): PublishSubject<ArrayList<Politician>> {
+        mPublishDeputadosPreList = PublishSubject.create()
+
         mDatabaseReference
                 .child(LOCATION_DEPUTADOS_PRE_LIST)
                 .addListenerForSingleValueEvent(mListenerForDeputadosPreList)
@@ -657,12 +677,18 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     }
 
     fun getGovernadoresMainList(): PublishSubject<ArrayList<Politician>>{
-        mDatabaseReference.child(LOCATION_GOVERNADORES_MAIN_LIST).addListenerForSingleValueEvent(mListenerForGovernadoresMainList)
+        mPublishGovernadoresMainList = PublishSubject.create()
+
+        mDatabaseReference
+                .child(LOCATION_GOVERNADORES_MAIN_LIST)
+                .addListenerForSingleValueEvent(mListenerForGovernadoresMainList)
 
         return mPublishGovernadoresMainList
     }
 
     fun getGovernadoresPreList(): PublishSubject<ArrayList<Politician>>{
+        mPublishGovernadoresPreList = PublishSubject.create()
+
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).addListenerForSingleValueEvent(mListenerForGovernadoresPreList)
 
         return mPublishGovernadoresPreList
@@ -681,8 +707,12 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
-    fun refreshMinimumVotesForMainList(){
+    fun listenForMinimumVotes(){
         mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).addValueEventListener(mListenerForMinimumVotesToMainList)
+    }
+
+    fun removeMinimumVoteListener(){
+        mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).removeEventListener(mListenerForMinimumVotesToMainList)
     }
 
     fun onDestroy() {
@@ -692,7 +722,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_MAIN_LIST).removeEventListener(mListenerForGovernadoresMainList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
-        mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).removeEventListener(mListenerForMinimumVotesToMainList)
+
     }
 
     fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String){

@@ -26,7 +26,6 @@ import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListPresenterActivity
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.i_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.models.Politician
@@ -85,10 +84,11 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
         private val mVoteButton: RadioRealButtonGroup = itemView.findViewById<RadioRealButtonGroup>(R.id.vote_radio_group)
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.anim_politician_thief) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.anim_thief_politician) as AnimatedVectorDrawable
+        private var mLastButtonPosition = 0
 
         internal fun bindDataToView(politician: Politician) {
 
-            fun setVoteButtonClickListener() = mVoteButton.setOnPositionChangedListener { _, _, _ ->
+            fun setVoteButtonClickListener() = mVoteButton.setOnClickedButtonListener { _, position ->
 
                 fun initiateVoteProcess() {
                     val userEmail = mFirebaseAuthenticator.getUserEmail()!!
@@ -105,18 +105,25 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
                     }
                 }
 
-                if (activity.isConnectedToInternet()) {
+                if(position != mLastButtonPosition) {
+                    if (activity.isConnectedToInternet()) {
 
-                    if (mFirebaseAuthenticator.isUserLoggedIn()) {
-                        initiateVoteProcess()
+                        if (mFirebaseAuthenticator.isUserLoggedIn()) {
+                            if(position != mLastButtonPosition) {
+                                initiateVoteProcess()
+                                mLastButtonPosition = position
+                            }
+                        } else {
+                            activity.startNewActivity(LoginActivity::class.java)
+                            activity.finish()
+                        }
 
                     } else {
-                        activity.startNewActivity(LoginActivity::class.java)
-                        activity.finish()
+                        activity.showToast(activity.getString(R.string.no_network))
+                        mVoteButton.position = mLastButtonPosition
                     }
 
-                } else {
-                    activity.showToast(activity.getString(R.string.no_network))
+
                 }
             }
 
@@ -187,7 +194,8 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
                 val badgeTransition = mAnimatedBadgeImageView.background as TransitionDrawable
                 badgeTransition.startTransition(DEFAULT_ANIMATIONS_DURATION.toInt())
-                mVoteButton.position = 0
+                mLastButtonPosition = 0
+                mVoteButton.position = mLastButtonPosition
 
                 mAnimatedBadgeImageView.setImageDrawable(mThiefPoliticianAnimation)
                 mAnimatedBadgeImageView.contentDescription = activity.getString(R.string.description_badge_thief_politician)
@@ -198,7 +206,8 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
             } else {
                 mCardView.setCardBackgroundColor(ContextCompat.getColor(activity, R.color.colorSemiTransparentAbsolve))
-                mVoteButton.position = 1
+                mLastButtonPosition = 1
+                mVoteButton.position = mLastButtonPosition
 
                 mAnimatedBadgeImageView.background = ContextCompat.getDrawable(activity, R.drawable.transition_badge_background)
                 mAnimatedBadgeImageView.setImageDrawable(mPoliticianThiefAnimation)
@@ -314,12 +323,6 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
                     }
                 }
                 animator.start()
-            }
-        }
-
-        fun notifyPoliticianAddedToMainList(email: String) {
-            if (politicianList.indexOfFirst { listPolitician -> listPolitician.email == email } == -1) {
-                (activity as MainListPresenterActivity).subscribeToModel()
             }
         }
 

@@ -52,7 +52,7 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
     private fun setPagerAdapter() {
         mPresenterActivity.politicians_pager_adapter.adapter = PoliticiansPagesAdapter(mPresenterActivity.supportFragmentManager)
-        mPresenterActivity.politicians_pager_adapter.offscreenPageLimit = 2
+        mPresenterActivity.politicians_pager_adapter.offscreenPageLimit = 3
         mPresenterActivity.politicians_pager_adapter.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) = Unit
 
@@ -168,19 +168,26 @@ class MainListView(val mPresenterActivity: MainListPresenterActivity) : MainList
 
     override fun notifyDeputadosNewList(deputados: ArrayList<Politician>) {
         mMainListDeputados = deputados
-        val deputadoFragment = (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter).getItem(1)
+
+        val deputadoFragment =
+                (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter)
+                        .getFragmentTag(mPresenterActivity.politicians_pager_adapter.id, 1)
         (deputadoFragment as MainListDeputadosView).notifyDeputadosNewList(deputados)
     }
 
     override fun notifySenadoresNewList(senadores: ArrayList<Politician>) {
         mMainListSenadores = senadores
-        val senadorFragment = (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter).getItem(0)
+        val senadorFragment =
+                (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter)
+                        .getFragmentTag(mPresenterActivity.politicians_pager_adapter.id, 0)
         (senadorFragment as MainListSenadoresView).notifySenadoresNewList(senadores)
     }
 
     override fun notifyGovernadoresNewList(governadores: ArrayList<Politician>){
         mMainListGovernadores = governadores
-        val governadorFragment = (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter).getItem(2)
+        val governadorFragment =
+                (mPresenterActivity.politicians_pager_adapter.adapter as PoliticiansPagesAdapter)
+                        .getFragmentTag(mPresenterActivity.politicians_pager_adapter.id, 2)
         (governadorFragment as MainListGovernadoresView).notifyGovernadoresNewList(governadores)
     }
 

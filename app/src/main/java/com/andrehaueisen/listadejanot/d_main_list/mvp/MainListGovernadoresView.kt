@@ -32,8 +32,11 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
 
     private lateinit var mGovernadoresRecyclerView: RecyclerView
     private lateinit var mEmptyListTextView: TextView
-
     private val mGovernadorList = ArrayList<Politician>()
+
+    interface GovernadoresDataFetcher{
+        fun subscribeToGovernadores()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -43,6 +46,14 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
         setRecyclerView(view)
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if(!(activity as MainListPresenterActivity).mIsScreenRotation) {
+            (activity as MainListGovernadoresView.GovernadoresDataFetcher).subscribeToGovernadores()
+        }
     }
 
     private fun setRecyclerView(view: View) {
@@ -69,9 +80,9 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     private fun changeVisibilityStatus(data: ArrayList<Politician>){
         if(data.isEmpty()){
             mEmptyListTextView.visibility = View.VISIBLE
-            mGovernadoresRecyclerView.visibility = View.GONE
+            mGovernadoresRecyclerView.visibility = View.INVISIBLE
         }else{
-            mEmptyListTextView.visibility = View.GONE
+            mEmptyListTextView.visibility = View.INVISIBLE
             mGovernadoresRecyclerView.visibility = View.VISIBLE
         }
     }

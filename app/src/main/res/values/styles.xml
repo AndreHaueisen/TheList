@@ -24,7 +24,7 @@
         <item name="android:dropDownSelector">@color/colorAccentDark</item>
         <item name="android:textColorHint">@color/colorSecondarySmooth</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:completionThreshold">3</item>
+        <item name="android:completionThreshold">2</item>
     </style>
 
     <style name="ButtonStyle" parent="@android:style/Widget.Material.Button">

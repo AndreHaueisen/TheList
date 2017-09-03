@@ -19,7 +19,11 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Presenter {
+class MainListPresenterActivity : AppCompatActivity(),
+        MainListMvpContract.Presenter,
+        MainListDeputadosView.DeputadosDataFetcher,
+        MainListGovernadoresView.GovernadoresDataFetcher,
+        MainListSenadoresView.SenadoresDataFetcher{
 
     @Inject
     lateinit var mModel: MainListModel
@@ -28,6 +32,7 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
 
     private var mView: MainListView? = null
     private val mCompositeDisposable = CompositeDisposable()
+    var mIsScreenRotation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,78 +44,74 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
                 .inject(this)
 
         if(savedInstanceState == null) {
+            mIsScreenRotation = false
             mView = MainListView(this)
             mView?.setViews()
-            mModel.connectToFirebase()
-            subscribeToModel()
         }else{
+            mIsScreenRotation = true
             mView = MainListView(this, savedInstanceState)
             mView?.setViews()
         }
     }
 
-    override fun onRestart() {
-        mModel.connectToFirebase()
-        super.onRestart()
-    }
-
-    private val mDeputadosMainListObserver = object : Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable) {
-            mCompositeDisposable.add(disposable)
-        }
-
-        override fun onNext(deputados: ArrayList<Politician>) {
-            mView?.notifyDeputadosNewList(deputados)
-        }
-
-        override fun onError(t: Throwable) = Unit
-
-        override fun onComplete() = Unit
-    }
-
-    private val mSenadoresMainListObserver = object : Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable) {
-            mCompositeDisposable.add(disposable)
-        }
-
-        override fun onNext(senadores: ArrayList<Politician>) {
-            mView?.notifySenadoresNewList(senadores)
-        }
-
-        override fun onError(e: Throwable) = Unit
-
-        override fun onComplete() = Unit
-    }
-
-    private val mGovernadoresMainListObserver = object: Observer<ArrayList<Politician>>{
-        override fun onSubscribe(disposable: Disposable) {
-            mCompositeDisposable.add(disposable)
-        }
-
-        override fun onNext(governadores: ArrayList<Politician>) {
-            mView?.notifyGovernadoresNewList(governadores)
-        }
-
-        override fun onError(e: Throwable) = Unit
-
-        override fun onComplete() = Unit
-    }
-
-    override fun subscribeToModel() {
+    override fun subscribeToDeputados() {
+        mModel.connectToDeputadosOnFirebase()
         mModel.loadDeputadosMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mDeputadosMainListObserver)
+                .subscribe(object : Observer<ArrayList<Politician>>{
+                    override fun onSubscribe(disposable: Disposable) {
+                        mCompositeDisposable.add(disposable)
+                    }
 
-        mModel.loadSenadoresMainList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mSenadoresMainListObserver)
+                    override fun onNext(deputados: ArrayList<Politician>) {
+                        mView?.notifyDeputadosNewList(deputados)
+                    }
 
+                    override fun onError(t: Throwable) = Unit
+
+                    override fun onComplete() = Unit
+                })
+    }
+
+    override fun subscribeToGovernadores() {
+        mModel.connectToGovernadoresOnFirebase()
         mModel.loadGovernadoresMainList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mGovernadoresMainListObserver)
+                .subscribe(object: Observer<ArrayList<Politician>>{
+                    override fun onSubscribe(disposable: Disposable) {
+                        mCompositeDisposable.add(disposable)
+                    }
+
+                    override fun onNext(governadores: ArrayList<Politician>) {
+                        mView?.notifyGovernadoresNewList(governadores)
+                    }
+
+                    override fun onError(e: Throwable) = Unit
+
+                    override fun onComplete() = Unit
+                })
+    }
+
+    override fun subscribeToSenadores() {
+        mModel.connectToSenadoresOnFirebase()
+        mModel.loadSenadoresMainList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<ArrayList<Politician>>{
+                    override fun onSubscribe(disposable: Disposable) {
+                        mCompositeDisposable.add(disposable)
+                    }
+
+                    override fun onNext(senadores: ArrayList<Politician>) {
+                        mView?.notifySenadoresNewList(senadores)
+                    }
+
+                    override fun onError(e: Throwable) = Unit
+
+                    override fun onComplete() = Unit
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,10 +135,14 @@ class MainListPresenterActivity : AppCompatActivity(), MainListMvpContract.Prese
         finish()
     }
 
+    override fun onStop() {
+        mIsScreenRotation = false
+        super.onStop()
+    }
+
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mModel.onDestroy()
-        mView = null
         super.onDestroy()
     }
 }

@@ -162,9 +162,9 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private fun beginDatabaseLoadingAlertDialog() {
         mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
                 .setCancelable(true)
-                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_urn_broom_24dp))
+                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_launcher))
                 .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
-                .setMessage(mPresenterActivity.getString(R.string.dialog_message_loading_database))
+                .setMessage("")
                 .create()
 
         mLoadingDatabaseAlertDialog?.show()
@@ -323,11 +323,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         if (isConnectedToInternet()) {
                             ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
                             updatePoliticianVote(politician, this@PoliticianSelectorView)
+                            mLastButtonPosition = position
                         } else {
                             showToast(getString(R.string.no_network))
+                            vote_radio_group.position = mLastButtonPosition
                         }
 
-                        mLastButtonPosition = position
                     }
                 }
 

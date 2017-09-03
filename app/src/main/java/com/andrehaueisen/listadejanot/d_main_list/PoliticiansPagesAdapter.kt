@@ -10,7 +10,7 @@ import com.andrehaueisen.listadejanot.d_main_list.mvp.MainListSenadoresView
 /**
  * Created by andre on 4/30/2017.
  */
-class PoliticiansPagesAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+class PoliticiansPagesAdapter(private val fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
     private val mFragmentsList: List<Fragment>
 
@@ -31,6 +31,12 @@ class PoliticiansPagesAdapter(fragmentManager: FragmentManager) : FragmentPagerA
     }
 
     override fun getItem(position: Int): Fragment = mFragmentsList[position]
+
+    fun getFragmentTag(viewPagerId: Int, fragmentPosition: Int): Fragment {
+        val fragmentTag = "android:switcher:$viewPagerId:$fragmentPosition"
+
+        return fragmentManager.findFragmentByTag(fragmentTag)
+    }
 
     override fun getCount(): Int = mFragmentsList.size
 
