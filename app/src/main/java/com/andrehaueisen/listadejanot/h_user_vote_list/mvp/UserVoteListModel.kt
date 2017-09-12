@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.util.ArrayMap
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
@@ -38,9 +39,9 @@ class UserVoteListModel(private val mContext: Context,
     private val COLUMNS_INDEX_IMAGE = 3
 
     private lateinit var mOnUserReadyPublisher: PublishSubject<User>
-    private lateinit var mOnVoteCountHashMapReadyPublisher: PublishSubject<HashMap<String, Long>>
+    private lateinit var mOnVoteCountArrayMapReadyPublisher: PublishSubject<ArrayMap<String, Long>>
     private lateinit var mUser: User
-    private lateinit var mVoteCountHashMap: HashMap<String, Long>
+    private lateinit var mVoteCountArrayMap: ArrayMap<String, Long>
 
     private val mOnUserVoteListReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mCompositeDisposable = CompositeDisposable()
@@ -64,10 +65,10 @@ class UserVoteListModel(private val mContext: Context,
         override fun onNext(user: User) {
             mUser = user
             if (mUser.condemnations.isNotEmpty()) {
-                mOnVoteCountHashMapReadyPublisher = mFirebaseRepository.getVoteCountList()
-                getVoteCountHashMap()
+                mOnVoteCountArrayMapReadyPublisher = mFirebaseRepository.getVoteCountList()
+                getVoteCountArrayMap()
             } else {
-                mOnUserVoteListReadyPublisher.onNext(arrayListOf<Politician>())
+                mOnUserVoteListReadyPublisher.onNext(arrayListOf())
             }
             mOnUserReadyPublisher.onComplete()
         }
@@ -80,14 +81,14 @@ class UserVoteListModel(private val mContext: Context,
         override fun onComplete() = Unit
     }
 
-    fun getVoteCountHashMap() = mOnVoteCountHashMapReadyPublisher
+    fun getVoteCountArrayMap() = mOnVoteCountArrayMapReadyPublisher
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(mOnVoteListCountReadyObservable)
 
-    private val mOnVoteListCountReadyObservable = object : Observer<HashMap<String, Long>> {
-        override fun onNext(voteCountHashMap: HashMap<String, Long>) {
-            mVoteCountHashMap = voteCountHashMap ?: HashMap()
+    private val mOnVoteListCountReadyObservable = object : Observer<ArrayMap<String, Long>> {
+        override fun onNext(voteCountArrayMap: ArrayMap<String, Long>) {
+            mVoteCountArrayMap = voteCountArrayMap ?: ArrayMap()
             initiateDataLoad()
         }
 
@@ -178,7 +179,7 @@ class UserVoteListModel(private val mContext: Context,
     }
 
     private fun createPolitician(post: Politician.Post, politicianName: String, politicianEmail: String, politicianImage: ByteArray) =
-            Politician(post, politicianName, mVoteCountHashMap[politicianEmail.encodeEmail()] ?: 0, politicianEmail, politicianImage)
+            Politician(post, politicianName, mVoteCountArrayMap[politicianEmail.encodeEmail()] ?: 0, politicianEmail, politicianImage)
 
 
     fun loadUserVotesList(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }

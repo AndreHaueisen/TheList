@@ -57,7 +57,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     }
 
     private fun setRecyclerView(view: View) {
-        mGovernadoresRecyclerView = view.findViewById<RecyclerView>(R.id.governadores_recycler_view)
+        mGovernadoresRecyclerView = view.findViewById(R.id.governadores_recycler_view)
         mGovernadoresRecyclerView.setHasFixedSize(true)
 
         val governadoresAdapter = PoliticianListAdapter(activity, mGovernadorList)
@@ -130,7 +130,7 @@ class MainListGovernadoresView: Fragment(), MainListMvpContract.GovernadoresView
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
-            mGovernadorList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_GOVERNADORES))
+            mGovernadorList.addAll(savedInstanceState.getParcelableArrayList(BUNDLE_GOVERNADORES))
             changeVisibilityStatus(mGovernadorList)
             mGovernadoresRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mGovernadoresRecyclerView.adapter.notifyDataSetChanged()

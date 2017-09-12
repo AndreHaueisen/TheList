@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 
 import com.google.firebase.database.Exclude;
 
@@ -89,7 +90,7 @@ public class Politician implements Parcelable, Comparable<Politician> {
         this.image = image;
     }
 
-    public Politician(Post post, String name, long votesNumber, HashMap<String, Object> condemnedBy, @Nullable String email, byte[] image) {
+    public Politician(Post post, String name, long votesNumber, ArrayMap<String, Object> condemnedBy, @Nullable String email, byte[] image) {
         this.post = post;
         this.name = name;
         this.votesNumber = votesNumber;
@@ -98,7 +99,7 @@ public class Politician implements Parcelable, Comparable<Politician> {
         this.image = image;
     }
 
-    public Politician(Post post, String imageUrl, String name, @Nullable String email, byte[] image) {
+    public Politician(Post post, String name, @Nullable String email, byte[] image) {
         this.post = post;
         this.name = name;
         this.email = email;
@@ -200,7 +201,7 @@ public class Politician implements Parcelable, Comparable<Politician> {
 
     public Map<String, Object> toSimpleMap(Boolean isDataGoingToPreList) {
 
-        Map<String, Object> simplePoliticianMap = new HashMap<>();
+        Map<String, Object> simplePoliticianMap = new ArrayMap<>();
         simplePoliticianMap.put("name", name);
         simplePoliticianMap.put("votesNumber", votesNumber);
         simplePoliticianMap.put("condemnedBy", condemnedBy);

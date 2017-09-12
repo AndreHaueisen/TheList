@@ -72,16 +72,16 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
 
     inner class PoliticianHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val mCardView: CardView = itemView.findViewById<CardView>(R.id.card_view)
-        private val mPoliticianImageView: ImageView = itemView.findViewById<ImageView>(R.id.politician_image_view)
-        private val mPlusOneAnimationTextView: TextView = itemView.findViewById<TextView>(R.id.plus_one_text_view)
-        private val mNameTextView: TextView = itemView.findViewById<TextView>(R.id.name_text_view)
+        private val mCardView: CardView = itemView.findViewById(R.id.card_view)
+        private val mPoliticianImageView: ImageView = itemView.findViewById(R.id.politician_image_view)
+        private val mPlusOneAnimationTextView: TextView = itemView.findViewById(R.id.plus_one_text_view)
+        private val mNameTextView: TextView = itemView.findViewById(R.id.name_text_view)
         private val mSearchButton = itemView.findViewById<ImageButton>(R.id.search_on_web_button) as ImageButton
         private val mEmailButton = itemView.findViewById<ImageButton>(R.id.email_button)
-        private val mVotesNumberTextView: TextView = itemView.findViewById<TextView>(R.id.votes_number_text_view)
-        private val mAnimatedBadgeImageView: ImageView = itemView.findViewById<ImageView>(R.id.badge_image_view)
-        private val mOpinionsButton: ImageButton = itemView.findViewById<ImageButton>(R.id.opinions_button)
-        private val mVoteButton: RadioRealButtonGroup = itemView.findViewById<RadioRealButtonGroup>(R.id.vote_radio_group)
+        private val mVotesNumberTextView: TextView = itemView.findViewById(R.id.votes_number_text_view)
+        private val mAnimatedBadgeImageView: ImageView = itemView.findViewById(R.id.badge_image_view)
+        private val mOpinionsButton: ImageButton = itemView.findViewById(R.id.opinions_button)
+        private val mVoteButton: RadioRealButtonGroup = itemView.findViewById(R.id.vote_radio_group)
         private val mPoliticianThiefAnimation = activity.getDrawable(R.drawable.anim_politician_thief) as AnimatedVectorDrawable
         private val mThiefPoliticianAnimation = activity.getDrawable(R.drawable.anim_thief_politician) as AnimatedVectorDrawable
         private var mLastButtonPosition = 0

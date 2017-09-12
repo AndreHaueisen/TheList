@@ -56,7 +56,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     }
 
     private fun setRecyclerView(view: View) {
-        mDeputadosRecyclerView = view.findViewById<RecyclerView>(R.id.deputados_recycler_view)
+        mDeputadosRecyclerView = view.findViewById(R.id.deputados_recycler_view)
         mDeputadosRecyclerView.setHasFixedSize(true)
 
         val deputadosAdapter = PoliticianListAdapter(activity, mDeputadosList)
@@ -130,7 +130,7 @@ class MainListDeputadosView : Fragment(), MainListMvpContract.DeputadosView {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
-            mDeputadosList.addAll(savedInstanceState.getParcelableArrayList<Politician>(BUNDLE_DEPUTADOS))
+            mDeputadosList.addAll(savedInstanceState.getParcelableArrayList(BUNDLE_DEPUTADOS))
             changeVisibilityStatus(mDeputadosList)
             mDeputadosRecyclerView.layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_MANAGER))
             mDeputadosRecyclerView.adapter.notifyDataSetChanged()

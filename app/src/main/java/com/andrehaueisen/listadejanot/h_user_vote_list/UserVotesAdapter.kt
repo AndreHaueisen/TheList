@@ -52,12 +52,12 @@ class UserVotesAdapter(val mActivity: Activity, private val mUserVotes: List<Pol
 
     inner class VoteHolder(voteView: View): RecyclerView.ViewHolder(voteView){
 
-        private val mThumbnailImage: ImageView = voteView.findViewById<ImageView>(R.id.face_thumbnail_image_view)
-        private val mNameTextView: TextView = voteView.findViewById<TextView>(R.id.name_text_view)
-        private val mVoteDateTextView: TextView = voteView.findViewById<TextView>(R.id.vote_date_text_view)
-        private val mTotalVotesTextView: TextView = voteView.findViewById<TextView>(R.id.total_votes_text_view)
-        private val mMissingVotesTextView: TextView = voteView.findViewById<TextView>(R.id.missing_votes_text_view)
-        private val mVoteButton: ToggleButton = itemView.findViewById<ToggleButton>(R.id.review_vote_toggle_button)
+        private val mThumbnailImage: ImageView = voteView.findViewById(R.id.face_thumbnail_image_view)
+        private val mNameTextView: TextView = voteView.findViewById(R.id.name_text_view)
+        private val mVoteDateTextView: TextView = voteView.findViewById(R.id.vote_date_text_view)
+        private val mTotalVotesTextView: TextView = voteView.findViewById(R.id.total_votes_text_view)
+        private val mMissingVotesTextView: TextView = voteView.findViewById(R.id.missing_votes_text_view)
+        private val mVoteButton: ToggleButton = itemView.findViewById(R.id.review_vote_toggle_button)
 
         internal fun bindVotesToViews(userVote: Politician){
 
