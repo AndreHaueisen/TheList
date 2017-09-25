@@ -2,7 +2,6 @@ package com.andrehaueisen.listadejanot.i_opinions
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.ArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.andrehaueisen.listadejanot.R
 /**
  * Created by andre on 8/1/2017.
  */
-class OpinionsAdapter(val context: Context, opinionsMap: ArrayMap<String, String>): RecyclerView.Adapter<OpinionsAdapter.OpinionViewHolder>(){
+class OpinionsAdapter(val context: Context, opinionsMap: HashMap<String, String>): RecyclerView.Adapter<OpinionsAdapter.OpinionViewHolder>(){
 
     private var opinions = opinionsMap.values.toMutableList()
     private var emailKeys = opinionsMap.keys.toMutableSet()

@@ -249,7 +249,7 @@ class PoliticianSelectorModel(private val mContext: Context,
                     }
 
             mSearchablePoliticianList.add(governador)
-        } catch (noSuckElement: NoSuchElementException){
+        } catch (noSuchElement: NoSuchElementException){
             mSearchablePoliticianList.add(governador)
         }
     }

@@ -116,9 +116,9 @@ class UserVotesAdapter(val mActivity: Activity, private val mUserVotes: List<Pol
             }
         }
 
-        private fun formatDateText(userVoteEmail: String): String{
+        private fun formatDateText(userVoteEmail: String?): String{
 
-            val timestamp = mUser.condemnations[userVoteEmail.encodeEmail()] as Long
+            val timestamp = mUser.condemnations[userVoteEmail?.encodeEmail()] as Long
             val date = Date(timestamp)
             val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 

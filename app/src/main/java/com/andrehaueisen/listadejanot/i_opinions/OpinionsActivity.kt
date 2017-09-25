@@ -5,7 +5,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.ArrayMap
 import android.view.View
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
@@ -40,7 +39,7 @@ class OpinionsActivity : AppCompatActivity() {
     @Named("opinions")
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
-    private val mOpinionsMap = ArrayMap<String, String>()
+    private val mOpinionsMap: HashMap<String, String> = HashMap()
 
     private lateinit var mPoliticianEmail: String
     private var mUserEmail: String? = null
@@ -155,7 +154,7 @@ class OpinionsActivity : AppCompatActivity() {
             val firebaseAction = pair.first
             val dataSnapshot = pair.second
 
-            fun hasUserAOpinion(opinionsMap: ArrayMap<String, String>, currentUserEmail: String?): Boolean = opinionsMap.containsKey(currentUserEmail?.encodeEmail())
+            fun hasUserAOpinion(opinionsMap: HashMap<String, String>, currentUserEmail: String?): Boolean = opinionsMap.containsKey(currentUserEmail?.encodeEmail())
 
             when (firebaseAction) {
                 FirebaseRepository.FirebaseAction.CHILD_ADDED -> {

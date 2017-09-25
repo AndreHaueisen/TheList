@@ -231,7 +231,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     .into(politician_image_view)
             politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
 
-            post_text_view.text = politician.post.name
+            post_text_view.text = politician.post?.name
             name_text_view.text = politician.name
             missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
@@ -404,7 +404,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                         try {
                             outStream = FileOutputStream(tempPic)
-                            val mBitmap = BitmapFactory.decodeByteArray(politician.image, 0, politician.image.size)
+                            val mBitmap = BitmapFactory.decodeByteArray(politician.image, 0, politician.image!!.size)
                             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
 
                         } catch (e: Exception) {

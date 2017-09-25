@@ -1,7 +1,6 @@
 package com.andrehaueisen.listadejanot.b_firebase
 
 import android.content.Context
-import android.util.ArrayMap
 import android.util.Log
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
@@ -26,7 +25,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     private lateinit var mPublishGovernadoresMainList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishGovernadoresPreList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishUser: PublishSubject<User>
-    private lateinit var mPublishVoteCountList: PublishSubject<ArrayMap<String, Long>>
+    private lateinit var mPublishVoteCountList: PublishSubject<HashMap<String, Long>>
     private lateinit var mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>>
 
     private val mMainListSenadores = ArrayList<Politician>()
@@ -46,8 +45,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                                     viewHolder: PoliticianListAdapter.PoliticianHolder?,
                                     politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-        fun changeIsSenadorOnMainListStatus(email: String, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(email.encodeEmail())
+        fun changeIsSenadorOnMainListStatus(email: String?, isOnMainList: Boolean) {
+            val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(email?.encodeEmail())
             val mutableMap = mutableMapOf<String, Any>()
             mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
             database.updateChildren(mutableMap)
@@ -57,7 +56,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                                         userEmail: String,
                                         viewHolder: PoliticianListAdapter.PoliticianHolder?) {
 
-            val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador1.email.encodeEmail())
+            val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador1.email?.encodeEmail())
 
             database.runTransaction(object : Transaction.Handler {
 
@@ -104,7 +103,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             if (senador.post == Politician.Post.SENADOR || senador.post == Politician.Post.SENADORA) {
                 val database = mDatabaseReference
                         .child(LOCATION_SENADORES_PRE_LIST)
-                        .child(senador.email.encodeEmail())
+                        .child(senador.email?.encodeEmail())
 
                 database.runTransaction(object : Transaction.Handler {
 
@@ -118,7 +117,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                             updateVoteCountOnFirebase(updatedSenador)
                             updateUserVoteList(userEmail, updatedSenador)
                             val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedSenador.isOnMainList || (!updatedSenador.isOnMainList && updatedSenador.votesNumber >= minimumVotesToMainList)) {
+                            if (updatedSenador.onMainList || (!updatedSenador.onMainList && updatedSenador.votesNumber >= minimumVotesToMainList)) {
                                 updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
                             }
 
@@ -166,8 +165,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                                      viewHolder: PoliticianListAdapter.PoliticianHolder?,
                                      politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-        fun changeIsDeputadoOnMainListStatus(email: String, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(email.encodeEmail())
+        fun changeIsDeputadoOnMainListStatus(email: String?, isOnMainList: Boolean) {
+            val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(email?.encodeEmail())
             val mutableMap = mutableMapOf<String, Any>()
             mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
             database.updateChildren(mutableMap)
@@ -179,7 +178,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
             val database = mDatabaseReference
                     .child(LOCATION_DEPUTADOS_MAIN_LIST)
-                    .child(deputado1.email.encodeEmail())
+                    .child(deputado1.email?.encodeEmail())
 
             database.runTransaction(object : Transaction.Handler {
 
@@ -225,7 +224,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             if (deputado.post == Politician.Post.DEPUTADO || deputado.post == Politician.Post.DEPUTADA) {
                 val database = mDatabaseReference
                         .child(LOCATION_DEPUTADOS_PRE_LIST)
-                        .child(deputado.email.encodeEmail())
+                        .child(deputado.email?.encodeEmail())
 
                 database.runTransaction(object : Transaction.Handler {
 
@@ -239,7 +238,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                             updateVoteCountOnFirebase(updatedDeputado)
                             updateUserVoteList(userEmail, updatedDeputado)
                             val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedDeputado.isOnMainList || (!updatedDeputado.isOnMainList && updatedDeputado.votesNumber >= minimumVotesToMainList)) {
+                            if (updatedDeputado.onMainList || (!updatedDeputado.onMainList && updatedDeputado.votesNumber >= minimumVotesToMainList)) {
                                 updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
                             }
 
@@ -289,8 +288,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                                        viewHolder: PoliticianListAdapter.PoliticianHolder?,
                                        politicianSelectorView: PoliticianSelectorMvpContract.View?) {
 
-        fun changeIsGovernadorOnMainListStatus(email: String, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).child(email.encodeEmail())
+        fun changeIsGovernadorOnMainListStatus(email: String?, isOnMainList: Boolean) {
+            val database = mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).child(email?.encodeEmail())
             val mutableMap = mutableMapOf<String, Any>()
             mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
             database.updateChildren(mutableMap)
@@ -302,7 +301,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
             val database = mDatabaseReference
                     .child(LOCATION_GOVERNADORES_MAIN_LIST)
-                    .child(governador1.email.encodeEmail())
+                    .child(governador1.email?.encodeEmail())
 
             database.runTransaction(object : Transaction.Handler {
 
@@ -349,7 +348,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             if (governador.post == Politician.Post.GOVERNADOR || governador.post == Politician.Post.GOVERNADORA) {
                 val database = mDatabaseReference
                         .child(LOCATION_GOVERNADORES_PRE_LIST)
-                        .child(governador.email.encodeEmail())
+                        .child(governador.email?.encodeEmail())
 
                 database.runTransaction(object : Transaction.Handler {
 
@@ -363,7 +362,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                             updateVoteCountOnFirebase(updatedGovernador)
                             updateUserVoteList(userEmail, updatedGovernador)
                             val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedGovernador.isOnMainList || (!updatedGovernador.isOnMainList && updatedGovernador.votesNumber >= minimumVotesToMainList)) {
+                            if (updatedGovernador.onMainList || (!updatedGovernador.onMainList && updatedGovernador.votesNumber >= minimumVotesToMainList)) {
                                 updateGovernadorVoteOnMainList(updatedGovernador, userEmail, viewHolder)
                             }
 
@@ -411,9 +410,9 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     private fun updateVoteCountOnFirebase(updatedPolitician: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_VOTE_COUNT)
-        val emailVotesArrayMap = ArrayMap<String, Long>()
-        emailVotesArrayMap[updatedPolitician.email.encodeEmail()] = updatedPolitician.votesNumber
-        database.updateChildren(emailVotesArrayMap.toMap())
+        val emailVotesMap = HashMap<String?, Long>()
+        emailVotesMap[updatedPolitician.email?.encodeEmail()] = updatedPolitician.votesNumber
+        database.updateChildren(emailVotesMap.toMap())
     }
 
     private fun updateUserVoteList(userEmail: String, updatedPolitician: Politician) {
@@ -424,10 +423,10 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
 
                 val user: User = mutableData.getValue(User::class.java) ?: User()
-                val politicianEmail = updatedPolitician.email.encodeEmail()
+                val politicianEmail = updatedPolitician.email?.encodeEmail()
 
                 if (updatedPolitician.condemnedBy.contains(userEmail.encodeEmail())) {
-                    user.condemnations[politicianEmail] = (ServerValue.TIMESTAMP)
+                    user.condemnations[politicianEmail!!] = (ServerValue.TIMESTAMP)
                 } else {
                     user.condemnations.remove(politicianEmail)
                 }
@@ -461,7 +460,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     private val mListenerForVoteCountList = object: ValueEventListener{
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            val voteCountList = ArrayMap<String, Long>()
+            val voteCountList = HashMap<String, Long>()
 
             if(dataSnapshot != null && dataSnapshot.exists()){
 
@@ -627,7 +626,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishUser
     }
 
-    fun getVoteCountList(): PublishSubject<ArrayMap<String, Long>>{
+    fun getVoteCountList(): PublishSubject<HashMap<String, Long>>{
         mPublishVoteCountList = PublishSubject.create()
         mDatabaseReference.child(LOCATION_VOTE_COUNT).addListenerForSingleValueEvent(mListenerForVoteCountList)
 
@@ -748,7 +747,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private fun addSenadorOnMainList(senador: Politician) {
 
-        val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail())
+        val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email?.encodeEmail())
         database.setValue(senador.toSimpleMap(false), ({ _, _ ->
             Log.i(LOG_TAG, "New senador on main list")
         }))
@@ -757,7 +756,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private fun addSenadorOnPreList(senador: Politician) {
 
-        val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email.encodeEmail())
+        val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email?.encodeEmail())
         database.setValue(senador.toSimpleMap(true), ({ _, _ ->
 
         }))
@@ -766,7 +765,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private fun addDeputadoOnMainList(deputado: Politician) {
 
-        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email.encodeEmail())
+        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email?.encodeEmail())
         database.setValue(deputado.toSimpleMap(false), ({ _, _ ->
             Log.i(LOG_TAG, "New deputado on main list")
         }))
@@ -775,7 +774,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private fun addDeputadoOnPreList(deputado: Politician) {
 
-        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email.encodeEmail())
+        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email?.encodeEmail())
         database.setValue(deputado.toSimpleMap(true), ({ _, _ ->
 
         }))
@@ -783,11 +782,11 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     }
 
     private fun removeSenadorFromMainList(senador: Politician) {
-        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email.encodeEmail()).removeValue()
+        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email?.encodeEmail()).removeValue()
     }
 
     private fun removeDeputadoFromMainList(deputado: Politician) {
-        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email.encodeEmail()).removeValue()
+        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email?.encodeEmail()).removeValue()
     }
 
     private fun saveSenadoresOnMainList(senadores: ArrayList<Politician>) {
@@ -795,7 +794,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
-                .forEach { senador -> mapSenadores.put("/${senador.email.encodeEmail()}/", senador.toSimpleMap(false)) }
+                .forEach { senador -> mapSenadores.put("/${senador.email?.encodeEmail()}/", senador.toSimpleMap(false)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
@@ -813,7 +812,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
-                .forEach { senador -> mapSenadores.put("/${senador.email.encodeEmail()}/", senador.toSimpleMap(true)) }
+                .forEach { senador -> mapSenadores.put("/${senador.email?.encodeEmail()}/", senador.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
@@ -828,7 +827,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA }
-                .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap(false)) }
+                .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap(false)) }
 
         database.updateChildren(mapSenadores, { _, _ -> })
     }
@@ -838,7 +837,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA}
-                .forEach { deputado -> mapSenadores.put("/${deputado.email.encodeEmail()}/", deputado.toSimpleMap(true)) }
+                .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
@@ -854,7 +853,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         governadores.filter { it.post == Politician.Post.GOVERNADOR || it.post == Politician.Post.GOVERNADORA}
-                .forEach { governador -> mapSenadores.put("/${governador.email.encodeEmail()}/", governador.toSimpleMap(true)) }
+                .forEach { governador -> mapSenadores.put("/${governador.email?.encodeEmail()}/", governador.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
