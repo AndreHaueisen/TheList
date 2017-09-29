@@ -25,6 +25,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RatingBar
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
@@ -37,6 +38,8 @@ import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.*
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.e_activity_politician_selector.*
+import kotlinx.android.synthetic.main.group_layout_grades.*
+import kotlinx.android.synthetic.main.group_layout_rating_bars.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -136,6 +139,146 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         dismissAlertDialog()
     }
 
+    private fun setRatingBarsClickListeners(politician: Politician) = with(mPresenterActivity) {
+        val user = getUser()
+        val politicianEncodedEmail = politician.email?.encodeEmail()
+
+        honesty_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
+            val outdatedUserGrade = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+
+            if (changedByUser) {
+                with(politician) {
+
+                    mPresenterActivity.updateGrade(RatingBarType.HONESTY, outdatedUserGrade, newGrade, this)
+                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = honestyGrade != UNEXISTING_GRADE_VALUE
+
+                    honestyGrade = if (isNotFirstGrade) {
+                        if (containsUserPastGrade) {
+                            ((honestyGrade * honestyCount) - outdatedUserGrade + newGrade) / honestyCount
+                        } else {
+                            honestyCount++
+                            ((honestyGrade * (honestyCount - 1)) + newGrade) / honestyCount
+                        }
+                    } else {
+                        honestyCount++
+                        newGrade
+                    }
+
+                    honesty_grade_text_view.text = honestyGrade.toString()
+                }
+            }
+        }
+
+        leader_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
+            val outdatedUserGrade = user.leaderGrades[politician.email?.encodeEmail()] ?: UNEXISTING_GRADE_VALUE
+
+            if (changedByUser) {
+                with(politician) {
+
+                    mPresenterActivity.updateGrade(RatingBarType.LEADER, outdatedUserGrade, newGrade, this)
+                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = leaderGrade != UNEXISTING_GRADE_VALUE
+
+                    leaderGrade = if (isNotFirstGrade) {
+                        if (containsUserPastGrade) {
+                            ((leaderGrade * leaderCount) - outdatedUserGrade + newGrade) / leaderCount
+                        } else {
+                            leaderCount++
+                            ((leaderGrade * (leaderCount - 1)) + newGrade) / leaderCount
+                        }
+                    } else {
+                        leaderCount++
+                        newGrade
+                    }
+
+                    leader_grade_text_view.text = leaderGrade.toString()
+                }
+            }
+        }
+
+        promise_keeper_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
+            val outdatedUserGrade = user.promiseKeeperGrades[politician.email?.encodeEmail()] ?: UNEXISTING_GRADE_VALUE
+
+            if (changedByUser) {
+                with(politician) {
+
+                    mPresenterActivity.updateGrade(RatingBarType.PROMISE_KEEPER, outdatedUserGrade, newGrade, this)
+                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = promiseKeeperGrade != UNEXISTING_GRADE_VALUE
+
+                    promiseKeeperGrade = if (isNotFirstGrade) {
+                        if (containsUserPastGrade) {
+                            ((promiseKeeperGrade * promiseKeeperCount) - outdatedUserGrade + newGrade) / promiseKeeperCount
+                        } else {
+                            promiseKeeperCount++
+                            ((promiseKeeperGrade * (promiseKeeperCount - 1)) + newGrade) / promiseKeeperCount
+                        }
+                    } else {
+                        promiseKeeperCount++
+                        newGrade
+                    }
+
+                    promise_keeper_grade_text_view.text = promiseKeeperGrade.toString()
+                }
+            }
+        }
+
+        rules_for_the_people_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
+            val outdatedUserGrade = user.rulesForThePeopleGrades[politician.email?.encodeEmail()] ?: UNEXISTING_GRADE_VALUE
+
+            if (changedByUser) {
+                with(politician) {
+
+                    mPresenterActivity.updateGrade(RatingBarType.RULES_FOR_PEOPLE, outdatedUserGrade, newGrade, this)
+                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = rulesForThePeopleGrade != UNEXISTING_GRADE_VALUE
+
+                    rulesForThePeopleGrade = if (isNotFirstGrade) {
+                        if (containsUserPastGrade) {
+                            ((rulesForThePeopleGrade * rulesForThePeopleCount) - outdatedUserGrade + newGrade) / rulesForThePeopleCount
+                        } else {
+                            rulesForThePeopleCount++
+                            ((rulesForThePeopleGrade * (rulesForThePeopleCount - 1)) + newGrade) / rulesForThePeopleCount
+                        }
+                    } else {
+                        rulesForThePeopleCount++
+                        newGrade
+                    }
+
+                    rules_for_the_people_grade_text_view.text = rulesForThePeopleGrade.toString()
+                }
+            }
+        }
+
+        answer_voters_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
+            val outdatedUserGrade = user.answerVotersGrades[politician.email?.encodeEmail()] ?: UNEXISTING_GRADE_VALUE
+
+            if (changedByUser) {
+                with(politician) {
+
+                    mPresenterActivity.updateGrade(RatingBarType.ANSWER_VOTERS, outdatedUserGrade, newGrade, this)
+                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = answerVotersGrade != UNEXISTING_GRADE_VALUE
+
+                    answerVotersGrade = if (isNotFirstGrade) {
+                        if (containsUserPastGrade) {
+                            ((answerVotersGrade * answerVotersCount) - outdatedUserGrade + newGrade) / answerVotersCount
+                        } else {
+                            answerVotersCount++
+                            ((answerVotersGrade * (answerVotersCount - 1)) + newGrade) / answerVotersCount
+                        }
+                    } else {
+                        answerVotersCount++
+                        newGrade
+                    }
+
+                    answer_voters_grade_text_view.text = answerVotersGrade.toString()
+                }
+            }
+        }
+    }
+
     private fun setOnCompleteTextViewClickListener() = with(mPresenterActivity) {
         auto_complete_text_view.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             dismissKeyBoard()
@@ -202,6 +345,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 setPoliticianImageClickListener()
             }
+            setRatingBarsClickListeners(politician)
             setShareButtonClickListener(politician)
             setSearchOnWebButtonClickListener(politician)
             setEmailButtonClickListener(politician)
@@ -223,6 +367,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
 
         with(mPresenterActivity) {
+            val user = getUser()
+
             mGlide.load(politician.image)
                     .crossFade()
                     .placeholder(R.drawable.politician_placeholder)
@@ -235,6 +381,19 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             name_text_view.text = politician.name
             missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
             votes_number_text_view.text = politician.votesNumber.toString()
+
+            val politicianEncodedEmail = politician.email?.encodeEmail()
+            honesty_rating_bar.rating = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE +1
+            leader_rating_bar.rating = user.leaderGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
+            promise_keeper_rating_bar.rating = user.promiseKeeperGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
+            rules_for_the_people_rating_bar.rating = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
+            answer_voters_rating_bar.rating = user.answerVotersGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
+
+            honesty_grade_text_view.text = politician.honestyGrade.toString()
+            leader_grade_text_view.text = politician.leaderGrade.toString()
+            promise_keeper_grade_text_view.text = politician.promiseKeeperGrade.toString()
+            rules_for_the_people_grade_text_view.text = politician.rulesForThePeopleGrade.toString()
+            answer_voters_grade_text_view.text = politician.answerVotersGrade.toString()
         }
     }
 
@@ -243,14 +402,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         with(mPresenterActivity) {
             if (mIsInitialRequest) {
 
-                share_button.visibility = View.VISIBLE
-                search_on_web_button.visibility = View.VISIBLE
-                email_button.visibility = View.VISIBLE
-                badge_image_view.visibility = View.VISIBLE
-                opinions_button.visibility = View.VISIBLE
-                vote_radio_group.visibility = View.VISIBLE
-                vote_title_text_view.visibility = View.VISIBLE
-                orientation_text_view.visibility = View.INVISIBLE
+                politician_info_group.visibility = View.VISIBLE
+                orientation_text_view.visibility = View.GONE
 
                 ExpectAnim()
                         .expect(delete_text_image_button)
@@ -319,7 +472,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 vote_radio_group.setOnClickedButtonListener { _, position ->
 
-                    if(position != mLastButtonPosition){
+                    if (position != mLastButtonPosition) {
                         if (isConnectedToInternet()) {
                             ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
                             updatePoliticianVote(politician, this@PoliticianSelectorView)

@@ -15,7 +15,9 @@ import com.andrehaueisen.listadejanot.e_search_politician.dagger.PoliticianSelec
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -38,6 +40,10 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
     @Inject
     lateinit var mFirebaseRepository: FirebaseRepository
+    @Inject
+    lateinit var mUserValueEventListener: ValueEventListener
+
+    private val mUser = User()
 
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
@@ -73,9 +79,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager))
+                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager, mUser))
                 .build()
                 .inject(this)
+
+        mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
 
         if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this, mFirebaseRepository)
@@ -197,6 +205,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         finish()
     }
 
+    fun getUser() = mUser
+
+    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
+        mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician, mUser)
+    } else {
+        startNewActivity(LoginActivity::class.java)
+        finish()
+    }
+
     override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
         val intent = Intent(this, UserVoteListPresenterActivity::class.java)
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
@@ -223,6 +240,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
         mSinglePoliticianModel.onDestroy()
+        mFirebaseRepository.destroyUserListener(mUserValueEventListener, getUserEmail())
         mView?.onDestroy()
         mView = null
         super.onDestroy()

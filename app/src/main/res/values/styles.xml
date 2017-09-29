@@ -19,6 +19,12 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
+    <style name="RatingBarStyle" parent="@android:style/Widget.Material.RatingBar">
+        <item name="android:progressTint"> @color/colorPrimaryLight </item>
+        <item name="android:progressBackgroundTint"> @color/colorSecondary </item>
+        <item name="android:secondaryProgressTint"> @color/colorPrimaryLight </item>
+    </style>
+
     <style name="Autocomplete" parent="@android:style/Widget.Material.AutoCompleteTextView">
         <item name="android:fontFamily">@font/lato_light</item>
         <item name="android:dropDownSelector">@color/colorAccentDark</item>

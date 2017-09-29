@@ -91,6 +91,13 @@
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
     <string name="search_on_web">Search on web</string>
+
+    <string name="honesty_title">Honesty</string>
+    <string name="leader_title">Leader</string>
+    <string name="promise_keeper_title">Keeps promises</string>
+    <string name="rules_for_the_people_title">Rules for the people</string>
+    <string name="answer_voters_title">Answer voters</string>
+
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">Missing %1$d vote to be condemned</item>
         <item quantity="other">Missing %1$d votes to be condemned</item>

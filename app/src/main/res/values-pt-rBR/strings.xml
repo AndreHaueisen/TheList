@@ -74,6 +74,13 @@
     <string name="governor">Governador</string>
     <string name="governora">Governadora</string>
     <string name="search_on_web">Procurar na web</string>
+
+    <string name="honesty_title">Honestidade</string>
+    <string name="leader_title">Liderança</string>
+    <string name="promise_keeper_title">Cumpre promessas</string>
+    <string name="rules_for_the_people_title">Governa pelo povo</string>
+    <string name="answer_voters_title">Responde eleitores</string>
+
     <plurals name="missing_votes_to_threshold">
         <item quantity="one">Falta %1$d voto para ser suspeito</item>
         <item quantity="other">Faltam %1$d votos para ser suspeito</item>

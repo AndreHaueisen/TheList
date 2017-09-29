@@ -211,6 +211,18 @@ class PoliticianSelectorModel(private val mContext: Context,
                     .also {
                         deputado.votesNumber = it.votesNumber
                         deputado.condemnedBy = it.condemnedBy
+
+                        deputado.honestyGrade = it.honestyGrade
+                        deputado.honestyCount = it.honestyCount
+                        deputado.leaderGrade = it.leaderGrade
+                        deputado.leaderCount = it.leaderCount
+                        deputado.promiseKeeperGrade = it.promiseKeeperGrade
+                        deputado.promiseKeeperCount = it.promiseKeeperCount
+                        deputado.rulesForThePeopleGrade = it.rulesForThePeopleGrade
+                        deputado.rulesForThePeopleCount = it.rulesForThePeopleCount
+                        deputado.answerVotersGrade = it.answerVotersGrade
+                        deputado.answerVotersCount = it.answerVotersCount
+
                         mDeputadosPreList.remove(it)
                     }
 
@@ -228,6 +240,18 @@ class PoliticianSelectorModel(private val mContext: Context,
                     .also {
                         senador.votesNumber = it.votesNumber
                         senador.condemnedBy = it.condemnedBy
+
+                        senador.honestyGrade = it.honestyGrade
+                        senador.honestyCount = it.honestyCount
+                        senador.leaderGrade = it.leaderGrade
+                        senador.leaderCount = it.leaderCount
+                        senador.promiseKeeperGrade = it.promiseKeeperGrade
+                        senador.promiseKeeperCount = it.promiseKeeperCount
+                        senador.rulesForThePeopleGrade = it.rulesForThePeopleGrade
+                        senador.rulesForThePeopleCount = it.rulesForThePeopleCount
+                        senador.answerVotersGrade = it.answerVotersGrade
+                        senador.answerVotersCount = it.answerVotersCount
+
                         mSenadoresPreList.remove(it)
                     }
 
@@ -245,6 +269,18 @@ class PoliticianSelectorModel(private val mContext: Context,
                     .also{
                         governador.votesNumber = it.votesNumber
                         governador.condemnedBy = it.condemnedBy
+
+                        governador.honestyGrade = it.honestyGrade
+                        governador.honestyCount = it.honestyCount
+                        governador.leaderGrade = it.leaderGrade
+                        governador.leaderCount = it.leaderCount
+                        governador.promiseKeeperGrade = it.promiseKeeperGrade
+                        governador.promiseKeeperCount = it.promiseKeeperCount
+                        governador.rulesForThePeopleGrade = it.rulesForThePeopleGrade
+                        governador.rulesForThePeopleCount = it.rulesForThePeopleCount
+                        governador.answerVotersGrade = it.answerVotersGrade
+                        governador.answerVotersCount = it.answerVotersCount
+
                         mGovernadoresPreList.remove(it)
                     }
 

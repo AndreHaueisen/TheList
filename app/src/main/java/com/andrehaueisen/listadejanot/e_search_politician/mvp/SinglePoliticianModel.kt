@@ -10,9 +10,11 @@ import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_POLITICIAN_NAME
 import com.andrehaueisen.listadejanot.utilities.LOADER_ID
 import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS_NAME_NO_EMAIL
+import com.andrehaueisen.listadejanot.utilities.RatingBarType
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 
@@ -115,6 +117,11 @@ class SinglePoliticianModel(private val mContext: Context,
                     mFirebaseRepository.handleGovernadorVoteOnDatabase(politician, it, null, view)
             }
         }
+    }
+
+    fun updateGrade(voteType: RatingBarType, outdatedGrade:Float, newGrade: Float, politician: Politician, user: User){
+        val userEmail = mFirebaseAuthenticator.getUserEmail()!!
+        mFirebaseRepository.handleGradeChange(voteType, outdatedGrade, newGrade, politician, userEmail, user)
     }
 
     override fun loadSinglePoliticianPublisher(): PublishSubject<Politician> =

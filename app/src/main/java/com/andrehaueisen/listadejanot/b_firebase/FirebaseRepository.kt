@@ -35,9 +35,10 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     private val mMainListGovernadores = ArrayList<Politician>()
     private val mPreListGovernadores = ArrayList<Politician>()
 
-    enum class FirebaseAction{
+    enum class FirebaseAction {
         CHILD_ADDED, CHILD_REMOVED, CHILD_CHANGED
     }
+
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
     fun handleSenadorVoteOnDatabase(senador: Politician,
@@ -407,6 +408,171 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         updateGovernadorVoteOnPreList(userEmail, politicianSelectorView)
     }
 
+    fun handleGradeChange(voteType: RatingBarType, outdatedUserGrade: Float, newGrade: Float, politician: Politician, userEmail: String, user: User) {
+
+        val politicianType = when (politician.post) {
+            Politician.Post.SENADOR, Politician.Post.SENADORA -> LOCATION_SENADORES_PRE_LIST
+            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> LOCATION_DEPUTADOS_PRE_LIST
+            Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> LOCATION_GOVERNADORES_PRE_LIST
+            else -> LOCATION_SENADORES_PRE_LIST
+        }
+
+        val politicianEncodedEmail = politician.email?.encodeEmail()
+
+        val database = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
+        database.runTransaction(object : Transaction.Handler {
+            override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
+
+                if (transactionCommitted) {
+                    when (voteType) {
+                        RatingBarType.HONESTY -> {
+                            mDatabaseReference
+                                    .child(LOCATION_USERS)
+                                    .child(userEmail.encodeEmail())
+                                    .child(CHILD_LOCATION_USER_HONESTY)
+                                    .child(politicianEncodedEmail)
+                                    .setValue(newGrade)
+                        }
+                        RatingBarType.LEADER -> {
+                            mDatabaseReference
+                                    .child(LOCATION_USERS)
+                                    .child(userEmail.encodeEmail())
+                                    .child(CHILD_LOCATION_USER_LEADER)
+                                    .child(politicianEncodedEmail)
+                                    .setValue(newGrade)
+                        }
+                        RatingBarType.PROMISE_KEEPER -> {
+                            mDatabaseReference
+                                    .child(LOCATION_USERS)
+                                    .child(userEmail.encodeEmail())
+                                    .child(CHILD_LOCATION_USER_PROMISE_KEEPER)
+                                    .child(politicianEncodedEmail)
+                                    .setValue(newGrade)
+                        }
+                        RatingBarType.RULES_FOR_PEOPLE -> {
+                            mDatabaseReference
+                                    .child(LOCATION_USERS)
+                                    .child(userEmail.encodeEmail())
+                                    .child(CHILD_LOCATION_USER_RULES_FOR_THE_PEOPLE)
+                                    .child(politicianEncodedEmail)
+                                    .setValue(newGrade)
+                        }
+                        RatingBarType.ANSWER_VOTERS -> {
+                            mDatabaseReference
+                                    .child(LOCATION_USERS)
+                                    .child(userEmail.encodeEmail())
+                                    .child(CHILD_LOCATION_USER_ANSWER_VOTERS)
+                                    .child(politicianEncodedEmail)
+                                    .setValue(newGrade)
+                        }
+                    }
+                }
+            }
+
+            override fun doTransaction(mutableData: MutableData?): Transaction.Result {
+                val remotePolitician: Politician = mutableData?.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
+
+                with(remotePolitician) {
+                    when (voteType) {
+                        RatingBarType.HONESTY -> {
+                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = honestyGrade != UNEXISTING_GRADE_VALUE
+
+                            honestyGrade = if (isNotFirstGrade) {
+                                if (containsUserPastGrade) {
+                                    ((honestyGrade * honestyCount) - outdatedUserGrade + newGrade) / honestyCount
+                                } else {
+                                    honestyCount++
+                                    ((honestyGrade * (honestyCount - 1)) + newGrade) / honestyCount
+                                }
+                            } else {
+                                honestyCount++
+                                newGrade
+                            }
+                        }
+
+                        RatingBarType.LEADER -> {
+                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = leaderGrade != UNEXISTING_GRADE_VALUE
+
+                            leaderGrade = if (isNotFirstGrade) {
+                                if (containsUserPastGrade) {
+                                    ((leaderGrade * leaderCount) - outdatedUserGrade + newGrade) / leaderCount
+                                } else {
+                                    leaderCount++
+                                    ((leaderGrade * (leaderCount - 1)) + newGrade) / leaderCount
+                                }
+                            } else {
+                                leaderCount++
+                                newGrade
+                            }
+                        }
+
+                        RatingBarType.PROMISE_KEEPER -> {
+                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = promiseKeeperGrade != UNEXISTING_GRADE_VALUE
+
+                            promiseKeeperGrade = if (isNotFirstGrade) {
+                                if (containsUserPastGrade) {
+                                    ((promiseKeeperGrade * promiseKeeperCount) - outdatedUserGrade + newGrade) / promiseKeeperCount
+                                } else {
+                                    promiseKeeperCount++
+                                    ((promiseKeeperGrade * (promiseKeeperCount - 1)) + newGrade) / promiseKeeperCount
+                                }
+                            } else {
+                                promiseKeeperCount++
+                                newGrade
+                            }
+                        }
+
+                        RatingBarType.RULES_FOR_PEOPLE -> {
+                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = rulesForThePeopleGrade != UNEXISTING_GRADE_VALUE
+
+                            rulesForThePeopleGrade = if (isNotFirstGrade) {
+                                if (containsUserPastGrade) {
+                                    ((rulesForThePeopleGrade * rulesForThePeopleCount) - outdatedUserGrade + newGrade) / rulesForThePeopleCount
+                                } else {
+                                    rulesForThePeopleCount++
+                                    ((rulesForThePeopleGrade * (rulesForThePeopleCount - 1)) + newGrade) / rulesForThePeopleCount
+                                }
+                            } else {
+                                rulesForThePeopleCount++
+                                newGrade
+                            }
+                        }
+
+                        RatingBarType.ANSWER_VOTERS -> {
+                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = answerVotersGrade != UNEXISTING_GRADE_VALUE
+
+                            answerVotersGrade = if (isNotFirstGrade) {
+                                if (containsUserPastGrade) {
+                                    ((answerVotersGrade * answerVotersCount) - outdatedUserGrade + newGrade) / answerVotersCount
+                                } else {
+                                    answerVotersCount++
+                                    ((answerVotersGrade * (answerVotersCount - 1)) + newGrade) / answerVotersCount
+                                }
+                            } else {
+                                answerVotersCount++
+                                newGrade
+                            }
+                        }
+                    }
+
+                    mutableData.value = remotePolitician
+                }
+                return Transaction.success(mutableData)
+            }
+        })
+    }
+
+    fun listenToUser(userListener: ValueEventListener, userEmail: String?){
+        userEmail?.let {
+            mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addValueEventListener(userListener)
+        }
+    }
+
     private fun updateVoteCountOnFirebase(updatedPolitician: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_VOTE_COUNT)
@@ -441,13 +607,13 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     }
 
-    private val mListenerForUser = object: ValueEventListener{
+    private val mListenerForUser = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
-            val user = if(dataSnapshot != null && dataSnapshot.exists()){
+            val user = if (dataSnapshot != null && dataSnapshot.exists()) {
                 dataSnapshot.getValue(User::class.java) ?: User()
-            }else{
+            } else {
                 User()
             }
 
@@ -457,12 +623,12 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         override fun onCancelled(error: DatabaseError) = mPublishUser.onError(error.toException())
     }
 
-    private val mListenerForVoteCountList = object: ValueEventListener{
+    private val mListenerForVoteCountList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             val voteCountList = HashMap<String, Long>()
 
-            if(dataSnapshot != null && dataSnapshot.exists()){
+            if (dataSnapshot != null && dataSnapshot.exists()) {
 
                 dataSnapshot.children.forEach { voteCount ->
                     voteCountList[voteCount.key] = voteCount.value as? Long ?: 0
@@ -574,7 +740,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
 
-            if(dataSnapshot != null && dataSnapshot.exists()) {
+            if (dataSnapshot != null && dataSnapshot.exists()) {
                 val pair = Pair(FirebaseAction.CHILD_CHANGED, dataSnapshot)
                 mPublishOpinionsList.onNext(pair)
             }
@@ -582,14 +748,14 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
 
-            if(dataSnapshot != null && dataSnapshot.exists()){
+            if (dataSnapshot != null && dataSnapshot.exists()) {
                 val pair = Pair(FirebaseAction.CHILD_ADDED, dataSnapshot)
                 mPublishOpinionsList.onNext(pair)
             }
         }
 
         override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-            if(dataSnapshot != null && dataSnapshot.exists()) {
+            if (dataSnapshot != null && dataSnapshot.exists()) {
                 val pair = Pair(FirebaseAction.CHILD_REMOVED, dataSnapshot)
                 mPublishOpinionsList.onNext(pair)
             }
@@ -600,7 +766,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) = Unit
     }
 
-    private val mListenerForMinimumVotesToMainList = object : ValueEventListener{
+    private val mListenerForMinimumVotesToMainList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             val minimumVoteToMailList: Int = dataSnapshot?.getValue(Int::class.java) ?: 0
@@ -619,14 +785,14 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         override fun onCancelled(p0: DatabaseError?) = Unit
     }
 
-    fun getUser(userEmail: String): PublishSubject<User>{
+    fun getUser(userEmail: String): PublishSubject<User> {
         mPublishUser = PublishSubject.create()
 
         mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
         return mPublishUser
     }
 
-    fun getVoteCountList(): PublishSubject<HashMap<String, Long>>{
+    fun getVoteCountList(): PublishSubject<HashMap<String, Long>> {
         mPublishVoteCountList = PublishSubject.create()
         mDatabaseReference.child(LOCATION_VOTE_COUNT).addListenerForSingleValueEvent(mListenerForVoteCountList)
 
@@ -673,7 +839,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishDeputadosPreList
     }
 
-    fun getGovernadoresMainList(): PublishSubject<ArrayList<Politician>>{
+    fun getGovernadoresMainList(): PublishSubject<ArrayList<Politician>> {
         mPublishGovernadoresMainList = PublishSubject.create()
 
         mDatabaseReference
@@ -683,7 +849,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishGovernadoresMainList
     }
 
-    fun getGovernadoresPreList(): PublishSubject<ArrayList<Politician>>{
+    fun getGovernadoresPreList(): PublishSubject<ArrayList<Politician>> {
         mPublishGovernadoresPreList = PublishSubject.create()
 
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).addListenerForSingleValueEvent(mListenerForGovernadoresPreList)
@@ -691,8 +857,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishGovernadoresPreList
     }
 
-    fun getPoliticianOpinions(politicianEmail: String): PublishSubject<Pair<FirebaseAction, DataSnapshot>>{
-        mPublishOpinionsList  = PublishSubject.create()
+    fun getPoliticianOpinions(politicianEmail: String): PublishSubject<Pair<FirebaseAction, DataSnapshot>> {
+        mPublishOpinionsList = PublishSubject.create()
 
         mDatabaseReference
                 .child(LOCATION_OPINIONS_ON_POLITICIANS)
@@ -704,7 +870,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
-    fun listenForMinimumVotes(){
+    fun listenForMinimumVotes() {
         mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).addValueEventListener(mListenerForMinimumVotesToMainList)
     }
 
@@ -720,9 +886,16 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         mDatabaseReference.child(LOCATION_GOVERNADORES_MAIN_LIST).removeEventListener(mListenerForGovernadoresMainList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
 
+
     }
 
-    fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String){
+    fun destroyUserListener(userListener: ValueEventListener, userEmail: String?){
+        userEmail?.let {
+            mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).removeEventListener(userListener)
+        }
+    }
+
+    fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String) {
         mDatabaseReference
                 .child(LOCATION_OPINIONS_ON_POLITICIANS)
                 .child(politicianEmail.encodeEmail())
@@ -730,7 +903,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 .setValue(opinion)
     }
 
-    fun removeOpinion(politicianEmail: String, userEmail: String?){
+    fun removeOpinion(politicianEmail: String, userEmail: String?) {
         userEmail?.let {
             mDatabaseReference
                     .child(LOCATION_OPINIONS_ON_POLITICIANS)
@@ -836,7 +1009,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA}
+        deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA }
                 .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
@@ -848,11 +1021,11 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     }
 
-    fun saveGovernadoresOnPreList(governadores: ArrayList<Politician>){
+    fun saveGovernadoresOnPreList(governadores: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
-        governadores.filter { it.post == Politician.Post.GOVERNADOR || it.post == Politician.Post.GOVERNADORA}
+        governadores.filter { it.post == Politician.Post.GOVERNADOR || it.post == Politician.Post.GOVERNADORA }
                 .forEach { governador -> mapSenadores.put("/${governador.email?.encodeEmail()}/", governador.toSimpleMap(true)) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {

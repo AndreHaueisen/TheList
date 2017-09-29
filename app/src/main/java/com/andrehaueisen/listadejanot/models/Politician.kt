@@ -14,11 +14,22 @@ data class Politician(@Exclude var post: Post? = null,
                       @Exclude var email: String? = null,
                       @Exclude var image: ByteArray? = null,
                       var votesNumber: Long = 0,
+                      var honestyGrade: Float = -1F,
+                      var leaderGrade: Float = -1F,
+                      var promiseKeeperGrade: Float = -1F,
+                      var rulesForThePeopleGrade: Float = -1F,
+                      var answerVotersGrade: Float = -1F,
+
+                      var honestyCount: Int = 0,
+                      var leaderCount: Int = 0,
+                      var promiseKeeperCount: Int = 0,
+                      var rulesForThePeopleCount: Int = 0,
+                      var answerVotersCount: Int = 0,
+
                       var condemnedBy: HashMap<String, Any> = hashMapOf(),
                       var onMainList: Boolean = false) : Parcelable, Comparable<Politician> {
-
     enum class Post : Parcelable {
-        DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA, INDEFINIDO;
+        DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)
@@ -43,6 +54,19 @@ data class Politician(@Exclude var post: Post? = null,
         simplePoliticianMap.put("name", name)
         simplePoliticianMap.put("votesNumber", votesNumber)
         simplePoliticianMap.put("condemnedBy", condemnedBy)
+
+        simplePoliticianMap.put("honestyGrade", honestyGrade)
+        simplePoliticianMap.put("leaderGrade", leaderGrade)
+        simplePoliticianMap.put("promiseKeeperGrade", promiseKeeperGrade)
+        simplePoliticianMap.put("rulesForThePeopleGrade", rulesForThePeopleGrade)
+        simplePoliticianMap.put("answerVotersGrade", answerVotersGrade)
+
+        simplePoliticianMap.put("honestyCount", honestyCount)
+        simplePoliticianMap.put("leaderCount", leaderCount)
+        simplePoliticianMap.put("promiseKeeperCount", promiseKeeperCount)
+        simplePoliticianMap.put("rulesForThePeopleCount", rulesForThePeopleCount)
+        simplePoliticianMap.put("answerVotersCount", answerVotersCount)
+
         if (isDataGoingToPreList!!) {
             simplePoliticianMap.put("onMainList", onMainList)
         }
@@ -69,6 +93,16 @@ data class Politician(@Exclude var post: Post? = null,
             source.readString(),
             source.createByteArray(),
             source.readLong(),
+            source.readFloat(),
+            source.readFloat(),
+            source.readFloat(),
+            source.readFloat(),
+            source.readFloat(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
             source.readSerializable() as HashMap<String, Any>,
             1 == source.readInt()
     )
@@ -81,6 +115,16 @@ data class Politician(@Exclude var post: Post? = null,
         writeString(email)
         writeByteArray(image)
         writeLong(votesNumber)
+        writeFloat(honestyGrade)
+        writeFloat(leaderGrade)
+        writeFloat(promiseKeeperGrade)
+        writeFloat(rulesForThePeopleGrade)
+        writeFloat(answerVotersGrade)
+        writeInt(honestyCount)
+        writeInt(leaderCount)
+        writeInt(promiseKeeperCount)
+        writeInt(rulesForThePeopleCount)
+        writeInt(answerVotersCount)
         writeSerializable(condemnedBy)
         writeInt((if (onMainList) 1 else 0))
     }

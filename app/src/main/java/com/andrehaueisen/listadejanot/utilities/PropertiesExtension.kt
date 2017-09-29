@@ -1,6 +1,13 @@
 package com.andrehaueisen.listadejanot.utilities
 
+import com.andrehaueisen.listadejanot.BuildConfig
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
+
+val SEARCH_API_KEY = BuildConfig.SEARCH_API_KEY
+
+enum class RatingBarType{
+    HONESTY, LEADER, PROMISE_KEEPER, RULES_FOR_PEOPLE, ANSWER_VOTERS
+}
 
 val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
 val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
@@ -34,10 +41,16 @@ val LOCATION_VOTE_COUNT = "Vote_count"
 val LOCATION_OPINIONS_ON_POLITICIANS = "Opinions_on_politicians"
 val LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST = "Min_votes_for_main_list"
 val CHILD_LOCATION_IS_ON_MAIN_LIST = "onMainList"
+val CHILD_LOCATION_USER_HONESTY = "honestyGrades"
+val CHILD_LOCATION_USER_LEADER = "leaderGrades"
+val CHILD_LOCATION_USER_PROMISE_KEEPER = "promiseKeeperGrades"
+val CHILD_LOCATION_USER_RULES_FOR_THE_PEOPLE = "rulesForThePeopleGrades"
+val CHILD_LOCATION_USER_ANSWER_VOTERS = "answerVotersGrades"
 
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
+val UNEXISTING_GRADE_VALUE: Float = -1F
 
 val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 val SHARED_MESSAGE_TOKEN = "message_token"
