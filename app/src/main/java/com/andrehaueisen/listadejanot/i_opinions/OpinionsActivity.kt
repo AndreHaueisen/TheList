@@ -15,6 +15,8 @@ import com.andrehaueisen.listadejanot.i_opinions.dagger.DaggerOpinionsComponent
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
 import com.google.firebase.database.DataSnapshot
@@ -209,9 +211,13 @@ class OpinionsActivity : AppCompatActivity() {
 
         fun setToolbar() {
 
-            Glide.with(this).load(politicianImage)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+            val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+            val transitionOptions = DrawableTransitionOptions.withCrossFade()
+
+            Glide.with(this)
+                    .load(politicianImage)
+                    .apply(requestOptions)
+                    .transition(transitionOptions)
                     .into(opined_politician_image_view)
 
             politician_name_text_view.text = politicianName

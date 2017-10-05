@@ -32,6 +32,8 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
 import com.github.florent37.expectanim.core.Expectations.sameCenterAs
@@ -235,11 +237,16 @@ class PoliticianListAdapter(val activity: FragmentActivity, val politicianList: 
                 MARGIN = 5
             }
 
-            mGlide.load(politician.image)
-                    .crossFade()
-                    .bitmapTransform(RoundedCornersTransformation(activity, RADIUS, MARGIN))
-                    .placeholder(R.drawable.politician_placeholder)
+            val requestOptions = RequestOptions
+                    .placeholderOf(R.drawable.politician_placeholder)
+                    .transform(RoundedCornersTransformation(RADIUS, MARGIN))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+
+            val transitionOptions = DrawableTransitionOptions.withCrossFade()
+
+            mGlide.load(politician.image)
+                    .apply(requestOptions)
+                    .transition(transitionOptions)
                     .into(mPoliticianImageView)
 
             mPoliticianImageView.contentDescription = activity.getString(R.string.description_politician_image, politician.name)

@@ -4,6 +4,8 @@ import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.e_search_politician.mvp.ImageFetcherModel
+import com.andrehaueisen.listadejanot.e_search_politician.mvp.ImageFetcherService
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorModel
 import com.andrehaueisen.listadejanot.e_search_politician.mvp.SinglePoliticianModel
 import com.andrehaueisen.listadejanot.models.User
@@ -35,6 +37,10 @@ class PoliticianSelectorModule(private val mLoaderManager: LoaderManager, privat
             firebaseRepository: FirebaseRepository,
             firebaseAuthenticator: FirebaseAuthenticator,
             selectorModel: PoliticianSelectorModel): SinglePoliticianModel = SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel)
+
+    @PoliticianSelectorScope
+    @Provides
+    fun provideImageFetcherModel(imageFetcherService: ImageFetcherService, context: Context) = ImageFetcherModel(imageFetcherService, context)
 
     @PoliticianSelectorScope
     @Provides

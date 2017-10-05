@@ -2,8 +2,6 @@ package com.andrehaueisen.listadejanot.h_user_vote_list.mvp
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
@@ -22,7 +20,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.io.ByteArrayOutputStream
 
 /**
  * Created by andre on 6/20/2017.
@@ -183,18 +180,6 @@ class UserVoteListModel(private val mContext: Context,
 
     fun loadUserVotesList(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }
     fun getUser() = mUser
-
-    private fun ByteArray.resamplePic(quality: Int): ByteArray {
-        val THUMBNAIL_WIDTH = 110
-        val THUMBNAIL_HEIGHT = 110
-
-        val bmp = BitmapFactory.decodeByteArray(this, 0, this.size)
-        val stream = ByteArrayOutputStream()
-        val thumbnailBitmap = Bitmap.createScaledBitmap(bmp, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, false)
-        thumbnailBitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
-
-        return stream.toByteArray()
-    }
 
     fun onDestroy() = mCompositeDisposable.dispose()
 

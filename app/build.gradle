@@ -5,20 +5,8 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
-    signingConfigs {
-
-        config {
-
-            keyAlias 'listaDeJanot'
-            keyPassword 'haueisen10'
-            storeFile file('C:/User/andre/.android/listaDeJanotKeyStore.jks')
-            storePassword 'haueisen10'
-        }
-
-    }
-
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
@@ -31,6 +19,7 @@ android {
 
     buildTypes.each {
         it.buildConfigField 'String', 'SEARCH_API_KEY', SearchApiKey
+        it.buildConfigField 'String', 'SEARCH_ID', SearchId
     }
 
     buildTypes {
@@ -50,7 +39,7 @@ android {
 }
 
 ext {
-    firebase_version = '11.0.4'
+    firebase_version = '11.4.2'
     support_version = '26.1.0'
     retrofit_version = '2.3.0'
     dagger_version = '2.11'
@@ -72,16 +61,21 @@ dependencies {
     implementation "com.android.support:palette-v7:$support_version"
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:support-dynamic-animation:$support_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta2'
 
     //firebase
     implementation "com.google.firebase:firebase-database:$firebase_version"
     implementation "com.google.firebase:firebase-auth:$firebase_version"
     implementation "com.google.firebase:firebase-storage:$firebase_version"
     implementation "com.google.firebase:firebase-messaging:$firebase_version"
-    implementation 'com.firebaseui:firebase-ui-database:2.3.0'
-    implementation 'com.firebaseui:firebase-ui-auth:2.3.0'
+
+    implementation 'com.firebaseui:firebase-ui-auth:3.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.26.0'
     implementation 'com.twitter.sdk.android:twitter-core:3.0.0'
+
+    //http logging
+    compile "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     //injection
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -90,8 +84,9 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.11'
 
     //glide
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
 
     //RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -99,7 +94,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     implementation 'jp.wasabeef:recyclerview-animators:2.2.6'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     implementation 'com.github.florent37:expectanim:1.0.7'

@@ -18,8 +18,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
@@ -30,10 +28,13 @@ import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.e_search_politician.AutoCompletionAdapter
 import com.andrehaueisen.listadejanot.i_opinions.OpinionsActivity
+import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.*
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -57,8 +58,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val mPoliticianThiefAnimation = mPresenterActivity.getDrawable(R.drawable.anim_politician_thief) as AnimatedVectorDrawable
     private val mThiefPoliticianAnimation = mPresenterActivity.getDrawable(R.drawable.anim_thief_politician) as AnimatedVectorDrawable
 
-    private val mToolbarAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccentDark, R.color.colorPrimary, "backgroundColor")
-    private val mToolbarAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccentDark, "backgroundColor")
     private val mPostTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
     private val mPostTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
     private val mNameTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
@@ -83,7 +82,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     override fun setViews(isSavedState: Boolean) {
-        setToolbar()
+        setVoteListButton()
         setViewsInitialState()
 
         if (isSavedState) {
@@ -104,12 +103,9 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     }
 
-    private fun setToolbar() {
+    private fun setVoteListButton() {
         with(mPresenterActivity) {
-            val toolbar = select_politician_toolbar
-            setSupportActionBar(toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowTitleEnabled(false)
+            vote_list_image_button.setOnClickListener{ mPresenterActivity.showUserVoteListIfLogged() }
         }
     }
 
@@ -284,14 +280,14 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             dismissKeyBoard()
 
             val politicianName = auto_complete_text_view.text.toString()
-            subscribeToSinglePoliticianModel(politicianName)
+            subscribeToSinglePolitician(politicianName)
         }
     }
 
     fun performOnCompleteTextViewAutoSearch(politicianName: String) {
         mPresenterActivity.auto_complete_text_view.setText(politicianName)
         dismissKeyBoard()
-        mPresenterActivity.subscribeToSinglePoliticianModel(politicianName)
+        mPresenterActivity.subscribeToSinglePolitician(politicianName)
     }
 
     private fun setOnDeleteTextClickListener() =
@@ -329,27 +325,57 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     override fun notifyPoliticianReady() {
 
-        val politician = mPresenterActivity.getSinglePolitician()
+        with(mPresenterActivity) {
+            val politician = getSinglePolitician()
+            subscribeToImageFetcher(politician)
 
-        if (politician != null) {
-            bindPoliticianDataToViews(politician)
-            initiateShowAnimations()
+            if (politician != null) {
+                bindPoliticianDataToViews(politician)
+                initiateShowAnimations()
 
-            if (politician.condemnedBy.contains(mPresenterActivity.getUserEmail()?.encodeEmail())) {
-                configureInitialCondemnStatus(politician)
-            } else {
-                configureInitialAbsolveStatus(politician)
+                if (politician.condemnedBy.contains(mPresenterActivity.getUserEmail()?.encodeEmail())) {
+                    configureInitialCondemnStatus(politician)
+                } else {
+                    configureInitialAbsolveStatus(politician)
+                }
+                setButtonsClickListener(politician)
+
+                if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    setPoliticianImageClickListener()
+                }
+                setRatingBarsClickListeners(politician)
+                setShareButtonClickListener(politician)
+                setSearchOnWebButtonClickListener(politician)
+                setEmailButtonClickListener(politician)
             }
-            setButtonsClickListener(politician)
-
-            if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                setPoliticianImageClickListener()
-            }
-            setRatingBarsClickListeners(politician)
-            setShareButtonClickListener(politician)
-            setSearchOnWebButtonClickListener(politician)
-            setEmailButtonClickListener(politician)
         }
+    }
+
+    fun notifyImageReady(imageItem: Item){
+        val imageUrl = imageItem.link
+        val height = imageItem.image?.height!!
+        val width = imageItem.image?.width!!
+
+        val requestOption: RequestOptions
+        val transitionOptions = DrawableTransitionOptions().crossFade()
+        if(height > width) {
+            requestOption = RequestOptions
+                    .encodeFormatOf(Bitmap.CompressFormat.JPEG)
+                    .encodeQuality(20)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+
+        }else{
+            requestOption = RequestOptions
+                    .encodeFormatOf(Bitmap.CompressFormat.JPEG)
+                    .encodeQuality(30)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+        }
+
+        mGlide.load(imageUrl)
+                .apply(requestOption)
+                .transition(transitionOptions)
+                .into(mPresenterActivity.search_politician_image_view)
     }
 
     private fun bindPoliticianDataToViews(politician: Politician) {
@@ -369,11 +395,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         with(mPresenterActivity) {
             val user = getUser()
 
+            val requestOptions = RequestOptions
+                    .diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                    .transform(RoundedCornersTransformation(GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
+
+            val transitionOption = DrawableTransitionOptions.withCrossFade()
+
             mGlide.load(politician.image)
-                    .crossFade()
-                    .placeholder(R.drawable.politician_placeholder)
-                    .bitmapTransform(RoundedCornersTransformation(this, GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .apply(requestOptions)
+                    .transition(transitionOption)
                     .into(politician_image_view)
             politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
 
@@ -428,7 +458,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun configureInitialCondemnStatus(politician: Politician) = with(mPresenterActivity) {
 
-        select_politician_toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccentDark))
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -449,7 +478,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun configureInitialAbsolveStatus(politician: Politician) = with(mPresenterActivity) {
 
-        select_politician_toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -495,11 +523,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                     }
 
-                    val toolbarPair = android.support.v4.util.Pair<View, String>(select_politician_toolbar, getString(R.string.transition_toolbar))
                     val imagePair = android.support.v4.util.Pair<View, String>(politician_image_view, getString(R.string.transition_image))
                     val namePair = android.support.v4.util.Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
 
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbarPair, imagePair, namePair)
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imagePair, namePair)
 
                     startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
                 }
@@ -670,7 +697,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     override fun initiateCondemnAnimations(politician: Politician) = with(mPresenterActivity) {
-        mToolbarAnimatorCondemn.target = select_politician_toolbar
         mPostTextAnimatorCondemn.target = name_text_view
         mNameTextAnimatorCondemn.target = post_text_view
         mVoteTitleTextAnimatorCondemn.target = vote_title_text_view
@@ -681,7 +707,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val animatorSet = AnimatorSet()
         animatorSet.interpolator = AccelerateDecelerateInterpolator()
         animatorSet.playTogether(
-                mToolbarAnimatorCondemn,
                 mPostTextAnimatorCondemn,
                 mNameTextAnimatorCondemn,
                 mVoteTitleTextAnimatorCondemn,
@@ -706,7 +731,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     override fun initiateAbsolveAnimations(politician: Politician) = with(mPresenterActivity) {
 
-        mToolbarAnimatorAbsolve.target = select_politician_toolbar
         mPostTextAnimatorAbsolve.target = name_text_view
         mNameTextAnimatorAbsolve.target = post_text_view
         mVoteTitleTextAnimatorAbsolve.target = vote_title_text_view
@@ -717,7 +741,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val animatorSet = AnimatorSet()
         animatorSet.interpolator = AccelerateDecelerateInterpolator()
         animatorSet.playTogether(
-                mToolbarAnimatorAbsolve,
                 mPostTextAnimatorAbsolve,
                 mNameTextAnimatorAbsolve,
                 mVoteTitleTextAnimatorAbsolve,
@@ -774,21 +797,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             }
             animator.start()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?) =
-            mPresenterActivity.menuInflater.inflate(R.menu.menu_politician_selector, menu)
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
-        when (item?.itemId) {
-
-            R.id.menu_item_show_vote_list -> {
-                mPresenterActivity.showUserVoteListIfLogged()
-            }
-        }
-
-        return true
     }
 
     internal fun onDestroy() {

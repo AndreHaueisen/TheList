@@ -5,15 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.DaggerPoliticianSelectorComponent
+import com.andrehaueisen.listadejanot.e_search_politician.dagger.ImageFetcherModule
 import com.andrehaueisen.listadejanot.e_search_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.g_login.LoginActivity
 import com.andrehaueisen.listadejanot.h_user_vote_list.mvp.UserVoteListPresenterActivity
+import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
@@ -32,6 +32,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
 
+    @Inject
+    lateinit var mImageFetcherModel: ImageFetcherModel
     @Inject
     lateinit var mSelectorModel: PoliticianSelectorModel
     @Inject
@@ -80,6 +82,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
                 .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager, mUser))
+                .imageFetcherModule(ImageFetcherModule())
                 .build()
                 .inject(this)
 
@@ -153,13 +156,25 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
-    override fun subscribeToSinglePoliticianModel(politicianName: String) {
+    fun subscribeToSinglePolitician(politicianName: String) {
         mLastSelectedPoliticianName = politicianName
         mSinglePoliticianModel.loadSinglePoliticianPublisher()
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mSinglePoliticianObserver)
+
+
+    }
+
+    fun subscribeToImageFetcher(politician: Politician?){
+        politician?.let {
+            mImageFetcherModel.getPoliticianImages(politician.name, politician.post!!)
+                    .firstElement()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(mImagesObserver)
+        }
     }
 
     private val mSinglePoliticianObserver = object : MaybeObserver<Politician> {
@@ -180,14 +195,20 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         override fun onComplete() = Unit
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        mView?.onCreateOptionsMenu(menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+    private val mImagesObserver = object: MaybeObserver<Item>{
+        override fun onSuccess(imageItem: Item) {
+            mView?.notifyImageReady(imageItem)
+        }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        mView?.onOptionsItemSelected(item)
-        return super.onOptionsItemSelected(item)
+        override fun onComplete() {
+
+        }
+
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onError(error: Throwable) {}
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

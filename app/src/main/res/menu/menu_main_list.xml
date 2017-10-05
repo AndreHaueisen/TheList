@@ -8,8 +8,7 @@
         android:icon="@drawable/ic_info_24dp"
         android:orderInCategory="3"
         android:title="@string/information"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_logout"

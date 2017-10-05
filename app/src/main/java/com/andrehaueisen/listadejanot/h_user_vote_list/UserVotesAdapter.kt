@@ -18,8 +18,10 @@ import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.facebook.FacebookSdk.getApplicationContext
-import jp.wasabeef.glide.transformations.CropCircleTransformation
 import java.util.*
 
 
@@ -61,12 +63,18 @@ class UserVotesAdapter(val mActivity: Activity, private val mUserVotes: List<Pol
 
         internal fun bindVotesToViews(userVote: Politician){
 
-            mGlide.load(userVote.image)
-                    .bitmapTransform(CropCircleTransformation(mActivity))
-                    .crossFade()
-                    .placeholder(R.drawable.politician_placeholder)
+            val requestOptions = RequestOptions
+                    .placeholderOf(R.drawable.politician_placeholder)
+                    .transform(CircleCrop())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+
+            val transitionOptions = DrawableTransitionOptions.withCrossFade()
+
+            mGlide.load(userVote.image)
+                    .apply(requestOptions)
+                    .transition(transitionOptions)
                     .into(mThumbnailImage)
+
             val minimumVotesToMainList = mActivity.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
             val missingVotes = minimumVotesToMainList - userVote.votesNumber
             if(missingVotes > 0) {
