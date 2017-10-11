@@ -7,15 +7,18 @@ import android.os.Parcelable
  * Created by andre on 9/25/2017.
  */
 data class User(var condemnations: HashMap<String, Any> = hashMapOf(),
+                var recommendations: HashMap<String, Any> = hashMapOf(),
                 var honestyGrades: HashMap<String, Float> = hashMapOf(),
                 var leaderGrades: HashMap<String, Float> = hashMapOf(),
                 var promiseKeeperGrades: HashMap<String, Float> = hashMapOf(),
                 var rulesForThePeopleGrades: HashMap<String, Float> = hashMapOf(),
                 var answerVotersGrades: HashMap<String, Float> = hashMapOf()) : Parcelable {
-
-    fun refreshUser( user: User ){
+    fun refreshUser(user: User) {
         condemnations.clear()
         condemnations.putAll(user.condemnations)
+
+        recommendations.clear()
+        recommendations.putAll(user.recommendations)
 
         honestyGrades.clear()
         honestyGrades.putAll(user.honestyGrades)
@@ -37,6 +40,7 @@ data class User(var condemnations: HashMap<String, Any> = hashMapOf(),
 
         val simpleUserMap = HashMap<String, Any>()
         simpleUserMap.put("condemnations", condemnations)
+        simpleUserMap.put("recommendations", recommendations)
 
         simpleUserMap.put("honestyGrades", honestyGrades)
         simpleUserMap.put("leaderGrades", leaderGrades)
@@ -49,6 +53,7 @@ data class User(var condemnations: HashMap<String, Any> = hashMapOf(),
 
     constructor(source: Parcel) : this(
             source.readSerializable() as HashMap<String, Any>,
+            source.readSerializable() as HashMap<String, Any>,
             source.readSerializable() as HashMap<String, Float>,
             source.readSerializable() as HashMap<String, Float>,
             source.readSerializable() as HashMap<String, Float>,
@@ -60,6 +65,7 @@ data class User(var condemnations: HashMap<String, Any> = hashMapOf(),
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeSerializable(condemnations)
+        writeSerializable(recommendations)
         writeSerializable(honestyGrades)
         writeSerializable(leaderGrades)
         writeSerializable(promiseKeeperGrades)

@@ -16,8 +16,8 @@
     <string name="title_senadores">Senators</string>
     <string name="title_deputados">Congressmen</string>
     <string name="title_governadores">Governors</string>
-    <string name="vote_absolve">Innocent</string>
-    <string name="vote_condemn">Guilty</string>
+    <string name="add_to_voting_list">+ Voting List</string>
+    <string name="add_to_suspect_list">+ Suspect List</string>
 
     <string name="refreshing_votes_title">Refreshing</string>
     <string name="votes_title">Votes</string>
@@ -90,7 +90,7 @@
     <string name="governora">Governor</string>
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
-    <string name="search_on_web">Search on web</string>
+    <string name="search">Search</string>
 
     <string name="honesty_title">Honesty</string>
     <string name="leader_title">Leader</string>

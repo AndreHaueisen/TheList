@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Larger blue circle in back -->
+    <item>
+        <shape android:shape="oval">
+
+            <padding
+                android:bottom="1dp"
+                android:top="1dp"
+                android:left="1dp"
+                android:right="1dp"/>
+
+            <solid android:color="@color/colorPrimaryLight"/>
+
+            <size
+                android:width="48dp"
+                android:height="48dp"/>
+        </shape>
+    </item>
+
+    <!-- Smaller red circle in front -->
+    <item>
+        <shape android:shape="oval">
+
+            <solid android:color="@color/colorPrimaryLight"/>
+
+            <stroke
+                android:width="3dp"
+                android:color="@android:color/white"/>
+
+            <size
+                android:width="36dp"
+                android:height="36dp"/>
+        </shape>
+    </item>
+</layer-list>

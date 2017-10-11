@@ -228,6 +228,14 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun getUser() = mUser
 
+    fun updateLists(action: ListAction, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
+        mSinglePoliticianModel.updateLists(action, politician)
+    } else {
+        startNewActivity(LoginActivity::class.java)
+        finish()
+    }
+
+
     fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
         mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician, mUser)
     } else {

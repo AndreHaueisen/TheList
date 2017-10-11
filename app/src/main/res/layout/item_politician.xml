@@ -53,7 +53,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/search_on_web"
+            android:contentDescription="@string/search"
             android:padding="10dp"
             android:src="@drawable/ic_open_in_new_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/email_button"
@@ -150,7 +150,7 @@
                 app:rrb_backgroundColor="@color/colorAccentLight"
                 app:rrb_ripple="true"
                 app:rrb_rippleColor="@color/colorAccentDark"
-                app:rrb_text="@string/vote_condemn"
+                app:rrb_text="@string/add_to_suspect_list"
                 app:rrb_textColor="@color/colorAccentSmooth"
                 app:rrb_textColorTo="@android:color/white"
                 app:rrb_textSize="15sp"/>
@@ -161,7 +161,7 @@
                 app:rrb_backgroundColor="@color/colorPrimaryLight"
                 app:rrb_ripple="true"
                 app:rrb_rippleColor="@color/colorPrimary"
-                app:rrb_text="@string/vote_absolve"
+                app:rrb_text="@string/add_to_voting_list"
                 app:rrb_textColor="@color/colorPrimarySmooth"
                 app:rrb_textColorTo="@android:color/white"
                 app:rrb_textSize="15sp"/>

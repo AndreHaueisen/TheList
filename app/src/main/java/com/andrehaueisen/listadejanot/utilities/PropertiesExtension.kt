@@ -9,6 +9,10 @@ enum class RatingBarType{
     HONESTY, LEADER, PROMISE_KEEPER, RULES_FOR_PEOPLE, ANSWER_VOTERS
 }
 
+enum class ListAction {
+    ADD_TO_VOTE_LIST, ADD_TO_SUSPECT_LIST, REMOVE_FROM_LISTS
+}
+
 val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
 val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
 val INTENT_GOVERNADORES_MAIN_LIST = "governadores_main_list"

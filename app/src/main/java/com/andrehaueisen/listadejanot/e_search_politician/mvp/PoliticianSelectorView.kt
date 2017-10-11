@@ -2,11 +2,9 @@ package com.andrehaueisen.listadejanot.e_search_politician.mvp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -18,6 +16,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
@@ -36,9 +35,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.github.florent37.expectanim.ExpectAnim
-import com.github.florent37.expectanim.core.Expectations.*
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import com.github.florent37.expectanim.core.Expectations.alpha
 import kotlinx.android.synthetic.main.e_activity_politician_selector.*
+import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_grades.*
 import kotlinx.android.synthetic.main.group_layout_rating_bars.*
 import java.io.File
@@ -62,19 +61,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val mPostTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
     private val mNameTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
     private val mNameTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mVoteTitleTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mVoteTitleTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mVoteNumberTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mVoteNumberTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mPlusOneTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mPlusOneTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mMissingVoteTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mMissingVoteTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
     private var mTempFilePath: String = ""
-    private var mIsShowingExtraButtons = false
     private var mLastButtonPosition = 0
 
     init {
@@ -105,15 +95,13 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun setVoteListButton() {
         with(mPresenterActivity) {
-            vote_list_image_button.setOnClickListener{ mPresenterActivity.showUserVoteListIfLogged() }
+            vote_list_image_button.setOnClickListener { mPresenterActivity.showUserVoteListIfLogged() }
         }
     }
 
     private fun setViewsInitialState() = with(mPresenterActivity) {
         ExpectAnim()
                 .expect(delete_text_image_button)
-                .toBe(alpha(0.0f))
-                .expect(plus_one_text_view)
                 .toBe(alpha(0.0f))
                 .toAnimation()
                 .setNow()
@@ -333,38 +321,36 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 bindPoliticianDataToViews(politician)
                 initiateShowAnimations()
 
-                if (politician.condemnedBy.contains(mPresenterActivity.getUserEmail()?.encodeEmail())) {
+                /*if (politician.condemnedBy.contains(mPresenterActivity.getUserEmail()?.encodeEmail())) {
                     configureInitialCondemnStatus(politician)
                 } else {
                     configureInitialAbsolveStatus(politician)
-                }
-                setButtonsClickListener(politician)
+                }*/
 
-                if (mPresenterActivity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    setPoliticianImageClickListener()
-                }
+                setButtonsClickListener(politician)
                 setRatingBarsClickListeners(politician)
                 setShareButtonClickListener(politician)
                 setSearchOnWebButtonClickListener(politician)
                 setEmailButtonClickListener(politician)
+                setViewFlipperClickLister()
             }
         }
     }
 
-    fun notifyImageReady(imageItem: Item){
+    fun notifyImageReady(imageItem: Item) {
         val imageUrl = imageItem.link
         val height = imageItem.image?.height!!
         val width = imageItem.image?.width!!
 
         val requestOption: RequestOptions
         val transitionOptions = DrawableTransitionOptions().crossFade()
-        if(height > width) {
+        if (height > width) {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(20)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
 
-        }else{
+        } else {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(30)
@@ -372,58 +358,54 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
         }
 
-        mGlide.load(imageUrl)
-                .apply(requestOption)
-                .transition(transitionOptions)
-                .into(mPresenterActivity.search_politician_image_view)
+        with(mPresenterActivity) {
+            mGlide.load(imageUrl)
+                    .apply(requestOption)
+                    .transition(transitionOptions)
+                    .into(search_politician_image_view)
+
+            search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
+        }
     }
 
     private fun bindPoliticianDataToViews(politician: Politician) {
 
-        val GLIDE_TRANSFORM_RADIUS: Int
-        val GLIDE_TRANSFORM_MARGIN: Int
-
-        if (politician.post == Politician.Post.DEPUTADO || politician.post == Politician.Post.DEPUTADA) {
-            GLIDE_TRANSFORM_RADIUS = 2
-            GLIDE_TRANSFORM_MARGIN = 2
-
-        } else {
-            GLIDE_TRANSFORM_RADIUS = 4
-            GLIDE_TRANSFORM_MARGIN = 10
-        }
-
         with(mPresenterActivity) {
             val user = getUser()
 
-            val requestOptions = RequestOptions
-                    .diskCacheStrategyOf(DiskCacheStrategy.NONE)
-                    .transform(RoundedCornersTransformation(GLIDE_TRANSFORM_RADIUS, GLIDE_TRANSFORM_MARGIN))
-
-            val transitionOption = DrawableTransitionOptions.withCrossFade()
-
-            mGlide.load(politician.image)
-                    .apply(requestOptions)
-                    .transition(transitionOption)
-                    .into(politician_image_view)
-            politician_image_view.contentDescription = getString(R.string.description_politician_image, politician.name)
-
             post_text_view.text = politician.post?.name
             name_text_view.text = politician.name
-            missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
-            votes_number_text_view.text = politician.votesNumber.toString()
 
             val politicianEncodedEmail = politician.email?.encodeEmail()
-            honesty_rating_bar.rating = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE +1
-            leader_rating_bar.rating = user.leaderGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
-            promise_keeper_rating_bar.rating = user.promiseKeeperGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
-            rules_for_the_people_rating_bar.rating = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
-            answer_voters_rating_bar.rating = user.answerVotersGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE+1
+            honesty_rating_bar.rating = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE + 1
+            leader_rating_bar.rating = user.leaderGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE + 1
+            promise_keeper_rating_bar.rating = user.promiseKeeperGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE + 1
+            rules_for_the_people_rating_bar.rating = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE + 1
+            answer_voters_rating_bar.rating = user.answerVotersGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE + 1
 
-            honesty_grade_text_view.text = politician.honestyGrade.toString()
-            leader_grade_text_view.text = politician.leaderGrade.toString()
-            promise_keeper_grade_text_view.text = politician.promiseKeeperGrade.toString()
-            rules_for_the_people_grade_text_view.text = politician.rulesForThePeopleGrade.toString()
-            answer_voters_grade_text_view.text = politician.answerVotersGrade.toString()
+            honesty_grade_text_view.text = String.format("%.1f", politician.honestyGrade)
+            leader_grade_text_view.text = String.format("%.1f", politician.leaderGrade)
+            promise_keeper_grade_text_view.text = String.format("%.1f", politician.promiseKeeperGrade)
+            rules_for_the_people_grade_text_view.text = String.format("%.1f", politician.rulesForThePeopleGrade)
+            answer_voters_grade_text_view.text = String.format("%.1f", politician.answerVotersGrade)
+
+            val hasRecommendationVote = user.recommendations.containsKey(politicianEncodedEmail)
+            val hasCondemnationVote = user.condemnations.containsKey(politicianEncodedEmail)
+
+            when {
+                hasRecommendationVote -> {
+                    vote_radio_group.position = 1
+                    mLastButtonPosition = 1
+                }
+                hasCondemnationVote -> {
+                    vote_radio_group.position = 0
+                    mLastButtonPosition = 0
+                }
+                else -> {
+                    vote_radio_group.position = -1
+                    mLastButtonPosition = -1
+                }
+            }
         }
     }
 
@@ -460,16 +442,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        missing_votes_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
 
         val badgeTransition = badge_image_view.background as TransitionDrawable
         badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
-        missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
-        votes_number_text_view.text = politician.votesNumber.toString()
         mLastButtonPosition = 0
         vote_radio_group.position = mLastButtonPosition
         badge_image_view.setImageDrawable(mThiefPoliticianAnimation)
@@ -480,19 +456,47 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         post_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         name_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        vote_title_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        votes_number_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        plus_one_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        missing_votes_text_view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
 
         badge_image_view.background = ContextCompat.getDrawable(this, R.drawable.transition_badge_background)
 
-        missing_votes_text_view.setMissingVotesText(this, politician.votesNumber)
-        votes_number_text_view.text = politician.votesNumber.toString()
         mLastButtonPosition = 1
         vote_radio_group.position = mLastButtonPosition
         badge_image_view.setImageDrawable(mPoliticianThiefAnimation)
         badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
+    }
+
+    private var initialX: Float = 0F
+
+    private fun setViewFlipperClickLister() {
+        with(mPresenterActivity) {
+
+            rating_bars_view_flipper.setOnTouchListener({ _, motionEvent ->
+                when (motionEvent.action) {
+
+                    MotionEvent.ACTION_DOWN -> {
+                        initialX = motionEvent.x
+                        true
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        val finalX = motionEvent.x
+
+                        if (finalX > initialX) {
+                            rating_bars_view_flipper.setInAnimation(this, android.R.anim.slide_in_left)
+                            rating_bars_view_flipper.setOutAnimation(this, android.R.anim.slide_out_right)
+                            rating_bars_view_flipper.showPrevious()
+                        } else if (finalX < initialX) {
+                            rating_bars_view_flipper.setInAnimation(this, R.anim.slide_in_right)
+                            rating_bars_view_flipper.setOutAnimation(this, R.anim.slide_out_left)
+                            rating_bars_view_flipper.showNext()
+                        }
+                        true
+                    }
+                    else -> false
+                }
+
+            })
+        }
     }
 
     private fun setButtonsClickListener(politician: Politician) =
@@ -500,16 +504,24 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 vote_radio_group.setOnClickedButtonListener { _, position ->
 
+                    val listAction: ListAction
+
                     if (position != mLastButtonPosition) {
                         if (isConnectedToInternet()) {
                             ExpectAnim().startRefreshingTitleAnimation(mPresenterActivity.window.decorView.rootView)
-                            updatePoliticianVote(politician, this@PoliticianSelectorView)
+                            listAction = when (position) {
+                                0 -> ListAction.ADD_TO_SUSPECT_LIST
+                                1 -> ListAction.ADD_TO_VOTE_LIST
+                                -1 -> ListAction.REMOVE_FROM_LISTS
+                                else -> ListAction.REMOVE_FROM_LISTS
+                            }
+                            updateLists(listAction, politician)
                             mLastButtonPosition = position
+
                         } else {
                             showToast(getString(R.string.no_network))
                             vote_radio_group.position = mLastButtonPosition
                         }
-
                     }
                 }
 
@@ -523,48 +535,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                     }
 
-                    val imagePair = android.support.v4.util.Pair<View, String>(politician_image_view, getString(R.string.transition_image))
                     val namePair = android.support.v4.util.Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
-
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imagePair, namePair)
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair)
 
                     startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
                 }
             }
-
-    private fun setPoliticianImageClickListener() = with(mPresenterActivity) {
-        politician_image_view.setOnClickListener {
-            if (mIsShowingExtraButtons) {
-                ExpectAnim()
-                        .expect(share_button)
-                        .toBe(atItsOriginalPosition())
-                        .expect(search_on_web_button)
-                        .toBe(atItsOriginalPosition())
-                        .expect(email_button)
-                        .toBe(atItsOriginalPosition())
-                        .expect(opinions_button)
-                        .toBe(atItsOriginalPosition())
-                        .toAnimation()
-                        .setDuration(QUICK_ANIMATIONS_DURATION)
-                        .start()
-                        .addEndListener { mIsShowingExtraButtons = !mIsShowingExtraButtons }
-            } else {
-                ExpectAnim()
-                        .expect(share_button)
-                        .toBe(toRightOf(politician_image_view))
-                        .expect(search_on_web_button)
-                        .toBe(toRightOf(politician_image_view))
-                        .expect(email_button)
-                        .toBe(toRightOf(politician_image_view))
-                        .expect(opinions_button)
-                        .toBe(toLeftOf(politician_image_view))
-                        .toAnimation()
-                        .setDuration(QUICK_ANIMATIONS_DURATION)
-                        .start()
-                        .addEndListener { mIsShowingExtraButtons = !mIsShowingExtraButtons }
-            }
-        }
-    }
 
     private fun setShareButtonClickListener(politician: Politician?) =
             mPresenterActivity.share_button.setOnClickListener {
@@ -699,105 +675,48 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     override fun initiateCondemnAnimations(politician: Politician) = with(mPresenterActivity) {
         mPostTextAnimatorCondemn.target = name_text_view
         mNameTextAnimatorCondemn.target = post_text_view
-        mVoteTitleTextAnimatorCondemn.target = vote_title_text_view
-        mVoteNumberTextAnimatorCondemn.target = votes_number_text_view
-        mPlusOneTextAnimatorCondemn.target = plus_one_text_view
-        mMissingVoteTextAnimatorCondemn.target = missing_votes_text_view
 
         val animatorSet = AnimatorSet()
         animatorSet.interpolator = AccelerateDecelerateInterpolator()
         animatorSet.playTogether(
                 mPostTextAnimatorCondemn,
-                mNameTextAnimatorCondemn,
-                mVoteTitleTextAnimatorCondemn,
-                mVoteNumberTextAnimatorCondemn,
-                mPlusOneTextAnimatorCondemn,
-                mMissingVoteTextAnimatorCondemn)
+                mNameTextAnimatorCondemn)
 
         animatorSet.start()
 
         val badgeTransition = badge_image_view.background as TransitionDrawable
         badgeTransition.startTransition(DEFAULT_ANIM_DURATION.toInt())
 
-        plus_one_text_view.text = mPresenterActivity.getString(R.string.plus_one)
         badge_image_view.animateVectorDrawable(
                 mPoliticianThiefAnimation,
                 mThiefPoliticianAnimation,
                 useInitialToFinalFlow = true)
         badge_image_view.contentDescription = getString(R.string.description_badge_thief_politician)
-
-        startCountAnimation(politician, isUpVote = true)
     }
 
     override fun initiateAbsolveAnimations(politician: Politician) = with(mPresenterActivity) {
 
         mPostTextAnimatorAbsolve.target = name_text_view
         mNameTextAnimatorAbsolve.target = post_text_view
-        mVoteTitleTextAnimatorAbsolve.target = vote_title_text_view
-        mVoteNumberTextAnimatorAbsolve.target = votes_number_text_view
-        mPlusOneTextAnimatorAbsolve.target = plus_one_text_view
-        mMissingVoteTextAnimatorAbsolve.target = missing_votes_text_view
 
         val animatorSet = AnimatorSet()
         animatorSet.interpolator = AccelerateDecelerateInterpolator()
         animatorSet.playTogether(
                 mPostTextAnimatorAbsolve,
-                mNameTextAnimatorAbsolve,
-                mVoteTitleTextAnimatorAbsolve,
-                mVoteNumberTextAnimatorAbsolve,
-                mPlusOneTextAnimatorAbsolve,
-                mMissingVoteTextAnimatorAbsolve)
+                mNameTextAnimatorAbsolve)
 
         animatorSet.start()
 
         val badgeTransition = badge_image_view.background as TransitionDrawable
         badgeTransition.reverseTransition(DEFAULT_ANIM_DURATION.toInt())
 
-        plus_one_text_view.text = mPresenterActivity.getString(R.string.minus_one)
         badge_image_view.animateVectorDrawable(
                 mPoliticianThiefAnimation,
                 mThiefPoliticianAnimation,
                 useInitialToFinalFlow = false)
         badge_image_view.contentDescription = getString(R.string.description_badge_honest_politician)
-        startCountAnimation(politician, isUpVote = false)
     }
 
-    private fun startCountAnimation(politician: Politician, isUpVote: Boolean) {
-        val updatedVoteCount = politician.votesNumber
-        val currentVoteCount = mPresenterActivity.votes_number_text_view.text.toString().toInt()
-
-        fun initiateVoteExpectAnim() = if (isUpVote) {
-            ExpectAnim().plusOneCondemnAnimation(mPresenterActivity.window.decorView.rootView, politician)
-        } else {
-            ExpectAnim().minusOneAbsolveAnimation(mPresenterActivity.window.decorView.rootView, politician)
-        }
-
-        if (updatedVoteCount.toInt() == currentVoteCount + 1 || updatedVoteCount.toInt() == currentVoteCount - 1) {
-            initiateVoteExpectAnim()
-
-        } else {
-
-            val MAX_VALUE_TO_ANIMATE = if (isUpVote) {
-                updatedVoteCount - 1
-            } else {
-                updatedVoteCount + 1
-            }
-
-            val animator = ValueAnimator.ofInt(currentVoteCount, MAX_VALUE_TO_ANIMATE.toInt())
-
-            animator.duration = QUICK_ANIMATIONS_DURATION
-            animator.addUpdateListener { animation ->
-
-                val animatedValue = animation.animatedValue.toString()
-                mPresenterActivity.votes_number_text_view.text = animatedValue
-                val isLastValue = animatedValue == MAX_VALUE_TO_ANIMATE.toString()
-                if (isLastValue) {
-                    initiateVoteExpectAnim()
-                }
-            }
-            animator.start()
-        }
-    }
 
     internal fun onDestroy() {
         deleteTemporaryPicture()

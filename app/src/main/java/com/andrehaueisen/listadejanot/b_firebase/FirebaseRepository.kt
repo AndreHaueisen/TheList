@@ -41,6 +41,110 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
+    fun handleListChangeOnDatabase(listAction: ListAction, politician:Politician, userEmail: String){
+
+        val politicianEncodedEmail = politician.email!!.encodeEmail()
+        val userEncodedEmail = userEmail.encodeEmail()
+
+        val politicianType = when (politician.post) {
+            Politician.Post.SENADOR, Politician.Post.SENADORA -> LOCATION_SENADORES_PRE_LIST
+            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> LOCATION_DEPUTADOS_PRE_LIST
+            Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> LOCATION_GOVERNADORES_PRE_LIST
+            else -> LOCATION_SENADORES_PRE_LIST
+        }
+
+        var hasRemovedVoteFromRecommendationsList = false
+        var hasRemovedVoteFromCondemnationsList = false
+
+        val database = mDatabaseReference.child(LOCATION_USERS).child(userEncodedEmail)
+        database.runTransaction(object : Transaction.Handler {
+            override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
+
+                if (transactionCommitted) {
+
+                    val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
+                    politicianDatabase.runTransaction(object: Transaction.Handler{
+                        override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
+
+                        }
+
+                        override fun doTransaction(mutableData: MutableData?): Transaction.Result {
+                            val remotePolitician: Politician = mutableData?.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
+
+                            when (listAction) {
+                                ListAction.ADD_TO_VOTE_LIST -> {
+                                    remotePolitician.recommendationsCount++
+                                    if(hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
+                                }
+
+                                ListAction.ADD_TO_SUSPECT_LIST -> {
+                                    remotePolitician.condemnationsCount++
+                                    if(hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
+                                }
+                                ListAction.REMOVE_FROM_LISTS ->{
+                                    if(hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
+                                    if(hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
+                                }
+                            }
+
+                            mutableData.value = remotePolitician
+                            return Transaction.success(mutableData)
+                        }
+
+                    })
+
+                }
+            }
+
+            override fun doTransaction(mutableData: MutableData?): Transaction.Result {
+                val remoteUser: User = mutableData?.getValue(User::class.java) ?: return Transaction.success(mutableData)
+
+                val hasVoteOnRecommendationList = remoteUser.recommendations.containsKey(politicianEncodedEmail)
+                val hasVoteOnCondemnationList = remoteUser.condemnations.containsKey(politicianEncodedEmail)
+
+                with(remoteUser) {
+                    when (listAction) {
+                        ListAction.ADD_TO_VOTE_LIST -> {
+                            if(hasVoteOnCondemnationList) {
+                                remoteUser.condemnations.remove(politicianEncodedEmail)
+                                politician.condemnationsCount--
+                                hasRemovedVoteFromCondemnationsList = true
+                            }
+                            remoteUser.recommendations[politicianEncodedEmail] = ServerValue.TIMESTAMP
+                            politician.recommendationsCount++
+                        }
+
+                        ListAction.ADD_TO_SUSPECT_LIST -> {
+                            if(hasVoteOnRecommendationList) {
+                                remoteUser.recommendations.remove(politicianEncodedEmail)
+                                politician.recommendationsCount--
+                                hasRemovedVoteFromRecommendationsList = true
+                            }
+                            remoteUser.condemnations[politicianEncodedEmail] = ServerValue.TIMESTAMP
+                            politician.condemnationsCount++
+                        }
+                        ListAction.REMOVE_FROM_LISTS ->{
+                            if(hasVoteOnRecommendationList) {
+                                remoteUser.recommendations.remove(politicianEncodedEmail)
+                                politician.recommendationsCount--
+                                hasRemovedVoteFromRecommendationsList = true
+                            }
+                            if(hasVoteOnCondemnationList) {
+                                remoteUser.condemnations.remove(politicianEncodedEmail)
+                                politician.condemnationsCount--
+                                hasRemovedVoteFromCondemnationsList = true
+                            }
+                        }
+
+                    }
+
+                    mutableData.value = remoteUser
+                }
+                return Transaction.success(mutableData)
+            }
+        })
+    }
+
     fun handleSenadorVoteOnDatabase(senador: Politician,
                                     userEmail: String,
                                     viewHolder: PoliticianListAdapter.PoliticianHolder?,

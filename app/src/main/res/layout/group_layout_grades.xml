@@ -10,11 +10,12 @@
 
     <TextView
         android:id="@+id/honesty_title_text_view"
-        android:textColor="@color/colorPrimary"
-        style="@style/LatoRegularTextStyle"
+        android:textColor="@color/colorPrimaryLight"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
         android:text="@string/honesty_title"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/leader_title_text_view"
@@ -22,11 +23,12 @@
 
     <TextView
         android:id="@+id/leader_title_text_view"
-        android:textColor="@color/colorPrimary"
-        style="@style/LatoRegularTextStyle"
+        android:textColor="@color/colorPrimaryLight"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
         android:text="@string/leader_title"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/promise_keeper_title_text_view"
@@ -34,11 +36,12 @@
 
     <TextView
         android:id="@+id/promise_keeper_title_text_view"
-        android:textColor="@color/colorPrimary"
-        style="@style/LatoRegularTextStyle"
+        android:textColor="@color/colorPrimaryLight"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
         android:text="@string/promise_keeper_title"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/rules_for_the_people_title_text_view"
@@ -46,11 +49,12 @@
 
     <TextView
         android:id="@+id/rules_for_the_people_title_text_view"
-        android:textColor="@color/colorPrimary"
-        style="@style/LatoRegularTextStyle"
+        android:textColor="@color/colorPrimaryLight"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
         android:text="@string/rules_for_the_people_title"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/answer_voters_title_text_view"
@@ -58,13 +62,15 @@
 
     <TextView
         android:id="@+id/answer_voters_title_text_view"
-        android:textColor="@color/colorPrimary"
-        style="@style/LatoRegularTextStyle"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/answer_voters_title"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/answer_voters_grade_text_view"
         app:layout_constraintHorizontal_bias="0.5"
@@ -74,7 +80,8 @@
 
     <TextView
         android:id="@+id/honesty_grade_text_view"
-        android:textColor="@color/colorPrimary"
+        style="@style/LatoLightTextStyle"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="3"
@@ -84,8 +91,9 @@
         app:layout_constraintTop_toTopOf="@+id/honesty_title_text_view"/>
 
     <TextView
+        style="@style/LatoLightTextStyle"
         android:id="@+id/leader_grade_text_view"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="3"
@@ -95,8 +103,9 @@
         app:layout_constraintTop_toTopOf="@+id/leader_title_text_view"/>
 
     <TextView
+        style="@style/LatoLightTextStyle"
         android:id="@+id/promise_keeper_grade_text_view"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:ems="3"
@@ -106,8 +115,9 @@
         app:layout_constraintTop_toTopOf="@+id/promise_keeper_title_text_view"/>
 
     <TextView
+        style="@style/LatoLightTextStyle"
         android:id="@+id/rules_for_the_people_grade_text_view"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="3"
@@ -118,12 +128,11 @@
 
     <TextView
         android:id="@+id/answer_voters_grade_text_view"
-        android:textColor="@color/colorPrimary"
+        style="@style/LatoLightTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:ems="3"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/answer_voters_title_text_view"
         app:layout_constraintEnd_toEndOf="parent"

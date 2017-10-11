@@ -26,7 +26,11 @@ data class Politician(@Exclude var post: Post? = null,
                       var rulesForThePeopleCount: Int = 0,
                       var answerVotersCount: Int = 0,
 
+                      var recommendationsCount: Int = 0,
+                      var condemnationsCount: Int = 0,
+
                       var condemnedBy: HashMap<String, Any> = hashMapOf(),
+                      var recommendedBy: HashMap<String, Any> = hashMapOf(),
                       var onMainList: Boolean = false) : Parcelable, Comparable<Politician> {
     enum class Post : Parcelable {
         DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
@@ -54,6 +58,7 @@ data class Politician(@Exclude var post: Post? = null,
         simplePoliticianMap.put("name", name)
         simplePoliticianMap.put("votesNumber", votesNumber)
         simplePoliticianMap.put("condemnedBy", condemnedBy)
+        simplePoliticianMap.put("recommendedBy", recommendedBy)
 
         simplePoliticianMap.put("honestyGrade", honestyGrade)
         simplePoliticianMap.put("leaderGrade", leaderGrade)
@@ -66,6 +71,9 @@ data class Politician(@Exclude var post: Post? = null,
         simplePoliticianMap.put("promiseKeeperCount", promiseKeeperCount)
         simplePoliticianMap.put("rulesForThePeopleCount", rulesForThePeopleCount)
         simplePoliticianMap.put("answerVotersCount", answerVotersCount)
+
+        simplePoliticianMap.put("recommendationsCount", recommendationsCount)
+        simplePoliticianMap.put("condemnationsCount", condemnationsCount)
 
         if (isDataGoingToPreList!!) {
             simplePoliticianMap.put("onMainList", onMainList)
@@ -103,6 +111,9 @@ data class Politician(@Exclude var post: Post? = null,
             source.readInt(),
             source.readInt(),
             source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readSerializable() as HashMap<String, Any>,
             source.readSerializable() as HashMap<String, Any>,
             1 == source.readInt()
     )
@@ -125,7 +136,10 @@ data class Politician(@Exclude var post: Post? = null,
         writeInt(promiseKeeperCount)
         writeInt(rulesForThePeopleCount)
         writeInt(answerVotersCount)
+        writeInt(recommendationsCount)
+        writeInt(condemnationsCount)
         writeSerializable(condemnedBy)
+        writeSerializable(recommendedBy)
         writeInt((if (onMainList) 1 else 0))
     }
 

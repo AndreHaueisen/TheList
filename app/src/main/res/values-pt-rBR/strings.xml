@@ -11,8 +11,8 @@
     <string name="title_senadores">Senadores</string>
     <string name="title_deputados">Deputados</string>
     <string name="title_governadores">Governadores</string>
-    <string name="vote_absolve">Confiável</string>
-    <string name="vote_condemn">Suspeito</string>
+    <string name="add_to_voting_list">+ Lista de Votação</string>
+    <string name="add_to_suspect_list">+ Lista de suspeitos</string>
     <string name="refreshing_votes_title">Atualizando</string>
     <string name="votes_title">Votos</string>
     <string name="banned_deputados_title">Deputados Suspeitos</string>
@@ -41,7 +41,7 @@
     <string name="logout">Sair</string>
     <string name="absolved_politician">%1$s merece um voto de confiança</string>
 
-    <string name="opinions">Opiniões</string>
+    <string name="opinions">Opine</string>
     <string name="no_opinion_yet">Nenhuma opinião ainda</string>
     <string name="your_opinion_title">Sua última opinião registrada</string>
     <string name="your_opinion_hint">Deixe sua opinião</string>
@@ -59,7 +59,7 @@
     <string name="search_politician_title">Procurar político</string>
     <string name="dialog_title_loading_database">Carregando Políticos</string>
     <string name="type_politician_name_hint">Nome do político</string>
-    <string name="share">Compartilhar</string>
+    <string name="share">Compartilhe</string>
     <string name="share_title">Peça ajuda usando…</string>
     <string name="share_boarding_message">%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
     <string name="politician_already_banned">Parlamentar considerado suspeito</string>
@@ -73,7 +73,7 @@
     <string name="congresswoman">Deputada</string>
     <string name="governor">Governador</string>
     <string name="governora">Governadora</string>
-    <string name="search_on_web">Procurar na web</string>
+    <string name="search">Pesquise</string>
 
     <string name="honesty_title">Honestidade</string>
     <string name="leader_title">Liderança</string>
