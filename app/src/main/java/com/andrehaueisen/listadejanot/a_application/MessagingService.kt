@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorPresenterActivity
+import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.utilities.INTENT_POLITICIAN_NAME
 import com.andrehaueisen.listadejanot.utilities.NEW_POLITICIAN_CHANNEL
 import com.andrehaueisen.listadejanot.utilities.NOTIFICATION_CHANNEL_ID

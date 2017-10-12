@@ -1,6 +1,5 @@
 package com.andrehaueisen.listadejanot.a_application
 
-import android.content.Intent
 import android.util.Log
 import com.andrehaueisen.listadejanot.utilities.SHARED_MESSAGE_TOKEN
 import com.andrehaueisen.listadejanot.utilities.putValueOnSharedPreferences
@@ -21,9 +20,6 @@ class InstanceIdService : FirebaseInstanceIdService() {
         saveTokenOnSharedPreferences(refreshedToken)
     }
 
-    override fun handleIntent(intent: Intent?) = super.handleIntent(intent)
-
     private fun saveTokenOnSharedPreferences(token: String) = applicationContext.putValueOnSharedPreferences(SHARED_MESSAGE_TOKEN, token)
-
 
 }

@@ -23,7 +23,6 @@ class PoliticiansContract {
             val COLUMN_POST = "cargo"
             val COLUMN_NAME = "name"
             val COLUMN_EMAIL = "email"
-            val COLUMN_IMAGE = "image"
 
             val DEFAULT_SORT_ORDER = "$_ID DESC"
 

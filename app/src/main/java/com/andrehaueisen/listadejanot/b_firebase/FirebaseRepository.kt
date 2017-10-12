@@ -3,8 +3,6 @@ package com.andrehaueisen.listadejanot.b_firebase
 import android.content.Context
 import android.util.Log
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.d_main_list.PoliticianListAdapter
-import com.andrehaueisen.listadejanot.e_search_politician.mvp.PoliticianSelectorMvpContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
@@ -143,373 +141,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 return Transaction.success(mutableData)
             }
         })
-    }
-
-    fun handleSenadorVoteOnDatabase(senador: Politician,
-                                    userEmail: String,
-                                    viewHolder: PoliticianListAdapter.PoliticianHolder?,
-                                    politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-
-        fun changeIsSenadorOnMainListStatus(email: String?, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(email?.encodeEmail())
-            val mutableMap = mutableMapOf<String, Any>()
-            mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
-            database.updateChildren(mutableMap)
-        }
-
-        fun updateSenadorVoteOnMainList(senador1: Politician,
-                                        userEmail: String,
-                                        viewHolder: PoliticianListAdapter.PoliticianHolder?) {
-
-            val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador1.email?.encodeEmail())
-
-            database.runTransaction(object : Transaction.Handler {
-
-                override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-                    if (isSuccessful && dataSnapshot.exists()) {
-
-                        val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                        senador1.condemnedBy = updatedSenador.condemnedBy
-                        senador1.votesNumber = updatedSenador.votesNumber
-                        if (viewHolder != null) {
-                            if (updatedSenador.condemnedBy.contains(userEmail.encodeEmail())) {
-                                viewHolder.initiateCondemnAnimations(senador1)
-                            } else {
-                                viewHolder.initiateAbsolveAnimations(senador1)
-                            }
-                        }
-
-                        changeIsSenadorOnMainListStatus(senador1.email, isOnMainList = true)
-
-                    } else if (!dataSnapshot.exists()) {
-
-                        viewHolder?.notifyPoliticianRemovedFromMainList(senador1)
-                        changeIsSenadorOnMainListStatus(senador1.email, isOnMainList = false)
-                    }
-                }
-
-                override fun doTransaction(mutableData: MutableData): Transaction.Result {
-
-                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                    if (senador1.votesNumber < minimumVotesToMainList) {
-                        mutableData.value = null
-                        return Transaction.success(mutableData)
-                    }
-
-                    mutableData.value = senador1.toSimpleMap(false)
-                    return Transaction.success(mutableData)
-
-                }
-            })
-        }
-
-        fun updateSenadorVoteOnPreList(userEmail: String, politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-
-            if (senador.post == Politician.Post.SENADOR || senador.post == Politician.Post.SENADORA) {
-                val database = mDatabaseReference
-                        .child(LOCATION_SENADORES_PRE_LIST)
-                        .child(senador.email?.encodeEmail())
-
-                database.runTransaction(object : Transaction.Handler {
-
-                    override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-
-                        if (isSuccessful && dataSnapshot.exists()) {
-
-                            val updatedSenador: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                            updatedSenador.email = senador.email
-
-                            updateVoteCountOnFirebase(updatedSenador)
-                            updateUserVoteList(userEmail, updatedSenador)
-                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedSenador.onMainList || (!updatedSenador.onMainList && updatedSenador.votesNumber >= minimumVotesToMainList)) {
-                                updateSenadorVoteOnMainList(updatedSenador, userEmail, viewHolder)
-                            }
-
-                            senador.condemnedBy = updatedSenador.condemnedBy
-                            senador.votesNumber = updatedSenador.votesNumber
-
-                            if (politicianSelectorView is PoliticianSelectorMvpContract.View) {
-                                if (updatedSenador.condemnedBy.contains(userEmail.encodeEmail())) {
-                                    politicianSelectorView.initiateCondemnAnimations(senador)
-                                } else {
-                                    politicianSelectorView.initiateAbsolveAnimations(senador)
-                                }
-                            }
-                        } else {
-                            Log.e(LOG_TAG, error.toString())
-                        }
-
-                    }
-
-                    override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                        val senadorRemote: Politician = mutableData.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
-
-                        val encodedEmail = userEmail.encodeEmail()
-                        if (senadorRemote.condemnedBy.contains(encodedEmail)) {
-                            senadorRemote.votesNumber--
-                            senadorRemote.condemnedBy.remove(encodedEmail)
-                        } else {
-                            senadorRemote.votesNumber++
-                            senadorRemote.condemnedBy[encodedEmail] = ServerValue.TIMESTAMP
-                        }
-
-                        mutableData.value = senadorRemote
-                        return Transaction.success(mutableData)
-                    }
-                })
-            }
-        }
-
-        updateSenadorVoteOnPreList(userEmail, politicianSelectorView)
-
-    }
-
-    fun handleDeputadoVoteOnDatabase(deputado: Politician,
-                                     userEmail: String,
-                                     viewHolder: PoliticianListAdapter.PoliticianHolder?,
-                                     politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-
-        fun changeIsDeputadoOnMainListStatus(email: String?, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(email?.encodeEmail())
-            val mutableMap = mutableMapOf<String, Any>()
-            mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
-            database.updateChildren(mutableMap)
-        }
-
-        fun updateDeputadoVoteOnMainList(deputado1: Politician,
-                                         userEmail: String,
-                                         viewHolder: PoliticianListAdapter.PoliticianHolder?) {
-
-            val database = mDatabaseReference
-                    .child(LOCATION_DEPUTADOS_MAIN_LIST)
-                    .child(deputado1.email?.encodeEmail())
-
-            database.runTransaction(object : Transaction.Handler {
-
-                override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-
-                    if (isSuccessful && dataSnapshot.exists()) {
-
-                        val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                        deputado1.condemnedBy = updatedDeputado.condemnedBy
-                        deputado1.votesNumber = updatedDeputado.votesNumber
-                        if (viewHolder != null) {
-                            if (updatedDeputado.condemnedBy.contains(userEmail.encodeEmail())) {
-                                viewHolder.initiateCondemnAnimations(deputado1)
-                            } else {
-                                viewHolder.initiateAbsolveAnimations(deputado1)
-                            }
-                        }
-
-                        changeIsDeputadoOnMainListStatus(deputado1.email, isOnMainList = true)
-
-                    } else if (!dataSnapshot.exists()) {
-
-                        viewHolder?.notifyPoliticianRemovedFromMainList(deputado1)
-                        changeIsDeputadoOnMainListStatus(deputado1.email, isOnMainList = false)
-                    }
-                }
-
-                override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                    if (deputado1.votesNumber < minimumVotesToMainList) {
-                        mutableData.value = null
-                        return Transaction.success(mutableData)
-                    }
-
-                    mutableData.value = deputado1.toSimpleMap(false)
-                    return Transaction.success(mutableData)
-                }
-            })
-        }
-
-        fun updateDeputadoVoteOnPreList(userEmail: String,
-                                        politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-            if (deputado.post == Politician.Post.DEPUTADO || deputado.post == Politician.Post.DEPUTADA) {
-                val database = mDatabaseReference
-                        .child(LOCATION_DEPUTADOS_PRE_LIST)
-                        .child(deputado.email?.encodeEmail())
-
-                database.runTransaction(object : Transaction.Handler {
-
-                    override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-
-                        if (isSuccessful && dataSnapshot.exists()) {
-
-                            val updatedDeputado: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                            updatedDeputado.email = deputado.email
-
-                            updateVoteCountOnFirebase(updatedDeputado)
-                            updateUserVoteList(userEmail, updatedDeputado)
-                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedDeputado.onMainList || (!updatedDeputado.onMainList && updatedDeputado.votesNumber >= minimumVotesToMainList)) {
-                                updateDeputadoVoteOnMainList(updatedDeputado, userEmail, viewHolder)
-                            }
-
-                            deputado.condemnedBy = updatedDeputado.condemnedBy
-                            deputado.votesNumber = updatedDeputado.votesNumber
-
-                            if (politicianSelectorView is PoliticianSelectorMvpContract.View) {
-                                if (updatedDeputado.condemnedBy.contains(userEmail.encodeEmail())) {
-                                    politicianSelectorView.initiateCondemnAnimations(deputado)
-                                } else {
-                                    politicianSelectorView.initiateAbsolveAnimations(deputado)
-                                }
-                            }
-
-                            Log.i(LOG_TAG, dataSnapshot.toString())
-                        } else {
-                            Log.e(LOG_TAG, error.toString())
-                        }
-
-                    }
-
-                    override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                        val deputadoRemote: Politician = mutableData.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
-
-                        val encodedEmail = userEmail.encodeEmail()
-                        if (deputadoRemote.condemnedBy.contains(encodedEmail)) {
-                            deputadoRemote.votesNumber--
-                            deputadoRemote.condemnedBy.remove(encodedEmail)
-                        } else {
-                            deputadoRemote.votesNumber++
-                            deputadoRemote.condemnedBy[encodedEmail] = ServerValue.TIMESTAMP
-                        }
-
-                        mutableData.value = deputadoRemote
-                        return Transaction.success(mutableData)
-
-                    }
-                })
-            }
-        }
-
-        updateDeputadoVoteOnPreList(userEmail, politicianSelectorView)
-    }
-
-    fun handleGovernadorVoteOnDatabase(governador: Politician,
-                                       userEmail: String,
-                                       viewHolder: PoliticianListAdapter.PoliticianHolder?,
-                                       politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-
-        fun changeIsGovernadorOnMainListStatus(email: String?, isOnMainList: Boolean) {
-            val database = mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).child(email?.encodeEmail())
-            val mutableMap = mutableMapOf<String, Any>()
-            mutableMap.put(CHILD_LOCATION_IS_ON_MAIN_LIST, isOnMainList)
-            database.updateChildren(mutableMap)
-        }
-
-        fun updateGovernadorVoteOnMainList(governador1: Politician,
-                                           userEmail: String,
-                                           viewHolder: PoliticianListAdapter.PoliticianHolder?) {
-
-            val database = mDatabaseReference
-                    .child(LOCATION_GOVERNADORES_MAIN_LIST)
-                    .child(governador1.email?.encodeEmail())
-
-            database.runTransaction(object : Transaction.Handler {
-
-                override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-
-                    if (isSuccessful && dataSnapshot.exists()) {
-
-                        val updatedGovernador: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                        governador1.condemnedBy = updatedGovernador.condemnedBy
-                        governador1.votesNumber = updatedGovernador.votesNumber
-                        if (viewHolder != null) {
-                            if (updatedGovernador.condemnedBy.contains(userEmail.encodeEmail())) {
-                                viewHolder.initiateCondemnAnimations(governador1)
-                            } else {
-                                viewHolder.initiateAbsolveAnimations(governador1)
-                            }
-                        }
-
-                        changeIsGovernadorOnMainListStatus(governador1.email, isOnMainList = true)
-
-                    } else if (!dataSnapshot.exists()) {
-
-                        viewHolder?.notifyPoliticianRemovedFromMainList(governador1)
-                        changeIsGovernadorOnMainListStatus(governador1.email, isOnMainList = false)
-                    }
-                }
-
-                override fun doTransaction(mutableData: MutableData): Transaction.Result {
-
-                    val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                    if (governador1.votesNumber < minimumVotesToMainList) {
-                        mutableData.value = null
-                        return Transaction.success(mutableData)
-                    }
-
-                    mutableData.value = governador1.toSimpleMap(false)
-                    return Transaction.success(mutableData)
-                }
-            })
-        }
-
-        fun updateGovernadorVoteOnPreList(userEmail: String, politicianSelectorView: PoliticianSelectorMvpContract.View?) {
-
-            if (governador.post == Politician.Post.GOVERNADOR || governador.post == Politician.Post.GOVERNADORA) {
-                val database = mDatabaseReference
-                        .child(LOCATION_GOVERNADORES_PRE_LIST)
-                        .child(governador.email?.encodeEmail())
-
-                database.runTransaction(object : Transaction.Handler {
-
-                    override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) {
-
-                        if (isSuccessful && dataSnapshot.exists()) {
-
-                            val updatedGovernador: Politician = dataSnapshot.getValue(Politician::class.java)!!
-                            updatedGovernador.email = governador.email
-
-                            updateVoteCountOnFirebase(updatedGovernador)
-                            updateUserVoteList(userEmail, updatedGovernador)
-                            val minimumVotesToMainList = mContext.pullIntFromSharedPreferences(SHARED_MINIMUM_VALUE_TO_MAIN_LIST)
-                            if (updatedGovernador.onMainList || (!updatedGovernador.onMainList && updatedGovernador.votesNumber >= minimumVotesToMainList)) {
-                                updateGovernadorVoteOnMainList(updatedGovernador, userEmail, viewHolder)
-                            }
-
-                            governador.condemnedBy = updatedGovernador.condemnedBy
-                            governador.votesNumber = updatedGovernador.votesNumber
-
-                            if (politicianSelectorView is PoliticianSelectorMvpContract.View) {
-                                if (updatedGovernador.condemnedBy.contains(userEmail.encodeEmail())) {
-                                    politicianSelectorView.initiateCondemnAnimations(governador)
-                                } else {
-                                    politicianSelectorView.initiateAbsolveAnimations(governador)
-                                }
-                            }
-
-                            Log.i(LOG_TAG, dataSnapshot.toString())
-                        } else {
-                            Log.e(LOG_TAG, error.toString())
-                        }
-
-                    }
-
-                    override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                        val governadorRemote: Politician = mutableData.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
-
-                        val encodedEmail = userEmail.encodeEmail()
-                        if (governadorRemote.condemnedBy.contains(encodedEmail)) {
-                            governadorRemote.votesNumber--
-                            governadorRemote.condemnedBy.remove(encodedEmail)
-                        } else {
-                            governadorRemote.votesNumber++
-                            governadorRemote.condemnedBy[encodedEmail] = ServerValue.TIMESTAMP
-                        }
-
-                        mutableData.value = governadorRemote
-                        return Transaction.success(mutableData)
-
-                    }
-                })
-            }
-        }
-
-        updateGovernadorVoteOnPreList(userEmail, politicianSelectorView)
     }
 
     fun handleGradeChange(voteType: RatingBarType, outdatedUserGrade: Float, newGrade: Float, politician: Politician, userEmail: String, user: User) {
@@ -675,40 +306,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         userEmail?.let {
             mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addValueEventListener(userListener)
         }
-    }
-
-    private fun updateVoteCountOnFirebase(updatedPolitician: Politician) {
-
-        val database = mDatabaseReference.child(LOCATION_VOTE_COUNT)
-        val emailVotesMap = HashMap<String?, Long>()
-        emailVotesMap[updatedPolitician.email?.encodeEmail()] = updatedPolitician.votesNumber
-        database.updateChildren(emailVotesMap.toMap())
-    }
-
-    private fun updateUserVoteList(userEmail: String, updatedPolitician: Politician) {
-
-        val database = mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail())
-
-        database.runTransaction(object : Transaction.Handler {
-            override fun doTransaction(mutableData: MutableData): Transaction.Result {
-
-                val user: User = mutableData.getValue(User::class.java) ?: User()
-                val politicianEmail = updatedPolitician.email?.encodeEmail()
-
-                if (updatedPolitician.condemnedBy.contains(userEmail.encodeEmail())) {
-                    user.condemnations[politicianEmail!!] = (ServerValue.TIMESTAMP)
-                } else {
-                    user.condemnations.remove(politicianEmail)
-                }
-
-                mutableData.value = user
-                return Transaction.success(mutableData)
-            }
-
-            override fun onComplete(error: DatabaseError?, isSuccessful: Boolean, dataSnapshot: DataSnapshot) =
-                    Unit
-        })
-
     }
 
     private val mListenerForUser = object : ValueEventListener {
@@ -903,16 +500,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishVoteCountList
     }
 
-    fun getSenadoresMainList(): PublishSubject<ArrayList<Politician>> {
-        mPublishSenadoresMainList = PublishSubject.create()
-
-        mDatabaseReference
-                .child(LOCATION_SENADORES_MAIN_LIST)
-                .addListenerForSingleValueEvent(mListenerForSenadoresMainList)
-
-        return mPublishSenadoresMainList
-    }
-
     fun getSenadoresPreList(): PublishSubject<ArrayList<Politician>> {
         mPublishSenadoresPreList = PublishSubject.create()
 
@@ -923,16 +510,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         return mPublishSenadoresPreList
     }
 
-    fun getDeputadosMainList(): PublishSubject<ArrayList<Politician>> {
-        mPublishDeputadosMainList = PublishSubject.create()
-
-        mDatabaseReference
-                .child(LOCATION_DEPUTADOS_MAIN_LIST)
-                .addListenerForSingleValueEvent(mListenerForDeputadosMainList)
-
-        return mPublishDeputadosMainList
-    }
-
     fun getDeputadosPreList(): PublishSubject<ArrayList<Politician>> {
         mPublishDeputadosPreList = PublishSubject.create()
 
@@ -941,16 +518,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 .addListenerForSingleValueEvent(mListenerForDeputadosPreList)
 
         return mPublishDeputadosPreList
-    }
-
-    fun getGovernadoresMainList(): PublishSubject<ArrayList<Politician>> {
-        mPublishGovernadoresMainList = PublishSubject.create()
-
-        mDatabaseReference
-                .child(LOCATION_GOVERNADORES_MAIN_LIST)
-                .addListenerForSingleValueEvent(mListenerForGovernadoresMainList)
-
-        return mPublishGovernadoresMainList
     }
 
     fun getGovernadoresPreList(): PublishSubject<ArrayList<Politician>> {
@@ -973,14 +540,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     }
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
-
-    fun listenForMinimumVotes() {
-        mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST).addValueEventListener(mListenerForMinimumVotesToMainList)
-    }
-
-    fun removeMinimumVoteListener() =
-            mDatabaseReference.child(LOCATION_MINIMUM_VOTES_FOR_MAIN_LIST)
-                    .removeEventListener(mListenerForMinimumVotesToMainList)
 
     fun onDestroy() {
         mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).removeEventListener(mListenerForSenadoresMainList)
@@ -1022,29 +581,13 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             .child(politicianEmail.encodeEmail())
             .removeEventListener(mListenerForOpinionsList)
 
-    private fun addSenadorOnMainList(senador: Politician) {
 
-        val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email?.encodeEmail())
-        database.setValue(senador.toSimpleMap(false), ({ _, _ ->
-            Log.i(LOG_TAG, "New senador on main list")
-        }))
-
-    }
 
     private fun addSenadorOnPreList(senador: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).child(senador.email?.encodeEmail())
-        database.setValue(senador.toSimpleMap(true), ({ _, _ ->
+        database.setValue(senador.toSimpleMap(), ({ _, _ ->
 
-        }))
-
-    }
-
-    private fun addDeputadoOnMainList(deputado: Politician) {
-
-        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email?.encodeEmail())
-        database.setValue(deputado.toSimpleMap(false), ({ _, _ ->
-            Log.i(LOG_TAG, "New deputado on main list")
         }))
 
     }
@@ -1052,36 +595,10 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     private fun addDeputadoOnPreList(deputado: Politician) {
 
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).child(deputado.email?.encodeEmail())
-        database.setValue(deputado.toSimpleMap(true), ({ _, _ ->
+        database.setValue(deputado.toSimpleMap(), ({ _, _ ->
 
         }))
 
-    }
-
-    private fun removeSenadorFromMainList(senador: Politician) {
-        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).child(senador.email?.encodeEmail()).removeValue()
-    }
-
-    private fun removeDeputadoFromMainList(deputado: Politician) {
-        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).child(deputado.email?.encodeEmail()).removeValue()
-    }
-
-    private fun saveSenadoresOnMainList(senadores: ArrayList<Politician>) {
-        val database = mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST)
-
-        val mapSenadores = mutableMapOf<String, Any>()
-        senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
-                .forEach { senador -> mapSenadores.put("/${senador.email?.encodeEmail()}/", senador.toSimpleMap(false)) }
-
-        database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
-
-            override fun onComplete(error: DatabaseError?, reference: DatabaseReference?) {
-                if (error != null)
-                    Log.e(LOG_TAG, error.message)
-
-                Log.i(LOG_TAG, reference?.toString())
-            }
-        })
     }
 
     fun saveSenadoresOnPreList(senadores: ArrayList<Politician>) {
@@ -1089,7 +606,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         senadores.filter { it.post == Politician.Post.SENADOR || it.post == Politician.Post.SENADORA }
-                .forEach { senador -> mapSenadores.put("/${senador.email?.encodeEmail()}/", senador.toSimpleMap(true)) }
+                .forEach { senador -> mapSenadores.put("/${senador.email?.encodeEmail()}/", senador.toSimpleMap()) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
@@ -1099,22 +616,12 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         })
     }
 
-    private fun saveDeputadosOnMainList(deputados: ArrayList<Politician>) {
-        val database = mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST)
-
-        val mapSenadores = mutableMapOf<String, Any>()
-        deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA }
-                .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap(false)) }
-
-        database.updateChildren(mapSenadores, { _, _ -> })
-    }
-
     fun saveDeputadosOnPreList(deputados: ArrayList<Politician>) {
         val database = mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST)
 
         val mapSenadores = mutableMapOf<String, Any>()
         deputados.filter { it.post == Politician.Post.DEPUTADO || it.post == Politician.Post.DEPUTADA }
-                .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap(true)) }
+                .forEach { deputado -> mapSenadores.put("/${deputado.email?.encodeEmail()}/", deputado.toSimpleMap()) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 
@@ -1130,7 +637,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
         val mapSenadores = mutableMapOf<String, Any>()
         governadores.filter { it.post == Politician.Post.GOVERNADOR || it.post == Politician.Post.GOVERNADORA }
-                .forEach { governador -> mapSenadores.put("/${governador.email?.encodeEmail()}/", governador.toSimpleMap(true)) }
+                .forEach { governador -> mapSenadores.put("/${governador.email?.encodeEmail()}/", governador.toSimpleMap()) }
 
         database.updateChildren(mapSenadores, object : DatabaseReference.CompletionListener {
 

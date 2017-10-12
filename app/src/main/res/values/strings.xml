@@ -64,7 +64,7 @@
 
     <string name="intent_email_chooser">Send email using</string>
 
-    <!--e_politician_selector strings-->
+    <!--d_politician_selector strings-->
     <string name="dialog_title_no_app_detected">No app detected</string>
     <string name="dialog_message_no_email_app">Download an email app to complete this action</string>
     <string name="dialog_message_no_browser_app">Download a browser to complete this action</string>
@@ -91,6 +91,7 @@
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
     <string name="search">Search</string>
+    <string name="your_grade">Your grade: %.1f</string>
 
     <string name="honesty_title">Honesty</string>
     <string name="leader_title">Leader</string>
@@ -103,15 +104,15 @@
         <item quantity="other">Missing %1$d votes to be condemned</item>
     </plurals>
 
-    <!--f_information strings-->
+    <!--e_information strings-->
     <string name="understand_app_motivation">1 - Politician is on the news for corruption\n2 - Condemn the politician\n3 - When %1$d people in total do the same the politician will be added to the condemned list\n4 - In the next elections, don\'t vote on who is on the list\n5 - Share</string>
     <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
 
-    <!--g_login strings-->
+    <!--f_login strings-->
     <string name="no_network">No network connection</string>
     <string name="unknown_error">Something went wrong. Try again</string>
 
-    <!--h_user_vote_list strings-->
+    <!--g_user_vote_list strings-->
     <string name="your_votes">Politicians you condemned</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">You banned no one yet</string>
@@ -128,7 +129,7 @@
         <item quantity="other">Total: %1$d votes</item>
     </plurals>
 
-    <!-- i_opinions strings-->
+    <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Delete current opinion?</string>
     <string name="opinion_dialog_button_positive">Confirm</string>
     <string name="opinion_dialog_button_negative">Cancel</string>

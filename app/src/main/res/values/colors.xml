@@ -16,9 +16,10 @@
     <color name="colorSecondaryDark">#494949</color>
     <color name="colorSecondaryLight">#aeaeae</color>
     <color name="colorSecondarySmooth">#d2d2d2</color>
+    <color name="colorSecondaryWhite">#fff</color>
 
     <color name="colorSemiTransparentAbsolve">#4109382c</color>
     <color name="colorSemiTransparentCondemn">#46ba1f17</color>
-    <color name="colorDarkTransparent">#69000000</color>
+    <color name="colorDarkTransparent">#78000000</color>
 
 </resources>

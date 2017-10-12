@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    app:cardElevation="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="1dp">
 
     <com.andrehaueisen.listadejanot.views.IndicatorViewFlipper
         android:id="@+id/rating_bars_view_flipper"
@@ -47,6 +48,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/honesty_title_rating_bar_text_view"/>
+
+            <TextView
+                android:id="@+id/your_grade_honesty_text_view"
+                style="@style/LatoLightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimaryLight"
+                tools:text="Your Grade: 4,3"/>
         </LinearLayout>
 
         <LinearLayout
@@ -87,6 +98,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/leader_rating_bar_title_text_view"/>
 
+            <TextView
+                android:id="@+id/your_grade_leader_text_view"
+                style="@style/LatoLightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimaryLight"
+                tools:text="Your Grade: 4,3"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -126,6 +147,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/promise_keeper_rating_bar_title_text_view"/>
 
+            <TextView
+                android:id="@+id/your_grade_promise_keeper_text_view"
+                style="@style/LatoLightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimaryLight"
+                tools:text="Your Grade: 4,3"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -164,6 +195,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rules_for_the_people_rating_bar_title_text_view"/>
+
+            <TextView
+                android:id="@+id/your_grade_rules_for_people_text_view"
+                style="@style/LatoLightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimaryLight"
+                tools:text="Your Grade: 4,3"/>
 
         </LinearLayout>
 
@@ -206,8 +247,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/answer_voters_rating_bar_title_text_view"/>
 
+            <TextView
+                android:id="@+id/your_grade_answer_voters_text_view"
+                style="@style/LatoLightTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimaryLight"
+                tools:text="Your Grade: 4,3"/>
+
         </LinearLayout>
 
     </com.andrehaueisen.listadejanot.views.IndicatorViewFlipper>
+
 </android.support.v7.widget.CardView>
 

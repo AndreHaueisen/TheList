@@ -12,7 +12,6 @@ import kotlin.collections.HashMap
 data class Politician(@Exclude var post: Post? = null,
                       var name: String = "",
                       @Exclude var email: String? = null,
-                      @Exclude var image: ByteArray? = null,
                       var votesNumber: Long = 0,
                       var honestyGrade: Float = -1F,
                       var leaderGrade: Float = -1F,
@@ -27,11 +26,7 @@ data class Politician(@Exclude var post: Post? = null,
                       var answerVotersCount: Int = 0,
 
                       var recommendationsCount: Int = 0,
-                      var condemnationsCount: Int = 0,
-
-                      var condemnedBy: HashMap<String, Any> = hashMapOf(),
-                      var recommendedBy: HashMap<String, Any> = hashMapOf(),
-                      var onMainList: Boolean = false) : Parcelable, Comparable<Politician> {
+                      var condemnationsCount: Int = 0) : Parcelable, Comparable<Politician> {
     enum class Post : Parcelable {
         DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
 
@@ -52,13 +47,11 @@ data class Politician(@Exclude var post: Post? = null,
         }
     }
 
-    fun toSimpleMap(isDataGoingToPreList: Boolean?): Map<String, Any> {
+    fun toSimpleMap(): Map<String, Any> {
 
         val simplePoliticianMap = HashMap<String, Any>()
         simplePoliticianMap.put("name", name)
         simplePoliticianMap.put("votesNumber", votesNumber)
-        simplePoliticianMap.put("condemnedBy", condemnedBy)
-        simplePoliticianMap.put("recommendedBy", recommendedBy)
 
         simplePoliticianMap.put("honestyGrade", honestyGrade)
         simplePoliticianMap.put("leaderGrade", leaderGrade)
@@ -74,10 +67,6 @@ data class Politician(@Exclude var post: Post? = null,
 
         simplePoliticianMap.put("recommendationsCount", recommendationsCount)
         simplePoliticianMap.put("condemnationsCount", condemnationsCount)
-
-        if (isDataGoingToPreList!!) {
-            simplePoliticianMap.put("onMainList", onMainList)
-        }
 
         return simplePoliticianMap
     }
@@ -99,7 +88,6 @@ data class Politician(@Exclude var post: Post? = null,
             source.readValue(Int::class.java.classLoader)?.let { Post.values()[it as Int] },
             source.readString(),
             source.readString(),
-            source.createByteArray(),
             source.readLong(),
             source.readFloat(),
             source.readFloat(),
@@ -112,10 +100,7 @@ data class Politician(@Exclude var post: Post? = null,
             source.readInt(),
             source.readInt(),
             source.readInt(),
-            source.readInt(),
-            source.readSerializable() as HashMap<String, Any>,
-            source.readSerializable() as HashMap<String, Any>,
-            1 == source.readInt()
+            source.readInt()
     )
 
     override fun describeContents() = 0
@@ -124,7 +109,6 @@ data class Politician(@Exclude var post: Post? = null,
         writeValue(post?.ordinal)
         writeString(name)
         writeString(email)
-        writeByteArray(image)
         writeLong(votesNumber)
         writeFloat(honestyGrade)
         writeFloat(leaderGrade)
@@ -138,9 +122,6 @@ data class Politician(@Exclude var post: Post? = null,
         writeInt(answerVotersCount)
         writeInt(recommendationsCount)
         writeInt(condemnationsCount)
-        writeSerializable(condemnedBy)
-        writeSerializable(recommendedBy)
-        writeInt((if (onMainList) 1 else 0))
     }
 
     companion object {
