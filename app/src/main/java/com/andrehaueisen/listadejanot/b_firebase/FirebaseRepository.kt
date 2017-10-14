@@ -2,7 +2,6 @@ package com.andrehaueisen.listadejanot.b_firebase
 
 import android.content.Context
 import android.util.Log
-import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
@@ -39,7 +38,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
-    fun handleListChangeOnDatabase(listAction: ListAction, politician:Politician, userEmail: String){
+    fun handleListChangeOnDatabase(listAction: ListAction, politician: Politician, userEmail: String) {
 
         val politicianEncodedEmail = politician.email!!.encodeEmail()
         val userEncodedEmail = userEmail.encodeEmail()
@@ -61,7 +60,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 if (transactionCommitted) {
 
                     val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
-                    politicianDatabase.runTransaction(object: Transaction.Handler{
+                    politicianDatabase.runTransaction(object : Transaction.Handler {
                         override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
 
                         }
@@ -72,16 +71,16 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                             when (listAction) {
                                 ListAction.ADD_TO_VOTE_LIST -> {
                                     remotePolitician.recommendationsCount++
-                                    if(hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
+                                    if (hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
                                 }
 
                                 ListAction.ADD_TO_SUSPECT_LIST -> {
                                     remotePolitician.condemnationsCount++
-                                    if(hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
+                                    if (hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
                                 }
-                                ListAction.REMOVE_FROM_LISTS ->{
-                                    if(hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
-                                    if(hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
+                                ListAction.REMOVE_FROM_LISTS -> {
+                                    if (hasRemovedVoteFromCondemnationsList) remotePolitician.condemnationsCount--
+                                    if (hasRemovedVoteFromRecommendationsList) remotePolitician.recommendationsCount--
                                 }
                             }
 
@@ -103,7 +102,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 with(remoteUser) {
                     when (listAction) {
                         ListAction.ADD_TO_VOTE_LIST -> {
-                            if(hasVoteOnCondemnationList) {
+                            if (hasVoteOnCondemnationList) {
                                 remoteUser.condemnations.remove(politicianEncodedEmail)
                                 politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
@@ -113,7 +112,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                         }
 
                         ListAction.ADD_TO_SUSPECT_LIST -> {
-                            if(hasVoteOnRecommendationList) {
+                            if (hasVoteOnRecommendationList) {
                                 remoteUser.recommendations.remove(politicianEncodedEmail)
                                 politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
@@ -121,13 +120,13 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                             remoteUser.condemnations[politicianEncodedEmail] = ServerValue.TIMESTAMP
                             politician.condemnationsCount++
                         }
-                        ListAction.REMOVE_FROM_LISTS ->{
-                            if(hasVoteOnRecommendationList) {
+                        ListAction.REMOVE_FROM_LISTS -> {
+                            if (hasVoteOnRecommendationList) {
                                 remoteUser.recommendations.remove(politicianEncodedEmail)
                                 politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
                             }
-                            if(hasVoteOnCondemnationList) {
+                            if (hasVoteOnCondemnationList) {
                                 remoteUser.condemnations.remove(politicianEncodedEmail)
                                 politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
@@ -302,7 +301,7 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         })
     }
 
-    fun listenToUser(userListener: ValueEventListener, userEmail: String?){
+    fun listenToUser(userListener: ValueEventListener, userEmail: String?) {
         userEmail?.let {
             mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addValueEventListener(userListener)
         }
@@ -324,41 +323,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         override fun onCancelled(error: DatabaseError) = mPublishUser.onError(error.toException())
     }
 
-    private val mListenerForVoteCountList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            val voteCountList = HashMap<String, Long>()
-
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-
-                dataSnapshot.children.forEach { voteCount ->
-                    voteCountList[voteCount.key] = voteCount.value as? Long ?: 0
-                }
-            }
-
-            mPublishVoteCountList.onNext(voteCountList)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishVoteCountList.onError(error.toException())
-    }
-
-    private val mListenerForSenadoresMainList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            if (mMainListSenadores.isNotEmpty()) mMainListSenadores.clear()
-
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mMainListSenadores.add(it.getValue(mGenericIndicator)!!) }
-            }
-            mPublishSenadoresMainList.onNext(mMainListSenadores)
-
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishSenadoresMainList.onError(error.toException())
-    }
-
     private val mListenerForSenadoresPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
@@ -367,27 +331,19 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             }
 
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mPreListSenadores.add(it.getValue(mGenericIndicator)!!) }
+                dataSnapshot.children.forEach { snapshot ->
+                    if (snapshot != null) {
+                        val senador = (snapshot.getValue(mGenericIndicator) as Politician)
+                        senador.email = snapshot.key
+                        mPreListSenadores.add(senador)
+                    }
+                }
             }
             mPublishSenadoresPreList.onNext(mPreListSenadores)
         }
 
         override fun onCancelled(error: DatabaseError) =
                 mPublishSenadoresPreList.onError(error.toException())
-    }
-
-    private val mListenerForDeputadosMainList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            if (mMainListDeputados.isNotEmpty()) mMainListDeputados.clear()
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mMainListDeputados.add(it.getValue(mGenericIndicator)!!) }
-            }
-            mPublishDeputadosMainList.onNext(mMainListDeputados)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishDeputadosMainList.onError(error.toException())
     }
 
     private val mListenerForDeputadosPreList = object : ValueEventListener {
@@ -398,8 +354,13 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             }
 
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mPreListDeputados.add(it.getValue(mGenericIndicator)!!) }
-
+                dataSnapshot.children.forEach { snapshot ->
+                    if (snapshot != null) {
+                        val deputado = (snapshot.getValue(mGenericIndicator) as Politician)
+                        deputado.email = snapshot.key
+                        mPreListDeputados.add(deputado)
+                    }
+                }
             }
             mPublishDeputadosPreList.onNext(mPreListDeputados)
         }
@@ -408,27 +369,19 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
                 mPublishDeputadosPreList.onError(error.toException())
     }
 
-    private val mListenerForGovernadoresMainList = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-
-            if (mMainListGovernadores.isNotEmpty()) mMainListGovernadores.clear()
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mMainListGovernadores.add(it.getValue(mGenericIndicator)!!) }
-            }
-            mPublishGovernadoresMainList.onNext(mMainListGovernadores)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishGovernadoresMainList.onError(error.toException())
-    }
-
     private val mListenerForGovernadoresPreList = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
             if (mPreListGovernadores.isNotEmpty()) mPreListGovernadores.clear()
             if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { if (it != null) mPreListGovernadores.add(it.getValue(mGenericIndicator)!!) }
+                dataSnapshot.children.forEach { snapshot ->
+                    if (snapshot != null) {
+                        val governador = (snapshot.getValue(mGenericIndicator) as Politician)
+                        governador.email = snapshot.key
+                        mPreListGovernadores.add(governador)
+                    }
+                }
             }
             mPublishGovernadoresPreList.onNext(mPreListGovernadores)
         }
@@ -467,37 +420,11 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
         override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) = Unit
     }
 
-    private val mListenerForMinimumVotesToMainList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            val minimumVoteToMailList: Int = dataSnapshot?.getValue(Int::class.java) ?: 0
-
-            val sharedPreferences = mContext.getSharedPreferences(SHARED_PREFERENCES, 0)
-            val lastMinimumVoteToMailList = sharedPreferences.getInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, 0)
-
-            if (minimumVoteToMailList != lastMinimumVoteToMailList)
-                mContext.showToast(mContext.getString(R.string.new_minimum_votes_value, minimumVoteToMailList))
-
-            val sharedPreferencesEditor = sharedPreferences.edit()
-            sharedPreferencesEditor.putInt(SHARED_MINIMUM_VALUE_TO_MAIN_LIST, minimumVoteToMailList)
-            sharedPreferencesEditor.apply()
-        }
-
-        override fun onCancelled(p0: DatabaseError?) = Unit
-    }
-
     fun getUser(userEmail: String): PublishSubject<User> {
         mPublishUser = PublishSubject.create()
 
         mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addListenerForSingleValueEvent(mListenerForUser)
         return mPublishUser
-    }
-
-    fun getVoteCountList(): PublishSubject<HashMap<String, Long>> {
-        mPublishVoteCountList = PublishSubject.create()
-        mDatabaseReference.child(LOCATION_VOTE_COUNT).addListenerForSingleValueEvent(mListenerForVoteCountList)
-
-        return mPublishVoteCountList
     }
 
     fun getSenadoresPreList(): PublishSubject<ArrayList<Politician>> {
@@ -542,17 +469,12 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
     fun onDestroy() {
-        mDatabaseReference.child(LOCATION_SENADORES_MAIN_LIST).removeEventListener(mListenerForSenadoresMainList)
         mDatabaseReference.child(LOCATION_SENADORES_PRE_LIST).removeEventListener(mListenerForSenadoresPreList)
-        mDatabaseReference.child(LOCATION_DEPUTADOS_MAIN_LIST).removeEventListener(mListenerForDeputadosMainList)
         mDatabaseReference.child(LOCATION_DEPUTADOS_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
-        mDatabaseReference.child(LOCATION_GOVERNADORES_MAIN_LIST).removeEventListener(mListenerForGovernadoresMainList)
         mDatabaseReference.child(LOCATION_GOVERNADORES_PRE_LIST).removeEventListener(mListenerForDeputadosPreList)
-
-
     }
 
-    fun destroyUserListener(userListener: ValueEventListener, userEmail: String?){
+    fun destroyUserListener(userListener: ValueEventListener, userEmail: String?) {
         userEmail?.let {
             mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).removeEventListener(userListener)
         }
@@ -580,8 +502,6 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             .child(LOCATION_OPINIONS_ON_POLITICIANS)
             .child(politicianEmail.encodeEmail())
             .removeEventListener(mListenerForOpinionsList)
-
-
 
     private fun addSenadorOnPreList(senador: Politician) {
 

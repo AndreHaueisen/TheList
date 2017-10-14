@@ -10,15 +10,14 @@ enum class ListAction {
     ADD_TO_VOTE_LIST, ADD_TO_SUSPECT_LIST, REMOVE_FROM_LISTS
 }
 
-val INTENT_DEPUTADOS_MAIN_LIST = "deputados_main_list"
-val INTENT_SENADORES_MAIN_LIST = "senadores_main_list"
-val INTENT_GOVERNADORES_MAIN_LIST = "governadores_main_list"
+val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
+
 val INTENT_POLITICIAN_NAME = "intent_politician_name"
 val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
 val BUNDLE_MANAGER = "layout_manager_state"
 val BUNDLE_POLITICIAN_NAME = "politician_name"
 val BUNDLE_POLITICIAN = "politician"
-val BUNDLE_USER_VOTES_LIST = "politicians_list"
+val BUNDLE_VOTED_POLITICIANS = "politicians_list"
 val BUNDLE_USER = "user"
 val BUNDLE_POLITICIAN_EMAIL = "politician_email"
 val BUNDLE_POLITICIAN_IMAGE = "politician_image"
@@ -27,20 +26,19 @@ val BUNDLE_USER_OPINION = "user_opinion"
 
 val LOCATION_UID_MAPPINGS = "UID_mappings"
 val LOCATION_MESSAGE_TOKENS = "Message_tokens"
-val LOCATION_DEPUTADOS_MAIN_LIST = "Deputados_main_list"
-val LOCATION_SENADORES_MAIN_LIST = "Senadores_main_list"
-val LOCATION_GOVERNADORES_MAIN_LIST = "Governadores_main_list"
 val LOCATION_DEPUTADOS_PRE_LIST = "Deputados_pre_list"
 val LOCATION_SENADORES_PRE_LIST = "Senadores_pre_list"
 val LOCATION_GOVERNADORES_PRE_LIST = "Governadores_pre_list"
 val LOCATION_USERS = "Users"
-val LOCATION_VOTE_COUNT = "Vote_count"
 val LOCATION_OPINIONS_ON_POLITICIANS = "Opinions_on_politicians"
 val CHILD_LOCATION_USER_HONESTY = "honestyGrades"
 val CHILD_LOCATION_USER_LEADER = "leaderGrades"
 val CHILD_LOCATION_USER_PROMISE_KEEPER = "promiseKeeperGrades"
 val CHILD_LOCATION_USER_RULES_FOR_THE_PEOPLE = "rulesForThePeopleGrades"
 val CHILD_LOCATION_USER_ANSWER_VOTERS = "answerVotersGrades"
+
+val SUSPECTS_POLITICIANS_ADAPTER_TYPE = 0
+val WILL_VOTE_POLITICIANS_ADAPTER_TYPE = 1
 
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250

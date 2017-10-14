@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.d_search_politician.mvp.ImageFetcherModel
-import com.andrehaueisen.listadejanot.d_search_politician.mvp.ImageFetcherService
+import com.andrehaueisen.listadejanot.utilities.ImageFetcherModel
+import com.andrehaueisen.listadejanot.utilities.ImageFetcherService
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorModel
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.SinglePoliticianModel
 import com.andrehaueisen.listadejanot.models.User
@@ -19,7 +19,7 @@ import dagger.Provides
  * Created by andre on 5/11/2017.
  */
 @Module
-class PoliticianSelectorModule(private val mLoaderManager: LoaderManager, private val mUser: User) {
+class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
 
     @PoliticianSelectorScope
     @Provides
@@ -44,16 +44,15 @@ class PoliticianSelectorModule(private val mLoaderManager: LoaderManager, privat
 
     @PoliticianSelectorScope
     @Provides
-    fun provideValueEventListener() = object : ValueEventListener {
+    fun provideValueEventListener(user: User) = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot?) {
             val refreshedUser: User = dataSnapshot?.getValue(User::class.java) ?: User()
 
-            mUser.refreshUser(refreshedUser)
+            user.refreshUser(refreshedUser)
         }
 
         override fun onCancelled(error: DatabaseError?) {}
     }
-
 
 }

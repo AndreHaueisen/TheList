@@ -4,7 +4,10 @@ import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.utilities.ImageFetcherModel
+import com.andrehaueisen.listadejanot.utilities.ImageFetcherService
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListModel
+import com.andrehaueisen.listadejanot.models.User
 import dagger.Module
 import dagger.Provides
 
@@ -13,7 +16,7 @@ import dagger.Provides
  */
 @UserVoteListScope
 @Module
-class UserVoteListModule(private val loaderManager: LoaderManager){
+class UserVoteListModule(private val loaderManager: LoaderManager) {
 
     @UserVoteListScope
     @Provides
@@ -21,5 +24,14 @@ class UserVoteListModule(private val loaderManager: LoaderManager){
 
     @UserVoteListScope
     @Provides
-    fun provideUserVoteListModel(context: Context, firebaseRepository: FirebaseRepository, firebaseAuthenticator: FirebaseAuthenticator): UserVoteListModel = UserVoteListModel(context, loaderManager, firebaseRepository, firebaseAuthenticator)
+    fun provideUserVoteListModel(context: Context,
+                                 firebaseRepository: FirebaseRepository,
+                                 firebaseAuthenticator: FirebaseAuthenticator,
+                                 user: User): UserVoteListModel = UserVoteListModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, user)
+
+
+
+    @UserVoteListScope
+    @Provides
+    fun provideThumbnailFetcherModule(thumbnailImageFetcher: ImageFetcherService): ImageFetcherModel = ImageFetcherModel(thumbnailImageFetcher)
 }

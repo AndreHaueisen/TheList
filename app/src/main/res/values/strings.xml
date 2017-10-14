@@ -77,13 +77,13 @@
     <string name="plus_one" translatable="false">+1</string>
     <string name="minus_one" translatable="false">-1</string>
     <string name="share">Share</string>
-    <string name="share_title">Ask for help using…</string>
-    <string name="share_boarding_message">%1$s %2$s %3$s deserves to be banished.\n"Help us with your vote.</string>
+    <string name="share_title">Share using…</string>
+    <string name="share_boarding_message">Evaluate %1$s %2$s %3$s.\n"Help us reveal the bad politicians and highlight the good ones.\n%4$s</string>
     <string name="politician_already_banned">This politician is banned</string>
     <string name="null_email_found">Something is wrong. Please login again</string>
     <string name="vote_list">Vote list</string>
-    <string name="determiner_male">The</string>
-    <string name="determiner_female">The</string>
+    <string name="determiner_male">the</string>
+    <string name="determiner_female">the</string>
     <string name="senator">Senator</string>
     <string name="senatora">Senator</string>
     <string name="governor">Governor</string>
@@ -92,6 +92,9 @@
     <string name="congresswoman">Congresswoman</string>
     <string name="search">Search</string>
     <string name="your_grade">Your grade: %.1f</string>
+    <string name="politician_added_to_voting_list">%1$s added to voting list</string>
+    <string name="politician_added_to_suspect_list">%1$s added to suspect list</string>
+    <string name="politician_removed_from_list">%1$s removed</string>
 
     <string name="honesty_title">Honesty</string>
     <string name="leader_title">Leader</string>
@@ -113,20 +116,27 @@
     <string name="unknown_error">Something went wrong. Try again</string>
 
     <!--g_user_vote_list strings-->
-    <string name="your_votes">Politicians you condemned</string>
+    <string name="your_lists">Your lists</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">You banned no one yet</string>
     <string name="banned">Banned</string>
-    <string name="your_vote_date">Vote registered on %1$s</string>
+    <string name="your_vote_date">Entered your list on %1$s</string>
     <string name="remove_vote">Remove</string>
     <string name="place_vote">Undo</string>
+    <string name="your_suspect_list">Suspect list</string>
+    <string name="your_vote_list">Voting list</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Missing: %1$d vote</item>
         <item quantity="other">Missing: %1$d votes</item>
     </plurals>
-    <plurals name="votes">
-        <item quantity="one">Total: %1$d vote</item>
-        <item quantity="other">Total: %1$d votes</item>
+    <plurals name="recommendation_votes">
+        <item quantity="one">Total recommendations: %1$d vote</item>
+        <item quantity="other">Total recommendations: %1$d votes</item>
+    </plurals>
+
+    <plurals name="condemnation_votes">
+        <item quantity="one">Total suspicions: %1$d vote</item>
+        <item quantity="other">Total suspicions: %1$d votes</item>
     </plurals>
 
     <!--h_opinions strings-->

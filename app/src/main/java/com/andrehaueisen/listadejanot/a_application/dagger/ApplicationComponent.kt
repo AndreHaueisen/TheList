@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.a_application.dagger
 import android.content.Context
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.models.User
 import dagger.Component
 
 /**
@@ -17,5 +18,7 @@ interface ApplicationComponent{
     fun loadFirebaseAuthenticator() : FirebaseAuthenticator
 
     fun loadContext() : Context
+
+    fun loadUser() : User
 }
 

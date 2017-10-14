@@ -13,8 +13,8 @@ import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
+import io.reactivex.MaybeObserver
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -26,73 +26,31 @@ import io.reactivex.subjects.PublishSubject
  */
 class UserVoteListModel(private val mContext: Context,
                         private val mLoaderManager: LoaderManager,
-                        val mFirebaseRepository: FirebaseRepository,
-                        private val mFirebaseAuthenticator: FirebaseAuthenticator) : LoaderManager.LoaderCallbacks<Cursor> {
+                        private val mFirebaseRepository: FirebaseRepository,
+                        private val mFirebaseAuthenticator: FirebaseAuthenticator,
+                        private val mUser: User) : LoaderManager.LoaderCallbacks<Cursor> {
 
     private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_EMAIL = 2
 
-    private lateinit var mOnUserReadyPublisher: PublishSubject<User>
-    private lateinit var mOnVoteCountMapReadyPublisher: PublishSubject<HashMap<String, Long>>
-    private lateinit var mUser: User
-    private lateinit var mVoteCountMap: HashMap<String, Long>
+    private lateinit var mOnDeputadosPreListReady: PublishSubject<ArrayList<Politician>>
+    private lateinit var mOnSenadoresPreListReady: PublishSubject<ArrayList<Politician>>
+    private lateinit var mOnGovernadoresPreListReady: PublishSubject<ArrayList<Politician>>
 
-    private val mOnUserVoteListReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private val mOnVotedPoliticiansReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mCompositeDisposable = CompositeDisposable()
+    private val mChosenPoliticians = ArrayList<Politician>()
+    private var mListReadyCounter = 0
 
-    fun initiateUserLoad() {
+    fun initiatePoliticianLoad() {
         val userEmail = mFirebaseAuthenticator.getUserEmail()
         if (userEmail == null) {
             mContext.showToast(mContext.getString(R.string.null_email_found))
 
         } else {
-            mOnUserReadyPublisher = mFirebaseRepository.getUser(userEmail)
-            mOnUserReadyPublisher
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(mOnUserReadyObservable)
-        }
-    }
-
-    private val mOnUserReadyObservable = object : Observer<User> {
-
-        override fun onNext(user: User) {
-            mUser = user
-            if (mUser.condemnations.isNotEmpty()) {
-                mOnVoteCountMapReadyPublisher = mFirebaseRepository.getVoteCountList()
-                getVoteCountMap()
-            } else {
-                mOnUserVoteListReadyPublisher.onNext(arrayListOf())
-            }
-            mOnUserReadyPublisher.onComplete()
-        }
-
-        override fun onSubscribe(disposable: Disposable) {
-            mCompositeDisposable.add(disposable)
-        }
-
-        override fun onError(e: Throwable) = Unit
-        override fun onComplete() = Unit
-    }
-
-    fun getVoteCountMap() = mOnVoteCountMapReadyPublisher
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(mOnVoteListCountReadyObservable)
-
-    private val mOnVoteListCountReadyObservable: Observer<HashMap<String, Long>> = object : Observer<HashMap<String, Long>> {
-        override fun onNext(voteCountMap: HashMap<String, Long>) {
-            mVoteCountMap = voteCountMap
             initiateDataLoad()
         }
-
-        override fun onSubscribe(disposable: Disposable) {
-            mCompositeDisposable.add(disposable)
-        }
-
-        override fun onError(e: Throwable) = Unit
-        override fun onComplete() = Unit
     }
 
     private fun initiateDataLoad() {
@@ -105,9 +63,12 @@ class UserVoteListModel(private val mContext: Context,
     }
 
     override fun onCreateLoader(p0: Int, userBundle: Bundle?): Loader<Cursor> {
+        val politiciansEmails = mutableSetOf<String>()
+        politiciansEmails.addAll(mUser.condemnations.keys.map { email -> email.decodeEmail() })
+        politiciansEmails.addAll(mUser.recommendations.keys.map { email -> email.decodeEmail() })
 
         val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
-        val politiciansEmails = mUser.condemnations.keys.map { email -> email.decodeEmail() }
+
         val selectionArgsPlaceholders = politiciansEmails.createFormattedString("(", "?,", "?)", ignoreCollectionValues = true)
         return CursorLoader(
                 mContext,
@@ -167,17 +128,104 @@ class UserVoteListModel(private val mContext: Context,
                 data.moveToNext()
             }
 
-            mOnUserVoteListReadyPublisher.onNext(listOfVotedPoliticians)
-            mOnUserVoteListReadyPublisher.onComplete()
+            mOnDeputadosPreListReady = mFirebaseRepository.getDeputadosPreList()
+            mOnSenadoresPreListReady = mFirebaseRepository.getSenadoresPreList()
+            mOnGovernadoresPreListReady = mFirebaseRepository.getGovernadoresPreList()
+            listenToPoliticiansLists()
             data.close()
         }
     }
 
+    private fun listenToPoliticiansLists(){
+        mOnDeputadosPreListReady
+                .firstElement()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(deputadosPreListObserver)
+
+        mOnSenadoresPreListReady
+                .firstElement()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(senadoresPreListObserver)
+
+        mOnGovernadoresPreListReady
+                .firstElement()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(governadoresPreListObserver)
+    }
+
+    private val deputadosPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onSuccess(deputados: ArrayList<Politician>) {
+            mChosenPoliticians.addAll(extractChosenPoliticians(deputados))
+            mListReadyCounter++
+
+            if (mListReadyCounter % 3 == 0) {
+                mOnVotedPoliticiansReadyPublisher.onNext(mChosenPoliticians)
+                mOnVotedPoliticiansReadyPublisher.onComplete()
+            }
+        }
+
+        override fun onError(e: Throwable) {}
+        override fun onComplete() {}
+    }
+    private val senadoresPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onSuccess(senadores: ArrayList<Politician>) {
+            mChosenPoliticians.addAll(extractChosenPoliticians(senadores))
+            mListReadyCounter++
+
+            if (mListReadyCounter % 3 == 0) {
+                mOnVotedPoliticiansReadyPublisher.onNext(mChosenPoliticians)
+                mOnVotedPoliticiansReadyPublisher.onComplete()
+            }
+        }
+
+        override fun onComplete() {}
+        override fun onError(e: Throwable) {}
+    }
+    private val governadoresPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onSuccess(governadores: ArrayList<Politician>) {
+            mChosenPoliticians.addAll(extractChosenPoliticians(governadores))
+            mListReadyCounter++
+
+            if (mListReadyCounter % 3 == 0) {
+                mOnVotedPoliticiansReadyPublisher.onNext(mChosenPoliticians)
+                mOnVotedPoliticiansReadyPublisher.onComplete()
+            }
+        }
+
+        override fun onComplete() {}
+        override fun onError(e: Throwable) {}
+    }
+
+    private fun extractChosenPoliticians(politicians: ArrayList<Politician>): List<Politician> {
+        val userVotedPoliticiansEmails = mutableSetOf<String>()
+        userVotedPoliticiansEmails.addAll(mUser.recommendations.keys)
+        userVotedPoliticiansEmails.addAll(mUser.condemnations.keys)
+
+        return politicians.filter { politician -> userVotedPoliticiansEmails.contains(politician.email?.encodeEmail()) }
+    }
+
     private fun createPolitician(post: Politician.Post, politicianName: String, politicianEmail: String) =
-            Politician(post, politicianName, politicianEmail, mVoteCountMap[politicianEmail.encodeEmail()] ?: 0)
+            Politician(post, politicianName, politicianEmail)
 
 
-    fun loadUserVotesList(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserVoteListReadyPublisher }
+    fun loadVotedPoliticians(): Observable<ArrayList<Politician>> = Observable.defer { mOnVotedPoliticiansReadyPublisher }
     fun getUser() = mUser
 
     fun onDestroy() = mCompositeDisposable.dispose()

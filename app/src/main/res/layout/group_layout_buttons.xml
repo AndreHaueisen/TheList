@@ -9,7 +9,7 @@
         android:id="@+id/opinions_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_two_circles"
         android:contentDescription="@string/description_opinions_on_politician"
@@ -17,7 +17,7 @@
         android:src="@drawable/ic_opinions_24dp"
         app:layout_constraintEnd_toStartOf="@+id/search_on_web_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -86,7 +86,7 @@
         android:id="@+id/email_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/shape_two_circles"
         android:contentDescription="@string/description_email_politician"
         android:elevation="1dp"

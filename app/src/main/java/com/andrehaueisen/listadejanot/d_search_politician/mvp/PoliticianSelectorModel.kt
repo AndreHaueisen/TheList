@@ -209,7 +209,8 @@ class PoliticianSelectorModel(private val mContext: Context,
         try {
             mDeputadosPreList.first { it.name == deputadoName }
                     .also {
-                        deputado.votesNumber = it.votesNumber
+                        deputado.recommendationsCount = it.recommendationsCount
+                        deputado.condemnationsCount = it.condemnationsCount
 
                         deputado.honestyGrade = it.honestyGrade
                         deputado.honestyCount = it.honestyCount
@@ -237,7 +238,8 @@ class PoliticianSelectorModel(private val mContext: Context,
         try {
             mSenadoresPreList.first { it.name == senadorName }
                     .also {
-                        senador.votesNumber = it.votesNumber
+                        senador.recommendationsCount = it.recommendationsCount
+                        senador.condemnationsCount = it.condemnationsCount
 
                         senador.honestyGrade = it.honestyGrade
                         senador.honestyCount = it.honestyCount
@@ -265,7 +267,8 @@ class PoliticianSelectorModel(private val mContext: Context,
         try{
             mGovernadoresPreList.first { it.name == governadorName }
                     .also{
-                        governador.votesNumber = it.votesNumber
+                        governador.recommendationsCount = it.recommendationsCount
+                        governador.condemnationsCount = it.condemnationsCount
 
                         governador.honestyGrade = it.honestyGrade
                         governador.honestyCount = it.honestyCount

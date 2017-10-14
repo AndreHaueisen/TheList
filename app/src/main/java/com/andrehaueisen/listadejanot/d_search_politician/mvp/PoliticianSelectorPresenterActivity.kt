@@ -29,7 +29,6 @@ import javax.inject.Inject
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
 
     private val ACTIVITY_REQUEST_CODE = 1
-
     private val LOG_TAG = PoliticianSelectorPresenterActivity::class.java.simpleName
 
     @Inject
@@ -44,8 +43,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mFirebaseRepository: FirebaseRepository
     @Inject
     lateinit var mUserValueEventListener: ValueEventListener
-
-    private val mUser = User()
+    @Inject
+    lateinit var mUser : User
 
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
@@ -59,29 +58,13 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val senadoresMainList = ArrayList<Politician>()
-        val deputadosMainList = ArrayList<Politician>()
-        val governadoresMainList = ArrayList<Politician>()
-
-        if (intent.hasExtra(INTENT_SENADORES_MAIN_LIST)) {
-            senadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_SENADORES_MAIN_LIST))
-        }
-
-        if (intent.hasExtra(INTENT_DEPUTADOS_MAIN_LIST)) {
-            deputadosMainList.addAll(intent.getParcelableArrayListExtra(INTENT_DEPUTADOS_MAIN_LIST))
-        }
-
-        if (intent.hasExtra(INTENT_GOVERNADORES_MAIN_LIST)){
-            governadoresMainList.addAll(intent.getParcelableArrayListExtra(INTENT_GOVERNADORES_MAIN_LIST))
-        }
-
         if (intent.hasExtra(INTENT_POLITICIAN_NAME)) {
             mNameFromNotification = intent.getStringExtra(INTENT_POLITICIAN_NAME)
         }
 
         DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager, mUser))
+                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager))
                 .imageFetcherModule(ImageFetcherModule())
                 .build()
                 .inject(this)
@@ -229,7 +212,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     }
 
     fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
-        mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician, mUser)
+        mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician, getUser())
     } else {
         startNewActivity(LoginActivity::class.java)
         finish()

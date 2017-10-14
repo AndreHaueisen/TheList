@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/user_vote_list_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        app:theme="@style/ToolbarStyle"
+        app:title="@string/your_lists"
+        app:titleTextColor="@android:color/white">
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/empty_vote_list_text_view"
+        style="@style/RobotoBlackTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="383dp"
+        android:layout_marginStart="384dp"
+        android:layout_marginTop="332dp"
+        android:text="@string/no_one_banned_yet"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/lists_radio_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/votes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layoutAnimation="@anim/layout_fall_down_animation"
+        app:layout_constraintBottom_toTopOf="@+id/lists_radio_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_vote_list_toolbar"/>
+
+    <co.ceryle.radiorealbutton.RadioRealButtonGroup
+        android:id="@+id/lists_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rrbg_animateDrawables_enter="bounce"
+        app:rrbg_animateDrawables_exit="bounce"
+        app:rrbg_animateDrawables_scale="1.4"
+        app:rrbg_animateSelector="overshoot"
+        app:rrbg_backgroundColor="@null"
+        app:rrbg_bottomLineRadius="2dp"
+        app:rrbg_dividerSize="1dp"
+        app:rrbg_selectorBringToFront="true"
+        app:rrbg_selectorColor="@color/colorDarkTransparent"
+        app:rrbg_selectorSize="4dp">
+
+        <co.ceryle.radiorealbutton.RadioRealButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rrb_backgroundColor="@color/colorAccentLight"
+            app:rrb_drawable="@drawable/ic_thief"
+            app:rrb_drawableTint="@color/colorAccentSmooth"
+            app:rrb_drawableTintTo="@color/colorSecondaryWhite"
+            app:rrb_ripple="true"
+            app:rrb_rippleColor="@color/colorAccentDark"
+            app:rrb_text="@string/your_suspect_list"
+            app:rrb_textColor="@color/colorAccentSmooth"
+            app:rrb_textColorTo="@color/colorSecondaryWhite"
+            app:rrb_textGravity="center"/>
+
+        <co.ceryle.radiorealbutton.RadioRealButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rrb_backgroundColor="@color/colorPrimaryLight"
+            app:rrb_drawable="@drawable/ic_politician"
+            app:rrb_drawableTint="@color/colorPrimarySmooth"
+            app:rrb_drawableTintTo="@color/colorSecondaryWhite"
+            app:rrb_ripple="true"
+            app:rrb_rippleColor="@color/colorPrimary"
+            app:rrb_text="@string/your_vote_list"
+            app:rrb_textColor="@color/colorPrimarySmooth"
+            app:rrb_textColorTo="@color/colorSecondaryWhite"
+            app:rrb_textGravity="center"/>
+    </co.ceryle.radiorealbutton.RadioRealButtonGroup>
+
+</android.support.constraint.ConstraintLayout>

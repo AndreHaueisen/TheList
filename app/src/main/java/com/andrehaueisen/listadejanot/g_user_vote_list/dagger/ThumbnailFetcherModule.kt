@@ -1,7 +1,8 @@
-package com.andrehaueisen.listadejanot.d_search_politician.dagger
+package com.andrehaueisen.listadejanot.g_user_vote_list.dagger
 
 import android.content.Context
 import com.andrehaueisen.listadejanot.BuildConfig
+import com.andrehaueisen.listadejanot.d_search_politician.dagger.PoliticianSelectorScope
 import com.andrehaueisen.listadejanot.utilities.ImageFetcherService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -16,47 +17,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
 /**
- * Created by andre on 9/30/2017.
+ * Created by andre on 10/14/2017.
  */
+@UserVoteListScope
 @Module
-class ImageFetcherModule{
-
-    /*
-    "https://www.googleapis.com/customsearch/v1
- -- ?q={searchTerms}&
- -- num=5&
-    start={startIndex?}&
-    lr={language?}&
-    safe={safe?}&
- -- cx="000940944128054755129:fptjb5vejxk"&
-    sort={sort?}&
-    filter={filter?}&
-    gl={gl?}&
-    cr={cr?}&
-    googlehost={googleHost?}&
-    c2coff={disableCnTwTranslation?}&
-    hq={hq?}&
- -- hl="pt-BR"&
-    siteSearch={siteSearch?}&
-    siteSearchFilter={siteSearchFilter?}&
-    exactTerms={exactTerms?}&
-    excludeTerms={excludeTerms?}&
-    linkSite={linkSite?}&
-    orTerms={orTerms?}&
-    relatedSite={relatedSite?}&
-    dateRestrict={dateRestrict?}&
-    lowRange={lowRange?}&
-    highRange={highRange?}&
- -- searchType="image"&
-    fileType={fileType?}&
-    rights={rights?}&
- -- imgSize="medium"&
- -- imgType="face"&
-    imgColorType={imgColorType?}&
-    imgDominantColor={imgDominantColor?}&
-    alt=json"
- -- key=BuildConfig...
-    */
+class ThumbnailFetcherModule {
 
     private val BASE_NEWS_URL = "https://www.googleapis.com/"
 
@@ -96,8 +61,8 @@ class ImageFetcherModule{
                     .addQueryParameter(PARAMETER_SEARCH_ID, BuildConfig.SEARCH_ID)
                     .addQueryParameter(PARAMETER_LANGUAGE, "pt-BR")
                     .addQueryParameter(PARAMETER_SEARCH_TYPE, "image")
-                    .addQueryParameter(PARAMETER_IMAGE_SIZE, "medium")
-                    .addQueryParameter(PARAMETER_IMAGE_TYPE, "photo")
+                    .addQueryParameter(PARAMETER_IMAGE_SIZE, "small")
+                    .addQueryParameter(PARAMETER_IMAGE_TYPE, "face")
                     .addQueryParameter(PARAMETER_SEARCH_KEY, BuildConfig.SEARCH_API_KEY)
                     .build()
             request = request.newBuilder().url(url).build()
@@ -121,7 +86,7 @@ class ImageFetcherModule{
 
     @Provides
     @PoliticianSelectorScope
-    fun provideImageService(client: OkHttpClient, converterFactory: GsonConverterFactory, adapterFactory: RxJava2CallAdapterFactory): ImageFetcherService {
+    fun provideThumbnailService(client: OkHttpClient, converterFactory: GsonConverterFactory, adapterFactory: RxJava2CallAdapterFactory): ImageFetcherService {
         return Retrofit.Builder()
                 .baseUrl(BASE_NEWS_URL)
                 .client(client)

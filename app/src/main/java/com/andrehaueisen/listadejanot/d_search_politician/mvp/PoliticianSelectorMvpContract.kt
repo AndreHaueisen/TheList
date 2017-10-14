@@ -14,8 +14,6 @@ interface PoliticianSelectorMvpContract {
         fun notifySearchablePoliticiansNewList()
         fun notifyPoliticianReady()
 
-        fun initiateCondemnAnimations(politician: Politician)
-        fun initiateAbsolveAnimations(politician: Politician)
     }
 
     interface Presenter{

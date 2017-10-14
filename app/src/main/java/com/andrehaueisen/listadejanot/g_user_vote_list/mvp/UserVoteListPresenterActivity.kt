@@ -6,16 +6,15 @@ import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.g_user_vote_list.dagger.DaggerUserVoteListComponent
 import com.andrehaueisen.listadejanot.g_user_vote_list.dagger.UserVoteListModule
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_USER
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_USER_VOTES_LIST
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_VOTED_POLITICIANS
+import com.andrehaueisen.listadejanot.utilities.ImageFetcherModel
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.f_activity_user_vote_list.*
+import kotlinx.android.synthetic.main.g_activity_user_vote_list.*
 import javax.inject.Inject
 
 /**
@@ -25,10 +24,12 @@ class UserVoteListPresenterActivity: AppCompatActivity() {
 
     @Inject
     lateinit var mModel: UserVoteListModel
-    private lateinit var mView: UserVoteListView
+    @Inject
+    lateinit var mThumbnailFetcherModel: ImageFetcherModel
 
-    private lateinit var mUserVotesList: ArrayList<Politician>
-    private lateinit var mUser: User
+    private lateinit var mView: UserVoteListView
+    private lateinit var mVotedPoliticians: ArrayList<Politician>
+
     private val mCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,22 +45,21 @@ class UserVoteListPresenterActivity: AppCompatActivity() {
 
         if(savedInstanceState == null) {
             mView.setViews(null)
-            mModel.initiateUserLoad()
-            subscribeToUserVotesList()
+            mModel.initiatePoliticianLoad()
+            subscribeToVotedPoliticians()
         }else{
-            mUserVotesList = savedInstanceState.getParcelableArrayList(BUNDLE_USER_VOTES_LIST)
-            mUser = savedInstanceState.getParcelable(BUNDLE_USER)
+            mVotedPoliticians = savedInstanceState.getParcelableArrayList(BUNDLE_VOTED_POLITICIANS)
             mView.setViews(savedInstanceState)
 
         }
     }
 
-    private fun subscribeToUserVotesList() = mModel.loadUserVotesList()
+    private fun subscribeToVotedPoliticians() = mModel.loadVotedPoliticians()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(mUserVoteListObserver)
+            .subscribe(mVotedPoliticiansObserver)
 
-    private val mUserVoteListObserver = object: Observer<ArrayList<Politician>>{
+    private val mVotedPoliticiansObserver = object: Observer<ArrayList<Politician>>{
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
@@ -69,22 +69,20 @@ class UserVoteListPresenterActivity: AppCompatActivity() {
         override fun onError(e: Throwable) = Unit
 
         override fun onNext(userVoteList: ArrayList<Politician>) {
-            mUserVotesList = userVoteList
-            mUser = mModel.getUser()
-            mView.notifyVotesListReady(mUser)
+            mVotedPoliticians = userVoteList
+            mView.notifyVotesListReady(getUser())
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(BUNDLE_USER_VOTES_LIST, getUserVotesList())
+        outState.putParcelableArrayList(BUNDLE_VOTED_POLITICIANS, getVotedPoliticians())
         outState.putParcelable(BUNDLE_MANAGER, votes_recycler_view.layoutManager.onSaveInstanceState())
-        outState.putParcelable(BUNDLE_USER, mUser)
         super.onSaveInstanceState(outState)
     }
 
-    fun getUserVotesList() = mUserVotesList
+    fun getVotedPoliticians() = mVotedPoliticians
 
-    fun getUser() = mUser
+    fun getUser() = mModel.getUser()
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()

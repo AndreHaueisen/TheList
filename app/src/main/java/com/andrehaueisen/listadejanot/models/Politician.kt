@@ -12,7 +12,6 @@ import kotlin.collections.HashMap
 data class Politician(@Exclude var post: Post? = null,
                       var name: String = "",
                       @Exclude var email: String? = null,
-                      var votesNumber: Long = 0,
                       var honestyGrade: Float = -1F,
                       var leaderGrade: Float = -1F,
                       var promiseKeeperGrade: Float = -1F,
@@ -41,7 +40,6 @@ data class Politician(@Exclude var post: Post? = null,
             val CREATOR: Parcelable.Creator<Post> = object : Parcelable.Creator<Post> {
 
                 override fun createFromParcel(`in`: Parcel): Post = Post.values()[`in`.readInt()]
-
                 override fun newArray(size: Int): Array<Post?> = arrayOfNulls(size)
             }
         }
@@ -51,7 +49,6 @@ data class Politician(@Exclude var post: Post? = null,
 
         val simplePoliticianMap = HashMap<String, Any>()
         simplePoliticianMap.put("name", name)
-        simplePoliticianMap.put("votesNumber", votesNumber)
 
         simplePoliticianMap.put("honestyGrade", honestyGrade)
         simplePoliticianMap.put("leaderGrade", leaderGrade)
@@ -78,7 +75,8 @@ data class Politician(@Exclude var post: Post? = null,
 
         val NAME: Comparator<Politician> = Comparator { politician1, politician2 -> politician1.name.compareTo(politician2.name) }
 
-        var VOTE_NUMBER: Comparator<Politician> = Comparator { politician1, politician2 -> (politician2.votesNumber - politician1.votesNumber).toInt() }
+        var VOTE_NUMBER_RECOMMENDATIONS: Comparator<Politician> = Comparator { politician1, politician2 -> politician2.recommendationsCount - politician1.recommendationsCount}
+        var VOTE_NUMBER_CONDEMNATIONS: Comparator<Politician> = Comparator { politician1, politician2 -> politician2.condemnationsCount - politician1.condemnationsCount}
 
     }
 
@@ -88,7 +86,6 @@ data class Politician(@Exclude var post: Post? = null,
             source.readValue(Int::class.java.classLoader)?.let { Post.values()[it as Int] },
             source.readString(),
             source.readString(),
-            source.readLong(),
             source.readFloat(),
             source.readFloat(),
             source.readFloat(),
@@ -109,7 +106,6 @@ data class Politician(@Exclude var post: Post? = null,
         writeValue(post?.ordinal)
         writeString(name)
         writeString(email)
-        writeLong(votesNumber)
         writeFloat(honestyGrade)
         writeFloat(leaderGrade)
         writeFloat(promiseKeeperGrade)

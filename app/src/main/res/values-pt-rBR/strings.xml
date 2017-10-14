@@ -60,13 +60,13 @@
     <string name="dialog_title_loading_database">Carregando Políticos</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhe</string>
-    <string name="share_title">Peça ajuda usando…</string>
-    <string name="share_boarding_message">%1$s %2$s %3$s merece ser banido das urnas.\n"Nos ajude com seu voto.</string>
+    <string name="share_title">Compartilhe usando…</string>
+    <string name="share_boarding_message">Avalie %1$s %2$s %3$s.\n"Nos ajude a revelar os maus políticos e a destacar quem merece.\n%4$s</string>
     <string name="politician_already_banned">Parlamentar considerado suspeito</string>
     <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
-    <string name="determiner_male">O</string>
-    <string name="determiner_female">A</string>
+    <string name="determiner_male">o</string>
+    <string name="determiner_female">a</string>
     <string name="senator">Senador</string>
     <string name="senatora">Senadora</string>
     <string name="congressman">Deputado</string>
@@ -75,6 +75,9 @@
     <string name="governora">Governadora</string>
     <string name="search">Pesquise</string>
     <string name="your_grade">Sua nota: %.1f</string>
+    <string name="politician_added_to_voting_list">%1$s adicionado à lista de votação</string>
+    <string name="politician_added_to_suspect_list">%1$s adicionado à lista de suspeitos</string>
+    <string name="politician_removed_from_list">%1$s retirado da lista</string>
 
     <string name="honesty_title">Honestidade</string>
     <string name="leader_title">Liderança</string>
@@ -96,20 +99,27 @@
     <string name="unknown_error">Algo deu errado. Tente novamente</string>
 
     <!--g_user_vote_list strings-->
-    <string name="your_votes">Seus suspeitos</string>
+    <string name="your_lists">Suas listas</string>
     <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
     <string name="banned">Suspeito</string>
-    <string name="your_vote_date">Voto registrado dia %1$s</string>
+    <string name="your_vote_date">Entrou na sua lista dia %1$s</string>
     <string name="remove_vote">Remover</string>
     <string name="place_vote">Recolocar</string>
+    <string name="your_suspect_list">Lista de suspeitos</string>
+    <string name="your_vote_list">Lista de votação</string>
     <plurals name="missing_to_banned">
         <item quantity="one">Faltando: %1$d voto</item>
         <item quantity="other">Faltando: %1$d votos</item>
     </plurals>
-    <plurals name="votes">
-        <item quantity="one">Total: %1$d voto</item>
-        <item quantity="other">Total: %1$d votos</item>
+    <plurals name="recommendation_votes">
+        <item quantity="one">Pretendem votar: %1$d pessoa</item>
+        <item quantity="other">Pretendem votar: %1$d pessoas</item>
+    </plurals>
+
+    <plurals name="condemnation_votes">
+        <item quantity="one">Consideram suspeito: %1$d pessoa</item>
+        <item quantity="other">Consideram: %1$d pessoas</item>
     </plurals>
 
     <!--h_opinions strings-->

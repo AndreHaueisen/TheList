@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.d_search_politician.mvp
+package com.andrehaueisen.listadejanot.utilities
 
 import com.andrehaueisen.listadejanot.models.Items
 import io.reactivex.Observable
