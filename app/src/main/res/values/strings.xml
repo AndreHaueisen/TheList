@@ -6,82 +6,38 @@
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
     <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>
 
-    <string name="new_minimum_votes_value">Minimum vote number was altered to %1$d</string>
-
     <!--MessagingService strings-->
     <string name="notification_title">New politician banned</string>
     <string name="notification_text">%1$s should not receive your vote</string>
 
-    <!--d_main_list strings-->
-    <string name="title_senadores">Senators</string>
-    <string name="title_deputados">Congressmen</string>
-    <string name="title_governadores">Governors</string>
-    <string name="add_to_voting_list">+ Voting List</string>
-    <string name="add_to_suspect_list">+ Suspect List</string>
-
-    <string name="refreshing_votes_title">Refreshing</string>
-    <string name="votes_title">Votes</string>
-    <string name="empty_main_list_senator">No senator in the main list yet. Try the search icon to vote</string>
-    <string name="empty_main_list_congressman">No congressman in the main list yet. Try the search icon to vote</string>
-    <string name="empty_main_list_governor">No governor in the main list yet. Try the search icon to vote</string>
-
+    <!--d_politician_selector strings-->
     <string name="font_roboto_black" translatable="false">sans-serif-black</string>
     <string name="font_roboto_regular" translatable="false">sans-serif</string>
-    <string name="font_roboto_light" translatable="false">sans-serif-light</string>
     <string name="font_roboto_thin" translatable="false">sans-serif-thin</string>
     <string name="font_roboto_medium" translatable="false">sans-serif-medium</string>
 
-    <string name="banned_deputados_title">Banned Congressmen</string>
-    <string name="banned_senadores_title">Banned Senators</string>
-    <string name="banned_governadores_title">Banned Governors</string>
-
-    <string name="senador_condemned">Senator condemned</string>
-    <string name="deputado_condemned">Congressman condemned</string>
-    <string name="governador_condemned">Governor condemned</string>
-    <string name="senador_absolved">Senator absolved</string>
-    <string name="deputado_absolved">Congressman absolved</string>
-    <string name="governador_absolved">Governor absolved</string>
-
-    <string name="senadores_sorted_by_name">Senators sorted by name</string>
-    <string name="senadores_sorted_by_vote_number">Senators sorted by vote number</string>
-    <string name="deputados_sorted_by_name">Congressmen sorted by name</string>
-    <string name="deputados_sorted_by_vote_number">Congressmen sorted by vote number</string>
-    <string name="governadores_sorted_by_name">Governors sorted by name</string>
-    <string name="governadores_sorted_by_vote_number">Governors sorted by vote number</string>
-
-    <string name="add_politician">Add Politician</string>
-    <string name="sort_list">Sort List</string>
     <string name="information">Information</string>
     <string name="logout">Logout</string>
-
-    <string name="absolved_politician">%1$s deserves a chance</string>
 
     <string name="opinions">Opinions</string>
     <string name="no_opinion_yet">No opinion yet</string>
     <string name="your_opinion_title">Your last  registered opinion</string>
     <string name="your_opinion_hint">Place your current opinion</string>
-    <string name="dialog_title">Opinions on %1$s</string>
 
     <string name="intent_email_chooser">Send email using</string>
 
-    <!--d_politician_selector strings-->
     <string name="dialog_title_no_app_detected">No app detected</string>
     <string name="dialog_message_no_email_app">Download an email app to complete this action</string>
     <string name="dialog_message_no_browser_app">Download a browser to complete this action</string>
     <string name="name_plus_corruption">%1$s corruption</string>
 
-    <string name="type_name_orientation">Click above to type the politician\'s name</string>
-    <string name="search_politician_title">Search Politician</string>
+    <string name="type_name_orientation">Type the politician\'s name</string>
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="type_politician_name_hint">Politician Name</string>
-    <string name="plus_one" translatable="false">+1</string>
-    <string name="minus_one" translatable="false">-1</string>
     <string name="share">Share</string>
     <string name="share_title">Share using…</string>
     <string name="share_boarding_message">Evaluate %1$s %2$s %3$s.\n"Help us reveal the bad politicians and highlight the good ones.\n%4$s</string>
-    <string name="politician_already_banned">This politician is banned</string>
     <string name="null_email_found">Something is wrong. Please login again</string>
-    <string name="vote_list">Vote list</string>
     <string name="determiner_male">the</string>
     <string name="determiner_female">the</string>
     <string name="senator">Senator</string>
@@ -95,6 +51,7 @@
     <string name="politician_added_to_voting_list">%1$s added to voting list</string>
     <string name="politician_added_to_suspect_list">%1$s added to suspect list</string>
     <string name="politician_removed_from_list">%1$s removed</string>
+    <string name="no_grade">No grade</string>
 
     <string name="honesty_title">Honesty</string>
     <string name="leader_title">Leader</string>
@@ -102,13 +59,8 @@
     <string name="rules_for_the_people_title">Rules for the people</string>
     <string name="answer_voters_title">Answer voters</string>
 
-    <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Missing %1$d vote to be condemned</item>
-        <item quantity="other">Missing %1$d votes to be condemned</item>
-    </plurals>
-
     <!--e_information strings-->
-    <string name="understand_app_motivation">1 - Politician is on the news for corruption\n2 - Condemn the politician\n3 - When %1$d people in total do the same the politician will be added to the condemned list\n4 - In the next elections, don\'t vote on who is on the list\n5 - Share</string>
+    <string name="understand_app_motivation">1 - Select a politician\n2 - Grade the politician\n3 - Put the politician on your suspect list or voting list\n4 - In the next elections, don\'t vote on who has bad grades\n5 - Share</string>
     <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
 
     <!--f_login strings-->
@@ -117,18 +69,12 @@
 
     <!--g_user_vote_list strings-->
     <string name="your_lists">Your lists</string>
-    <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">You banned no one yet</string>
-    <string name="banned">Banned</string>
     <string name="your_vote_date">Entered your list on %1$s</string>
     <string name="remove_vote">Remove</string>
     <string name="place_vote">Undo</string>
     <string name="your_suspect_list">Suspect list</string>
     <string name="your_vote_list">Voting list</string>
-    <plurals name="missing_to_banned">
-        <item quantity="one">Missing: %1$d vote</item>
-        <item quantity="other">Missing: %1$d votes</item>
-    </plurals>
     <plurals name="recommendation_votes">
         <item quantity="one">Total recommendations: %1$d vote</item>
         <item quantity="other">Total recommendations: %1$d votes</item>
@@ -148,28 +94,21 @@
     <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
 
     <!--Sync strings-->
-    <string name="provider_authority" translatable="false">com.andrehaueisen.listadejanot.politicians</string>
-    <string name="sync_account_type" translatable="false">com.andrehaueisen.listadejanot.account</string>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Erase search text</string>
     <string name="description_politician_image">Politician %1$s image</string>
-    <string name="description_badge_honest_politician">Honest badge</string>
-    <string name="description_badge_thief_politician">Thief badge</string>
     <string name="description_send_opinion_button">Send opinion</string>
     <string name="description_delete_opinion_button">Delete opinion</string>
     <string name="description_email_politician">Email politician</string>
     <string name="description_opinions_on_politician">Opinions on this politician</string>
-    <string name="description_search_politician">Search politician</string>
 
     <!--Transition strings-->
     <string name="transition_image" translatable="false">image_transition</string>
     <string name="transition_name" translatable="false">name_transition</string>
     <string name="transition_toolbar" translatable="false">toolbar_transition</string>
-    <string name="transition_search" translatable="false">search_transition</string>
 
     <!--Transactions strings-->
-    <string name="fragment_opinions" translatable="false">fragment_opinions</string>
 
 
 </resources>

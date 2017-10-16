@@ -15,21 +15,14 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
-    private lateinit var mPublishSenadoresMainList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishSenadoresPreList: PublishSubject<ArrayList<Politician>>
-    private lateinit var mPublishDeputadosMainList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishDeputadosPreList: PublishSubject<ArrayList<Politician>>
-    private lateinit var mPublishGovernadoresMainList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishGovernadoresPreList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishUser: PublishSubject<User>
-    private lateinit var mPublishVoteCountList: PublishSubject<HashMap<String, Long>>
     private lateinit var mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>>
 
-    private val mMainListSenadores = ArrayList<Politician>()
     private val mPreListSenadores = ArrayList<Politician>()
-    private val mMainListDeputados = ArrayList<Politician>()
     private val mPreListDeputados = ArrayList<Politician>()
-    private val mMainListGovernadores = ArrayList<Politician>()
     private val mPreListGovernadores = ArrayList<Politician>()
 
     enum class FirebaseAction {

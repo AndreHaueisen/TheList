@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -20,11 +19,8 @@ import com.andrehaueisen.listadejanot.f_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.facebook.FacebookSdk.getApplicationContext
+import com.github.florent37.expectanim.ExpectAnim
 import java.util.*
 
 
@@ -57,14 +53,12 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
     inner class VoteHolder(voteView: View): RecyclerView.ViewHolder(voteView){
 
-        private val mThumbnailImage: ImageView = voteView.findViewById(R.id.face_thumbnail_image_view)
         private val mNameTextView: TextView = voteView.findViewById(R.id.name_text_view)
         private val mVoteDateTextView: TextView = voteView.findViewById(R.id.vote_date_text_view)
         private val mRecommendationsVotesTextView: TextView = voteView.findViewById(R.id.total_recommendations_votes_text_view)
         private val mCondemnationsVotesTxtView: TextView = voteView.findViewById(R.id.total_condemnations_votes_text_view)
         private val mVoteButton: ToggleButton = itemView.findViewById(R.id.review_vote_toggle_button)
         private val mOverallGradeRatingBar: RatingBar = itemView.findViewById(R.id.overall_grade_rating_bar)
-
 
         internal fun bindVotesToViews(politician: Politician){
 
@@ -78,22 +72,18 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                 stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)
             }
 
-            val requestOptions = RequestOptions
-                    .placeholderOf(R.drawable.politician_placeholder)
-                    .transform(CircleCrop())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-
-            val transitionOptions = DrawableTransitionOptions.withCrossFade()
-
-            /*mGlide.load(politician.image)
-                    .apply(requestOptions)
-                    .transition(transitionOptions)
-                    .into(mThumbnailImage)*/
-
             mVoteDateTextView.text = formatDateText(politician.email)
             mNameTextView.text = politician.name
-            mRecommendationsVotesTextView.text = mActivity.resources.getQuantityString(R.plurals.recommendation_votes, politician.recommendationsCount, politician.recommendationsCount)
-            mCondemnationsVotesTxtView.text = mActivity.resources.getQuantityString(R.plurals.condemnation_votes, politician.condemnationsCount, politician.condemnationsCount)
+
+            mRecommendationsVotesTextView.text = mActivity.resources.getQuantityString(
+                    R.plurals.recommendation_votes,
+                    politician.recommendationsCount,
+                    politician.recommendationsCount)
+
+            mCondemnationsVotesTxtView.text = mActivity.resources.getQuantityString(
+                    R.plurals.condemnation_votes,
+                    politician.condemnationsCount,
+                    politician.condemnationsCount)
 
             mOverallGradeRatingBar.rating = getOverallGrade(
                     listOf(
@@ -109,7 +99,19 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
         private fun configureVoteButton(politician: Politician){
 
+            fun updateCount(adapterType: Int, changeAmount: Int){
+                if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE){
+                    val newCount = politician.recommendationsCount + changeAmount
+                    ExpectAnim().animateVoteTextChange(mRecommendationsVotesTextView, adapterType, newCount)
+                }else{
+                    val newCount = politician.condemnationsCount + changeAmount
+                    ExpectAnim().animateVoteTextChange(mCondemnationsVotesTxtView, adapterType, newCount)
+                }
+            }
+
             fun initiateVoteProcess(){
+                val ADD_ONE_VOTE = 1
+                val REMOVE_ONE_VOTE = -1
                 val userEmail = mFirebaseAuthenticator.getUserEmail()!!
                 val politicianEncodedEmail = politician.email?.encodeEmail()
 
@@ -118,14 +120,18 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                 if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     if (mUser.recommendations.containsKey(politicianEncodedEmail)) {
                         listAction = ListAction.REMOVE_FROM_LISTS
+                        updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
                         listAction = ListAction.ADD_TO_VOTE_LIST
+                        updateCount(adapterType, ADD_ONE_VOTE)
                     }
                 }else{
                     if(mUser.condemnations.containsKey(politicianEncodedEmail)){
                         listAction = ListAction.REMOVE_FROM_LISTS
+                        updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
                         listAction = ListAction.ADD_TO_SUSPECT_LIST
+                        updateCount(adapterType, ADD_ONE_VOTE)
                     }
                 }
                 mFirebaseRepository.handleListChangeOnDatabase(listAction, politician, userEmail)

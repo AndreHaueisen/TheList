@@ -13,6 +13,7 @@ import com.andrehaueisen.listadejanot.d_search_politician.dagger.ImageFetcherMod
 import com.andrehaueisen.listadejanot.d_search_politician.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.f_login.LoginActivity
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
+import com.andrehaueisen.listadejanot.images.ImageFetcherModel
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
@@ -238,7 +239,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun getSinglePolitician() = mPolitician
 
-    fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
+    private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()

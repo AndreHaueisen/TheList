@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:title="@string/information"
         app:theme="@style/ToolbarStyle"
+        android:background="@color/colorPrimary"
         app:titleTextColor="@android:color/white">
 
     </android.support.v7.widget.Toolbar>
-
 
     <TextView
         android:id="@+id/app_motivation_text_view"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/colorAccent">
+        app:cardBackgroundColor="@color/colorSecondarySmooth">
 
         <TextView
             style="@style/LatoLightTextStyle"

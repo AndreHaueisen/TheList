@@ -4,7 +4,6 @@
     <color name="colorPrimary">#09382c</color>
     <color name="colorPrimaryDark">#001800</color>
     <color name="colorPrimarySmooth">#59a18c</color>
-    <color name="colorPrimaryLightTransparent">#96e1e7df</color>
     <color name="colorPrimaryTransparent">#7309382c</color>
 
     <color name="colorAccent">#a41b1b</color>
@@ -18,8 +17,6 @@
     <color name="colorSecondarySmooth">#d2d2d2</color>
     <color name="colorSecondaryWhite">#fff</color>
 
-    <color name="colorSemiTransparentAbsolve">#4109382c</color>
-    <color name="colorSemiTransparentCondemn">#46ba1f17</color>
     <color name="colorDarkTransparent">#78000000</color>
 
 </resources>

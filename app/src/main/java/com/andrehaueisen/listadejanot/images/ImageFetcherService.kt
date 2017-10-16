@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.utilities
+package com.andrehaueisen.listadejanot.images
 
 import com.andrehaueisen.listadejanot.models.Items
 import io.reactivex.Observable

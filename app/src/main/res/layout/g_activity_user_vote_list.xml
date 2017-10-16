@@ -39,7 +39,6 @@
         android:id="@+id/votes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layoutAnimation="@anim/layout_fall_down_animation"
         app:layout_constraintBottom_toTopOf="@+id/lists_radio_group"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_vote_list_toolbar"/>
@@ -74,6 +73,7 @@
             app:rrb_rippleColor="@color/colorAccentDark"
             app:rrb_text="@string/your_suspect_list"
             app:rrb_textColor="@color/colorAccentSmooth"
+            app:rrb_drawableGravity="left"
             app:rrb_textColorTo="@color/colorSecondaryWhite"
             app:rrb_textGravity="center"/>
 
@@ -85,6 +85,7 @@
             app:rrb_drawableTint="@color/colorPrimarySmooth"
             app:rrb_drawableTintTo="@color/colorSecondaryWhite"
             app:rrb_ripple="true"
+            app:rrb_drawableGravity="left"
             app:rrb_rippleColor="@color/colorPrimary"
             app:rrb_text="@string/your_vote_list"
             app:rrb_textColor="@color/colorPrimarySmooth"

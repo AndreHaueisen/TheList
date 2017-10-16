@@ -77,8 +77,3 @@ fun  Context.pullStringFromSharedPreferences(key: String): String{
     val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
     return sharedPreference.getString(key, null)
 }
-
-fun Context.pullIntFromSharedPreferences(key: String): Int{
-    val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
-    return sharedPreference.getInt(key, 0)
-}

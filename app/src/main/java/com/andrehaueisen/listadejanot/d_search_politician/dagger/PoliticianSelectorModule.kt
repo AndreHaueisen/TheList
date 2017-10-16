@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.utilities.ImageFetcherModel
-import com.andrehaueisen.listadejanot.utilities.ImageFetcherService
+import com.andrehaueisen.listadejanot.images.ImageFetcherModel
+import com.andrehaueisen.listadejanot.images.ImageFetcherService
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorModel
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.SinglePoliticianModel
 import com.andrehaueisen.listadejanot.models.User

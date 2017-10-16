@@ -9,18 +9,17 @@
     tools:context="com.andrehaueisen.listadejanot.e_information.mvp.InformationPresenterActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/information_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:title="@string/information"
         app:theme="@style/ToolbarStyle"
+        android:background="@color/colorPrimary"
         app:titleTextColor="@android:color/white">
 
     </android.support.v7.widget.Toolbar>
 
 
     <TextView
-        android:id="@+id/app_motivation_text_view"
         style="@style/LatoRegularTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +34,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
         android:padding="16dp"
-        app:cardBackgroundColor="@color/colorAccent">
+        app:cardBackgroundColor="@color/colorSecondarySmooth">
 
         <TextView
             style="@style/LatoLightTextStyle"

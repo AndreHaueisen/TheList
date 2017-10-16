@@ -1,8 +1,8 @@
 package com.andrehaueisen.listadejanot.g_user_vote_list.mvp
 
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Gravity
 import android.view.View
 import co.ceryle.radiorealbutton.RadioRealButton
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
@@ -10,10 +10,9 @@ import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.g_user_vote_list.UserVotesAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
-import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
-import com.andrehaueisen.listadejanot.utilities.SUSPECTS_POLITICIANS_ADAPTER_TYPE
-import com.andrehaueisen.listadejanot.utilities.WILL_VOTE_POLITICIANS_ADAPTER_TYPE
-import com.andrehaueisen.listadejanot.utilities.encodeEmail
+import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.SlideUpItemAnimator
+import com.github.florent37.expectanim.ExpectAnim
 import kotlinx.android.synthetic.main.g_activity_user_vote_list.*
 
 
@@ -47,23 +46,27 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
 
     private fun setRecyclerView(savedState: Bundle?) = with(mPresenterActivity) {
         votes_recycler_view.setHasFixedSize(true)
+        votes_recycler_view.itemAnimator = SlideUpItemAnimator()
         val layoutManager = LinearLayoutManager(this)
 
         if (savedState != null) {
+            mCurrentShowingList = savedState.getInt(BUNDLE_CURRENT_SHOWING_LIST)
+
             if (mCurrentShowingList == SUSPECTS_POLITICIANS_ADAPTER_TYPE)
                 votes_recycler_view.adapter = mSuspectsAdapter
             else
                 votes_recycler_view.adapter = mWillVoteAdapter
 
             layoutManager.onRestoreInstanceState(savedState.getParcelable(BUNDLE_MANAGER))
+            votes_recycler_view.layoutManager = layoutManager
+
             changeListVisibility()
+            notifyVotesListReady(getUser())
+
+        }else {
+            votes_recycler_view.adapter = mSuspectsAdapter
+            votes_recycler_view.layoutManager = layoutManager
         }
-
-        votes_recycler_view.adapter = mSuspectsAdapter
-        votes_recycler_view.layoutManager = layoutManager
-
-        val divider = DividerItemDecoration(this, layoutManager.orientation)
-        votes_recycler_view.addItemDecoration(divider)
     }
 
     private fun setRadioGroup() {
@@ -73,16 +76,19 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
                 override fun onPositionChanged(button: RadioRealButton?, currentPosition: Int, lastPosition: Int) {
 
                     if (currentPosition == 0) {
-                        votes_recycler_view.swapAdapter(mSuspectsAdapter, false)
+                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.START, Gravity.END, mSuspectsAdapter)
                         mCurrentShowingList = SUSPECTS_POLITICIANS_ADAPTER_TYPE
                     } else {
-                        votes_recycler_view.swapAdapter(mWillVoteAdapter, false)
+
+                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.END, Gravity.START, mWillVoteAdapter)
                         mCurrentShowingList = WILL_VOTE_POLITICIANS_ADAPTER_TYPE
                     }
                 }
             })
         }
     }
+
+    fun getCurrentShowingList() = mCurrentShowingList
 
     fun notifyVotesListReady(user: User) = with(mPresenterActivity) {
         val suspectList = getVotedPoliticians().filter { politician -> user.condemnations.containsKey(politician.email?.encodeEmail()) }
@@ -93,9 +99,14 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
         mWillVoteList.clear()
         mWillVoteList.addAll(willVoteList)
 
-        votes_recycler_view.adapter.notifyDataSetChanged()
-
         changeListVisibility()
+
+        if(mCurrentShowingList == SUSPECTS_POLITICIANS_ADAPTER_TYPE) {
+            mSuspectsList.forEachIndexed { index, _ -> votes_recycler_view.adapter.notifyItemInserted(index) }
+        }else{
+            mWillVoteList.forEachIndexed { index, _ -> votes_recycler_view.adapter.notifyItemInserted(index) }
+        }
+
     }
 
     private fun changeListVisibility() = with(mPresenterActivity) {

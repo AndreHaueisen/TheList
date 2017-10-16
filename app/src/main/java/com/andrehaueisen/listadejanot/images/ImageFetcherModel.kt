@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.utilities
+package com.andrehaueisen.listadejanot.images
 
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician

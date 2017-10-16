@@ -15,6 +15,7 @@ val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
 val INTENT_POLITICIAN_NAME = "intent_politician_name"
 val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
 val BUNDLE_MANAGER = "layout_manager_state"
+val BUNDLE_CURRENT_SHOWING_LIST = "current_showing_list"
 val BUNDLE_POLITICIAN_NAME = "politician_name"
 val BUNDLE_POLITICIAN = "politician"
 val BUNDLE_VOTED_POLITICIANS = "politicians_list"
@@ -40,6 +41,8 @@ val CHILD_LOCATION_USER_ANSWER_VOTERS = "answerVotersGrades"
 val SUSPECTS_POLITICIANS_ADAPTER_TYPE = 0
 val WILL_VOTE_POLITICIANS_ADAPTER_TYPE = 1
 
+val SLOW_ANIMATION_DURATION: Long = 4000
+val ULTRA_SLOW_ANIMATION_DURATION: Long = 10000
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100

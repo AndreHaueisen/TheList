@@ -1,69 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="new_minimum_votes_value">Número mínimo de votos foi alterado para %1$d</string>
-
     <!--MessagingService strings-->
     <string name="notification_title">Mais um político foi considerado suspeito</string>
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
 
-    <!--d_main_list strings-->
-    <string name="title_senadores">Senadores</string>
-    <string name="title_deputados">Deputados</string>
-    <string name="title_governadores">Governadores</string>
-    <string name="add_to_voting_list">+ Lista de Votação</string>
-    <string name="add_to_suspect_list">+ Lista de suspeitos</string>
-    <string name="refreshing_votes_title">Atualizando</string>
-    <string name="votes_title">Votos</string>
-    <string name="banned_deputados_title">Deputados Suspeitos</string>
-    <string name="banned_senadores_title">Senadores Suspeitos</string>
-    <string name="banned_governadores_title">Governadores Suspeitos</string>
-    <string name="senador_condemned">Senador suspeito</string>
-    <string name="deputado_condemned">Deputado suspeito</string>
-    <string name="governador_condemned">Governador suspeito</string>
-    <string name="senador_absolved">Senador confiável</string>
-    <string name="deputado_absolved">Deputado confiável</string>
-    <string name="governador_absolved">Governador confiável</string>
-    <string name="empty_main_list_senator">Nenhum senador na lista principal ainda. Clique na lupa para procurar</string>
-    <string name="empty_main_list_congressman">Nenhum deputado na lista principal ainda. Clique na lupa procurar</string>
-    <string name="empty_main_list_governor">Nenhum governador na lista principal ainda. Clique na lupa para procurar</string>
-
-    <string name="senadores_sorted_by_name">Senadores organizados por nome</string>
-    <string name="senadores_sorted_by_vote_number">Senadores organizados por número do votos</string>
-    <string name="deputados_sorted_by_name">Deputados organizados por nome</string>
-    <string name="deputados_sorted_by_vote_number">Deputados organizados por número de votos</string>
-    <string name="governadores_sorted_by_name">Governadores organizados por nome</string>
-    <string name="governadores_sorted_by_vote_number">Governadores organizados por número do votos</string>
-
-    <string name="add_politician">Adicionar político</string>
-    <string name="sort_list">Ordenar Lista</string>
+    <!--d_politician_selector strings-->
     <string name="information">Informações</string>
     <string name="logout">Sair</string>
-    <string name="absolved_politician">%1$s merece um voto de confiança</string>
 
     <string name="opinions">Opine</string>
     <string name="no_opinion_yet">Nenhuma opinião ainda</string>
     <string name="your_opinion_title">Sua última opinião registrada</string>
     <string name="your_opinion_hint">Deixe sua opinião</string>
-    <string name="dialog_title">Opiniões sobre %1$s</string>
 
     <string name="intent_email_chooser">Enviar email usando</string>
 
-    <!--d_politician_selector strings-->
     <string name="dialog_title_no_app_detected">Nenhum app encontrado</string>
     <string name="dialog_message_no_email_app">Baixe um app de email para completar a ação</string>
     <string name="dialog_message_no_browser_app">Baixe um navegador para completar a ação</string>
     <string name="name_plus_corruption">%1$s corrupção</string>
 
-    <string name="type_name_orientation">Clique na barra para digitar o nome do político</string>
-    <string name="search_politician_title">Procurar político</string>
+    <string name="type_name_orientation">Digite o nome do político</string>
     <string name="dialog_title_loading_database">Carregando Políticos</string>
     <string name="type_politician_name_hint">Nome do político</string>
     <string name="share">Compartilhe</string>
     <string name="share_title">Compartilhe usando…</string>
     <string name="share_boarding_message">Avalie %1$s %2$s %3$s.\n"Nos ajude a revelar os maus políticos e a destacar quem merece.\n%4$s</string>
-    <string name="politician_already_banned">Parlamentar considerado suspeito</string>
-    <string name="vote_list">Lista de votos</string>
     <string name="null_email_found">Algo está errado. Por favor logue novamente</string>
     <string name="determiner_male">o</string>
     <string name="determiner_female">a</string>
@@ -78,6 +41,7 @@
     <string name="politician_added_to_voting_list">%1$s adicionado à lista de votação</string>
     <string name="politician_added_to_suspect_list">%1$s adicionado à lista de suspeitos</string>
     <string name="politician_removed_from_list">%1$s retirado da lista</string>
+    <string name="no_grade">Sem nota</string>
 
     <string name="honesty_title">Honestidade</string>
     <string name="leader_title">Liderança</string>
@@ -85,13 +49,8 @@
     <string name="rules_for_the_people_title">Governa pelo povo</string>
     <string name="answer_voters_title">Responde eleitores</string>
 
-    <plurals name="missing_votes_to_threshold">
-        <item quantity="one">Falta %1$d voto para ser suspeito</item>
-        <item quantity="other">Faltam %1$d votos para ser suspeito</item>
-    </plurals>
-
     <!--e_information strings-->
-    <string name="understand_app_motivation">1 - O parlamentar ou governador foi denunciado por algum crime\n2 - Vote para torná-lo suspeito\n3 - Quando %1$d pessoas (número sobe com a quatidade de usuários) fizerem o mesmo, ele irá para a nossa lista de suspeitos\n4 - Nas próximas eleições, não vote em quem está na lista\n5 - Compartilhe</string>
+    <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
     <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
 
     <!--f_login strings-->
@@ -100,26 +59,20 @@
 
     <!--g_user_vote_list strings-->
     <string name="your_lists">Suas listas</string>
-    <string name="missing_votes_to_condemnation">Needs more %1$s votes</string>
     <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
-    <string name="banned">Suspeito</string>
     <string name="your_vote_date">Entrou na sua lista dia %1$s</string>
     <string name="remove_vote">Remover</string>
     <string name="place_vote">Recolocar</string>
     <string name="your_suspect_list">Lista de suspeitos</string>
     <string name="your_vote_list">Lista de votação</string>
-    <plurals name="missing_to_banned">
-        <item quantity="one">Faltando: %1$d voto</item>
-        <item quantity="other">Faltando: %1$d votos</item>
-    </plurals>
     <plurals name="recommendation_votes">
-        <item quantity="one">Pretendem votar: %1$d pessoa</item>
-        <item quantity="other">Pretendem votar: %1$d pessoas</item>
+        <item quantity="one">Pretendem votar:  %1$d pessoa</item>
+        <item quantity="other">Pretendem votar:  %1$d pessoas</item>
     </plurals>
 
     <plurals name="condemnation_votes">
-        <item quantity="one">Consideram suspeito: %1$d pessoa</item>
-        <item quantity="other">Consideram: %1$d pessoas</item>
+        <item quantity="one">Consideram suspeito:  %1$d pessoa</item>
+        <item quantity="other">Consideram suspeito:  %1$d pessoas</item>
     </plurals>
 
     <!--h_opinions strings-->
@@ -133,12 +86,9 @@
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>
     <string name="description_politician_image">Imagem do parlamentar %1$s</string>
-    <string name="description_badge_honest_politician">Medalha de honestidade</string>
-    <string name="description_badge_thief_politician">Medalha de ladrão</string>
     <string name="description_send_opinion_button">Enviar opinião</string>
     <string name="description_delete_opinion_button">Deletar opinião</string>
     <string name="description_email_politician">Mande email para o político</string>
     <string name="description_opinions_on_politician">Opiniões sobre o político</string>
-    <string name="description_search_politician">Pesquise um político</string>
 
 </resources>

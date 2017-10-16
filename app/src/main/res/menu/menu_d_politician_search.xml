@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.andrehaueisen.listadejanot.d_main_list.ScrollingActivity">
+
+    <item
+        android:icon="@drawable/ic_add_24dp"
+        android:title=""/>
+
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_account_24dp"
+        android:title="@string/logout"/>
+
+    <item
+        android:id="@+id/action_app_info"
+        android:icon="@drawable/ic_info_24dp"
+        android:title="@string/information"/>
+
+    <item
+        android:id="@+id/action_user_lists"
+        android:icon="@drawable/ic_view_list_24dp"
+        android:title="@string/your_lists"/>
+
+</menu>

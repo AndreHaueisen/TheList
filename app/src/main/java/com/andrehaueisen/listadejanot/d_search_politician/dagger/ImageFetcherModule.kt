@@ -2,7 +2,7 @@ package com.andrehaueisen.listadejanot.d_search_politician.dagger
 
 import android.content.Context
 import com.andrehaueisen.listadejanot.BuildConfig
-import com.andrehaueisen.listadejanot.utilities.ImageFetcherService
+import com.andrehaueisen.listadejanot.images.ImageFetcherService
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

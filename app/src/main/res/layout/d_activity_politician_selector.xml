@@ -7,21 +7,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:fitsSystemWindows="true"
     tools:context="com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -88,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:visibility="visible"
-                app:constraint_referenced_ids="orientation_text_view, voting_list_image_button, suspect_list_image_button"
+                app:constraint_referenced_ids="orientation_text_view, national_congress_image_view, cloud_one_image_view, cloud_two_image_view "
                 tools:visibility="visible"/>
 
             <TextView
@@ -108,6 +105,48 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/national_congress_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_congresso_nacional"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orientation_text_view"/>
+
+            <ImageView
+                android:id="@+id/cloud_one_image_view"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_cloud_1"
+                app:layout_constraintBottom_toTopOf="@+id/national_congress_image_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/cloud_two_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/orientation_text_view"
+                app:layout_constraintVertical_bias="0.19999999"/>
+
+            <ImageView
+                android:id="@+id/cloud_two_image_view"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_cloud_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cloud_one_image_view"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cloud_one_image_view"
+                app:layout_constraintVertical_bias="0.3"/>
 
             <android.support.constraint.Group
                 android:id="@+id/politician_info_group"
@@ -145,13 +184,11 @@
                 style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="24dp"
                 android:textSize="18sp"
                 android:transitionName="@string/transition_name"
-                app:layout_constraintEnd_toEndOf="@+id/post_text_view"
-                app:layout_constraintStart_toStartOf="@+id/post_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/post_text_view"
                 tools:text="Aecio Neves"/>
 
@@ -160,6 +197,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/post_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/post_text_view"
                 app:rrbg_animateDrawables_enter="bounce"
@@ -200,7 +238,7 @@
                 layout="@layout/group_layout_grades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toTopOf="@id/group_rating_bars"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -225,15 +263,14 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/vote_list_image_button"
+    <com.dekoservidoni.omfm.OneMoreFabMenu
+        android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
-        android:layout_height="?android:attr/actionBarSize"
-        android:contentDescription="@string/vote_list"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_view_list_24dp"
-        app:layout_anchorGravity="end|bottom"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:color_main_button="@color/colorAccent"
+        app:color_secondary_buttons="@color/colorAccentDark"
+        app:content_options="@menu/menu_d_politician_search"
+        app:expanded_background_color="@color/colorDarkTransparent"/>
 
 </android.support.design.widget.CoordinatorLayout>

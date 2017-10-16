@@ -8,7 +8,7 @@ import dagger.Component
  * Created by andre on 6/20/2017.
  */
 @UserVoteListScope
-@Component(modules = arrayOf(UserVoteListModule::class, ThumbnailFetcherModule::class), dependencies = arrayOf(ApplicationComponent::class))
+@Component(modules = arrayOf(UserVoteListModule::class), dependencies = arrayOf(ApplicationComponent::class))
 interface UserVoteListComponent {
 
     fun inject(userVoteListPresenterActivity: UserVoteListPresenterActivity)

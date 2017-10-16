@@ -6,9 +6,9 @@ import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.g_user_vote_list.dagger.DaggerUserVoteListComponent
 import com.andrehaueisen.listadejanot.g_user_vote_list.dagger.UserVoteListModule
 import com.andrehaueisen.listadejanot.models.Politician
+import com.andrehaueisen.listadejanot.utilities.BUNDLE_CURRENT_SHOWING_LIST
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_MANAGER
 import com.andrehaueisen.listadejanot.utilities.BUNDLE_VOTED_POLITICIANS
-import com.andrehaueisen.listadejanot.utilities.ImageFetcherModel
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,8 +24,6 @@ class UserVoteListPresenterActivity: AppCompatActivity() {
 
     @Inject
     lateinit var mModel: UserVoteListModel
-    @Inject
-    lateinit var mThumbnailFetcherModel: ImageFetcherModel
 
     private lateinit var mView: UserVoteListView
     private lateinit var mVotedPoliticians: ArrayList<Politician>
@@ -77,6 +75,7 @@ class UserVoteListPresenterActivity: AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelableArrayList(BUNDLE_VOTED_POLITICIANS, getVotedPoliticians())
         outState.putParcelable(BUNDLE_MANAGER, votes_recycler_view.layoutManager.onSaveInstanceState())
+        outState.putInt(BUNDLE_CURRENT_SHOWING_LIST, mView.getCurrentShowingList())
         super.onSaveInstanceState(outState)
     }
 
