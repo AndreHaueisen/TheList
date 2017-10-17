@@ -26,12 +26,11 @@
                 android:id="@+id/search_politician_image_view"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="200dp"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="?android:attr/actionBarSize"
-                android:visibility="gone"
-                app:layout_collapseMode="parallax"
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:layout_collapseMode="parallax"/>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -61,6 +60,7 @@
                     android:contentDescription="@string/description_erase_search_text"
                     android:padding="8dp"
                     android:src="@drawable/ic_close_24dp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -215,12 +215,12 @@
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rrb_backgroundColor="@color/colorAccentLight"
+                    app:rrb_backgroundColor="@color/colorSecondaryLight"
                     app:rrb_drawable="@drawable/ic_thief"
-                    app:rrb_drawableTint="@color/colorAccentSmooth"
+                    app:rrb_drawableTint="@color/colorSecondarySmooth"
                     app:rrb_drawableTintTo="@color/colorSecondaryWhite"
                     app:rrb_ripple="true"
-                    app:rrb_rippleColor="@color/colorAccentDark"/>
+                    app:rrb_rippleColor="@color/colorSecondaryDark"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"

@@ -6,17 +6,18 @@
     <color name="colorPrimarySmooth">#59a18c</color>
     <color name="colorPrimaryTransparent">#7309382c</color>
 
-    <color name="colorAccent">#a41b1b</color>
-    <color name="colorAccentDark">#7f0000</color>
-    <color name="colorAccentLight">#b12b2b</color>
-    <color name="colorAccentSmooth">#fd5e5e</color>
+    <color name="colorAccent">#00bfa5</color>
+    <color name="colorAccentDark">#008e76</color>
+    <color name="colorAccentLight">#5df2d6</color>
+    <color name="colorAccentSmooth">#9ceadb</color>
 
-    <color name="colorSecondary">#848484</color>
-    <color name="colorSecondaryDark">#494949</color>
-    <color name="colorSecondaryLight">#aeaeae</color>
-    <color name="colorSecondarySmooth">#d2d2d2</color>
+    <color name="colorSecondary">#a41b1b</color>
+    <color name="colorSecondaryDark">#7f0000</color>
+    <color name="colorSecondaryLight">#b12b2b</color>
+    <color name="colorSecondarySmooth">#ffafaf</color>
     <color name="colorSecondaryWhite">#fff</color>
 
     <color name="colorDarkTransparent">#78000000</color>
+    <color name="neutralColor">#686868</color>
 
 </resources>

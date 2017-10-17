@@ -9,7 +9,10 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.TypedValue
 import android.widget.Toast
+
+
 
 
 fun <T: Activity> Context.startNewActivity(classToInit: Class<T>, flags: List<Int>? = null, extras: Bundle? = null, options: Bundle? = null){
@@ -76,4 +79,9 @@ inline fun <reified T: Any> Context.putValueOnSharedPreferences(key: String, dat
 fun  Context.pullStringFromSharedPreferences(key: String): String{
     val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
     return sharedPreference.getString(key, null)
+}
+
+fun Context.convertDipToPixel(dipValue: Float): Float{
+    val metrics = this.resources.displayMetrics
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics)
 }

@@ -1,7 +1,5 @@
 package com.andrehaueisen.listadejanot.d_search_politician.mvp
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -14,11 +12,11 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -62,15 +60,11 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val DEFAULT_ANIM_DURATION = 500L
     private val mGlide = Glide.with(mPresenterActivity)
 
-    private val mPostTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mPostTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-    private val mNameTextAnimatorAbsolve = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorAccent, R.color.colorPrimary, "textColor")
-    private val mNameTextAnimatorCondemn = ObjectAnimator().animatePropertyToColor(mPresenterActivity, R.color.colorPrimary, R.color.colorAccent, "textColor")
-
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mIsInitialRequest = true
     private var mTempFilePath: String = ""
     private var mLastButtonPosition = 0
+    private var mPoliticianEncodedEmail: String? = null
 
     private var mCurrentPoliticianPicture: Drawable? = null
 
@@ -80,13 +74,11 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     override fun setViews(isSavedState: Boolean) {
         setVoteListButton()
-        setViewsInitialState()
         initiateBackgroundAnimations()
 
         if (isSavedState) {
             setAutoCompleteTextView()
             if (mPresenterActivity.getSinglePolitician() != null) {
-                bindPoliticianDataToViews(mPresenterActivity.getSinglePolitician() as Politician)
                 notifyPoliticianReady()
             }
         } else {
@@ -94,7 +86,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 if (isConnectedToInternet()) {
                     beginDatabaseLoadingAlertDialog()
                 } else {
-                    constraint_layout.showSnackbar(getString(R.string.no_network))
+                    showToast(getString(R.string.no_network))
                 }
             }
         }
@@ -103,9 +95,9 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private fun setVoteListButton() {
         with(mPresenterActivity) {
 
-            menu_fab.setOptionsClick(object: OneMoreFabMenu.OptionsClick{
+            menu_fab.setOptionsClick(object : OneMoreFabMenu.OptionsClick {
                 override fun onOptionClick(optionId: Int?) {
-                    when (optionId){
+                    when (optionId) {
                         R.id.action_user_lists -> showUserVoteListIfLogged()
                         R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
                         R.id.action_logout -> {
@@ -118,15 +110,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun setViewsInitialState() = with(mPresenterActivity) {
-        ExpectAnim()
-                .expect(delete_text_image_button)
-                .toBe(alpha(0.0f))
-                .toAnimation()
-                .setNow()
-    }
-
-    private fun initiateBackgroundAnimations(){
+    private fun initiateBackgroundAnimations() {
         with(mPresenterActivity) {
             ExpectAnim().startInfiniteViewTranslation(cloud_one_image_view, Gravity.END, Gravity.START)
             ExpectAnim().startInfiniteViewTranslation(cloud_two_image_view, Gravity.START, Gravity.END)
@@ -358,7 +342,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (politician != null) {
                 bindPoliticianDataToViews(politician)
-                initiateShowAnimations()
+                bindUserDataToViews()
 
                 setButtonsClickListener(politician)
                 setRatingBarsClickListeners(politician)
@@ -366,37 +350,47 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 setSearchOnWebButtonClickListener(politician)
                 setEmailButtonClickListener(politician)
                 setViewFlipperClickListener()
+
+                initiateShowAnimations()
             }
         }
     }
 
     fun notifyImageReady(imageItem: Item) {
         val imageUrl = imageItem.link
-        val height = imageItem.image?.height!!
-        val width = imageItem.image?.width!!
+        val originalImageHeight = imageItem.image?.height!!
+        val originalImageWidth = imageItem.image?.width!!
 
         val requestOption: RequestOptions
+        val targetHeight = mPresenterActivity.convertDipToPixel(200F)
+        val metrics = DisplayMetrics()
+        mPresenterActivity.windowManager.defaultDisplay.getMetrics(metrics)
+        val windowWidth = metrics.widthPixels
+
         val transitionOptions = DrawableTransitionOptions().crossFade()
-        if (height > width) {
+
+        if (originalImageHeight > originalImageWidth) {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
-                    .encodeQuality(20)
+                    .encodeQuality(30)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .override(windowWidth, targetHeight.toInt())
 
         } else {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
-                    .encodeQuality(30)
+                    .encodeQuality(50)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .override(windowWidth, targetHeight.toInt())
         }
 
         with(mPresenterActivity) {
-            search_politician_image_view.visibility = View.VISIBLE
+
             mGlide.load(imageUrl)
                     .apply(requestOption)
                     .transition(transitionOptions)
-                    .listener(object: RequestListener<Drawable>{
+                    .listener(object : RequestListener<Drawable> {
                         override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                             mCurrentPoliticianPicture = resource
                             return false
@@ -416,24 +410,36 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private fun bindPoliticianDataToViews(politician: Politician) {
 
         with(mPresenterActivity) {
-            val user = getUser()
 
             post_text_view.text = politician.post?.name
             name_text_view.text = politician.name
 
-            val politicianEncodedEmail = politician.email?.encodeEmail()
+            mPoliticianEncodedEmail = politician.email?.encodeEmail()
 
-            val honestyGrade = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val leaderGrade = user.leaderGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val promiseKeeperGrade = user.promiseKeeperGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val rulesForThePeopleGrade = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val answerVotersGrade = user.answerVotersGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            honesty_grade_text_view.setPoliticianGradeText(politician.honestyGrade)
+            leader_grade_text_view.setPoliticianGradeText(politician.leaderGrade)
+            promise_keeper_grade_text_view.setPoliticianGradeText(politician.promiseKeeperGrade)
+            rules_for_the_people_grade_text_view.setPoliticianGradeText(politician.rulesForThePeopleGrade)
+            answer_voters_grade_text_view.setPoliticianGradeText(politician.answerVotersGrade)
+        }
 
-            honesty_rating_bar.rating = honestyGrade + 1
-            leader_rating_bar.rating = leaderGrade + 1
-            promise_keeper_rating_bar.rating = promiseKeeperGrade + 1
-            rules_for_the_people_rating_bar.rating = rulesForThePeopleGrade + 1
-            answer_voters_rating_bar.rating = answerVotersGrade + 1
+    }
+
+    private fun bindUserDataToViews() {
+        with(mPresenterActivity) {
+            val user = mPresenterActivity.getUser()
+
+            val honestyGrade = user.honestyGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val leaderGrade = user.leaderGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val promiseKeeperGrade = user.promiseKeeperGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val rulesForThePeopleGrade = user.rulesForThePeopleGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val answerVotersGrade = user.answerVotersGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+
+            honesty_rating_bar.rating = honestyGrade
+            leader_rating_bar.rating = leaderGrade
+            promise_keeper_rating_bar.rating = promiseKeeperGrade
+            rules_for_the_people_rating_bar.rating = rulesForThePeopleGrade
+            answer_voters_rating_bar.rating = answerVotersGrade
 
             your_grade_honesty_text_view.decideOnUserGradeVisibility(honestyGrade)
             your_grade_leader_text_view.decideOnUserGradeVisibility(leaderGrade)
@@ -441,45 +447,40 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             your_grade_rules_for_people_text_view.decideOnUserGradeVisibility(rulesForThePeopleGrade)
             your_grade_answer_voters_text_view.decideOnUserGradeVisibility(answerVotersGrade)
 
-            honesty_grade_text_view.setPoliticianGradeText(politician.honestyGrade)
-            leader_grade_text_view.setPoliticianGradeText(politician.leaderGrade)
-            promise_keeper_grade_text_view.setPoliticianGradeText(politician.promiseKeeperGrade)
-            rules_for_the_people_grade_text_view.setPoliticianGradeText(politician.rulesForThePeopleGrade)
-            answer_voters_grade_text_view.setPoliticianGradeText(politician.answerVotersGrade)
-
-            val hasRecommendationVote = user.recommendations.containsKey(politicianEncodedEmail)
-            val hasCondemnationVote = user.condemnations.containsKey(politicianEncodedEmail)
+            val hasRecommendationVote = user.recommendations.containsKey(mPoliticianEncodedEmail)
+            val hasCondemnationVote = user.condemnations.containsKey(mPoliticianEncodedEmail)
 
             when {
                 hasRecommendationVote -> {
-                    vote_radio_group.position = 1
+                    mPresenterActivity.vote_radio_group.position = 1
                     mLastButtonPosition = 1
                 }
                 hasCondemnationVote -> {
-                    vote_radio_group.position = 0
+                    mPresenterActivity.vote_radio_group.position = 0
                     mLastButtonPosition = 0
                 }
                 else -> {
-                    vote_radio_group.position = -1
+                    mPresenterActivity.vote_radio_group.position = -1
+                    mPresenterActivity.vote_radio_group.deselect(true)
                     mLastButtonPosition = -1
                 }
             }
         }
     }
 
-    private fun View.decideOnUserGradeVisibility(grade: Float){
-        if(grade != -1F){
+    private fun View.decideOnUserGradeVisibility(grade: Float) {
+        if (grade != -1F) {
             (this as TextView).text = this.resources.getString(R.string.your_grade, grade)
             this.visibility = View.VISIBLE
-        }else{
+        } else {
             this.visibility = View.INVISIBLE
         }
     }
 
-    private fun View.setPoliticianGradeText(grade: Float){
-        if(grade != -1F){
+    private fun View.setPoliticianGradeText(grade: Float) {
+        if (grade != -1F) {
             (this as TextView).text = String.format("%.1f", grade)
-        }else{
+        } else {
             (this as TextView).text = this.resources.getString(R.string.no_grade)
         }
     }
@@ -490,14 +491,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             if (mIsInitialRequest) {
 
                 politician_info_group.visibility = View.VISIBLE
+                delete_text_image_button.visibility = View.VISIBLE
                 initial_screen_group.visibility = View.GONE
-
-                ExpectAnim()
-                        .expect(delete_text_image_button)
-                        .toBe(alpha(1.0f))
-                        .toAnimation()
-                        .setDuration(DEFAULT_ANIM_DURATION)
-                        .start()
 
                 mIsInitialRequest = false
 
@@ -559,14 +554,20 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         if (isConnectedToInternet()) {
 
                             listAction = when (position) {
-                                0 -> { politician_search_coordinator_layout.showSnackbar(getString(R.string.politician_added_to_suspect_list, politician.name), Snackbar.LENGTH_SHORT)
-                                    ListAction.ADD_TO_SUSPECT_LIST }
+                                0 -> {
+                                    showToast(getString(R.string.politician_added_to_suspect_list, politician.name), Snackbar.LENGTH_SHORT)
+                                    ListAction.ADD_TO_SUSPECT_LIST
+                                }
 
-                                1 -> { politician_search_coordinator_layout.showSnackbar(getString(R.string.politician_added_to_voting_list, politician.name), Snackbar.LENGTH_SHORT)
-                                    ListAction.ADD_TO_VOTE_LIST }
+                                1 -> {
+                                    showToast(getString(R.string.politician_added_to_voting_list, politician.name), Snackbar.LENGTH_SHORT)
+                                    ListAction.ADD_TO_VOTE_LIST
+                                }
 
-                                -1 -> { politician_search_coordinator_layout.showSnackbar(getString(R.string.politician_removed_from_list, politician.name), Snackbar.LENGTH_SHORT)
-                                    ListAction.REMOVE_FROM_LISTS }
+                                -1 -> {
+                                    showToast(getString(R.string.politician_removed_from_list, politician.name), Snackbar.LENGTH_SHORT)
+                                    ListAction.REMOVE_FROM_LISTS
+                                }
 
                                 else -> ListAction.REMOVE_FROM_LISTS
                             }
@@ -733,20 +734,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 alertDialog.show()
             }
         }
-    }
-
-     fun initiateCondemnAnimations(politician: Politician) = with(mPresenterActivity) {
-        mPostTextAnimatorCondemn.target = name_text_view
-        mNameTextAnimatorCondemn.target = post_text_view
-
-        val animatorSet = AnimatorSet()
-        animatorSet.interpolator = AccelerateDecelerateInterpolator()
-        animatorSet.playTogether(
-                mPostTextAnimatorCondemn,
-                mNameTextAnimatorCondemn)
-
-        animatorSet.start()
-
     }
 
     internal fun onDestroy() {

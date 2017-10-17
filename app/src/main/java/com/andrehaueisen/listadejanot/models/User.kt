@@ -6,13 +6,13 @@ import android.os.Parcelable
 /**
  * Created by andre on 9/25/2017.
  */
-data class User(var condemnations: HashMap<String, Any> = hashMapOf(),
-                var recommendations: HashMap<String, Any> = hashMapOf(),
-                var honestyGrades: HashMap<String, Float> = hashMapOf(),
-                var leaderGrades: HashMap<String, Float> = hashMapOf(),
-                var promiseKeeperGrades: HashMap<String, Float> = hashMapOf(),
-                var rulesForThePeopleGrades: HashMap<String, Float> = hashMapOf(),
-                var answerVotersGrades: HashMap<String, Float> = hashMapOf()) : Parcelable {
+data class User(val condemnations: HashMap<String, Any> = hashMapOf(),
+                val recommendations: HashMap<String, Any> = hashMapOf(),
+                val honestyGrades: HashMap<String, Float> = hashMapOf(),
+                val leaderGrades: HashMap<String, Float> = hashMapOf(),
+                val promiseKeeperGrades: HashMap<String, Float> = hashMapOf(),
+                val rulesForThePeopleGrades: HashMap<String, Float> = hashMapOf(),
+                val answerVotersGrades: HashMap<String, Float> = hashMapOf()) : Parcelable {
     fun refreshUser(user: User) {
         condemnations.clear()
         condemnations.putAll(user.condemnations)

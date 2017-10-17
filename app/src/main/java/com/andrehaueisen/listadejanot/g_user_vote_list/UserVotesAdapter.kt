@@ -21,6 +21,7 @@ import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.facebook.FacebookSdk.getApplicationContext
 import com.github.florent37.expectanim.ExpectAnim
+import com.google.firebase.database.ServerValue
 import java.util.*
 
 
@@ -119,17 +120,21 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
                 if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     if (mUser.recommendations.containsKey(politicianEncodedEmail)) {
+                        mUser.recommendations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
+                        mUser.recommendations.put(politicianEncodedEmail!!, ServerValue.TIMESTAMP)
                         listAction = ListAction.ADD_TO_VOTE_LIST
                         updateCount(adapterType, ADD_ONE_VOTE)
                     }
                 }else{
                     if(mUser.condemnations.containsKey(politicianEncodedEmail)){
+                        mUser.condemnations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
+                        mUser.condemnations.put(politicianEncodedEmail!!, ServerValue.TIMESTAMP)
                         listAction = ListAction.ADD_TO_SUSPECT_LIST
                         updateCount(adapterType, ADD_ONE_VOTE)
                     }

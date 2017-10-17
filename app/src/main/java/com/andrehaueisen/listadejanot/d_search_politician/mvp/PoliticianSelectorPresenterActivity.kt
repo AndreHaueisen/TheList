@@ -70,7 +70,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .build()
                 .inject(this)
 
-        mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
+
 
         if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
@@ -87,6 +87,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = true)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
     }
 
     private fun refreshPoliticianData() {
@@ -184,9 +189,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView?.notifyImageReady(imageItem)
         }
 
-        override fun onComplete() {
-
-        }
+        override fun onComplete() {}
 
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
@@ -241,11 +244,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
 
+    override fun onStop() {
+        mFirebaseRepository.destroyUserListener(mUserValueEventListener, getUserEmail())
+        super.onStop()
+    }
+
     override fun onDestroy() {
         mCompositeDisposable.dispose()
         mSelectorModel.onDestroy()
         mSinglePoliticianModel.onDestroy()
-        mFirebaseRepository.destroyUserListener(mUserValueEventListener, getUserEmail())
         mView?.onDestroy()
         mView = null
         super.onDestroy()

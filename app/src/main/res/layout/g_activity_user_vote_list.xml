@@ -65,14 +65,14 @@
         <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:rrb_backgroundColor="@color/colorAccentLight"
+            app:rrb_backgroundColor="@color/colorSecondaryLight"
             app:rrb_drawable="@drawable/ic_thief"
-            app:rrb_drawableTint="@color/colorAccentSmooth"
+            app:rrb_drawableTint="@color/colorSecondarySmooth"
             app:rrb_drawableTintTo="@color/colorSecondaryWhite"
             app:rrb_ripple="true"
-            app:rrb_rippleColor="@color/colorAccentDark"
+            app:rrb_rippleColor="@color/colorSecondaryDark"
             app:rrb_text="@string/your_suspect_list"
-            app:rrb_textColor="@color/colorAccentSmooth"
+            app:rrb_textColor="@color/colorSecondarySmooth"
             app:rrb_drawableGravity="left"
             app:rrb_textColorTo="@color/colorSecondaryWhite"
             app:rrb_textGravity="center"/>
