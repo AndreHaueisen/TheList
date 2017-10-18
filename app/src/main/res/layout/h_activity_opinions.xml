@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/shape_login_background">
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -84,8 +83,6 @@
         style="@style/RobotoRegularTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-
         android:paddingBottom="4dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
@@ -93,8 +90,8 @@
         android:text="@string/your_opinion_title"
         android:textSize="14sp"
         android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/delete_opinion_image_button"
         app:layout_constraintBottom_toTopOf="@+id/current_opinion_text_view"
-        app:layout_constraintEnd_toStartOf="@+id/delete_opinion_image_button"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:visibility="visible"/>
 
@@ -152,7 +149,7 @@
             android:maxLength="300"
             android:padding="8dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/colorSecondaryLight"
+            android:textColorHint="@color/colorNeutral"
             android:visibility="gone"/>
 
     </android.support.design.widget.TextInputLayout>

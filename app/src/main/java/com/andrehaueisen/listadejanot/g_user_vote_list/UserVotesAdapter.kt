@@ -64,10 +64,10 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
         internal fun bindVotesToViews(politician: Politician){
 
             if(adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE){
-                mNameTextView.setTextColor(ContextCompat.getColor(mActivity, R.color.colorAccent))
+                mNameTextView.setTextColor(ContextCompat.getColor(mActivity, R.color.colorSecondaryDark))
 
                 val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
-                stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+                stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorSecondary), PorterDuff.Mode.SRC_ATOP)
             }else{
                 val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
                 stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)

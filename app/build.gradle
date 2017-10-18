@@ -5,17 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
-    signingConfigs {
-
-        config {
-
-            keyAlias 'listaDeJanot'
-            keyPassword 'haueisen10'
-            storeFile file('C:/User/andre/.android/listaDeJanotKeyStore.jks')
-            storePassword 'haueisen10'
-        }
-
-    }
+    
 
     compileSdkVersion 26
     buildToolsVersion "26.0.2"

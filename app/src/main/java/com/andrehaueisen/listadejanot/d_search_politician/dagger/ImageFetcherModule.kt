@@ -96,7 +96,7 @@ class ImageFetcherModule{
                     .addQueryParameter(PARAMETER_SEARCH_ID, BuildConfig.SEARCH_ID)
                     .addQueryParameter(PARAMETER_LANGUAGE, "pt-BR")
                     .addQueryParameter(PARAMETER_SEARCH_TYPE, "image")
-                    .addQueryParameter(PARAMETER_IMAGE_SIZE, "medium")
+                    .addQueryParameter(PARAMETER_IMAGE_SIZE, "large")
                     .addQueryParameter(PARAMETER_IMAGE_TYPE, "photo")
                     .addQueryParameter(PARAMETER_SEARCH_KEY, BuildConfig.SEARCH_API_KEY)
                     .build()

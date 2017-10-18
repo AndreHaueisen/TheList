@@ -4,13 +4,12 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
+import android.support.v4.util.Pair
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.util.Log
@@ -31,13 +30,9 @@ import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.alpha
@@ -65,8 +60,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private var mTempFilePath: String = ""
     private var mLastButtonPosition = 0
     private var mPoliticianEncodedEmail: String? = null
-
-    private var mCurrentPoliticianPicture: Drawable? = null
 
     init {
         mPresenterActivity.setContentView(R.layout.d_activity_politician_selector)
@@ -365,24 +358,26 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val targetHeight = mPresenterActivity.convertDipToPixel(200F)
         val metrics = DisplayMetrics()
         mPresenterActivity.windowManager.defaultDisplay.getMetrics(metrics)
-        val windowWidth = metrics.widthPixels
 
-        val transitionOptions = DrawableTransitionOptions().crossFade()
+        val transitionOptions = DrawableTransitionOptions.withCrossFade()
 
         if (originalImageHeight > originalImageWidth) {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
-                    .encodeQuality(30)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .override(windowWidth, targetHeight.toInt())
+                    .encodeQuality(25)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .placeholder(R.drawable.ic_launcher)
+                    .override(metrics.widthPixels, targetHeight.toInt())
 
         } else {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
-                    .encodeQuality(50)
+                    .encodeQuality(30)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .override(windowWidth, targetHeight.toInt())
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .placeholder(R.drawable.ic_launcher)
+                    .override(metrics.widthPixels, targetHeight.toInt())
+
         }
 
         with(mPresenterActivity) {
@@ -390,17 +385,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             mGlide.load(imageUrl)
                     .apply(requestOption)
                     .transition(transitionOptions)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                            mCurrentPoliticianPicture = resource
-                            return false
-                        }
-
-                        override fun onLoadFailed(error: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                            Log.e(LOG_TAG, error?.message)
-                            return false
-                        }
-                    })
                     .into(search_politician_image_view)
 
             search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
@@ -586,12 +570,17 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     val extras = Bundle()
                     extras.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
                     extras.putString(BUNDLE_POLITICIAN_NAME, politician.name)
+
+                    val streamImage = search_politician_image_view.drawable.convertToByteArray()
+
+                    extras.putByteArray(BUNDLE_POLITICIAN_IMAGE, streamImage)
                     if (mFirebaseAuthenticator.getUserEmail() != null) {
                         extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                     }
 
-                    val namePair = android.support.v4.util.Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair)
+                    val namePair = Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
+                    val imagePair = Pair<View, String>(search_politician_image_view as View, getString(R.string.transition_image))
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair, imagePair)
 
                     startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
                 }
@@ -615,7 +604,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                         try {
                             outStream = FileOutputStream(tempPic)
-                            val mBitmap = drawableToBitmap(mPresenterActivity.search_politician_image_view.drawable)
+                            val mBitmap = mPresenterActivity.search_politician_image_view.drawable.convertToBitmap()
                             mBitmap?.compress(Bitmap.CompressFormat.PNG, 100, outStream)
 
                         } catch (e: Exception) {
@@ -690,15 +679,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     mPresenterActivity.startActivity(Intent.createChooser(getShareIntent(uri),
                             mPresenterActivity.getString(R.string.share_title)))
                 }
-            }
-
-    private fun drawableToBitmap(drawable: Drawable?): Bitmap? =
-            drawable?.let {
-                val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-                val canvas = Canvas(bitmap)
-                drawable.setBounds(0, 0, canvas.width, canvas.height)
-                drawable.draw(canvas)
-                bitmap
             }
 
     private fun setSearchOnWebButtonClickListener(politician: Politician) =

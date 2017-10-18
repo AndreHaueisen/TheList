@@ -211,7 +211,7 @@ class OpinionsActivity : AppCompatActivity() {
 
         fun setToolbar() {
 
-            val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+            val requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).circleCrop()
             val transitionOptions = DrawableTransitionOptions.withCrossFade()
 
             Glide.with(this)

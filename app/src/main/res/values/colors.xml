@@ -18,6 +18,6 @@
     <color name="colorSecondaryWhite">#fff</color>
 
     <color name="colorDarkTransparent">#78000000</color>
-    <color name="neutralColor">#686868</color>
+    <color name="colorNeutral">#686868</color>
 
 </resources>
