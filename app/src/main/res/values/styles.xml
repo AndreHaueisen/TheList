@@ -27,6 +27,7 @@
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:completionThreshold">2</item>
+        <item name="android:textCursorDrawable">@drawable/shape_cursor</item>
     </style>
 
     <style name="RobotoThinItalicTextStyle">
@@ -69,7 +70,6 @@
     </style>
 
     <style name="LogInTheme" parent="FirebaseUI">
-        <item name="android:windowBackground">@drawable/shape_login_background</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>

@@ -31,9 +31,8 @@
     <string name="dialog_message_no_browser_app">Download a browser to complete this action</string>
     <string name="name_plus_corruption">%1$s corruption</string>
 
-    <string name="type_name_orientation">Type the politician\'s name</string>
     <string name="dialog_title_loading_database">Loading politicians</string>
-    <string name="type_politician_name_hint">Politician Name</string>
+    <string name="type_politician_name_hint">Type a politician\'s Name</string>
     <string name="share">Share</string>
     <string name="share_title">Share using…</string>
     <string name="share_boarding_message">Evaluate %1$s %2$s %3$s.\n"Help us reveal the bad politicians and highlight the good ones.\n%4$s</string>

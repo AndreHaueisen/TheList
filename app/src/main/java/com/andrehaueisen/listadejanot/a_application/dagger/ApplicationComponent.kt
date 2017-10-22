@@ -20,5 +20,6 @@ interface ApplicationComponent{
     fun loadContext() : Context
 
     fun loadUser() : User
+
 }
 

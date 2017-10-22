@@ -58,6 +58,8 @@
 
         <activity android:name=".h_opinions.OpinionsActivity"/>
 
+        <activity android:name=".i_main_lists.mvp.MainListsPresenterActivity"/>
+
         <service
             android:name=".a_application.InstanceIdService">
             <intent-filter>

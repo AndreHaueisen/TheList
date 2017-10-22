@@ -21,9 +21,8 @@
     <string name="dialog_message_no_browser_app">Baixe um navegador para completar a ação</string>
     <string name="name_plus_corruption">%1$s corrupção</string>
 
-    <string name="type_name_orientation">Digite o nome do político</string>
     <string name="dialog_title_loading_database">Carregando Políticos</string>
-    <string name="type_politician_name_hint">Nome do político</string>
+    <string name="type_politician_name_hint">Digite o nome do político</string>
     <string name="share">Compartilhe</string>
     <string name="share_title">Compartilhe usando…</string>
     <string name="share_boarding_message">Avalie %1$s %2$s %3$s.\n"Nos ajude a revelar os maus políticos e a destacar quem merece.\n%4$s</string>

@@ -47,6 +47,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     @Inject
     lateinit var mUser : User
 
+    private var mIsActivityVisible = true
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
     private val mCompositeDisposable = CompositeDisposable()
@@ -71,7 +72,6 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .inject(this)
 
 
-
         if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = false)
@@ -92,6 +92,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     override fun onStart() {
         super.onStart()
         mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
+        mIsActivityVisible = true
+        mView?.initiateBackgroundAnimations()
     }
 
     private fun refreshPoliticianData() {
@@ -244,8 +246,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
 
+    fun isVisible() = mIsActivityVisible
+
     override fun onStop() {
         mFirebaseRepository.destroyUserListener(mUserValueEventListener, getUserEmail())
+        mIsActivityVisible = false
         super.onStop()
     }
 

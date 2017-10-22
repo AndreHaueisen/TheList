@@ -29,13 +29,14 @@ import com.andrehaueisen.listadejanot.h_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.FabMenu
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.dekoservidoni.omfm.OneMoreFabMenu
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.alpha
+import com.github.florent37.expectanim.listener.AnimationEndListener
 import kotlinx.android.synthetic.main.d_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_grades.*
@@ -52,7 +53,6 @@ import java.io.IOException
 class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorPresenterActivity) : PoliticianSelectorMvpContract.View {
 
     private val LOG_TAG = PoliticianSelectorView::class.java.simpleName
-    private val DEFAULT_ANIM_DURATION = 500L
     private val mGlide = Glide.with(mPresenterActivity)
 
     private var mLoadingDatabaseAlertDialog: AlertDialog? = null
@@ -67,7 +67,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     override fun setViews(isSavedState: Boolean) {
         setVoteListButton()
-        initiateBackgroundAnimations()
 
         if (isSavedState) {
             setAutoCompleteTextView()
@@ -88,7 +87,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private fun setVoteListButton() {
         with(mPresenterActivity) {
 
-            menu_fab.setOptionsClick(object : OneMoreFabMenu.OptionsClick {
+            menu_fab.setOptionsClick(object : FabMenu.OptionsClick {
                 override fun onOptionClick(optionId: Int?) {
                     when (optionId) {
                         R.id.action_user_lists -> showUserVoteListIfLogged()
@@ -103,10 +102,24 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun initiateBackgroundAnimations() {
+    fun initiateBackgroundAnimations() {
         with(mPresenterActivity) {
-            ExpectAnim().startInfiniteViewTranslation(cloud_one_image_view, Gravity.END, Gravity.START)
-            ExpectAnim().startInfiniteViewTranslation(cloud_two_image_view, Gravity.START, Gravity.END)
+
+            val restartListener = AnimationEndListener { expectAnim ->
+                if(cloud_one_image_view.visibility == View.VISIBLE && mPresenterActivity.isVisible()){
+                    expectAnim?.start()
+                    Log.i(LOG_TAG, "RESTARTING ANIMATION")
+                }
+                else{
+                    expectAnim?.reset()
+                    Log.i(LOG_TAG, "RESETTING ANIMATION")
+                }
+            }
+
+            if(cloud_one_image_view.visibility == View.VISIBLE) {
+                ExpectAnim().startInfiniteViewTranslation(cloud_one_image_view, Gravity.END, Gravity.START, endListener = restartListener)
+                ExpectAnim().startInfiniteViewTranslation(cloud_two_image_view, Gravity.START, Gravity.END, 10000, 30000, restartListener)
+            }
         }
     }
 
@@ -471,7 +484,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun initiateShowAnimations() {
 
+        val DEFAULT_ANIM_DURATION = 500L
+
         with(mPresenterActivity) {
+
             if (mIsInitialRequest) {
 
                 politician_info_group.visibility = View.VISIBLE
@@ -489,7 +505,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         .start()
             }
         }
-
     }
 
     private var initialX: Float = 0F

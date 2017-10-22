@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import com.andrehaueisen.listadejanot.utilities.DEFAULT_ANIMATIONS_DURATION
 
 
 /**
@@ -31,7 +32,7 @@ class SlideUpItemAnimator : SimpleItemAnimator() {
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 1f,
                 Animation.RELATIVE_TO_SELF, 0f)
-        anim.duration = 500
+        anim.duration = DEFAULT_ANIMATIONS_DURATION
         holder.itemView.startAnimation(anim)
         return false
     }

@@ -20,4 +20,7 @@
     <color name="colorDarkTransparent">#78000000</color>
     <color name="colorNeutral">#686868</color>
 
+
+    <color name="omfm_default_color">#DD2C00</color>
+    <color name="omfm_expanded_background_sample">#CCE9E9E9</color>
 </resources>

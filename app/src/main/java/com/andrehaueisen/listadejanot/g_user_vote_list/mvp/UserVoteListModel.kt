@@ -34,9 +34,9 @@ class UserVoteListModel(private val mContext: Context,
     private val COLUMNS_INDEX_NAME = 1
     private val COLUMNS_INDEX_EMAIL = 2
 
-    private lateinit var mOnDeputadosPreListReady: PublishSubject<ArrayList<Politician>>
-    private lateinit var mOnSenadoresPreListReady: PublishSubject<ArrayList<Politician>>
-    private lateinit var mOnGovernadoresPreListReady: PublishSubject<ArrayList<Politician>>
+    private lateinit var mOnDeputadosListReady: PublishSubject<ArrayList<Politician>>
+    private lateinit var mOnSenadoresListReady: PublishSubject<ArrayList<Politician>>
+    private lateinit var mOnGovernadoresListReady: PublishSubject<ArrayList<Politician>>
 
     private val mOnVotedPoliticiansReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mCompositeDisposable = CompositeDisposable()
@@ -128,35 +128,35 @@ class UserVoteListModel(private val mContext: Context,
                 data.moveToNext()
             }
 
-            mOnDeputadosPreListReady = mFirebaseRepository.getDeputadosPreList()
-            mOnSenadoresPreListReady = mFirebaseRepository.getSenadoresPreList()
-            mOnGovernadoresPreListReady = mFirebaseRepository.getGovernadoresPreList()
+            mOnDeputadosListReady = mFirebaseRepository.getDeputadosList()
+            mOnSenadoresListReady = mFirebaseRepository.getSenadoresList()
+            mOnGovernadoresListReady = mFirebaseRepository.getGovernadoresList()
             listenToPoliticiansLists()
             data.close()
         }
     }
 
     private fun listenToPoliticiansLists(){
-        mOnDeputadosPreListReady
+        mOnDeputadosListReady
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(deputadosPreListObserver)
+                .subscribe(deputadosListObserver)
 
-        mOnSenadoresPreListReady
+        mOnSenadoresListReady
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(senadoresPreListObserver)
+                .subscribe(senadoresListObserver)
 
-        mOnGovernadoresPreListReady
+        mOnGovernadoresListReady
                 .firstElement()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(governadoresPreListObserver)
+                .subscribe(governadoresListObserver)
     }
 
-    private val deputadosPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+    private val deputadosListObserver = object : MaybeObserver<ArrayList<Politician>> {
 
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
@@ -175,7 +175,8 @@ class UserVoteListModel(private val mContext: Context,
         override fun onError(e: Throwable) {}
         override fun onComplete() {}
     }
-    private val senadoresPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+
+    private val senadoresListObserver = object : MaybeObserver<ArrayList<Politician>> {
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)
         }
@@ -193,7 +194,7 @@ class UserVoteListModel(private val mContext: Context,
         override fun onComplete() {}
         override fun onError(e: Throwable) {}
     }
-    private val governadoresPreListObserver = object : MaybeObserver<ArrayList<Politician>> {
+    private val governadoresListObserver = object : MaybeObserver<ArrayList<Politician>> {
 
         override fun onSubscribe(disposable: Disposable) {
             mCompositeDisposable.add(disposable)

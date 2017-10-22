@@ -2,6 +2,7 @@ package com.andrehaueisen.listadejanot.utilities
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.RatingBar
@@ -11,6 +12,7 @@ import com.andrehaueisen.listadejanot.g_user_vote_list.UserVotesAdapter
 import com.andrehaueisen.listadejanot.views.IndicatorViewFlipper
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
+import com.github.florent37.expectanim.listener.AnimationEndListener
 
 fun ExpectAnim.scaleRatingBarUpAndDown(ratingBar: RatingBar, viewFlipper: IndicatorViewFlipper, context: Context) {
 
@@ -84,7 +86,12 @@ fun ExpectAnim.animateVoteTextChange(view: View, adapterType: Int, newCount: Int
             }
 }
 
-fun ExpectAnim.startInfiniteViewTranslation(view: View, startDirectionGravity: Int, endDirectionGravity: Int){
+fun ExpectAnim.startInfiniteViewTranslation(view: View,
+                                            startDirectionGravity: Int,
+                                            endDirectionGravity: Int,
+                                            startAnimationDuration: Long = SLOW_ANIMATION_DURATION,
+                                            endAnimationDuration: Long = ULTRA_SLOW_ANIMATION_DURATION,
+                                            endListener: AnimationEndListener){
     this.expect(view)
             .toBe(Expectations.outOfScreen(startDirectionGravity))
             .toAnimation()
@@ -92,20 +99,22 @@ fun ExpectAnim.startInfiniteViewTranslation(view: View, startDirectionGravity: I
             .setInterpolator(LinearInterpolator())
             .start()
             .addEndListener{
-                ExpectAnim()
+                this
                         .expect(view)
                         .toBe(Expectations.outOfScreen(endDirectionGravity))
                         .toAnimation()
                         .setNow()
 
+                Log.i("ANIMATION", "ANIMATION IS ACTIVE")
+
                 ExpectAnim()
                         .expect(view)
-                        .toBe(Expectations.atItsOriginalPosition())
+                        .toBe(Expectations.outOfScreen(endDirectionGravity))
                         .toAnimation()
                         .setDuration(ULTRA_SLOW_ANIMATION_DURATION)
                         .setInterpolator(LinearInterpolator())
                         .start()
-                        .addEndListener { this.start() }
+                        .addEndListener(endListener)
             }
 }
 

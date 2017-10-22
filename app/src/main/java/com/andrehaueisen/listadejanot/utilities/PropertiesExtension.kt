@@ -27,9 +27,9 @@ val BUNDLE_USER_OPINION = "user_opinion"
 
 val LOCATION_UID_MAPPINGS = "UID_mappings"
 val LOCATION_MESSAGE_TOKENS = "Message_tokens"
-val LOCATION_DEPUTADOS_PRE_LIST = "Deputados_pre_list"
-val LOCATION_SENADORES_PRE_LIST = "Senadores_pre_list"
-val LOCATION_GOVERNADORES_PRE_LIST = "Governadores_pre_list"
+val LOCATION_DEPUTADOS_LIST = "Deputados_list"
+val LOCATION_SENADORES_LIST = "Senadores_list"
+val LOCATION_GOVERNADORES_LIST = "Governadores_list"
 val LOCATION_USERS = "Users"
 val LOCATION_OPINIONS_ON_POLITICIANS = "Opinions_on_politicians"
 val CHILD_LOCATION_USER_HONESTY = "honestyGrades"
@@ -41,8 +41,8 @@ val CHILD_LOCATION_USER_ANSWER_VOTERS = "answerVotersGrades"
 val SUSPECTS_POLITICIANS_ADAPTER_TYPE = 0
 val WILL_VOTE_POLITICIANS_ADAPTER_TYPE = 1
 
-val SLOW_ANIMATION_DURATION: Long = 4000
-val ULTRA_SLOW_ANIMATION_DURATION: Long = 10000
+val SLOW_ANIMATION_DURATION: Long = 25000
+val ULTRA_SLOW_ANIMATION_DURATION: Long = 40000
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
@@ -50,7 +50,6 @@ val UNEXISTING_GRADE_VALUE: Float = -1F
 
 val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 val SHARED_MESSAGE_TOKEN = "message_token"
-val SHARED_MINIMUM_VALUE_TO_MAIN_LIST = "main_list_minimum_value"
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 

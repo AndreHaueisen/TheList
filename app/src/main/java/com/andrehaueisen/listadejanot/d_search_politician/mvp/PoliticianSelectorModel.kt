@@ -37,13 +37,13 @@ class PoliticianSelectorModel(private val mContext: Context,
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    private var mSenadoresPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private var mDeputadosPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
-    private var mGovernadoresPreListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private var mSenadoresListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private var mDeputadosListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private var mGovernadoresListPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
-    private lateinit var mSenadoresPreList: ArrayList<Politician>
-    private lateinit var mDeputadosPreList: ArrayList<Politician>
-    private lateinit var mGovernadoresPreList: ArrayList<Politician>
+    private lateinit var mSenadoresList: ArrayList<Politician>
+    private lateinit var mDeputadosList: ArrayList<Politician>
+    private lateinit var mGovernadoresList: ArrayList<Politician>
 
     private var mSearchablePoliticianList = ArrayList<Politician>()
     private val mFinalSearchablePoliticianPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
@@ -75,16 +75,16 @@ class PoliticianSelectorModel(private val mContext: Context,
     }
 
     fun connectToFirebase() {
-        mSenadoresPreListPublisher = mFirebaseRepository.getSenadoresPreList()
-        mDeputadosPreListPublisher = mFirebaseRepository.getDeputadosPreList()
-        mGovernadoresPreListPublisher = mFirebaseRepository.getGovernadoresPreList()
+        mSenadoresListPublisher = mFirebaseRepository.getSenadoresList()
+        mDeputadosListPublisher = mFirebaseRepository.getDeputadosList()
+        mGovernadoresListPublisher = mFirebaseRepository.getGovernadoresList()
 
-        getSenadoresPreList()
-        getDeputadosPreList()
-        getGovernadoresPreList()
+        getSenadoresList()
+        getDeputadosList()
+        getGovernadoresList()
     }
 
-    private fun getSenadoresPreList() = mSenadoresPreListPublisher
+    private fun getSenadoresList() = mSenadoresListPublisher
             .firstElement()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -94,7 +94,7 @@ class PoliticianSelectorModel(private val mContext: Context,
                 }
 
                 override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                    mSenadoresPreList = searchablePoliticiansList
+                    mSenadoresList = searchablePoliticiansList
                     mOnListsReadyPublisher.onNext(true)
                 }
 
@@ -106,13 +106,13 @@ class PoliticianSelectorModel(private val mContext: Context,
                 override fun onComplete() = Unit
             })
 
-    private fun getDeputadosPreList() = mDeputadosPreListPublisher
+    private fun getDeputadosList() = mDeputadosListPublisher
             .firstElement()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : MaybeObserver<ArrayList<Politician>> {
                 override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                    mDeputadosPreList = searchablePoliticiansList
+                    mDeputadosList = searchablePoliticiansList
                     mOnListsReadyPublisher.onNext(true)
                 }
 
@@ -128,13 +128,13 @@ class PoliticianSelectorModel(private val mContext: Context,
                 override fun onComplete() = Unit
             })
 
-    private fun getGovernadoresPreList() = mGovernadoresPreListPublisher
+    private fun getGovernadoresList() = mGovernadoresListPublisher
             .firstElement()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : MaybeObserver<ArrayList<Politician>>{
                 override fun onSuccess(searchablePoliticiansList: ArrayList<Politician>) {
-                    mGovernadoresPreList = searchablePoliticiansList
+                    mGovernadoresList = searchablePoliticiansList
                     mOnListsReadyPublisher.onNext(true)
                 }
 
@@ -207,7 +207,7 @@ class PoliticianSelectorModel(private val mContext: Context,
     private fun addDeputadoToSearchableList(post: Politician.Post, deputadoName: String, deputadoEmail: String) {
         val deputado = Politician(post, deputadoName, deputadoEmail)
         try {
-            mDeputadosPreList.first { it.name == deputadoName }
+            mDeputadosList.first { it.name == deputadoName }
                     .also {
                         deputado.recommendationsCount = it.recommendationsCount
                         deputado.condemnationsCount = it.condemnationsCount
@@ -223,7 +223,7 @@ class PoliticianSelectorModel(private val mContext: Context,
                         deputado.answerVotersGrade = it.answerVotersGrade
                         deputado.answerVotersCount = it.answerVotersCount
 
-                        mDeputadosPreList.remove(it)
+                        mDeputadosList.remove(it)
                     }
 
             mSearchablePoliticianList.add(deputado)
@@ -236,7 +236,7 @@ class PoliticianSelectorModel(private val mContext: Context,
     private fun addSenadorToSearchableList(post: Politician.Post, senadorName: String, senadorEmail: String) {
         val senador = Politician(post, senadorName, senadorEmail)
         try {
-            mSenadoresPreList.first { it.name == senadorName }
+            mSenadoresList.first { it.name == senadorName }
                     .also {
                         senador.recommendationsCount = it.recommendationsCount
                         senador.condemnationsCount = it.condemnationsCount
@@ -252,7 +252,7 @@ class PoliticianSelectorModel(private val mContext: Context,
                         senador.answerVotersGrade = it.answerVotersGrade
                         senador.answerVotersCount = it.answerVotersCount
 
-                        mSenadoresPreList.remove(it)
+                        mSenadoresList.remove(it)
                     }
 
             mSearchablePoliticianList.add(senador)
@@ -265,7 +265,7 @@ class PoliticianSelectorModel(private val mContext: Context,
     private fun addGovernadorToSearchableList(post: Politician.Post, governadorName: String, governadorEmail: String){
         val governador = Politician(post, governadorName, governadorEmail)
         try{
-            mGovernadoresPreList.first { it.name == governadorName }
+            mGovernadoresList.first { it.name == governadorName }
                     .also{
                         governador.recommendationsCount = it.recommendationsCount
                         governador.condemnationsCount = it.condemnationsCount
@@ -281,7 +281,7 @@ class PoliticianSelectorModel(private val mContext: Context,
                         governador.answerVotersGrade = it.answerVotersGrade
                         governador.answerVotersCount = it.answerVotersCount
 
-                        mGovernadoresPreList.remove(it)
+                        mGovernadoresList.remove(it)
                     }
 
             mSearchablePoliticianList.add(governador)
