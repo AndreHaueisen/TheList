@@ -17,6 +17,7 @@ data class Politician(@Exclude var post: Post? = null,
                       var promiseKeeperGrade: Float = -1F,
                       var rulesForThePeopleGrade: Float = -1F,
                       var answerVotersGrade: Float = -1F,
+                      var overallGrade: Float = -1F,
 
                       var honestyCount: Int = 0,
                       var leaderCount: Int = 0,
@@ -26,6 +27,7 @@ data class Politician(@Exclude var post: Post? = null,
 
                       var recommendationsCount: Int = 0,
                       var condemnationsCount: Int = 0) : Parcelable, Comparable<Politician> {
+
     enum class Post : Parcelable {
         DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
 
@@ -45,6 +47,21 @@ data class Politician(@Exclude var post: Post? = null,
         }
     }
 
+    fun recalculateOverallGrade(){
+
+        val grades = listOf(honestyGrade, leaderGrade, promiseKeeperGrade, rulesForThePeopleGrade, answerVotersGrade)
+
+        var gradeSum = 0F
+        var size = 0
+        grades.filter { grade -> grade != -1F }
+                .forEach { grade ->
+                    gradeSum += grade
+                    size++
+                }
+
+        overallGrade = (gradeSum / size)
+    }
+
     fun toSimpleMap(): Map<String, Any> {
 
         val simplePoliticianMap = HashMap<String, Any>()
@@ -55,6 +72,7 @@ data class Politician(@Exclude var post: Post? = null,
         simplePoliticianMap.put("promiseKeeperGrade", promiseKeeperGrade)
         simplePoliticianMap.put("rulesForThePeopleGrade", rulesForThePeopleGrade)
         simplePoliticianMap.put("answerVotersGrade", answerVotersGrade)
+        simplePoliticianMap.put("overallGrade", overallGrade)
 
         simplePoliticianMap.put("honestyCount", honestyCount)
         simplePoliticianMap.put("leaderCount", leaderCount)
@@ -75,9 +93,6 @@ data class Politician(@Exclude var post: Post? = null,
 
         val NAME: Comparator<Politician> = Comparator { politician1, politician2 -> politician1.name.compareTo(politician2.name) }
 
-        var VOTE_NUMBER_RECOMMENDATIONS: Comparator<Politician> = Comparator { politician1, politician2 -> politician2.recommendationsCount - politician1.recommendationsCount}
-        var VOTE_NUMBER_CONDEMNATIONS: Comparator<Politician> = Comparator { politician1, politician2 -> politician2.condemnationsCount - politician1.condemnationsCount}
-
     }
 
     override fun toString(): String = name
@@ -86,6 +101,7 @@ data class Politician(@Exclude var post: Post? = null,
             source.readValue(Int::class.java.classLoader)?.let { Post.values()[it as Int] },
             source.readString(),
             source.readString(),
+            source.readFloat(),
             source.readFloat(),
             source.readFloat(),
             source.readFloat(),
@@ -111,6 +127,7 @@ data class Politician(@Exclude var post: Post? = null,
         writeFloat(promiseKeeperGrade)
         writeFloat(rulesForThePeopleGrade)
         writeFloat(answerVotersGrade)
+        writeFloat(overallGrade)
         writeInt(honestyCount)
         writeInt(leaderCount)
         writeInt(promiseKeeperCount)

@@ -84,6 +84,8 @@
         <item quantity="other">Total suspicions: %1$d votes</item>
     </plurals>
 
+    <string name="overall_grade">Overall Grade:  %.1f</string>
+
     <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Delete current opinion?</string>
     <string name="opinion_dialog_button_positive">Confirm</string>
@@ -91,6 +93,24 @@
 
     <string name="replace_opinion_dialog_title">Replace current opinion?</string>
     <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
+
+    <!--i_main_lists-->
+    <string name="senadores_sorted_by_vote_intentions">Senators sorted by vote intentions</string>
+    <string name="governadores_sorted_by_vote_intentions">Governors sorted by vote intentions</string>
+    <string name="deputados_sorted_by_vote_intentions">Congressmen sorted by vote intentions</string>
+
+    <string name="senadores_sorted_by_suspicions">Senators sorted by suspicions</string>
+    <string name="governadores_sorted_by_suspicions">Governors sorted by suspicions</string>
+    <string name="deputados_sorted_by_suspicions">Congressmen sorted by suspicions</string>
+
+    <string name="senadores_sorted_by_overall_grade">Senators sorted by overall grade</string>
+    <string name="governadores_sorted_by_overall_grade">Governors sorted by overall grade</string>
+    <string name="deputados_sorted_by_overall_grade">Congressmen sorted by overall grade</string>
+
+    <string name="top_ten_recommendations">Most vote intentions</string>
+    <string name="top_ten_suspicions">Most suspicions</string>
+    <string name="top_ten_overall_grade">Better grades</string>
+    <string name="individual_search">Individual search</string>
 
     <!--Sync strings-->
 

@@ -474,14 +474,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun View.setPoliticianGradeText(grade: Float) {
-        if (grade != -1F) {
-            (this as TextView).text = String.format("%.1f", grade)
-        } else {
-            (this as TextView).text = this.resources.getString(R.string.no_grade)
-        }
-    }
-
     private fun initiateShowAnimations() {
 
         val DEFAULT_ANIM_DURATION = 500L

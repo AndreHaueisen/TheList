@@ -74,6 +74,8 @@
         <item quantity="other">Consideram suspeito:  %1$d pessoas</item>
     </plurals>
 
+    <string name="overall_grade">Nota Geral:  %.1f</string>
+
     <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Excluir opinião atual?</string>
     <string name="opinion_dialog_button_positive">Confirmar</string>
@@ -81,6 +83,24 @@
 
     <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>
     <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político. Confirmar substituição?</string>
+
+    <!--i_main_lists-->
+    <string name="senadores_sorted_by_vote_intentions">Senadores organizados por intenções de voto</string>
+    <string name="governadores_sorted_by_vote_intentions">Governadores organizados por intenções de voto</string>
+    <string name="deputados_sorted_by_vote_intentions">Deputados organizados por intenções de voto</string>
+
+    <string name="senadores_sorted_by_suspicions">Senadores organizados por suspeições</string>
+    <string name="governadores_sorted_by_suspicions">Governadores organizados por suspeições</string>
+    <string name="deputados_sorted_by_suspicions">Deputados organizados por suspeições</string>
+
+    <string name="senadores_sorted_by_overall_grade">Senadores organizados pela nota geral</string>
+    <string name="governadores_sorted_by_overall_grade">Governadores organizados pela nota geral</string>
+    <string name="deputados_sorted_by_overall_grade">Deputados organizados pela nota geral</string>
+
+    <string name="top_ten_recommendations">Com mais intenções de votos</string>
+    <string name="top_ten_suspicions">Os mais suspeitos</string>
+    <string name="top_ten_overall_grade">Os com melhores notas</string>
+    <string name="individual_search">Procura individual</string>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>

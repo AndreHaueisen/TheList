@@ -10,6 +10,10 @@ enum class ListAction {
     ADD_TO_VOTE_LIST, ADD_TO_SUSPECT_LIST, REMOVE_FROM_LISTS
 }
 
+enum class SortType {
+    RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, OVERALL_GRADE
+}
+
 val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
 
 val INTENT_POLITICIAN_NAME = "intent_politician_name"

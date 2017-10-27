@@ -28,7 +28,7 @@ import java.util.*
 /**
  * Created by andre on 6/25/2017.
  */
-class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<Politician>, val mUser: User, val adapterType: Int): RecyclerView.Adapter<UserVotesAdapter.VoteHolder>() {
+class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<Politician>, val mUser: User, val adapterType: Int) : RecyclerView.Adapter<UserVotesAdapter.VoteHolder>() {
 
     private val mFirebaseRepository: FirebaseRepository
     private val mFirebaseAuthenticator: FirebaseAuthenticator
@@ -52,7 +52,7 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
     override fun getItemViewType(position: Int) = adapterType
 
-    inner class VoteHolder(voteView: View): RecyclerView.ViewHolder(voteView){
+    inner class VoteHolder(voteView: View) : RecyclerView.ViewHolder(voteView) {
 
         private val mNameTextView: TextView = voteView.findViewById(R.id.name_text_view)
         private val mVoteDateTextView: TextView = voteView.findViewById(R.id.vote_date_text_view)
@@ -61,14 +61,14 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
         private val mVoteButton: ToggleButton = itemView.findViewById(R.id.review_vote_toggle_button)
         private val mOverallGradeRatingBar: RatingBar = itemView.findViewById(R.id.overall_grade_rating_bar)
 
-        internal fun bindVotesToViews(politician: Politician){
+        internal fun bindVotesToViews(politician: Politician) {
 
-            if(adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE){
+            if (adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE) {
                 mNameTextView.setTextColor(ContextCompat.getColor(mActivity, R.color.colorSecondaryDark))
 
                 val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
                 stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorSecondary), PorterDuff.Mode.SRC_ATOP)
-            }else{
+            } else {
                 val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
                 stars.getDrawable(2).setColorFilter(ContextCompat.getColor(mActivity, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)
             }
@@ -86,31 +86,24 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                     politician.condemnationsCount,
                     politician.condemnationsCount)
 
-            mOverallGradeRatingBar.rating = getOverallGrade(
-                    listOf(
-                    politician.honestyGrade,
-                    politician.leaderGrade,
-                    politician.promiseKeeperGrade,
-                    politician.rulesForThePeopleGrade,
-                    politician.answerVotersGrade
-                    ))
+            mOverallGradeRatingBar.rating = politician.overallGrade
 
             configureVoteButton(politician)
         }
 
-        private fun configureVoteButton(politician: Politician){
+        private fun configureVoteButton(politician: Politician) {
 
-            fun updateCount(adapterType: Int, changeAmount: Int){
-                if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE){
+            fun updateCount(adapterType: Int, changeAmount: Int) {
+                if (adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     val newCount = politician.recommendationsCount + changeAmount
                     ExpectAnim().animateVoteTextChange(mRecommendationsVotesTextView, adapterType, newCount)
-                }else{
+                } else {
                     val newCount = politician.condemnationsCount + changeAmount
                     ExpectAnim().animateVoteTextChange(mCondemnationsVotesTxtView, adapterType, newCount)
                 }
             }
 
-            fun initiateVoteProcess(){
+            fun initiateVoteProcess() {
                 val ADD_ONE_VOTE = 1
                 val REMOVE_ONE_VOTE = -1
                 val userEmail = mFirebaseAuthenticator.getUserEmail()!!
@@ -118,7 +111,7 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
                 val listAction: ListAction
 
-                if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
+                if (adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     if (mUser.recommendations.containsKey(politicianEncodedEmail)) {
                         mUser.recommendations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
@@ -128,8 +121,8 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                         listAction = ListAction.ADD_TO_VOTE_LIST
                         updateCount(adapterType, ADD_ONE_VOTE)
                     }
-                }else{
-                    if(mUser.condemnations.containsKey(politicianEncodedEmail)){
+                } else {
+                    if (mUser.condemnations.containsKey(politicianEncodedEmail)) {
                         mUser.condemnations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
@@ -157,22 +150,14 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                         mActivity.finish()
                     }
 
-                }else{
+                } else {
                     mActivity.showToast(mActivity.getString(R.string.no_network))
                     mVoteButton.isChecked = !mVoteButton.isChecked
                 }
             }
         }
 
-        private fun getOverallGrade(grades: List<Float>): Float{
-
-            var gradeSum = 0F
-            grades.forEach{ grade -> gradeSum += grade}
-
-            return gradeSum / grades.size
-        }
-
-        private fun formatDateText(userVoteEmail: String?): String{
+        private fun formatDateText(userVoteEmail: String?): String {
 
             val timestamp = if (adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE)
                 mUser.condemnations[userVoteEmail?.encodeEmail()] as Long
@@ -184,7 +169,6 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
             return mActivity.getString(R.string.your_vote_date, dateFormat.format(date))
         }
-
 
     }
 }

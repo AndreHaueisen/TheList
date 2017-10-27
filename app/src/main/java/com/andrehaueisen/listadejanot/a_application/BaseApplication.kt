@@ -6,6 +6,7 @@ import com.andrehaueisen.listadejanot.a_application.dagger.ApplicationComponent
 import com.andrehaueisen.listadejanot.a_application.dagger.ApplicationModule
 import com.andrehaueisen.listadejanot.a_application.dagger.ContextModule
 import com.andrehaueisen.listadejanot.a_application.dagger.DaggerApplicationComponent
+import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -34,8 +35,18 @@ class BaseApplication : Application(){
 
         val user = User()
 
+        val senadores = ArrayList<Politician>()
+        val deputados = ArrayList<Politician>()
+        val governadores = ArrayList<Politician>()
+
         mComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(firebaseReference, FirebaseAuth.getInstance(), user))
+                .applicationModule(ApplicationModule(
+                        firebaseReference,
+                        FirebaseAuth.getInstance(),
+                        user,
+                        deputados,
+                        senadores,
+                        governadores))
                 .contextModule(ContextModule(this))
                 .build()
 

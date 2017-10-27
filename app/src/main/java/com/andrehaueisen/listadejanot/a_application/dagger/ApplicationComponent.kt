@@ -3,8 +3,10 @@ package com.andrehaueisen.listadejanot.a_application.dagger
 import android.content.Context
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
+import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import dagger.Component
+import javax.inject.Named
 
 /**
  * Created by andre on 4/15/2017.
@@ -20,6 +22,15 @@ interface ApplicationComponent{
     fun loadContext() : Context
 
     fun loadUser() : User
+
+    @Named("deputados_list")
+    fun loadDeputadosList(): ArrayList<Politician>
+
+    @Named("senadores_list")
+    fun loadSenadoresList(): ArrayList<Politician>
+
+    @Named("governadores_list")
+    fun loadGovernadoresList(): ArrayList<Politician>
 
 }
 

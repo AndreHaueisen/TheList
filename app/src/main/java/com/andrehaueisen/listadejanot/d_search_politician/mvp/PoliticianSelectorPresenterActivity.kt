@@ -18,7 +18,6 @@ import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
-import com.google.firebase.database.ValueEventListener
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -42,8 +41,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
     @Inject
     lateinit var mFirebaseRepository: FirebaseRepository
-    @Inject
-    lateinit var mUserValueEventListener: ValueEventListener
+
     @Inject
     lateinit var mUser : User
 
@@ -91,7 +89,6 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     override fun onStart() {
         super.onStart()
-        mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
         mIsActivityVisible = true
         mView?.initiateBackgroundAnimations()
     }
@@ -244,12 +241,9 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun getSinglePolitician() = mPolitician
 
-    private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
-
     fun isVisible() = mIsActivityVisible
 
     override fun onStop() {
-        mFirebaseRepository.destroyUserListener(mUserValueEventListener, getUserEmail())
         mIsActivityVisible = false
         super.onStop()
     }
