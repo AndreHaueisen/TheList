@@ -49,27 +49,38 @@ class MainListsPresenterActivity : AppCompatActivity() {
 
         DaggerMainListsComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .mainListsModule(MainListsModule())
+                .mainListsModule(MainListsModule(supportLoaderManager))
                 .build()
                 .inject(this)
-
-        mFirebaseRepository.getFullDeputadosList(mDeputadosListener)
-        mFirebaseRepository.getFullSenadoresList(mSenadoresListener)
-        mFirebaseRepository.getFullGovernadoresList(mGovernadoresListener)
 
         setContentView(R.layout.i_activity_main_lists)
         mView = MainListsView(this)
 
         if (savedInstanceState == null) {
+            mFirebaseRepository.getFullDeputadosList(mDeputadosListener)
+            mFirebaseRepository.getFullSenadoresList(mSenadoresListener)
+            mFirebaseRepository.getFullGovernadoresList(mGovernadoresListener)
             mView?.setViews(null)
         } else {
             mView?.setViews(savedInstanceState)
         }
 
+        subscribeToPoliticiansLoadingStatus()
         subscribeToDeputados()
         subscribeToGovernador()
         subscribeToSenadores()
+    }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        mView?.onSaveInstanceState(outState)
+    }
+
+    private fun subscribeToPoliticiansLoadingStatus(){
+        mMainListsModel.subscribeToPoliticiansLoadingStatus()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { listsAreReady -> if(listsAreReady) mView?.dismissAlertDialog()}
     }
 
     private fun subscribeToDeputados() {
@@ -118,6 +129,7 @@ class MainListsPresenterActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mMainListsModel.onDestroy()
         mFirebaseRepository.destroyPoliticiansListsListeners(mDeputadosListener, mSenadoresListener, mGovernadoresListener)
     }
 }

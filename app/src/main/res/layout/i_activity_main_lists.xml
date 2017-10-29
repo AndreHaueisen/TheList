@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
+            tools:visibility="gone"
             app:constraint_referenced_ids="top_in_recommendations_view, top_in_condemnations_view, top_in_overall_grade_view, search_view"/>
 
         <LinearLayout
@@ -170,16 +171,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="visible"
             app:constraint_referenced_ids="senadores_title_text_view, senadores_recycler_view, governadores_title_text_view, governadores_recycler_view, deputados_title_text_view, deputados_recycler_view"/>
 
         <TextView
             android:id="@+id/senadores_title_text_view"
-            style="@style/LatoRegularTextStyle"
+            style="@style/LatoBoldTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar"/>
@@ -188,21 +191,19 @@
             android:id="@+id/senadores_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/senadores_title_text_view"/>
 
         <TextView
             android:id="@+id/governadores_title_text_view"
-            style="@style/LatoRegularTextStyle"
+            style="@style/LatoBoldTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/senadores_recycler_view"/>
@@ -211,21 +212,19 @@
             android:id="@+id/governadores_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/governadores_title_text_view"/>
 
         <TextView
             android:id="@+id/deputados_title_text_view"
-            style="@style/LatoRegularTextStyle"
+            style="@style/LatoBoldTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/governadores_recycler_view"/>
@@ -234,9 +233,6 @@
             android:id="@+id/deputados_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deputados_title_text_view"/>

@@ -23,12 +23,16 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINIT
 
 }
 
-fun View.setPoliticianGradeText(grade: Float) {
+fun View.setPoliticianGradeText(grade: Float, stringId: Int) {
     if (grade != -1F) {
-        (this as TextView).text = String.format("%.1f", grade)
+        (this as TextView).text = this.resources.getString(stringId, String.format("%.1f", grade))
     } else {
-        (this as TextView).text = this.resources.getString(R.string.no_grade)
+        (this as TextView).text = this.resources.getString(stringId, resources.getString(R.string.no_grade))
     }
+}
+
+fun TextView.changeTextStyle(textStyle: Int){
+    this.setTypeface(this.typeface, textStyle)
 }
 
 

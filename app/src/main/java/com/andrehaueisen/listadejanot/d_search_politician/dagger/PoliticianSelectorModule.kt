@@ -1,6 +1,5 @@
 package com.andrehaueisen.listadejanot.d_search_politician.dagger
 
-import android.content.Context
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
@@ -8,8 +7,10 @@ import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelector
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.SinglePoliticianModel
 import com.andrehaueisen.listadejanot.images.ImageFetcherModel
 import com.andrehaueisen.listadejanot.images.ImageFetcherService
+import com.andrehaueisen.listadejanot.models.Politician
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 /**
  * Created by andre on 5/11/2017.
@@ -23,16 +24,17 @@ class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
 
     @PoliticianSelectorScope
     @Provides
-    fun provideSelectorModel(context: Context, loaderManager: LoaderManager, firebaseRepository: FirebaseRepository): PoliticianSelectorModel = PoliticianSelectorModel(context, loaderManager, firebaseRepository)
+    fun provideSelectorModel(@Named("deputados_list") deputados: ArrayList<Politician>,
+                             @Named("senadores_list") senadores: ArrayList<Politician>,
+                             @Named("governadores_list") governadores: ArrayList<Politician>): PoliticianSelectorModel =
+            PoliticianSelectorModel(deputados, senadores, governadores)
 
     @PoliticianSelectorScope
     @Provides
     fun provideIndividualSelectorModel(
-            context: Context,
-            loaderManager: LoaderManager,
             firebaseRepository: FirebaseRepository,
             firebaseAuthenticator: FirebaseAuthenticator,
-            selectorModel: PoliticianSelectorModel): SinglePoliticianModel = SinglePoliticianModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, selectorModel)
+            selectorModel: PoliticianSelectorModel): SinglePoliticianModel = SinglePoliticianModel(firebaseRepository, firebaseAuthenticator, selectorModel)
 
     @PoliticianSelectorScope
     @Provides

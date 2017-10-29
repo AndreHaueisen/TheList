@@ -1,13 +1,12 @@
 package com.andrehaueisen.listadejanot.g_user_vote_list.dagger
 
-import android.content.Context
 import android.support.v4.app.LoaderManager
-import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
-import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListModel
+import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 /**
  * Created by andre on 6/20/2017.
@@ -22,9 +21,10 @@ class UserVoteListModule(private val loaderManager: LoaderManager) {
 
     @UserVoteListScope
     @Provides
-    fun provideUserVoteListModel(context: Context,
-                                 firebaseRepository: FirebaseRepository,
-                                 firebaseAuthenticator: FirebaseAuthenticator,
-                                 user: User): UserVoteListModel = UserVoteListModel(context, loaderManager, firebaseRepository, firebaseAuthenticator, user)
+    fun provideUserVoteListModel(@Named("deputados_list") deputados: ArrayList<Politician>,
+                                 @Named("senadores_list") senadores: ArrayList<Politician>,
+                                 @Named("governadores_list") governadores: ArrayList<Politician>,
+                                 user: User): UserVoteListModel =
+            UserVoteListModel(deputados, senadores, governadores, user)
 
 }

@@ -48,6 +48,13 @@
     <string name="rules_for_the_people_title">Governa pelo povo</string>
     <string name="answer_voters_title">Responde eleitores</string>
 
+    <string name="honesty_grade">Honestidade:  %1$s</string>
+    <string name="leader_grade">Liderança:  %1$s</string>
+    <string name="promise_keeper_grade">Cumpre promessas:  %1$s</string>
+    <string name="rules_for_the_people_grade">Governa pelo povo:  %1$s</string>
+    <string name="answer_voters_grade">Responde eleitores:  %1$s</string>
+    <string name="overall_grade">Nota Geral:  %1$s</string>
+
     <!--e_information strings-->
     <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
     <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
@@ -73,8 +80,6 @@
         <item quantity="one">Consideram suspeito:  %1$d pessoa</item>
         <item quantity="other">Consideram suspeito:  %1$d pessoas</item>
     </plurals>
-
-    <string name="overall_grade">Nota Geral:  %.1f</string>
 
     <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Excluir opinião atual?</string>

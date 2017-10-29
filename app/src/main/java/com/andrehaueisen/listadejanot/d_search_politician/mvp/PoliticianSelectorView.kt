@@ -67,9 +67,9 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     override fun setViews(isSavedState: Boolean) {
         setVoteListButton()
+        setAutoCompleteTextView()
 
         if (isSavedState) {
-            setAutoCompleteTextView()
             if (mPresenterActivity.getSinglePolitician() != null) {
                 notifyPoliticianReady()
             }
@@ -82,6 +82,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 }
             }
         }
+
+        mPresenterActivity.subscribeToSinglePolitician()
     }
 
     private fun setVoteListButton() {
@@ -124,13 +126,14 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     private fun setAutoCompleteTextView() = with(mPresenterActivity) {
+
         val nonReliablePoliticiansList = ArrayList<Politician>()
-        nonReliablePoliticiansList.addAll(getOriginalSearchablePoliticiansList())
+        nonReliablePoliticiansList.addAll(getSearchablePoliticiansList())
 
         val adapter = AutoCompletionAdapter(this,
                 R.layout.item_politician_identifier,
                 nonReliablePoliticiansList,
-                getOriginalSearchablePoliticiansList())
+                getSearchablePoliticiansList())
 
         auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
         setOnCompleteTextViewClickListener()
@@ -165,7 +168,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         newGrade
                     }
 
-                    honesty_grade_text_view.setPoliticianGradeText(honestyGrade)
+                    honesty_grade_text_view.setPoliticianGradeText(honestyGrade, R.string.honesty_grade)
                     your_grade_honesty_text_view.decideOnUserGradeVisibility(newGrade)
                     ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                 }
@@ -194,7 +197,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         newGrade
                     }
 
-                    leader_grade_text_view.setPoliticianGradeText(leaderGrade)
+                    leader_grade_text_view.setPoliticianGradeText(leaderGrade, R.string.leader_grade)
                     your_grade_leader_text_view.decideOnUserGradeVisibility(newGrade)
                     ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                 }
@@ -223,7 +226,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         newGrade
                     }
 
-                    promise_keeper_grade_text_view.setPoliticianGradeText(promiseKeeperGrade)
+                    promise_keeper_grade_text_view.setPoliticianGradeText(promiseKeeperGrade, R.string.promise_keeper_grade)
                     your_grade_promise_keeper_text_view.decideOnUserGradeVisibility(newGrade)
 
                     ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
@@ -253,7 +256,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         newGrade
                     }
 
-                    rules_for_the_people_grade_text_view.setPoliticianGradeText(rulesForThePeopleGrade)
+                    rules_for_the_people_grade_text_view.setPoliticianGradeText(rulesForThePeopleGrade, R.string.rules_for_the_people_grade)
                     your_grade_rules_for_people_text_view.decideOnUserGradeVisibility(newGrade)
 
                     ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
@@ -283,7 +286,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         newGrade
                     }
 
-                    answer_voters_grade_text_view.setPoliticianGradeText(answerVotersGrade)
+                    answer_voters_grade_text_view.setPoliticianGradeText(answerVotersGrade, R.string.answer_voters_grade)
                     your_grade_answer_voters_text_view.decideOnUserGradeVisibility(newGrade)
 
                     ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
@@ -297,14 +300,14 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             dismissKeyBoard()
 
             val politicianName = auto_complete_text_view.text.toString()
-            subscribeToSinglePolitician(politicianName)
+            initiateSinglePoliticianLoad(politicianName)
         }
     }
 
     fun performOnCompleteTextViewAutoSearch(politicianName: String) {
         mPresenterActivity.auto_complete_text_view.setText(politicianName)
         dismissKeyBoard()
-        mPresenterActivity.subscribeToSinglePolitician(politicianName)
+        mPresenterActivity.initiateSinglePoliticianLoad(politicianName)
     }
 
     private fun setOnDeleteTextClickListener() =
@@ -338,7 +341,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         manager.hideSoftInputFromWindow(mPresenterActivity.auto_complete_text_view.windowToken, 0)
     }
 
-    override fun notifySearchablePoliticiansNewList() = setAutoCompleteTextView()
+    override fun requestSearchableListUpdate() = setAutoCompleteTextView()
 
     override fun notifyPoliticianReady() {
 
@@ -413,11 +416,11 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             mPoliticianEncodedEmail = politician.email?.encodeEmail()
 
-            honesty_grade_text_view.setPoliticianGradeText(politician.honestyGrade)
-            leader_grade_text_view.setPoliticianGradeText(politician.leaderGrade)
-            promise_keeper_grade_text_view.setPoliticianGradeText(politician.promiseKeeperGrade)
-            rules_for_the_people_grade_text_view.setPoliticianGradeText(politician.rulesForThePeopleGrade)
-            answer_voters_grade_text_view.setPoliticianGradeText(politician.answerVotersGrade)
+            honesty_grade_text_view.setPoliticianGradeText(politician.honestyGrade, R.string.honesty_grade)
+            leader_grade_text_view.setPoliticianGradeText(politician.leaderGrade, R.string.leader_grade)
+            promise_keeper_grade_text_view.setPoliticianGradeText(politician.promiseKeeperGrade, R.string.promise_keeper_grade)
+            rules_for_the_people_grade_text_view.setPoliticianGradeText(politician.rulesForThePeopleGrade, R.string.rules_for_the_people_grade)
+            answer_voters_grade_text_view.setPoliticianGradeText(politician.answerVotersGrade, R.string.answer_voters_grade)
         }
 
     }

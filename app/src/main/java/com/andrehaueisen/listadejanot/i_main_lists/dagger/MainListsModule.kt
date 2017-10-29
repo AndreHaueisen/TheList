@@ -1,14 +1,18 @@
 package com.andrehaueisen.listadejanot.i_main_lists.dagger
 
+import android.content.Context
+import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.i_main_lists.mvp.MainListsModel
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
+import com.andrehaueisen.listadejanot.utilities.decodeEmail
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import dagger.Module
 import dagger.Provides
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Named
 
 /**
@@ -16,7 +20,9 @@ import javax.inject.Named
  */
 
 @Module
-class MainListsModule {
+class MainListsModule(private val mLoaderManager: LoaderManager) {
+
+    private val mListReadyPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     @MainListsScope
     @Provides
@@ -34,10 +40,11 @@ class MainListsModule {
                     dataSnapshot.children.forEach { snapshot ->
                         if (snapshot != null) {
                             val senador = (snapshot.getValue(genericIndicator) as Politician)
-                            senador.email = snapshot.key
+                            senador.email = snapshot.key.decodeEmail()
                             deputados.add(senador)
                         }
                     }
+                    mListReadyPublishSubject.onNext(true)
                 }
             }
 
@@ -61,11 +68,12 @@ class MainListsModule {
                     dataSnapshot.children.forEach { snapshot ->
                         if (snapshot != null) {
                             val senador = (snapshot.getValue(genericIndicator) as Politician)
-                            senador.email = snapshot.key
+                            senador.email = snapshot.key.decodeEmail()
                             senadores.add(senador)
                         }
                     }
                 }
+                mListReadyPublishSubject.onNext(true)
             }
 
             override fun onCancelled(error: DatabaseError?) {}
@@ -88,11 +96,12 @@ class MainListsModule {
                     dataSnapshot.children.forEach { snapshot ->
                         if (snapshot != null) {
                             val senador = (snapshot.getValue(genericIndicator) as Politician)
-                            senador.email = snapshot.key
+                            senador.email = snapshot.key.decodeEmail()
                             governadores.add(senador)
                         }
                     }
                 }
+                mListReadyPublishSubject.onNext(true)
             }
 
             override fun onCancelled(error: DatabaseError?) {}
@@ -115,10 +124,16 @@ class MainListsModule {
 
     @MainListsScope
     @Provides
+    fun provideLoaderManager(): LoaderManager = mLoaderManager
+
+    @MainListsScope
+    @Provides
     fun provideMainListsModel(@Named("deputados_list") deputados: ArrayList<Politician>,
                               @Named("senadores_list") senadores: ArrayList<Politician>,
-                              @Named("governadores_list") governadores: ArrayList<Politician>)
+                              @Named("governadores_list") governadores: ArrayList<Politician>,
+                              context: Context,
+                              loaderManager: LoaderManager)
 
-            = MainListsModel(deputados, senadores, governadores)
+            = MainListsModel(deputados, senadores, governadores, loaderManager, context, mListReadyPublishSubject)
 
 }

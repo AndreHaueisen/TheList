@@ -17,13 +17,22 @@ enum class SortType {
 val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
 
 val INTENT_POLITICIAN_NAME = "intent_politician_name"
+val BUNDLE_SENADORES_LIST = "bundle_senadores_list"
+val BUNDLE_GOVERNADORES_LIST = "bundle_governadores_list"
+val BUNDLE_DEPUTADOS_LIST = "bundle_deputados_list"
+val BUNDLE_SENADORES_LAYOUT_MANAGER =  "bundle_senadores_layout_manager"
+val BUNDLE_GOVERNADORES_LAYOUT_MANAGER = "bundle_governadores_layout_manager"
+val BUNDLE_DEPUTADOS_LAYOUT_MANAGER = "bundle_deputados_layout_manager"
+val BUNDLE_ARE_BUTTONS_VISIBLE = "bundle_are_button_visible"
+val BUNDLE_SENADORES_LIST_TITLE = "bundle_senadores_lists_title"
+val BUNDLE_GOVERNADORES_LIST_TITLE = "bundle_governadores_lists_title"
+val BUNDLE_DEPUTADOS_LIST_TITLE = "bundle_deputados_lists_title"
 val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
 val BUNDLE_MANAGER = "layout_manager_state"
 val BUNDLE_CURRENT_SHOWING_LIST = "current_showing_list"
 val BUNDLE_POLITICIAN_NAME = "politician_name"
 val BUNDLE_POLITICIAN = "politician"
 val BUNDLE_VOTED_POLITICIANS = "politicians_list"
-val BUNDLE_USER = "user"
 val BUNDLE_POLITICIAN_EMAIL = "politician_email"
 val BUNDLE_POLITICIAN_IMAGE = "politician_image"
 val BUNDLE_USER_EMAIL = "user_email"
@@ -61,12 +70,7 @@ val LOADER_ID = 0
 
 val POLITICIANS_COLUMNS = arrayOf(
         politiciansEntry.COLUMN_POST,
-        politiciansEntry.COLUMN_NAME,
         politiciansEntry.COLUMN_EMAIL)
-
-val POLITICIANS_COLUMNS_NAME_NO_EMAIL = arrayOf(
-        politiciansEntry.COLUMN_POST,
-        politiciansEntry.COLUMN_NAME)
 
 val NOTIFICATION_CHANNEL_ID = "com.andrehaueisen.listadejanot.notificationChannel"
 val NEW_POLITICIAN_CHANNEL = "new_politician_channel"

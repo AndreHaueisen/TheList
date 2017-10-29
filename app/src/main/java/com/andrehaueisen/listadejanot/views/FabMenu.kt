@@ -191,6 +191,8 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
             state = Direction.COLLAPSED
             initialFab.startAnimation(collapseInitialFab)
             animateChildren(downChildAnimation)
+            this.setOnClickListener(null)
+            this.isClickable = false
 
         } else {
             state = Direction.EXPANDED
@@ -201,6 +203,7 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
                 if (isExpanded() && view_.id == viewId) {
                     initialFab.performClick()
                     this.setOnClickListener(null)
+                    this.isClickable = false
                 }
             }
         }

@@ -61,7 +61,7 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
             votes_recycler_view.layoutManager = layoutManager
 
             changeListVisibility()
-            notifyVotesListReady(getUser())
+            notifyOnUserListsPoliticiansReady(getUser())
 
         }else {
             votes_recycler_view.adapter = mSuspectsAdapter
@@ -90,9 +90,9 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
 
     fun getCurrentShowingList() = mCurrentShowingList
 
-    fun notifyVotesListReady(user: User) = with(mPresenterActivity) {
-        val suspectList = getVotedPoliticians().filter { politician -> user.condemnations.containsKey(politician.email?.encodeEmail()) }
-        val willVoteList = getVotedPoliticians().filter { politician -> user.recommendations.containsKey(politician.email?.encodeEmail()) }
+    fun notifyOnUserListsPoliticiansReady(user: User) = with(mPresenterActivity) {
+        val suspectList = getOnUserListsPoliticians().filter { politician -> user.condemnations.containsKey(politician.email?.encodeEmail()) }
+        val willVoteList = getOnUserListsPoliticians().filter { politician -> user.recommendations.containsKey(politician.email?.encodeEmail()) }
 
         mSuspectsList.clear()
         mSuspectsList.addAll(suspectList)
@@ -110,7 +110,7 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
     }
 
     private fun changeListVisibility() = with(mPresenterActivity) {
-        if (getVotedPoliticians().size == 0) {
+        if (getOnUserListsPoliticians().size == 0) {
             votes_recycler_view.visibility = View.GONE
             empty_vote_list_text_view.visibility = View.VISIBLE
         } else {
