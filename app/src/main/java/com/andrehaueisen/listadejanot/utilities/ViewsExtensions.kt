@@ -9,7 +9,7 @@ import com.andrehaueisen.listadejanot.R
 
 fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINITE) {
     //val SNACKBAR_HEIGHT_DP = 58
-    //val displayMetrics = context.resources.displayMetrics
+    //val displayMetrics = activity.resources.displayMetrics
     //val SNACKBAR_HEIGHT_PX = Math.round(SNACKBAR_HEIGHT_DP * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
     Snackbar.make(this, message, duration)

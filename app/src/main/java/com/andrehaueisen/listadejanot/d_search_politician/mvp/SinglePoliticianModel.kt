@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.d_search_politician.mvp
 
+import android.os.AsyncTask
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.models.Politician
@@ -21,25 +22,15 @@ class SinglePoliticianModel(private val mFirebaseRepository: FirebaseRepository,
     private val mCompositeDisposable = CompositeDisposable()
 
     override fun initiateSinglePoliticianLoad(politicianName: String) {
-
-        val politicianFound = try {
-            mSelectorModel.getSearchablePoliticiansList().first { politician -> politician.name == politicianName }
-        }catch (noElementFound: NoSuchElementException){
-            null
-        }
-
-        if(politicianFound != null){
-            mSinglePoliticianPublisher.onNext(politicianFound)
-        }
-
+        SearchPoliticianOnList().execute(politicianName)
     }
 
-    fun updateLists(listAction: ListAction, politician: Politician){
+    fun updateLists(listAction: ListAction, politician: Politician) {
         val userEmail = mFirebaseAuthenticator.getUserEmail()!!
         mFirebaseRepository.handleListChangeOnDatabase(listAction, politician, userEmail)
     }
 
-    fun updateGrade(voteType: RatingBarType, outdatedGrade:Float, newGrade: Float, politician: Politician, user: User){
+    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician, user: User) {
         val userEmail = mFirebaseAuthenticator.getUserEmail()!!
         mFirebaseRepository.handleGradeChange(voteType, outdatedGrade, newGrade, politician, userEmail, user)
     }
@@ -51,5 +42,22 @@ class SinglePoliticianModel(private val mFirebaseRepository: FirebaseRepository,
         if (!mCompositeDisposable.isDisposed) mCompositeDisposable.dispose()
     }
 
+    inner class SearchPoliticianOnList : AsyncTask<String, Unit, Politician?>() {
 
+        override fun doInBackground(vararg names: String?): Politician? {
+            val politicianName = names[0]
+
+            return try {
+                mSelectorModel.getSearchablePoliticiansList().first { politician -> politician.name == politicianName }
+            } catch (noElementFound: NoSuchElementException) {
+                null
+            }
+        }
+
+        override fun onPostExecute(politicianFound: Politician?) {
+            if (politicianFound != null) {
+                mSinglePoliticianPublisher.onNext(politicianFound)
+            }
+        }
+    }
 }

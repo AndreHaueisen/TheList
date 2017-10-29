@@ -3,7 +3,9 @@ package com.andrehaueisen.listadejanot.d_search_politician.mvp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.d_search_politician.dagger.DaggerPoliticianSelectorComponent
@@ -39,9 +41,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
     @Inject
-    lateinit var mUser : User
+    lateinit var mUser: User
 
-    private var mIsActivityVisible = true
     private var mView: PoliticianSelectorView? = null
     private var mPolitician: Politician? = null
     private val mCompositeDisposable = CompositeDisposable()
@@ -64,14 +65,13 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 .build()
                 .inject(this)
 
-
         if (savedInstanceState == null) {
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = false)
             refreshPoliticianData()
 
         } else {
-            mSelectorModel.setSearchablePoliticiansList( savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS ))
+            mSelectorModel.setSearchablePoliticiansList(savedInstanceState.getParcelableArrayList(BUNDLE_SEARCHABLE_POLITICIANS))
             if (savedInstanceState.containsKey(BUNDLE_POLITICIAN)) {
                 mPolitician = savedInstanceState.getParcelable(BUNDLE_POLITICIAN)
             }
@@ -81,21 +81,15 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mIsActivityVisible = true
-        mView?.initiateBackgroundAnimations()
-    }
-
     private fun refreshPoliticianData() {
 
         mView?.requestSearchableListUpdate()
 
         val politicianName = auto_complete_text_view.text.toString()
         if (mNameFromNotification != null || politicianName.isNotEmpty()) {
-            if(mNameFromNotification != null) {
+            if (mNameFromNotification != null) {
                 mView?.performOnCompleteTextViewAutoSearch(mNameFromNotification as String)
-            }else{
+            } else {
                 mView?.performOnCompleteTextViewAutoSearch(politicianName)
             }
         }
@@ -118,13 +112,14 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         mSinglePoliticianModel.loadSinglePoliticianPublisher()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({politician ->
+                .subscribe({ politician ->
                     mPolitician = politician
-                    mView?.notifyPoliticianReady()})
+                    mView?.notifyPoliticianReady()
+                })
 
     }
 
-    fun subscribeToImageFetcher(politician: Politician?){
+    fun subscribeToImageFetcher(politician: Politician?) {
         politician?.let {
             mImageFetcherModel.getPoliticianImages(politician.name, politician.post!!)
                     .firstElement()
@@ -134,12 +129,12 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         }
     }
 
-    fun initiateSinglePoliticianLoad(politicianName: String){
+    fun initiateSinglePoliticianLoad(politicianName: String) {
         mLastSelectedPoliticianName = politicianName
         mSinglePoliticianModel.initiateSinglePoliticianLoad(mLastSelectedPoliticianName)
     }
 
-    private val mImagesObserver = object: MaybeObserver<Item>{
+    private val mImagesObserver = object : MaybeObserver<Item> {
         override fun onSuccess(imageItem: Item) {
             mView?.notifyImageReady(imageItem)
         }
@@ -163,14 +158,20 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun getUser() = mUser
 
-    fun updateLists(action: ListAction, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
-        mSinglePoliticianModel.updateLists(action, politician)
-    } else {
-        startNewActivity(LoginActivity::class.java)
-        finish()
-    }
+    fun updateLists(action: ListAction, politician: Politician) =
+            if (mFirebaseAuthenticator.isUserLoggedIn()) {
+                when (action) {
+                    ListAction.ADD_TO_VOTE_LIST -> showToast(getString(R.string.politician_added_to_voting_list, politician.name), Snackbar.LENGTH_SHORT)
+                    ListAction.ADD_TO_SUSPECT_LIST -> showToast(getString(R.string.politician_added_to_suspect_list, politician.name), Snackbar.LENGTH_SHORT)
+                    ListAction.REMOVE_FROM_LISTS -> showToast(getString(R.string.politician_removed_from_list, politician.name), Snackbar.LENGTH_SHORT)
+                }
+                mSinglePoliticianModel.updateLists(action, politician)
+            } else {
+                startNewActivity(LoginActivity::class.java)
+                finish()
+            }
 
-    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if(mFirebaseAuthenticator.isUserLoggedIn()){
+    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if (mFirebaseAuthenticator.isUserLoggedIn()) {
         mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician, getUser())
     } else {
         startNewActivity(LoginActivity::class.java)
@@ -196,13 +197,6 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     fun getSearchablePoliticiansList() = mSelectorModel.getSearchablePoliticiansList()
 
     fun getSinglePolitician() = mPolitician
-
-    fun isVisible() = mIsActivityVisible
-
-    override fun onStop() {
-        mIsActivityVisible = false
-        super.onStop()
-    }
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()

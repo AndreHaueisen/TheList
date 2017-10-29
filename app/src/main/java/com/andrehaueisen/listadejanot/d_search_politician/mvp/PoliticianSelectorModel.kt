@@ -11,8 +11,6 @@ class PoliticianSelectorModel(deputados: ArrayList<Politician>,
         PoliticianSelectorMvpContract.Model {
 
     private val LOG_TAG: String = PoliticianSelectorModel::class.java.simpleName
-
-
     private var mSearchablePoliticianList = ArrayList<Politician>()
 
     init {

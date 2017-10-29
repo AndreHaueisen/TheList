@@ -128,6 +128,7 @@
     <string name="description_opinions_on_politician">Opinions on this politician</string>
 
     <!--Transition strings-->
+    <string name="transition_button" translatable="false">button_transition</string>
     <string name="transition_image" translatable="false">image_transition</string>
     <string name="transition_name" translatable="false">name_transition</string>
     <string name="transition_toolbar" translatable="false">toolbar_transition</string>

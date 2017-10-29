@@ -1,14 +1,19 @@
 package com.andrehaueisen.listadejanot.i_main_lists.mvp
 
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity
+import com.andrehaueisen.listadejanot.e_information.mvp.InformationPresenterActivity
+import com.andrehaueisen.listadejanot.f_login.LoginActivity
 import com.andrehaueisen.listadejanot.i_main_lists.MainListsAdapter
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.FabMenu
 import kotlinx.android.synthetic.main.i_activity_main_lists.*
 
 /**
@@ -31,6 +36,7 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         }
         setToolbar()
         setRecyclerViews(bundle)
+        setFabMenu()
         setButtons()
     }
 
@@ -126,6 +132,24 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         }
     }
 
+    private fun setFabMenu() {
+        with(mPresenterActivity) {
+
+            menu_fab.setOptionsClick(object : FabMenu.OptionsClick {
+                override fun onOptionClick(optionId: Int?) {
+                    when (optionId) {
+                        R.id.action_user_lists -> showUserVoteListIfLogged()
+                        R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
+                        R.id.action_logout -> {
+                            mFirebaseAuthenticator.logout()
+                            startNewActivity(LoginActivity::class.java)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
     private fun setButtons() {
         with(mPresenterActivity) {
             top_in_recommendations_view.setOnClickListener {
@@ -176,7 +200,11 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
                 sortPoliticians(SortType.OVERALL_GRADE)
             }
 
-            search_view.setOnClickListener { startNewActivity(PoliticianSelectorPresenterActivity::class.java) }
+            search_view.setOnClickListener {
+                val fabMenuPair = Pair<View, String>(menu_fab as View, this.getString(R.string.transition_name))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, fabMenuPair)
+                startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
+            }
         }
     }
 

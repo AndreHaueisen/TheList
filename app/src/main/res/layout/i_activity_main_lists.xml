@@ -1,242 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.NestedScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/main_lists_toolbar"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            app:theme="@style/ToolbarStyle"
-            app:titleTextColor="@android:color/white"/>
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
-        <android.support.constraint.Group
-            android:id="@+id/group_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            tools:visibility="gone"
-            app:constraint_referenced_ids="top_in_recommendations_view, top_in_condemnations_view, top_in_overall_grade_view, search_view"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_lists_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:background="@color/colorPrimary"
+                android:elevation="4dp"
+                app:theme="@style/ToolbarStyle"
+                app:titleTextColor="@android:color/white"/>
 
-        <LinearLayout
-            android:id="@+id/top_in_recommendations_view"
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/shape_square_corners"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/top_in_condemnations_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar">
-
-            <ImageButton
-                style="@android:style/Widget.Material.Button.Borderless"
+            <android.support.constraint.Group
+                android:id="@+id/group_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="false"
-                android:src="@drawable/ic_top_ten"/>
+                android:visibility="visible"
+                app:constraint_referenced_ids="top_in_recommendations_view, top_in_condemnations_view, top_in_overall_grade_view, search_view"
+                tools:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/top_in_recommendations_view"
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_square_corners"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/top_in_condemnations_view"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="false"
+                    android:src="@drawable/ic_top_ten"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="false"
+                    android:maxWidth="100dp"
+                    android:text="@string/top_ten_recommendations"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/top_in_condemnations_view"
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_square_corners"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/top_in_recommendations_view"
+                app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="false"
+                    android:src="@drawable/ic_top_ten"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="false"
+                    android:maxWidth="80dp"
+                    android:text="@string/top_ten_suspicions"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/top_in_overall_grade_view"
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_square_corners"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/search_view"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_in_recommendations_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="false"
+                    android:src="@drawable/ic_top_ten"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="false"
+                    android:maxWidth="100dp"
+                    android:text="@string/top_ten_overall_grade"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/search_view"
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/shape_square_corners"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/top_in_overall_grade_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/top_in_overall_grade_view"
+                app:layout_constraintTop_toTopOf="@+id/top_in_overall_grade_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="false"
+                    android:src="@drawable/ic_search_64dp"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="false"
+                    android:maxWidth="100dp"
+                    android:text="@string/individual_search"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+            <android.support.constraint.Group
+                android:id="@+id/group_lists"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="senadores_title_text_view, senadores_recycler_view, governadores_title_text_view, governadores_recycler_view, deputados_title_text_view, deputados_recycler_view"
+                tools:visibility="visible"/>
 
             <TextView
-                style="@style/LatoRegularTextStyle"
-                android:layout_width="wrap_content"
+                android:id="@+id/senadores_title_text_view"
+                style="@style/LatoBoldTextStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:clickable="false"
-                android:maxWidth="100dp"
-                android:text="@string/top_ten_recommendations"
-                android:textAlignment="center"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/top_in_condemnations_view"
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/shape_square_corners"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/top_in_recommendations_view"
-            app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar">
-
-            <ImageButton
-                style="@android:style/Widget.Material.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="false"
-                android:src="@drawable/ic_top_ten"/>
-
-            <TextView
-                style="@style/LatoRegularTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:clickable="false"
-                android:maxWidth="80dp"
-                android:text="@string/top_ten_suspicions"
-                android:textAlignment="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/top_in_overall_grade_view"
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/shape_square_corners"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/search_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_in_recommendations_view">
-
-            <ImageButton
-                style="@android:style/Widget.Material.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:src="@drawable/ic_top_ten"/>
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/senadores_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/senadores_title_text_view"/>
 
             <TextView
-                style="@style/LatoRegularTextStyle"
-                android:layout_width="wrap_content"
+                android:id="@+id/governadores_title_text_view"
+                style="@style/LatoBoldTextStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:clickable="false"
-                android:maxWidth="100dp"
-                android:text="@string/top_ten_overall_grade"
-                android:textAlignment="center"/>
-        </LinearLayout>
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/senadores_recycler_view"/>
 
-
-        <LinearLayout
-            android:id="@+id/search_view"
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_square_corners"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@+id/top_in_overall_grade_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/top_in_overall_grade_view"
-            app:layout_constraintTop_toTopOf="@+id/top_in_overall_grade_view">
-
-            <ImageButton
-                style="@android:style/Widget.Material.Button.Borderless"
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/governadores_recycler_view"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="false"
-                android:src="@drawable/ic_search_64dp"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/governadores_title_text_view"/>
 
             <TextView
-                style="@style/LatoRegularTextStyle"
-                android:layout_width="wrap_content"
+                android:id="@+id/deputados_title_text_view"
+                style="@style/LatoBoldTextStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="false"
-                android:maxWidth="100dp"
-                android:text="@string/individual_search"
-                android:textAlignment="center"/>
-        </LinearLayout>
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/governadores_recycler_view"/>
 
-        <android.support.constraint.Group
-            android:id="@+id/group_lists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:constraint_referenced_ids="senadores_title_text_view, senadores_recycler_view, governadores_title_text_view, governadores_recycler_view, deputados_title_text_view, deputados_recycler_view"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/deputados_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deputados_title_text_view"/>
 
-        <TextView
-            android:id="@+id/senadores_title_text_view"
-            style="@style/LatoBoldTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_lists_toolbar"/>
+        </android.support.constraint.ConstraintLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/senadores_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/senadores_title_text_view"/>
+    </android.support.v4.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/governadores_title_text_view"
-            style="@style/LatoBoldTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/senadores_recycler_view"/>
+    <com.andrehaueisen.listadejanot.views.FabMenu
+        android:id="@+id/menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:color_main_button="@color/colorAccent"
+        android:transitionName="@string/transition_button"
+        app:color_secondary_buttons="@color/colorAccentDark"
+        app:content_options="@menu/menu_d_politician_search"
+        app:expanded_background_color="@color/colorDarkTransparent"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/governadores_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/governadores_title_text_view"/>
-
-        <TextView
-            android:id="@+id/deputados_title_text_view"
-            style="@style/LatoBoldTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/governadores_recycler_view"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/deputados_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deputados_title_text_view"/>
-
-    </android.support.constraint.ConstraintLayout>
-
-</android.support.v4.widget.NestedScrollView>
+</FrameLayout>

@@ -6,14 +6,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
 import android.support.v4.util.Pair
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -31,12 +29,13 @@ import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations.alpha
-import com.github.florent37.expectanim.listener.AnimationEndListener
 import kotlinx.android.synthetic.main.d_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_grades.*
@@ -66,7 +65,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     override fun setViews(isSavedState: Boolean) {
-        setVoteListButton()
+        setFabMenu()
         setAutoCompleteTextView()
 
         if (isSavedState) {
@@ -86,7 +85,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         mPresenterActivity.subscribeToSinglePolitician()
     }
 
-    private fun setVoteListButton() {
+    private fun setFabMenu() {
         with(mPresenterActivity) {
 
             menu_fab.setOptionsClick(object : FabMenu.OptionsClick {
@@ -101,27 +100,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     }
                 }
             })
-        }
-    }
-
-    fun initiateBackgroundAnimations() {
-        with(mPresenterActivity) {
-
-            val restartListener = AnimationEndListener { expectAnim ->
-                if(cloud_one_image_view.visibility == View.VISIBLE && mPresenterActivity.isVisible()){
-                    expectAnim?.start()
-                    Log.i(LOG_TAG, "RESTARTING ANIMATION")
-                }
-                else{
-                    expectAnim?.reset()
-                    Log.i(LOG_TAG, "RESETTING ANIMATION")
-                }
-            }
-
-            if(cloud_one_image_view.visibility == View.VISIBLE) {
-                ExpectAnim().startInfiniteViewTranslation(cloud_one_image_view, Gravity.END, Gravity.START, endListener = restartListener)
-                ExpectAnim().startInfiniteViewTranslation(cloud_two_image_view, Gravity.START, Gravity.END, 10000, 30000, restartListener)
-            }
         }
     }
 
@@ -305,9 +283,13 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     fun performOnCompleteTextViewAutoSearch(politicianName: String) {
-        mPresenterActivity.auto_complete_text_view.setText(politicianName)
-        dismissKeyBoard()
-        mPresenterActivity.initiateSinglePoliticianLoad(politicianName)
+        with(mPresenterActivity) {
+            auto_complete_text_view.setText(politicianName)
+            politician_search_coordinator_layout.requestFocus()
+
+            dismissKeyBoard()
+            initiateSinglePoliticianLoad(politicianName)
+        }
     }
 
     private fun setOnDeleteTextClickListener() =
@@ -375,13 +357,10 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val metrics = DisplayMetrics()
         mPresenterActivity.windowManager.defaultDisplay.getMetrics(metrics)
 
-        val transitionOptions = DrawableTransitionOptions.withCrossFade()
-
         if (originalImageHeight > originalImageWidth) {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(25)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.ic_launcher)
                     .override(metrics.widthPixels, targetHeight.toInt())
 
@@ -390,21 +369,29 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(30)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.ic_launcher)
                     .override(metrics.widthPixels, targetHeight.toInt())
-
         }
 
-        with(mPresenterActivity) {
+        mGlide.downloadOnly()
+                .load(imageUrl)
+                .apply(requestOption)
+                .listener(object: RequestListener<File>{
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<File>?, isFirstResource: Boolean): Boolean = false
 
-            mGlide.load(imageUrl)
-                    .apply(requestOption)
-                    .transition(transitionOptions)
-                    .into(search_politician_image_view)
+                    override fun onResourceReady(resource: File?, model: Any?, target: Target<File>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        with(mPresenterActivity) {
+                            mGlide.load(resource)
+                                    .apply(requestOption)
+                                    /*.transition(object: TransitionOptions<DrawableTransitionOptions, Drawable>(){}
+                                            .transition { view -> view.animate().alpha(0F))}*/
+                                    .into(search_politician_image_view)
 
-            search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
-        }
+                            search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
+                        }
+                        return false
+                    }
+                }).submit(metrics.widthPixels, targetHeight.toInt())
     }
 
     private fun bindPoliticianDataToViews(politician: Politician) {
@@ -487,7 +474,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 politician_info_group.visibility = View.VISIBLE
                 delete_text_image_button.visibility = View.VISIBLE
-                initial_screen_group.visibility = View.GONE
 
                 mIsInitialRequest = false
 
@@ -549,17 +535,14 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                             listAction = when (position) {
                                 0 -> {
-                                    showToast(getString(R.string.politician_added_to_suspect_list, politician.name), Snackbar.LENGTH_SHORT)
                                     ListAction.ADD_TO_SUSPECT_LIST
                                 }
 
                                 1 -> {
-                                    showToast(getString(R.string.politician_added_to_voting_list, politician.name), Snackbar.LENGTH_SHORT)
                                     ListAction.ADD_TO_VOTE_LIST
                                 }
 
                                 -1 -> {
-                                    showToast(getString(R.string.politician_removed_from_list, politician.name), Snackbar.LENGTH_SHORT)
                                     ListAction.REMOVE_FROM_LISTS
                                 }
 

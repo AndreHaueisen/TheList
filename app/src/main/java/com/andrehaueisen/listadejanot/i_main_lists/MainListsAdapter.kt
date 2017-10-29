@@ -1,10 +1,14 @@
 package com.andrehaueisen.listadejanot.i_main_lists
 
-import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.LayerDrawable
+import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.util.Pair
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,21 +16,21 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
+import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.SortType
-import com.andrehaueisen.listadejanot.utilities.changeTextStyle
-import com.andrehaueisen.listadejanot.utilities.setPoliticianGradeText
+import com.andrehaueisen.listadejanot.utilities.*
+import kotlinx.android.synthetic.main.i_activity_main_lists.*
 
 /**
  * Created by andre on 10/24/2017.
  */
-class MainListsAdapter(val context: Context, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<MainListsAdapter.PoliticianResume>() {
+class MainListsAdapter(val activity: AppCompatActivity, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<MainListsAdapter.PoliticianResume>() {
 
     private var sortType: SortType? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoliticianResume {
 
-        val view = LayoutInflater.from(context).inflate(R.layout.item_politician_resume, parent, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.item_politician_resume, parent, false)
 
         return PoliticianResume(view)
     }
@@ -43,6 +47,7 @@ class MainListsAdapter(val context: Context, val politicianList: ArrayList<Polit
 
     inner class PoliticianResume(politicianView: View) : RecyclerView.ViewHolder(politicianView) {
 
+        private val mCardView: CardView = politicianView.findViewById(R.id.politician_resume_card_view)
         private val mNameTextView: TextView = politicianView.findViewById(R.id.name_text_view)
         private val mOverallGradeRatingBar: RatingBar = politicianView.findViewById(R.id.overall_grade_rating_bar)
         private val mRecommendationsVotesTextView: TextView = politicianView.findViewById(R.id.total_recommendations_votes_text_view)
@@ -51,18 +56,29 @@ class MainListsAdapter(val context: Context, val politicianList: ArrayList<Polit
 
         fun onBindData(position: Int) {
 
+            mCardView.setOnClickListener {
+                val extras = Bundle()
+                extras.putString(INTENT_POLITICIAN_NAME, mNameTextView.text.toString())
+
+                val fabMenuPair = Pair<View, String>(activity.menu_fab as View, activity.getString(R.string.transition_name))
+                val namePair = Pair<View, String>(mNameTextView as View, activity.getString(R.string.transition_name))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, fabMenuPair, namePair)
+
+                activity.startNewActivity(PoliticianSelectorPresenterActivity::class.java, extras = extras, options = options.toBundle())
+            }
+
             val politician = politicianList[position]
 
             mNameTextView.text = politician.name
             mOverallGradeRatingBar.rating = politician.overallGrade
             val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
-            stars.getDrawable(2).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)
+            stars.getDrawable(2).setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)
 
-            mRecommendationsVotesTextView.text = context.resources.getQuantityString(
+            mRecommendationsVotesTextView.text = activity.resources.getQuantityString(
                     R.plurals.recommendation_votes,
                     politician.recommendationsCount,
                     politician.recommendationsCount)
-            mCondemnationsVotesTxtView.text = context.resources.getQuantityString(
+            mCondemnationsVotesTxtView.text = activity.resources.getQuantityString(
                     R.plurals.condemnation_votes,
                     politician.condemnationsCount,
                     politician.condemnationsCount)
@@ -86,6 +102,7 @@ class MainListsAdapter(val context: Context, val politicianList: ArrayList<Polit
                     mOverallGradeTextView.changeTextStyle(Typeface.BOLD_ITALIC)
                 }
             }
+
         }
     }
 }
