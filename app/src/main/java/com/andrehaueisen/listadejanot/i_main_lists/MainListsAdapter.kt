@@ -1,7 +1,6 @@
 package com.andrehaueisen.listadejanot.i_main_lists
 
 import android.graphics.PorterDuff
-import android.graphics.Typeface
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
@@ -18,7 +17,10 @@ import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.utilities.INTENT_POLITICIAN_NAME
+import com.andrehaueisen.listadejanot.utilities.SortType
+import com.andrehaueisen.listadejanot.utilities.setPoliticianGradeText
+import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import kotlinx.android.synthetic.main.i_activity_main_lists.*
 
 /**
@@ -60,9 +62,9 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
                 val extras = Bundle()
                 extras.putString(INTENT_POLITICIAN_NAME, mNameTextView.text.toString())
 
-                val fabMenuPair = Pair<View, String>(activity.menu_fab as View, activity.getString(R.string.transition_name))
-                val namePair = Pair<View, String>(mNameTextView as View, activity.getString(R.string.transition_name))
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, fabMenuPair, namePair)
+                val toolbarPair = Pair<View, String>(activity.main_lists_toolbar as View, activity.getString(R.string.transition_toolbar))
+                val fabMenuPair = Pair<View, String>(activity.menu_fab as View, activity.getString(R.string.transition_button))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, fabMenuPair, toolbarPair)
 
                 activity.startNewActivity(PoliticianSelectorPresenterActivity::class.java, extras = extras, options = options.toBundle())
             }
@@ -87,19 +89,19 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
 
             when (sortType) {
                 SortType.RECOMMENDATIONS_COUNT -> {
-                    mRecommendationsVotesTextView.changeTextStyle(Typeface.BOLD_ITALIC)
-                    mCondemnationsVotesTxtView.changeTextStyle(Typeface.NORMAL)
-                    mOverallGradeTextView.changeTextStyle(Typeface.NORMAL)
+                    mRecommendationsVotesTextView.visibility = View.VISIBLE
+                    mCondemnationsVotesTxtView.visibility = View.GONE
+                    mOverallGradeTextView.visibility = View.GONE
                 }
                 SortType.CONDEMNATIONS_COUNT -> {
-                    mRecommendationsVotesTextView.changeTextStyle(Typeface.NORMAL)
-                    mCondemnationsVotesTxtView.changeTextStyle(Typeface.BOLD_ITALIC)
-                    mOverallGradeTextView.changeTextStyle(Typeface.NORMAL)
+                    mRecommendationsVotesTextView.visibility = View.GONE
+                    mCondemnationsVotesTxtView.visibility = View.VISIBLE
+                    mOverallGradeTextView.visibility = View.GONE
                 }
                 SortType.OVERALL_GRADE -> {
-                    mRecommendationsVotesTextView.changeTextStyle(Typeface.NORMAL)
-                    mCondemnationsVotesTxtView.changeTextStyle(Typeface.NORMAL)
-                    mOverallGradeTextView.changeTextStyle(Typeface.BOLD_ITALIC)
+                    mRecommendationsVotesTextView.visibility = View.GONE
+                    mCondemnationsVotesTxtView.visibility = View.GONE
+                    mOverallGradeTextView.visibility = View.VISIBLE
                 }
             }
 

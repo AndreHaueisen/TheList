@@ -76,11 +76,11 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
                 override fun onPositionChanged(button: RadioRealButton?, currentPosition: Int, lastPosition: Int) {
 
                     if (currentPosition == 0) {
-                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.START, Gravity.END, mSuspectsAdapter)
+                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.END, Gravity.START, mSuspectsAdapter)
                         mCurrentShowingList = SUSPECTS_POLITICIANS_ADAPTER_TYPE
                     } else {
 
-                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.END, Gravity.START, mWillVoteAdapter)
+                        ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.START, Gravity.END, mWillVoteAdapter)
                         mCurrentShowingList = WILL_VOTE_POLITICIANS_ADAPTER_TYPE
                     }
                 }

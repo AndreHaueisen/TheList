@@ -155,9 +155,9 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             top_in_recommendations_view.setOnClickListener {
                 clearData()
 
-                setListsTitles(getString(R.string.senadores_sorted_by_vote_intentions),
+                /*setListsTitles(getString(R.string.senadores_sorted_by_vote_intentions),
                         getString(R.string.governadores_sorted_by_vote_intentions),
-                        getString(R.string.deputados_sorted_by_vote_intentions))
+                        getString(R.string.deputados_sorted_by_vote_intentions))*/
 
                 (senadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.RECOMMENDATIONS_COUNT)
                 (governadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.RECOMMENDATIONS_COUNT)
@@ -171,9 +171,9 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             top_in_condemnations_view.setOnClickListener {
                 clearData()
 
-                setListsTitles(getString(R.string.senadores_sorted_by_suspicions),
+                /*setListsTitles(getString(R.string.senadores_sorted_by_suspicions),
                         getString(R.string.governadores_sorted_by_suspicions),
-                        getString(R.string.deputados_sorted_by_suspicions))
+                        getString(R.string.deputados_sorted_by_suspicions))*/
 
                 (senadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.CONDEMNATIONS_COUNT)
                 (governadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.CONDEMNATIONS_COUNT)
@@ -187,9 +187,9 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             top_in_overall_grade_view.setOnClickListener {
                 clearData()
 
-                setListsTitles(getString(R.string.senadores_sorted_by_overall_grade),
+                /*setListsTitles(getString(R.string.senadores_sorted_by_overall_grade),
                         getString(R.string.governadores_sorted_by_overall_grade),
-                        getString(R.string.deputados_sorted_by_overall_grade))
+                        getString(R.string.deputados_sorted_by_overall_grade))*/
 
                 (senadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.OVERALL_GRADE)
                 (governadores_recycler_view.adapter as MainListsAdapter).changeSortType(SortType.OVERALL_GRADE)
@@ -201,8 +201,9 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             }
 
             search_view.setOnClickListener {
-                val fabMenuPair = Pair<View, String>(menu_fab as View, this.getString(R.string.transition_name))
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, fabMenuPair)
+                val toolbarPair = Pair<View, String>(main_lists_toolbar as View, getString(R.string.transition_toolbar))
+                val fabMenuPair = Pair<View, String>(menu_fab as View, this.getString(R.string.transition_button))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, fabMenuPair, toolbarPair)
                 startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
             }
         }

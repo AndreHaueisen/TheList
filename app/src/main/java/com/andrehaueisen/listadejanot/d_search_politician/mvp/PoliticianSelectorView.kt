@@ -31,6 +31,7 @@ import com.andrehaueisen.listadejanot.views.FabMenu
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -285,7 +286,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     fun performOnCompleteTextViewAutoSearch(politicianName: String) {
         with(mPresenterActivity) {
             auto_complete_text_view.setText(politicianName)
-            politician_search_coordinator_layout.requestFocus()
+            if(!auto_complete_text_view.text.isNullOrEmpty())
+                politician_search_coordinator_layout.requestFocus()
 
             dismissKeyBoard()
             initiateSinglePoliticianLoad(politicianName)
@@ -368,7 +370,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(30)
-                    .centerCrop()
                     .placeholder(R.drawable.ic_launcher)
                     .override(metrics.widthPixels, targetHeight.toInt())
         }
@@ -383,8 +384,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         with(mPresenterActivity) {
                             mGlide.load(resource)
                                     .apply(requestOption)
-                                    /*.transition(object: TransitionOptions<DrawableTransitionOptions, Drawable>(){}
-                                            .transition { view -> view.animate().alpha(0F))}*/
+                                    .transition(DrawableTransitionOptions.withCrossFade().crossFade())
                                     .into(search_politician_image_view)
 
                             search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
@@ -464,7 +464,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun initiateShowAnimations() {
+    fun initiateShowAnimations() {
 
         val DEFAULT_ANIM_DURATION = 500L
 
@@ -659,7 +659,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_STREAM, uri)
-                        putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, determiner, post, politician.name, PLAY_STORE_LINK))
+                        putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, determiner, post, politician.name))
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         type = "image/*"
 

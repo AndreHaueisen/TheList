@@ -8,14 +8,10 @@ import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 
 fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINITE) {
-    //val SNACKBAR_HEIGHT_DP = 58
-    //val displayMetrics = activity.resources.displayMetrics
-    //val SNACKBAR_HEIGHT_PX = Math.round(SNACKBAR_HEIGHT_DP * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
     Snackbar.make(this, message, duration)
             .apply {
                 view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                //view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply { height = SNACKBAR_HEIGHT_PX }
                 val textView = view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
             }
@@ -29,10 +25,6 @@ fun View.setPoliticianGradeText(grade: Float, stringId: Int) {
     } else {
         (this as TextView).text = this.resources.getString(stringId, resources.getString(R.string.no_grade))
     }
-}
-
-fun TextView.changeTextStyle(textStyle: Int){
-    this.setTypeface(this.typeface, textStyle)
 }
 
 

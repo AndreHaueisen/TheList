@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.transition.Transition
+import android.view.View
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
@@ -51,6 +53,26 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     private var mNameFromNotification: String? = null
 
+    private val mEnterTransitionListener = object : Transition.TransitionListener{
+        override fun onTransitionEnd(p0: Transition?) {
+            if(getSinglePolitician() != null) {
+                group_buttons.visibility = View.VISIBLE
+                post_text_view.visibility = View.VISIBLE
+                name_text_view.visibility = View.VISIBLE
+                vote_radio_group.visibility = View.VISIBLE
+                group_grades.visibility = View.VISIBLE
+                group_rating_bars.visibility = View.VISIBLE
+            }
+        }
+        override fun onTransitionResume(p0: Transition?) {}
+
+        override fun onTransitionPause(p0: Transition?) {}
+
+        override fun onTransitionCancel(p0: Transition?) {}
+
+        override fun onTransitionStart(p0: Transition?) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -79,6 +101,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = true)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        window.sharedElementEnterTransition.addListener(mEnterTransitionListener)
     }
 
     private fun refreshPoliticianData() {
@@ -197,6 +224,11 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     fun getSearchablePoliticiansList() = mSelectorModel.getSearchablePoliticiansList()
 
     fun getSinglePolitician() = mPolitician
+
+    override fun onStop() {
+        window.sharedElementEnterTransition.removeListener(mEnterTransitionListener)
+        super.onStop()
+    }
 
     override fun onDestroy() {
         mCompositeDisposable.dispose()

@@ -52,6 +52,11 @@
         <item name="android:fontFamily">@string/font_roboto_regular</item>
     </style>
 
+    <style name="RobotoThinTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorPrimaryLight</item>
+        <item name="android:fontFamily">@string/font_roboto_thin</item>
+    </style>
+
     <style name="LatoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/colorPrimaryLight</item>
         <item name="android:fontFamily">@font/lato</item>

@@ -15,6 +15,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="@string/transition_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -31,6 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginTop="?android:attr/actionBarSize"
+                android:src="@drawable/ic_launcher"
+                android:scaleType="centerCrop"
                 android:maxHeight="200dp"
                 android:transitionName="@string/transition_image"
                 app:layout_collapseMode="parallax"/>
@@ -87,7 +90,7 @@
                 android:id="@+id/politician_info_group"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:constraint_referenced_ids="post_text_view, name_text_view, group_grades, group_buttons, vote_radio_group, group_rating_bars"
                 tools:visibility="invisible"/>
 
@@ -191,8 +194,7 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
 

@@ -35,7 +35,7 @@
     <string name="type_politician_name_hint">Type a politician\'s Name</string>
     <string name="share">Share</string>
     <string name="share_title">Share using…</string>
-    <string name="share_boarding_message">Evaluate %1$s %2$s %3$s.\n"Help us reveal the bad politicians and highlight the good ones.\n%4$s</string>
+    <string name="share_boarding_message">Evaluate %1$s %2$s %3$s.\n"Help us reveal the bad politicians and highlight the good ones.</string>
     <string name="null_email_found">Something is wrong. Please login again</string>
     <string name="determiner_male">the</string>
     <string name="determiner_female">the</string>
@@ -111,6 +111,10 @@
     <string name="senadores_sorted_by_overall_grade">Senators sorted by overall grade</string>
     <string name="governadores_sorted_by_overall_grade">Governors sorted by overall grade</string>
     <string name="deputados_sorted_by_overall_grade">Congressmen sorted by overall grade</string>
+
+    <string name="senadores_title">Senators</string>
+    <string name="governadores_title">Governors</string>
+    <string name="deputados_title">Congressmen</string>
 
     <string name="top_ten_recommendations">Most vote intentions</string>
     <string name="top_ten_suspicions">Most suspicions</string>
