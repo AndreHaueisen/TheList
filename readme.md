@@ -15,7 +15,7 @@ User side has the following functionalities:
 * [x] Can **log out**
 
 ### Video Walkthrough
-![The List example](https://github.com/AndreHaueisen/TheList/blob/master/urna_limpa_demo.gif)
+![The List example](https://github.com/AndreHaueisen/TheList/blob/master/lista_de_janot_demo.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
