@@ -113,7 +113,7 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
                 if (adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     if (mUser.recommendations.containsKey(politicianEncodedEmail)) {
-                        mUser.recommendations.remove(politicianEncodedEmail)
+                        //mUser.recommendations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
@@ -123,7 +123,7 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                     }
                 } else {
                     if (mUser.condemnations.containsKey(politicianEncodedEmail)) {
-                        mUser.condemnations.remove(politicianEncodedEmail)
+                        //mUser.condemnations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {

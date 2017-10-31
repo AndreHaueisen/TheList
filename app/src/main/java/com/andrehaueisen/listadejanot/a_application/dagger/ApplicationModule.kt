@@ -24,7 +24,7 @@ class ApplicationModule(private val mDatabaseReference: DatabaseReference,
 
     @ApplicationScope
     @Provides
-    fun provideFirebaseRepository(context: Context) : FirebaseRepository = FirebaseRepository(context, mDatabaseReference)
+    fun provideFirebaseRepository() : FirebaseRepository = FirebaseRepository(mUser, mDatabaseReference)
 
     @ApplicationScope
     @Provides

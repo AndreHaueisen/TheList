@@ -75,7 +75,7 @@
 
     <!--g_user_vote_list strings-->
     <string name="your_lists">Your lists</string>
-    <string name="no_one_banned_yet">You banned no one yet</string>
+    <string name="no_one_on_list_yet">No one on your list yet</string>
     <string name="your_vote_date">Entered your list on %1$s</string>
     <string name="remove_vote">Remove</string>
     <string name="place_vote">Undo</string>
@@ -100,18 +100,6 @@
     <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
 
     <!--i_main_lists-->
-    <string name="senadores_sorted_by_vote_intentions">Senators sorted by vote intentions</string>
-    <string name="governadores_sorted_by_vote_intentions">Governors sorted by vote intentions</string>
-    <string name="deputados_sorted_by_vote_intentions">Congressmen sorted by vote intentions</string>
-
-    <string name="senadores_sorted_by_suspicions">Senators sorted by suspicions</string>
-    <string name="governadores_sorted_by_suspicions">Governors sorted by suspicions</string>
-    <string name="deputados_sorted_by_suspicions">Congressmen sorted by suspicions</string>
-
-    <string name="senadores_sorted_by_overall_grade">Senators sorted by overall grade</string>
-    <string name="governadores_sorted_by_overall_grade">Governors sorted by overall grade</string>
-    <string name="deputados_sorted_by_overall_grade">Congressmen sorted by overall grade</string>
-
     <string name="senadores_title">Senators</string>
     <string name="governadores_title">Governors</string>
     <string name="deputados_title">Congressmen</string>

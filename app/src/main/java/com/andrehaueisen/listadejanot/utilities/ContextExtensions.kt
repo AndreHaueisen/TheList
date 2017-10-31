@@ -81,6 +81,11 @@ fun  Context.pullStringFromSharedPreferences(key: String): String{
     return sharedPreference.getString(key, null)
 }
 
+fun Context.pullIntFromSharedPreferences(key: String): Int{
+    val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
+    return sharedPreference.getInt(key, 0)
+}
+
 fun Context.convertDipToPixel(dipValue: Float): Float{
     val metrics = this.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics)

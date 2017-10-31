@@ -65,7 +65,7 @@
 
     <!--g_user_vote_list strings-->
     <string name="your_lists">Suas listas</string>
-    <string name="no_one_banned_yet">Seus votos aparecerão aqui</string>
+    <string name="no_one_on_list_yet">Ninguém na sua lista ainda</string>
     <string name="your_vote_date">Entrou na sua lista dia %1$s</string>
     <string name="remove_vote">Remover</string>
     <string name="place_vote">Recolocar</string>
@@ -90,18 +90,6 @@
     <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político. Confirmar substituição?</string>
 
     <!--i_main_lists-->
-    <string name="senadores_sorted_by_vote_intentions">Senadores organizados por intenções de voto</string>
-    <string name="governadores_sorted_by_vote_intentions">Governadores organizados por intenções de voto</string>
-    <string name="deputados_sorted_by_vote_intentions">Deputados organizados por intenções de voto</string>
-
-    <string name="senadores_sorted_by_suspicions">Senadores organizados por suspeições</string>
-    <string name="governadores_sorted_by_suspicions">Governadores organizados por suspeições</string>
-    <string name="deputados_sorted_by_suspicions">Deputados organizados por suspeições</string>
-
-    <string name="senadores_sorted_by_overall_grade">Senadores organizados pela nota geral</string>
-    <string name="governadores_sorted_by_overall_grade">Governadores organizados pela nota geral</string>
-    <string name="deputados_sorted_by_overall_grade">Deputados organizados pela nota geral</string>
-
     <string name="senadores_title">Senadores</string>
     <string name="governadores_title">Governadores</string>
     <string name="deputados_title">Deputados</string>

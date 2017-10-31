@@ -27,7 +27,7 @@
         android:layout_marginEnd="383dp"
         android:layout_marginStart="384dp"
         android:layout_marginTop="332dp"
-        android:text="@string/no_one_banned_yet"
+        android:text="@string/no_one_on_list_yet"
         android:textColor="@color/colorPrimaryDark"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/lists_radio_group"

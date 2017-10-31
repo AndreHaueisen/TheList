@@ -96,6 +96,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
                         R.id.action_logout -> {
                             mFirebaseAuthenticator.logout()
+                            invalidateUser()
                             startNewActivity(LoginActivity::class.java)
                         }
                     }

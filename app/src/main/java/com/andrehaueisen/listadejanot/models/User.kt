@@ -13,6 +13,7 @@ data class User(val condemnations: HashMap<String, Any> = hashMapOf(),
                 val promiseKeeperGrades: HashMap<String, Float> = hashMapOf(),
                 val rulesForThePeopleGrades: HashMap<String, Float> = hashMapOf(),
                 val answerVotersGrades: HashMap<String, Float> = hashMapOf()) : Parcelable {
+
     fun refreshUser(user: User) {
         condemnations.clear()
         condemnations.putAll(user.condemnations)

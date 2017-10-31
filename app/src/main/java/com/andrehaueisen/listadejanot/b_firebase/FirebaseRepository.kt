@@ -1,6 +1,5 @@
 package com.andrehaueisen.listadejanot.b_firebase
 
-import android.content.Context
 import android.util.Log
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
@@ -11,7 +10,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by andre on 5/3/2017.
  */
-class FirebaseRepository(private val mContext: Context, private val mDatabaseReference: DatabaseReference) {
+class FirebaseRepository(private val mUser: User, private val mDatabaseReference: DatabaseReference) {
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
@@ -50,6 +49,8 @@ class FirebaseRepository(private val mContext: Context, private val mDatabaseRef
             override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
 
                 if (transactionCommitted) {
+                    val newUser = dataSnapshot?.getValue(User::class.java) ?: User()
+                    mUser.refreshUser(newUser)
 
                     val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
                     politicianDatabase.runTransaction(object : Transaction.Handler {

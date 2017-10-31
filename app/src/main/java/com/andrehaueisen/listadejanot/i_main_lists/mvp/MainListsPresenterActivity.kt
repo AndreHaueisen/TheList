@@ -12,6 +12,7 @@ import com.andrehaueisen.listadejanot.f_login.LoginActivity
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.i_main_lists.dagger.DaggerMainListsComponent
 import com.andrehaueisen.listadejanot.i_main_lists.dagger.MainListsModule
+import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.SortType
 import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import com.google.firebase.database.ValueEventListener
@@ -47,6 +48,9 @@ class MainListsPresenterActivity : AppCompatActivity() {
 
     @Inject
     lateinit var mMainListsModel: MainListsModel
+
+    @Inject
+    lateinit var mUser: User
 
     var mView: MainListsView? = null
 
@@ -123,6 +127,10 @@ class MainListsPresenterActivity : AppCompatActivity() {
     } else {
         startNewActivity(LoginActivity::class.java)
         finish()
+    }
+
+    fun invalidateUser(){
+        mUser.refreshUser(User())
     }
 
     override fun onStart() {

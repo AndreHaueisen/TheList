@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
-import com.andrehaueisen.listadejanot.d_search_politician.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.f_login.dagger.DaggerLoginActivityComponent
+import com.andrehaueisen.listadejanot.i_main_lists.mvp.MainListsPresenterActivity
 import com.andrehaueisen.listadejanot.utilities.showToast
 import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import com.firebase.ui.auth.ErrorCodes
@@ -43,19 +43,19 @@ class LoginActivity : AppCompatActivity() {
 
             ErrorCodes.NO_NETWORK -> {
                 showToast(getString(R.string.no_network))
-                startNewActivity(PoliticianSelectorPresenterActivity::class.java)
+                startNewActivity(MainListsPresenterActivity::class.java)
                 finish()
             }
 
             ErrorCodes.UNKNOWN_ERROR -> {
                 showToast(getString(R.string.unknown_error))
-                startNewActivity(PoliticianSelectorPresenterActivity::class.java)
+                startNewActivity(MainListsPresenterActivity::class.java)
                 finish()
             }
 
             else -> {
                 mFirebaseAuthenticator.saveUserIdOnLogin()
-                startNewActivity(PoliticianSelectorPresenterActivity::class.java)
+                startNewActivity(MainListsPresenterActivity::class.java)
                 finish()
             }
         }

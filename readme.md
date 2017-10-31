@@ -1,21 +1,21 @@
-# The List
+# Urna Limpa
 
-**The List** is an android app that allows you to vote on a politician cited on the
- news for corruption and make him ineligible on the next election. As soon as he reaches a minimum number of votes, he is
-thrown on the official corrupt list.
+**Urna Limpa** is an android app that allows you to evaluate brazilian politicians, hopefully highlighting
+those who deserve it and removing from politics those that betrayed your vote.
 
 ## Features
 
 User side has the following functionalities:
 
 * [x] Creates **user profile**
-* [x] Can **vote on politician in the main list**
-* [x] Can **search for politicians** not present in the main list
+* [x] Can **show lists of politicians sorted by different properties like general grade or vote intention**
+* [x] Can **search for politicians**
 * [x] Can **share** politicians picture and message
+* [x] Can **share user opinion** on a particular politician
 * [x] Can **log out**
 
 ### Video Walkthrough
-![The List example](https://github.com/AndreHaueisen/TheList/blob/master/lista_de_janot_demo.gif)
+![The List example](https://github.com/AndreHaueisen/TheList/blob/master/urna_limpa_demo.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -26,12 +26,12 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Open-source libraries used
 
-- [Recyclerview Animators](https://github.com/wasabeef/recyclerview-animators) - RecyclerView Animators is an Android library that allows developers to easily create RecyclerView with animations.
 - [Glide](https://github.com/bumptech/glide) - Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
 - [RxKotlin](https://github.com/ReactiveX/RxKotlin) - RxKotlin is a lightweight library that adds convenient extension functions to RxJava.
 - [FirebaseUI](https://github.com/firebase/FirebaseUI-Android) - FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs like the Realtime Database or Firebase Authentication.
 - [Firebase](https://firebase.google.com/docs/android/setup) - Database, Storage and Authentication
 - [ExpectAnim](https://github.com/florent37/ExpectAnim) - Describe your animation and run!
+- [RadioRealButton](https://github.com/ceryle/RadioRealButton) - Radio Real Button is a substitute of the Radio Button. Its purpose is to give more elegant view for Android users.
 
 ## License
 

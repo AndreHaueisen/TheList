@@ -5,6 +5,10 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.andrehaueisen.listadejanot.BuildConfig
+import com.andrehaueisen.listadejanot.utilities.SHARED_VERSION_CODE
+import com.andrehaueisen.listadejanot.utilities.pullIntFromSharedPreferences
+import com.andrehaueisen.listadejanot.utilities.putValueOnSharedPreferences
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -22,13 +26,17 @@ class PoliticianDbHelper(val context: Context) : SQLiteOpenHelper(context, "poli
     @Throws(IOException::class)
     fun createDataBase() {
         //If the database does not exist, copy it from the assets.
+        val lastVersionCode = context.pullIntFromSharedPreferences(SHARED_VERSION_CODE)
+        val currentVersionCode = BuildConfig.VERSION_CODE
+
         val mDataBaseExist = checkDataBase()
-        if (!mDataBaseExist) {
+        if (!mDataBaseExist || lastVersionCode != currentVersionCode) {
             this.readableDatabase
             this.close()
             try {
                 //Copy the database from assets
                 copyDataBase()
+                context.putValueOnSharedPreferences(SHARED_VERSION_CODE, currentVersionCode)
                 Log.i("PoliticianDbHelper", "createDatabase database created")
             } catch (mIOException: IOException) {
                 throw Error("ErrorCopyingDataBase")

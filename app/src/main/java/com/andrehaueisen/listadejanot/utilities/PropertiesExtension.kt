@@ -63,6 +63,7 @@ val UNEXISTING_GRADE_VALUE: Float = -1F
 
 val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 val SHARED_MESSAGE_TOKEN = "message_token"
+val SHARED_VERSION_CODE = "version_code"
 
 val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 

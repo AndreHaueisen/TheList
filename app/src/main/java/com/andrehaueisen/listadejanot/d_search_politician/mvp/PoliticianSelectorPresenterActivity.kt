@@ -185,6 +185,10 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun getUser() = mUser
 
+    fun invalidateUser(){
+        mUser.refreshUser(User())
+    }
+
     fun updateLists(action: ListAction, politician: Politician) =
             if (mFirebaseAuthenticator.isUserLoggedIn()) {
                 when (action) {
