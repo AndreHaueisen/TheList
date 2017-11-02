@@ -118,6 +118,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
         setOnCompleteTextViewClickListener()
         setOnDeleteTextClickListener()
+        auto_complete_text_view.requestFocus()
 
         dismissAlertDialog()
     }
@@ -287,8 +288,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     fun performOnCompleteTextViewAutoSearch(politicianName: String) {
         with(mPresenterActivity) {
             auto_complete_text_view.setText(politicianName)
-            if(!auto_complete_text_view.text.isNullOrEmpty())
-                politician_search_coordinator_layout.requestFocus()
+            politician_search_coordinator_layout.requestFocus()
 
             dismissKeyBoard()
             initiateSinglePoliticianLoad(politicianName)

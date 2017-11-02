@@ -1,4 +1,4 @@
-package com.andrehaueisen.listadejanot.i_main_lists.mvp
+package com.andrehaueisen.listadejanot.i_main_lists_choices.mvp
 
 import android.content.Context
 import android.database.Cursor
@@ -6,25 +6,29 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.util.SparseArray
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.LOADER_ID
 import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS
 import com.andrehaueisen.listadejanot.utilities.SortType
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by andre on 10/23/2017.
  */
-class MainListsModel(
+class MainListsChoicesModel(
         private val mDeputadosList: ArrayList<Politician>,
         private val mSenadoresList: ArrayList<Politician>,
         private val mGovernadoresList: ArrayList<Politician>,
         private val mLoaderManager: LoaderManager,
         private val mContext: Context,
-        mListReadyPublishSubject: PublishSubject<Boolean>):  LoaderManager.LoaderCallbacks<Cursor> {
+        mListReadyPublishSubject: PublishSubject<Boolean>) : LoaderManager.LoaderCallbacks<Cursor> {
 
     private val COLUMNS_INDEX_POST = 0
     private val COLUMNS_INDEX_EMAIL = 1
@@ -34,17 +38,39 @@ class MainListsModel(
     private val mGovernadoresPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private val mPoliticiansLoadingStatusPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
+    private val mPoliticiansListMapPublishSubject: PublishSubject<SparseArray<ArrayList<Politician>>> = PublishSubject.create()
+    private val mListObservable = Observable.zip(mSenadoresPublishSubject,
+            mGovernadoresPublishSubject,
+            mDeputadosPublishSubject,
+            Function3<ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados ->
+                val politiciansArray = SparseArray<ArrayList<Politician>>(3)
+                politiciansArray.put(0, senadores)
+                politiciansArray.put(1, governadores)
+                politiciansArray.put(2, deputados)
+
+                politiciansArray
+            })
+
+    private val mCompositeDisposable = CompositeDisposable()
 
     private var mListReadyCounter = 0
 
     init {
         mListReadyPublishSubject.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ isListReady ->
+                .subscribe({ isListReady ->
                     if (isListReady) mListReadyCounter++
-                    if(mListReadyCounter % 3 == 0)
+                    if (mListReadyCounter % 3 == 0)
                         initiateDataLoad()
                 })
+
+        mListObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({politiciansMap -> mPoliticiansListMapPublishSubject.onNext(politiciansMap)},
+                        {},
+                        {},
+                        {disposable -> mCompositeDisposable.add(disposable)})
     }
 
     private fun initiateDataLoad() {
@@ -92,6 +118,7 @@ class MainListsModel(
                 data.moveToNext()
             }
             mPoliticiansLoadingStatusPublishSubject.onNext(true)
+
             data.close()
         }
     }
@@ -104,29 +131,33 @@ class MainListsModel(
 
             SortType.RECOMMENDATIONS_COUNT -> Comparator<Politician> { politician_1, politician_2 -> (politician_2.recommendationsCount - politician_1.recommendationsCount) }
             SortType.CONDEMNATIONS_COUNT -> Comparator { politician_1, politician_2 -> (politician_2.condemnationsCount - politician_1.condemnationsCount) }
-            SortType.OVERALL_GRADE -> Comparator { politician_1, politician_2 -> (politician_2.overallGrade - politician_1.overallGrade).toInt() }
+            SortType.TOP_OVERALL_GRADE -> Comparator { politician_1, politician_2 -> ((politician_2.overallGrade - politician_1.overallGrade) * 100).toInt() }
+            SortType.WORST_OVERALL_GRADE -> Comparator { politician_1, politician_2 -> ((politician_1.overallGrade - politician_2.overallGrade) * 100).toInt() }
 
         }
 
-        when (sortType){
+        when (sortType) {
             SortType.RECOMMENDATIONS_COUNT ->
-                emitPoliticians( {politician -> politician.recommendationsCount >= countFilterThreshold}, comparator)
+                emitPoliticians({ politician -> politician.recommendationsCount >= countFilterThreshold }, comparator)
 
             SortType.CONDEMNATIONS_COUNT ->
-                emitPoliticians( {politician -> politician.condemnationsCount >= countFilterThreshold}, comparator)
+                emitPoliticians({ politician -> politician.condemnationsCount >= countFilterThreshold }, comparator)
 
-            SortType.OVERALL_GRADE ->
-                emitPoliticians( {politician -> politician.overallGrade != gradeFilterThreshold}, comparator)
+            SortType.TOP_OVERALL_GRADE ->
+                emitPoliticians({ politician -> politician.overallGrade != gradeFilterThreshold }, comparator)
+
+            SortType.WORST_OVERALL_GRADE ->
+                emitPoliticians({ politician -> politician.overallGrade != gradeFilterThreshold }, comparator)
         }
     }
 
-    private fun emitPoliticians(filter: (Politician) -> Boolean, comparator: Comparator<Politician>){
+    private fun emitPoliticians(filter: (Politician) -> Boolean, comparator: Comparator<Politician>) {
 
-        mSenadoresPublishSubject.onNext( ArrayList(
+        mSenadoresPublishSubject.onNext(ArrayList(
                 mSenadoresList.asSequence()
-                .filter(filter)
-                .sortedWith(comparator)
-                .take(10).toList()))
+                        .filter(filter)
+                        .sortedWith(comparator)
+                        .take(10).toList()))
 
         mGovernadoresPublishSubject.onNext(ArrayList(mGovernadoresList
                 .asSequence()
@@ -139,18 +170,19 @@ class MainListsModel(
                 .filter(filter)
                 .sortedWith(comparator)
                 .take(10).toList()))
+
     }
 
     fun subscribeToPoliticiansLoadingStatus() = mPoliticiansLoadingStatusPublishSubject
-    fun subscribeToDeputados() = mDeputadosPublishSubject
-    fun subscribeToSenadores() = mSenadoresPublishSubject
-    fun subscribeToGovernadores() = mGovernadoresPublishSubject
+    fun subscribeToPoliticiansListsMap() = mPoliticiansListMapPublishSubject
 
-    fun onDestroy(){
+    fun onDestroy() {
         mDeputadosPublishSubject.onComplete()
         mSenadoresPublishSubject.onComplete()
         mGovernadoresPublishSubject.onComplete()
         mPoliticiansLoadingStatusPublishSubject.onComplete()
+        mCompositeDisposable.dispose()
     }
+
     override fun onLoaderReset(loader: Loader<Cursor>?) = Unit
 }

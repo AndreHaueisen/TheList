@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.andrehaueisen.listadejanot.R
+import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +13,7 @@ import com.google.firebase.database.*
 /**
  * Created by andre on 6/8/2017.
  */
-class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth) {
+class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth, val mUser: User) {
 
     private val LOG_TAG = FirebaseAuthenticator::class.java.simpleName
     private val REQUEST_CODE = 0
@@ -71,6 +72,9 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
         }
     }
 
-    fun logout() = mFirebaseAuth.signOut()
+    fun logout(){
+        mUser.refreshUser(User())
+        mFirebaseAuth.signOut()
+    }
 
 }

@@ -1,5 +1,6 @@
-package com.andrehaueisen.listadejanot.i_main_lists
+package com.andrehaueisen.listadejanot.j_main_lists
 
+import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -21,19 +22,16 @@ import com.andrehaueisen.listadejanot.utilities.INTENT_POLITICIAN_NAME
 import com.andrehaueisen.listadejanot.utilities.SortType
 import com.andrehaueisen.listadejanot.utilities.setPoliticianGradeText
 import com.andrehaueisen.listadejanot.utilities.startNewActivity
-import kotlinx.android.synthetic.main.i_activity_main_lists.*
+import kotlinx.android.synthetic.main.j_activity_main_lists.*
 
 /**
  * Created by andre on 10/24/2017.
  */
-class MainListsAdapter(val activity: AppCompatActivity, val politicianList: ArrayList<Politician>) : RecyclerView.Adapter<MainListsAdapter.PoliticianResume>() {
-
-    private var sortType: SortType? = null
+class MainListsAdapter(val activity: AppCompatActivity, val politicianList: ArrayList<Politician>, val sortType: SortType) : RecyclerView.Adapter<MainListsAdapter.PoliticianResume>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoliticianResume {
 
-        val view = LayoutInflater.from(activity).inflate(R.layout.item_politician_resume, parent, false)
-
+        val view = LayoutInflater.from(activity as Context).inflate(R.layout.item_politician_resume, parent, false)
         return PoliticianResume(view)
     }
 
@@ -41,10 +39,6 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
 
     override fun onBindViewHolder(holder: PoliticianResume?, position: Int) {
         holder?.onBindData(position)
-    }
-
-    fun changeSortType(sortType: SortType) {
-        this.sortType = sortType
     }
 
     inner class PoliticianResume(politicianView: View) : RecyclerView.ViewHolder(politicianView) {
@@ -98,7 +92,7 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
                     mCondemnationsVotesTxtView.visibility = View.VISIBLE
                     mOverallGradeTextView.visibility = View.GONE
                 }
-                SortType.OVERALL_GRADE -> {
+                SortType.TOP_OVERALL_GRADE, SortType.WORST_OVERALL_GRADE -> {
                     mRecommendationsVotesTextView.visibility = View.GONE
                     mCondemnationsVotesTxtView.visibility = View.GONE
                     mOverallGradeTextView.visibility = View.VISIBLE

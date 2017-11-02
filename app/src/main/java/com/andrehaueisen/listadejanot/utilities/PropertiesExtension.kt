@@ -11,7 +11,7 @@ enum class ListAction {
 }
 
 enum class SortType {
-    RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, OVERALL_GRADE
+    RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, TOP_OVERALL_GRADE, WORST_OVERALL_GRADE
 }
 
 val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
@@ -20,13 +20,10 @@ val INTENT_POLITICIAN_NAME = "intent_politician_name"
 val BUNDLE_SENADORES_LIST = "bundle_senadores_list"
 val BUNDLE_GOVERNADORES_LIST = "bundle_governadores_list"
 val BUNDLE_DEPUTADOS_LIST = "bundle_deputados_list"
+val BUNDLE_SORT_TYPE = "budle_sort_type"
 val BUNDLE_SENADORES_LAYOUT_MANAGER =  "bundle_senadores_layout_manager"
 val BUNDLE_GOVERNADORES_LAYOUT_MANAGER = "bundle_governadores_layout_manager"
 val BUNDLE_DEPUTADOS_LAYOUT_MANAGER = "bundle_deputados_layout_manager"
-val BUNDLE_ARE_BUTTONS_VISIBLE = "bundle_are_button_visible"
-val BUNDLE_SENADORES_LIST_TITLE = "bundle_senadores_lists_title"
-val BUNDLE_GOVERNADORES_LIST_TITLE = "bundle_governadores_lists_title"
-val BUNDLE_DEPUTADOS_LIST_TITLE = "bundle_deputados_lists_title"
 val BUNDLE_SEARCHABLE_POLITICIANS = "politicians_list"
 val BUNDLE_MANAGER = "layout_manager_state"
 val BUNDLE_CURRENT_SHOWING_LIST = "current_showing_list"
@@ -54,8 +51,6 @@ val CHILD_LOCATION_USER_ANSWER_VOTERS = "answerVotersGrades"
 val SUSPECTS_POLITICIANS_ADAPTER_TYPE = 0
 val WILL_VOTE_POLITICIANS_ADAPTER_TYPE = 1
 
-val SLOW_ANIMATION_DURATION: Long = 25000
-val ULTRA_SLOW_ANIMATION_DURATION: Long = 40000
 val DEFAULT_ANIMATIONS_DURATION: Long = 500
 val QUICK_ANIMATIONS_DURATION: Long = 250
 val VERY_QUICK_ANIMATIONS_DURATION: Long = 100

@@ -55,7 +55,7 @@ class PoliticianDbHelper(val context: Context) : SQLiteOpenHelper(context, "poli
     private fun copyDataBase() {
         val mInput = context.assets.open(DB_NAME)
         val outFileName = DB_PATH + DB_NAME
-        val mOutput = FileOutputStream(outFileName)
+        val mOutput = FileOutputStream(outFileName, false)
         val mBuffer = ByteArray(1024)
         var mLength: Int
         mLength = mInput.read(mBuffer)

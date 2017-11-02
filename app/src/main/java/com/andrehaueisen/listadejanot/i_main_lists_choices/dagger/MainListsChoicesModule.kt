@@ -1,8 +1,8 @@
-package com.andrehaueisen.listadejanot.i_main_lists.dagger
+package com.andrehaueisen.listadejanot.i_main_lists_choices.dagger
 
 import android.content.Context
 import android.support.v4.app.LoaderManager
-import com.andrehaueisen.listadejanot.i_main_lists.mvp.MainListsModel
+import com.andrehaueisen.listadejanot.i_main_lists_choices.mvp.MainListsChoicesModel
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.decodeEmail
@@ -20,11 +20,11 @@ import javax.inject.Named
  */
 
 @Module
-class MainListsModule(private val mLoaderManager: LoaderManager) {
+class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
 
     private val mListReadyPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     @Named("deputados_listener")
     fun provideDeputadosValueEventListener(@Named("deputados_list") deputados: ArrayList<Politician>): ValueEventListener {
@@ -52,7 +52,7 @@ class MainListsModule(private val mLoaderManager: LoaderManager) {
         }
     }
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     @Named("senadores_listener")
     fun provideSenadoresValueEventListener(@Named("senadores_list") senadores: ArrayList<Politician>): ValueEventListener {
@@ -80,7 +80,7 @@ class MainListsModule(private val mLoaderManager: LoaderManager) {
         }
     }
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     @Named("governadores_listener")
     fun provideGovernadoresValueEventListener(@Named("governadores_list") governadores: ArrayList<Politician>): ValueEventListener {
@@ -108,7 +108,7 @@ class MainListsModule(private val mLoaderManager: LoaderManager) {
         }
     }
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     @Named("user_listener")
     fun provideUserValueEventListener(user: User) = object : ValueEventListener {
@@ -122,11 +122,11 @@ class MainListsModule(private val mLoaderManager: LoaderManager) {
         override fun onCancelled(error: DatabaseError?) {}
     }
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     fun provideLoaderManager(): LoaderManager = mLoaderManager
 
-    @MainListsScope
+    @MainListsChoicesScope
     @Provides
     fun provideMainListsModel(@Named("deputados_list") deputados: ArrayList<Politician>,
                               @Named("senadores_list") senadores: ArrayList<Politician>,
@@ -134,6 +134,6 @@ class MainListsModule(private val mLoaderManager: LoaderManager) {
                               context: Context,
                               loaderManager: LoaderManager)
 
-            = MainListsModel(deputados, senadores, governadores, loaderManager, context, mListReadyPublishSubject)
+            = MainListsChoicesModel(deputados, senadores, governadores, loaderManager, context, mListReadyPublishSubject)
 
 }

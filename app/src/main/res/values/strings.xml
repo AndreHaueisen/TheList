@@ -104,9 +104,10 @@
     <string name="governadores_title">Governors</string>
     <string name="deputados_title">Congressmen</string>
 
-    <string name="top_ten_recommendations">Most vote intentions</string>
-    <string name="top_ten_suspicions">Most suspicions</string>
-    <string name="top_ten_overall_grade">Better grades</string>
+    <string name="top_recommendations">Most vote intentions</string>
+    <string name="top_suspicions">Most suspicions</string>
+    <string name="top_overall_grade">Better grades</string>
+    <string name="worst_overall_grade">Worst grades</string>
     <string name="individual_search">Individual search</string>
 
     <!--Sync strings-->

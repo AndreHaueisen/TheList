@@ -94,9 +94,10 @@
     <string name="governadores_title">Governadores</string>
     <string name="deputados_title">Deputados</string>
 
-    <string name="top_ten_recommendations">Intenções de votos</string>
-    <string name="top_ten_suspicions">Mais suspeitos</string>
-    <string name="top_ten_overall_grade">Melhores notas</string>
+    <string name="top_recommendations">Intenções de votos</string>
+    <string name="top_suspicions">Suspeitos</string>
+    <string name="top_overall_grade">Melhores notas</string>
+    <string name="worst_overall_grade">Piores notas</string>
     <string name="individual_search">Procura individual</string>
 
     <!--Accessibility strings-->

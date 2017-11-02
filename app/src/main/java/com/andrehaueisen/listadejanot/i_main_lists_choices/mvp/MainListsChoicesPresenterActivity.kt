@@ -1,31 +1,29 @@
-package com.andrehaueisen.listadejanot.i_main_lists.mvp
+package com.andrehaueisen.listadejanot.i_main_lists_choices.mvp
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.f_login.LoginActivity
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
-import com.andrehaueisen.listadejanot.i_main_lists.dagger.DaggerMainListsComponent
-import com.andrehaueisen.listadejanot.i_main_lists.dagger.MainListsModule
+import com.andrehaueisen.listadejanot.i_main_lists_choices.dagger.DaggerMainListsChoicesComponent
+import com.andrehaueisen.listadejanot.i_main_lists_choices.dagger.MainListsChoicesModule
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.SortType
 import com.andrehaueisen.listadejanot.utilities.startNewActivity
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.i_activity_main_lists.*
 import javax.inject.Inject
 import javax.inject.Named
 
 /**
  * Created by andre on 10/22/2017.
  */
-class MainListsPresenterActivity : AppCompatActivity() {
+class MainListsChoicesPresenterActivity : AppCompatActivity() {
 
     private val ACTIVITY_REQUEST_CODE = 1
 
@@ -47,75 +45,52 @@ class MainListsPresenterActivity : AppCompatActivity() {
     lateinit var mUserValueEventListener: ValueEventListener
 
     @Inject
-    lateinit var mMainListsModel: MainListsModel
+    lateinit var mMainListsChoicesModel: MainListsChoicesModel
 
     @Inject
     lateinit var mUser: User
 
-    var mView: MainListsView? = null
+    var mChoicesView: MainListsChoicesView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerMainListsComponent.builder()
+        DaggerMainListsChoicesComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .mainListsModule(MainListsModule(supportLoaderManager))
+                .mainListsChoicesModule(MainListsChoicesModule(supportLoaderManager))
                 .build()
                 .inject(this)
 
-        setContentView(R.layout.i_activity_main_lists)
-        mView = MainListsView(this)
+        setContentView(R.layout.i_activity_main_lists_choices)
+        mChoicesView = MainListsChoicesView(this)
 
         if (savedInstanceState == null) {
             mFirebaseRepository.getFullDeputadosList(mDeputadosListener)
             mFirebaseRepository.getFullSenadoresList(mSenadoresListener)
             mFirebaseRepository.getFullGovernadoresList(mGovernadoresListener)
-            mView?.setViews(null)
-        } else {
-            mView?.setViews(savedInstanceState)
+            mChoicesView?.beginDatabaseLoadingAlertDialog()
         }
-
+        mChoicesView?.setViews()
         subscribeToPoliticiansLoadingStatus()
-        subscribeToDeputados()
-        subscribeToGovernador()
-        subscribeToSenadores()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        mView?.onSaveInstanceState(outState)
+        subscribeToPoliticiansListsMap()
     }
 
     private fun subscribeToPoliticiansLoadingStatus(){
-        mMainListsModel.subscribeToPoliticiansLoadingStatus()
+        mMainListsChoicesModel.subscribeToPoliticiansLoadingStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { listsAreReady -> if(listsAreReady) mView?.dismissAlertDialog()}
+                .subscribe { listsAreReady -> if(listsAreReady) mChoicesView?.dismissAlertDialog()}
     }
 
-    private fun subscribeToDeputados() {
-        mMainListsModel.subscribeToDeputados()
+    private fun subscribeToPoliticiansListsMap(){
+        mMainListsChoicesModel.subscribeToPoliticiansListsMap()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { politicians -> mView?.notifyNewDeputado(politicians) }
-    }
-
-    private fun subscribeToSenadores() {
-        mMainListsModel.subscribeToSenadores()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { politicians -> mView?.notifyNewSenador(politicians) }
-    }
-
-    private fun subscribeToGovernador() {
-        mMainListsModel.subscribeToGovernadores()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { politicians -> mView?.notifyNewGovernador(politicians) }
+                .subscribe { mChoicesView?.notifyPoliticiansReady(it[0], it[1], it[2]) }
     }
 
     fun sortPoliticians(sortType: SortType) {
-        mMainListsModel.sortPoliticiansList(sortType)
+        mMainListsChoicesModel.sortPoliticiansList(sortType)
     }
 
     private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
@@ -129,20 +104,9 @@ class MainListsPresenterActivity : AppCompatActivity() {
         finish()
     }
 
-    fun invalidateUser(){
-        mUser.refreshUser(User())
-    }
-
     override fun onStart() {
         super.onStart()
         mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
-    }
-
-    override fun onBackPressed() {
-        if (group_buttons.visibility == View.VISIBLE)
-            super.onBackPressed()
-        else
-            mView?.onBackPressed()
     }
 
     override fun onStop() {
@@ -152,7 +116,7 @@ class MainListsPresenterActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mMainListsModel.onDestroy()
+        mMainListsChoicesModel.onDestroy()
         mFirebaseRepository.destroyPoliticiansListsListeners(mDeputadosListener, mSenadoresListener, mGovernadoresListener)
     }
 }

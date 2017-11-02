@@ -29,7 +29,7 @@ class ApplicationModule(private val mDatabaseReference: DatabaseReference,
     @ApplicationScope
     @Provides
     fun provideFirebaseAuthenticator(context: Context) : FirebaseAuthenticator =
-            FirebaseAuthenticator(context, mDatabaseReference, mFirebaseAuth)
+            FirebaseAuthenticator(context, mDatabaseReference, mFirebaseAuth, mUser)
 
     @ApplicationScope
     @Provides
