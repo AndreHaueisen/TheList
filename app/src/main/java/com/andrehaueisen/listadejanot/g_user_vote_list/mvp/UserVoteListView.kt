@@ -83,6 +83,7 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
                         ExpectAnim().animateAdapterChange(votes_recycler_view, Gravity.START, Gravity.END, mWillVoteAdapter)
                         mCurrentShowingList = WILL_VOTE_POLITICIANS_ADAPTER_TYPE
                     }
+                    changeListVisibility()
                 }
             })
         }

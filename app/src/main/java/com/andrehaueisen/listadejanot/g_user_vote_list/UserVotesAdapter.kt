@@ -15,13 +15,12 @@ import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.f_login.LoginActivity
+import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import com.facebook.FacebookSdk.getApplicationContext
 import com.github.florent37.expectanim.ExpectAnim
-import com.google.firebase.database.ServerValue
 import java.util.*
 
 
@@ -113,26 +112,22 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
 
                 if (adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE) {
                     if (mUser.recommendations.containsKey(politicianEncodedEmail)) {
-                        //mUser.recommendations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
-                        mUser.recommendations.put(politicianEncodedEmail!!, ServerValue.TIMESTAMP)
                         listAction = ListAction.ADD_TO_VOTE_LIST
                         updateCount(adapterType, ADD_ONE_VOTE)
                     }
                 } else {
                     if (mUser.condemnations.containsKey(politicianEncodedEmail)) {
-                        //mUser.condemnations.remove(politicianEncodedEmail)
                         listAction = ListAction.REMOVE_FROM_LISTS
                         updateCount(adapterType, REMOVE_ONE_VOTE)
                     } else {
-                        mUser.condemnations.put(politicianEncodedEmail!!, ServerValue.TIMESTAMP)
                         listAction = ListAction.ADD_TO_SUSPECT_LIST
                         updateCount(adapterType, ADD_ONE_VOTE)
                     }
                 }
-                mFirebaseRepository.handleListChangeOnDatabase(listAction, politician, userEmail)
+                mFirebaseRepository.handleListChange(listAction, politician, userEmail)
 
             }
 
@@ -160,11 +155,11 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
         private fun formatDateText(userVoteEmail: String?): String {
 
             val timestamp = if (adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE)
-                mUser.condemnations[userVoteEmail?.encodeEmail()] as Long
+                mUser.condemnations[userVoteEmail?.encodeEmail()] as String
             else
-                mUser.recommendations[userVoteEmail?.encodeEmail()] as Long
+                mUser.recommendations[userVoteEmail?.encodeEmail()] as String
 
-            val date = Date(timestamp)
+            val date = Date(timestamp.toLong())
             val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 
             return mActivity.getString(R.string.your_vote_date, dateFormat.format(date))

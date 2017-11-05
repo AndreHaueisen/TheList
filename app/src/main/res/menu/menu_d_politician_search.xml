@@ -9,7 +9,7 @@
     <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_account_24dp"
-        android:title="@string/logout"/>
+        android:title="@string/login"/>
 
     <item
         android:id="@+id/action_app_info"

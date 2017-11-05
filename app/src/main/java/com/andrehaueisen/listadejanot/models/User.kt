@@ -6,14 +6,13 @@ import android.os.Parcelable
 /**
  * Created by andre on 9/25/2017.
  */
-data class User(val condemnations: HashMap<String, Any> = hashMapOf(),
-                val recommendations: HashMap<String, Any> = hashMapOf(),
+data class User(val condemnations: HashMap<String, String> = hashMapOf(),
+                val recommendations: HashMap<String, String> = hashMapOf(),
                 val honestyGrades: HashMap<String, Float> = hashMapOf(),
                 val leaderGrades: HashMap<String, Float> = hashMapOf(),
                 val promiseKeeperGrades: HashMap<String, Float> = hashMapOf(),
                 val rulesForThePeopleGrades: HashMap<String, Float> = hashMapOf(),
                 val answerVotersGrades: HashMap<String, Float> = hashMapOf()) : Parcelable {
-
     fun refreshUser(user: User) {
         condemnations.clear()
         condemnations.putAll(user.condemnations)
@@ -53,8 +52,8 @@ data class User(val condemnations: HashMap<String, Any> = hashMapOf(),
     }
 
     constructor(source: Parcel) : this(
-            source.readSerializable() as HashMap<String, Any>,
-            source.readSerializable() as HashMap<String, Any>,
+            source.readSerializable() as HashMap<String, String>,
+            source.readSerializable() as HashMap<String, String>,
             source.readSerializable() as HashMap<String, Float>,
             source.readSerializable() as HashMap<String, Float>,
             source.readSerializable() as HashMap<String, Float>,

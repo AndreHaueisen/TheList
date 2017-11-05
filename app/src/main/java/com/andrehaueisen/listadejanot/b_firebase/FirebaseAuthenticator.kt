@@ -13,7 +13,7 @@ import com.google.firebase.database.*
 /**
  * Created by andre on 6/8/2017.
  */
-class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth, val mUser: User) {
+class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth, private val mUser: User) {
 
     private val LOG_TAG = FirebaseAuthenticator::class.java.simpleName
     private val REQUEST_CODE = 0
@@ -22,6 +22,8 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
 
     fun getUserEmail() = mFirebaseAuth.currentUser?.email
     fun getUserName() = mFirebaseAuth.currentUser?.displayName
+
+    fun getCurrentUser() = mFirebaseAuth.currentUser
 
     fun startLoginFlow(activity: Activity) = activity.startActivityForResult(
             AuthUI.getInstance()
@@ -37,11 +39,12 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
 
     fun saveUserIdOnLogin() {
         val currentUser = mFirebaseAuth.currentUser
-        if (currentUser != null) {
-            val database = mDatabaseReference.child(LOCATION_UID_MAPPINGS).child(currentUser.uid)
-            val encodedEmail = currentUser.email?.encodeEmail()
 
-            database.setValue(encodedEmail)
+        if (currentUser != null) {
+            val encodedEmail = currentUser.email?.encodeEmail()
+            val database = mDatabaseReference.child(LOCATION_UID_MAPPINGS).child(encodedEmail)
+
+            database.setValue(currentUser.uid)
             sendRegistrationToServer(encodedEmail)
         }
     }

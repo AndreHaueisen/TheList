@@ -10,14 +10,27 @@
     <string name="notification_title">New politician banned</string>
     <string name="notification_text">%1$s should not receive your vote</string>
 
-    <!--d_politician_selector strings-->
+    <!--d_main_lists_choices, e_main_lists-->
+    <string name="senadores_title">Senators</string>
+    <string name="governadores_title">Governors</string>
+    <string name="deputados_title">Congressmen</string>
+
+    <string name="top_recommendations">Most vote intentions</string>
+    <string name="top_suspicions">Most suspicions</string>
+    <string name="top_overall_grade">Better grades</string>
+    <string name="worst_overall_grade">Worst grades</string>
+    <string name="individual_search">Individual search</string>
+    <string name="login_required">Invalid expired. Please, login again</string>
+
+    <string name="information">Information</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+    <!--f_politician_selector strings-->
     <string name="font_roboto_black" translatable="false">sans-serif-black</string>
     <string name="font_roboto_regular" translatable="false">sans-serif</string>
     <string name="font_roboto_thin" translatable="false">sans-serif-thin</string>
     <string name="font_roboto_medium" translatable="false">sans-serif-medium</string>
-
-    <string name="information">Information</string>
-    <string name="logout">Logout</string>
 
     <string name="opinions">Opinions</string>
     <string name="no_opinion_yet">No opinion yet</string>
@@ -65,14 +78,6 @@
     <string name="answer_voters_grade">Answer voters:  %1$s</string>
     <string name="overall_grade">Overall Grade:  %1$s</string>
 
-    <!--e_information strings-->
-    <string name="understand_app_motivation">1 - Select a politician\n2 - Grade the politician\n3 - Put the politician on your suspect list or voting list\n4 - In the next elections, don\'t vote on who has bad grades\n5 - Share</string>
-    <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
-
-    <!--f_login strings-->
-    <string name="no_network">No network connection</string>
-    <string name="unknown_error">Something went wrong. Try again</string>
-
     <!--g_user_vote_list strings-->
     <string name="your_lists">Your lists</string>
     <string name="no_one_on_list_yet">No one on your list yet</string>
@@ -99,16 +104,13 @@
     <string name="replace_opinion_dialog_title">Replace current opinion?</string>
     <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
 
-    <!--i_main_lists-->
-    <string name="senadores_title">Senators</string>
-    <string name="governadores_title">Governors</string>
-    <string name="deputados_title">Congressmen</string>
+    <!--i_information strings-->
+    <string name="understand_app_motivation">1 - Select a politician\n2 - Grade the politician\n3 - Put the politician on your suspect list or voting list\n4 - In the next elections, don\'t vote on who has bad grades\n5 - Share</string>
+    <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
 
-    <string name="top_recommendations">Most vote intentions</string>
-    <string name="top_suspicions">Most suspicions</string>
-    <string name="top_overall_grade">Better grades</string>
-    <string name="worst_overall_grade">Worst grades</string>
-    <string name="individual_search">Individual search</string>
+    <!--j_login strings-->
+    <string name="no_network">No network connection</string>
+    <string name="unknown_error">Something went wrong. Try again</string>
 
     <!--Sync strings-->
 

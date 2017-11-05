@@ -28,10 +28,10 @@ class BaseApplication : Application(){
 
         //TODO search about firebase persistence
         val firebaseInstance = FirebaseDatabase.getInstance()
+        //firebaseInstance.setLogLevel(Logger.Level.DEBUG)
         //firebaseInstance.setPersistenceEnabled(true)
 
         val firebaseReference = firebaseInstance.reference
-        //firebaseReference.keepSynced(true)
 
         val user = User()
 

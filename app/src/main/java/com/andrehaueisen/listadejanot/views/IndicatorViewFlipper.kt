@@ -35,7 +35,7 @@ class IndicatorViewFlipper : ViewFlipper {
         for (i in 0 until childCount) {
 
             if (i == displayedChild) {
-                paint.color = ContextCompat.getColor(context, R.color.colorPrimaryLight)
+                paint.color = ContextCompat.getColor(context, android.R.color.white)
                 canvas.drawCircle(cx, cy, radius, paint)
 
             } else {

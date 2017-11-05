@@ -30,26 +30,7 @@
             android:exported="false"
             android:syncable="true"/>
 
-        <activity
-            android:name=".d_search_politician.mvp.PoliticianSelectorPresenterActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-
-        <activity
-            android:name=".e_information.mvp.InformationPresenterActivity"
-            android:parentActivityName=".d_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
-
-        <activity
-            android:name=".f_login.LoginActivity"
-            android:parentActivityName=".d_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
-
-        <activity
-            android:name=".g_user_vote_list.mvp.UserVoteListPresenterActivity"
-            android:parentActivityName=".d_search_politician.mvp.PoliticianSelectorPresenterActivity"/>
-
-        <activity android:name=".h_opinions.OpinionsActivity"/>
-
-        <activity android:name=".i_main_lists_choices.mvp.MainListsChoicesPresenterActivity"
+        <activity android:name=".d_main_lists_choices.mvp.MainListsChoicesPresenterActivity"
                   android:label="@string/title_activity_main_list">
             <intent-filter>
                 <action android:name=".e_search_politician.mvp.PoliticianSelectorPresenterActivity" />
@@ -60,8 +41,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".j_main_lists.MainListsPresenterActivity"
-            android:parentActivityName=".i_main_lists_choices.mvp.MainListsChoicesPresenterActivity"/>
+        <activity android:name=".e_main_lists.MainListsPresenterActivity"
+                  android:parentActivityName=".d_main_lists_choices.mvp.MainListsChoicesPresenterActivity"/>
+
+        <activity
+            android:name=".f_politician_selector.mvp.PoliticianSelectorPresenterActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".g_user_vote_list.mvp.UserVoteListPresenterActivity"
+            android:parentActivityName=".f_politician_selector.mvp.PoliticianSelectorPresenterActivity"/>
+
+        <activity android:name=".h_opinions.OpinionsActivity"/>
+
+        <activity
+            android:name=".i_information.mvp.InformationPresenterActivity"
+            android:parentActivityName=".f_politician_selector.mvp.PoliticianSelectorPresenterActivity"/>
+
+        <activity
+            android:name=".j_login.LoginActivity"
+            android:parentActivityName=".f_politician_selector.mvp.PoliticianSelectorPresenterActivity"/>
 
         <service
             android:name=".a_application.InstanceIdService">

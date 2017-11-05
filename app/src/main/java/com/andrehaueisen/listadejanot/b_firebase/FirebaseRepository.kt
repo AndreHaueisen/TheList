@@ -29,7 +29,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
     private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
-    fun handleListChangeOnDatabase(listAction: ListAction, politician: Politician, userEmail: String) {
+    fun handleListChange(listAction: ListAction, politician: Politician, userEmail: String) {
 
         val politicianEncodedEmail = politician.email!!.encodeEmail()
         val userEncodedEmail = userEmail.encodeEmail()
@@ -49,8 +49,6 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
             override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
 
                 if (transactionCommitted) {
-                    val newUser = dataSnapshot?.getValue(User::class.java) ?: User()
-                    mUser.refreshUser(newUser)
 
                     val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
                     politicianDatabase.runTransaction(object : Transaction.Handler {
@@ -87,7 +85,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
             }
 
             override fun doTransaction(mutableData: MutableData?): Transaction.Result {
-                val remoteUser: User = mutableData?.getValue(User::class.java) ?: return Transaction.success(mutableData)
+                val remoteUser: User = mutableData?.getValue(User::class.java) ?: User()
 
                 val hasVoteOnRecommendationList = remoteUser.recommendations.containsKey(politicianEncodedEmail)
                 val hasVoteOnCondemnationList = remoteUser.condemnations.containsKey(politicianEncodedEmail)
@@ -96,31 +94,31 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                     when (listAction) {
                         ListAction.ADD_TO_VOTE_LIST -> {
                             if (hasVoteOnCondemnationList) {
-                                remoteUser.condemnations.remove(politicianEncodedEmail)
+                                condemnations.remove(politicianEncodedEmail)
                                 politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
                             }
-                            remoteUser.recommendations[politicianEncodedEmail] = ServerValue.TIMESTAMP
+                            recommendations[politicianEncodedEmail] = generateLocalTimeStamp()
                             politician.recommendationsCount++
                         }
 
                         ListAction.ADD_TO_SUSPECT_LIST -> {
                             if (hasVoteOnRecommendationList) {
-                                remoteUser.recommendations.remove(politicianEncodedEmail)
+                                recommendations.remove(politicianEncodedEmail)
                                 politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
                             }
-                            remoteUser.condemnations[politicianEncodedEmail] = ServerValue.TIMESTAMP
+                            condemnations[politicianEncodedEmail] = generateLocalTimeStamp()
                             politician.condemnationsCount++
                         }
                         ListAction.REMOVE_FROM_LISTS -> {
                             if (hasVoteOnRecommendationList) {
-                                remoteUser.recommendations.remove(politicianEncodedEmail)
+                                recommendations.remove(politicianEncodedEmail)
                                 politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
                             }
                             if (hasVoteOnCondemnationList) {
-                                remoteUser.condemnations.remove(politicianEncodedEmail)
+                                condemnations.remove(politicianEncodedEmail)
                                 politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
                             }
@@ -128,14 +126,17 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
                     }
 
-                    mutableData.value = remoteUser
+                    mUser.refreshUser(remoteUser)
+                    mutableData?.value = this
                 }
                 return Transaction.success(mutableData)
             }
         })
     }
 
-    fun handleGradeChange(voteType: RatingBarType, outdatedUserGrade: Float, newGrade: Float, politician: Politician, userEmail: String, user: User) {
+    private fun generateLocalTimeStamp() = (System.currentTimeMillis()).toString()
+
+    fun handleGradeChange(voteType: RatingBarType, outdatedUserGrade: Float, newGrade: Float, politician: Politician, userEmail: String) {
 
         val politicianType = when (politician.post) {
             Politician.Post.SENADOR, Politician.Post.SENADORA -> LOCATION_SENADORES_LIST
@@ -301,19 +302,19 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
         }
     }
 
-    fun getFullSenadoresList(senadoresListener: ValueEventListener){
+    fun getFullSenadoresList(senadoresListener: ValueEventListener) {
         mDatabaseReference
                 .child(LOCATION_SENADORES_LIST)
                 .addListenerForSingleValueEvent(senadoresListener)
     }
 
-    fun getFullDeputadosList(deputadosListener: ValueEventListener){
+    fun getFullDeputadosList(deputadosListener: ValueEventListener) {
         mDatabaseReference
                 .child(LOCATION_DEPUTADOS_LIST)
                 .addListenerForSingleValueEvent(deputadosListener)
     }
 
-    fun getFullGovernadoresList(governadoresList: ValueEventListener){
+    fun getFullGovernadoresList(governadoresList: ValueEventListener) {
         mDatabaseReference
                 .child(LOCATION_GOVERNADORES_LIST)
                 .addListenerForSingleValueEvent(governadoresList)
@@ -469,7 +470,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
         }
     }
 
-    fun destroyPoliticiansListsListeners(deputadosListener: ValueEventListener, senadoresListener: ValueEventListener, governadoresListner: ValueEventListener){
+    fun destroyPoliticiansListsListeners(deputadosListener: ValueEventListener, senadoresListener: ValueEventListener, governadoresListner: ValueEventListener) {
         mDatabaseReference.child(LOCATION_DEPUTADOS_LIST).removeEventListener(deputadosListener)
         mDatabaseReference.child(LOCATION_SENADORES_LIST).removeEventListener(senadoresListener)
         mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).removeEventListener(governadoresListner)

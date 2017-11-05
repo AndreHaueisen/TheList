@@ -5,9 +5,23 @@
     <string name="notification_title">Mais um político foi considerado suspeito</string>
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
 
-    <!--d_politician_selector strings-->
+    <!--d_main_lists_choices, e_main_lists-->
+    <string name="senadores_title">Senadores</string>
+    <string name="governadores_title">Governadores</string>
+    <string name="deputados_title">Deputados</string>
+
+    <string name="top_recommendations">Intenções de votos</string>
+    <string name="top_suspicions">Suspeitos</string>
+    <string name="top_overall_grade">Melhores notas</string>
+    <string name="worst_overall_grade">Piores notas</string>
+    <string name="individual_search">Procura individual</string>
+    <string name="login_required">Login expirou. Por favor, entre novamente</string>
+
     <string name="information">Informações</string>
-    <string name="logout">Sair</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+
+    <!--f_politician_selector strings-->
 
     <string name="opinions">Opine</string>
     <string name="no_opinion_yet">Nenhuma opinião ainda</string>
@@ -55,14 +69,6 @@
     <string name="answer_voters_grade">Responde eleitores:  %1$s</string>
     <string name="overall_grade">Nota Geral:  %1$s</string>
 
-    <!--e_information strings-->
-    <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
-    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
-
-    <!--f_login strings-->
-    <string name="no_network">Sem internet</string>
-    <string name="unknown_error">Algo deu errado. Tente novamente</string>
-
     <!--g_user_vote_list strings-->
     <string name="your_lists">Suas listas</string>
     <string name="no_one_on_list_yet">Ninguém na sua lista ainda</string>
@@ -86,19 +92,16 @@
     <string name="opinion_dialog_button_positive">Confirmar</string>
     <string name="opinion_dialog_button_negative">Cancelar</string>
 
+    <!--i_information strings-->
+    <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
+    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
+
+    <!--j_login strings-->
+    <string name="no_network">Sem internet</string>
+    <string name="unknown_error">Algo deu errado. Tente novamente</string>
+
     <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>
     <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político. Confirmar substituição?</string>
-
-    <!--i_main_lists-->
-    <string name="senadores_title">Senadores</string>
-    <string name="governadores_title">Governadores</string>
-    <string name="deputados_title">Deputados</string>
-
-    <string name="top_recommendations">Intenções de votos</string>
-    <string name="top_suspicions">Suspeitos</string>
-    <string name="top_overall_grade">Melhores notas</string>
-    <string name="worst_overall_grade">Piores notas</string>
-    <string name="individual_search">Procura individual</string>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>
