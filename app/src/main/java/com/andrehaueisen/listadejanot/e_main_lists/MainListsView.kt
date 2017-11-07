@@ -9,6 +9,8 @@ import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
 import kotlinx.android.synthetic.main.e_activity_main_lists.*
 
+
+
 /**
  * Created by andre on 11/1/2017.
  */
@@ -18,6 +20,7 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         setRecyclerViews(bundle)
         setToolbar()
         setFabMenu()
+        loadData()
     }
 
     private fun setToolbar() {
@@ -52,15 +55,12 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
 
             senadores_recycler_view.layoutManager = senadoresLayoutManager
             senadores_recycler_view.setHasFixedSize(true)
-            senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
 
             governadores_recycler_view.layoutManager = governadoresLayoutManager
             governadores_recycler_view.setHasFixedSize(true)
-            governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
 
             deputados_recycler_view.layoutManager = deputadosLayoutManager
             deputados_recycler_view.setHasFixedSize(true)
-            deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
 
         }
     }
@@ -80,6 +80,18 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
                     }
                 }
             })
+        }
+    }
+
+    private fun loadData(){
+        with(mPresenterActivity) {
+            senadores_recycler_view.setLayoutAnimation()
+            governadores_recycler_view.setLayoutAnimation()
+            deputados_recycler_view.setLayoutAnimation()
+
+            senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
+            governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
+            deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
         }
     }
 

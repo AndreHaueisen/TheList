@@ -2,8 +2,10 @@ package com.andrehaueisen.listadejanot.utilities
 
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 
@@ -17,6 +19,13 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_INDEFINIT
             }
             .show()
 
+}
+
+fun RecyclerView.setLayoutAnimation(animation: Int = R.anim.layout_animation_grow_from_center) {
+    val controller = AnimationUtils.loadLayoutAnimation(this.context, animation)
+
+    this.layoutAnimation = controller
+    this.scheduleLayoutAnimation()
 }
 
 fun View.setPoliticianGradeText(grade: Float, stringId: Int) {

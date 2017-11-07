@@ -13,8 +13,6 @@ import android.util.TypedValue
 import android.widget.Toast
 
 
-
-
 fun <T: Activity> Context.startNewActivity(classToInit: Class<T>, flags: List<Int>? = null, extras: Bundle? = null, options: Bundle? = null){
 
     val intent = Intent(this, classToInit)
@@ -64,13 +62,13 @@ inline fun <reified T: Any> Context.putValueOnSharedPreferences(key: String, dat
 
     val editor = this.getSharedPreferences(SHARED_PREFERENCES, 0).edit()
 
-    when(data::class){
-        String::class -> editor.putString(key, data as String)
-        Int::class -> editor.putInt(key, data as Int)
-        Boolean::class -> editor.putBoolean(key, data as Boolean)
-        Long::class -> editor.putLong(key, data as Long)
-        Float::class -> editor.putFloat(key, data as Float)
-        Set::class -> editor.putStringSet(key, data as Set<String>)
+    when (data) {
+        is String -> editor.putString(key, data as String)
+        is Int -> editor.putInt(key, data as Int)
+        is Boolean -> editor.putBoolean(key, data as Boolean)
+        is Long -> editor.putLong(key, data as Long)
+        is Float -> editor.putFloat(key, data as Float)
+        is Set<*> -> editor.putStringSet(key, data as Set<String>)
     }
 
     editor.apply()

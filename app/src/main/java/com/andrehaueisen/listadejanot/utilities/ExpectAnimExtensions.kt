@@ -1,12 +1,10 @@
 package com.andrehaueisen.listadejanot.utilities
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.RatingBar
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.g_user_vote_list.UserVotesAdapter
 import com.andrehaueisen.listadejanot.views.IndicatorViewFlipper
 import com.github.florent37.expectanim.ExpectAnim
 import com.github.florent37.expectanim.core.Expectations
@@ -32,28 +30,6 @@ fun ExpectAnim.scaleRatingBarUpAndDown(ratingBar: RatingBar, viewFlipper: Indica
             }
 
 
-}
-
-fun ExpectAnim.animateAdapterChange(view: View, onStartGravityDislocation: Int, onEndGravityDislocation: Int, adapter: UserVotesAdapter){
-    this.expect(view)
-            .toBe(Expectations.alpha(0F), Expectations.outOfScreen(onStartGravityDislocation))
-            .toAnimation()
-            .setDuration(QUICK_ANIMATIONS_DURATION)
-            .start()
-            .addEndListener{
-                ExpectAnim().expect(view)
-                        .toBe(Expectations.outOfScreen(onEndGravityDislocation))
-                        .toAnimation()
-                        .setNow()
-
-                (view as RecyclerView).swapAdapter(adapter, false)
-
-                ExpectAnim().expect(view)
-                        .toBe(Expectations.alpha(1F), Expectations.atItsOriginalPosition())
-                        .toAnimation()
-                        .setDuration(QUICK_ANIMATIONS_DURATION)
-                        .start()
-            }
 }
 
 fun ExpectAnim.animateVoteTextChange(view: View, adapterType: Int, newCount: Int){

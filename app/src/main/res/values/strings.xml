@@ -78,10 +78,13 @@
     <string name="answer_voters_grade">Answer voters:  %1$s</string>
     <string name="overall_grade">Overall Grade:  %1$s</string>
 
+    <string name="cant_handle_intent_message">Can\'t share. No app support</string>
+
     <!--g_user_vote_list strings-->
     <string name="your_lists">Your lists</string>
     <string name="no_one_on_list_yet">No one on your list yet</string>
     <string name="your_vote_date">Entered your list on %1$s</string>
+    <string name="no_vote_registered">No vote registered</string>
     <string name="remove_vote">Remove</string>
     <string name="place_vote">Undo</string>
     <string name="your_suspect_list">Suspect list</string>

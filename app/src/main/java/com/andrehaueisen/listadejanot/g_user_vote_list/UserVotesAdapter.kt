@@ -152,17 +152,21 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
             }
         }
 
-        private fun formatDateText(userVoteEmail: String?): String {
+        private fun formatDateText(politicianEmail: String?): String {
 
             val timestamp = if (adapterType == SUSPECTS_POLITICIANS_ADAPTER_TYPE)
-                mUser.condemnations[userVoteEmail?.encodeEmail()] as String
+                mUser.condemnations[politicianEmail?.encodeEmail()]
             else
-                mUser.recommendations[userVoteEmail?.encodeEmail()] as String
+                mUser.recommendations[politicianEmail?.encodeEmail()]
 
-            val date = Date(timestamp.toLong())
-            val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
+            return if(timestamp != null) {
+                val date = Date(timestamp.toLong())
+                val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 
-            return mActivity.getString(R.string.your_vote_date, dateFormat.format(date))
+                mActivity.getString(R.string.your_vote_date, dateFormat.format(date))
+            }else{
+                mActivity.getString(R.string.no_vote_registered)
+            }
         }
 
     }

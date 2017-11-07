@@ -3,7 +3,6 @@ package com.andrehaueisen.listadejanot.views
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.graphics.Typeface
 import android.os.Build
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
@@ -54,15 +53,15 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     private val initialFabRightMargin = 20
     private val initialFabBottomMargin = 25
     private val labelSpacing = 20
-    private val childElevation = 10f
-    private val labelPadding = 8
+    private val childElevation = 6f
+    private val labelPadding = 14
     private val viewId = this.id
 
     // animations
-    private val expandInitialFab = AnimationUtils.loadAnimation(context, R.anim.omfm_anim_main_expand)
-    private val collapseInitialFab = AnimationUtils.loadAnimation(context, R.anim.omfm_anim_main_collapse)
-    private val upChildAnimation = AnimationUtils.loadAnimation(context, R.anim.omfm_anim_child_expand)
-    private val downChildAnimation = AnimationUtils.loadAnimation(context, R.anim.omfm_anim_child_collapse)
+    private val expandInitialFab = AnimationUtils.loadAnimation(context, R.anim.fab_menu_main_expand)
+    private val collapseInitialFab = AnimationUtils.loadAnimation(context, R.anim.fab_menu_main_collapse)
+    private val upChildAnimation = AnimationUtils.loadAnimation(context, R.anim.fab_menu_child_expand)
+    private val downChildAnimation = AnimationUtils.loadAnimation(context, R.anim.fab_menu_child_collapse)
 
     // background colors
     private var expandedBackgroundColor = ContextCompat.getColor(context, android.R.color.transparent)
@@ -83,8 +82,8 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
         // calculating the initial button sizes for use as reference
-        val slideRightValue = context.convertDipToPixel(12F).toInt()
-        val horizontalCenter = (right - left - (maxButtonWidth / 2)) + slideRightValue
+        val slideValue = context.convertDipToPixel(14F).toInt()
+        val horizontalCenter = (right - left - (maxButtonWidth / 2)) + slideValue
 
         val initialFabTop = bottom - top - initialFab.measuredHeight
         val initialFabLeft = (horizontalCenter - (initialFab.measuredWidth / 2))
@@ -99,7 +98,7 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
         // call it onClick when the menu is collapsed
         bringChildToFront(initialFab)
 
-        val labelsOffset = (maxButtonWidth / 2)
+        val labelsOffset = (maxButtonWidth / 2) - slideValue
 
         var nextY = if (isExpanded()) initialFabTop - fabSpacing
         else initialFabTop + initialFab.measuredHeight + fabSpacing
@@ -220,21 +219,21 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     /// Private methods
 
     private fun initializeUI(attrs: AttributeSet? = null) {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.OneMoreFabMenu)
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.FabMenu)
 
-        if (attributes.hasValue(R.styleable.OneMoreFabMenu_content_options)) {
-            inflater.inflate(attributes.getResourceId(R.styleable.OneMoreFabMenu_content_options, 0), options)
+        if (attributes.hasValue(R.styleable.FabMenu_content_options)) {
+            inflater.inflate(attributes.getResourceId(R.styleable.FabMenu_content_options, 0), options)
         } else {
             throw Exception("CustomFabMenu need to have app:content_options with a resource menu!")
         }
 
-        val mainButtonColor = attributes.getResourceId(R.styleable.OneMoreFabMenu_color_main_button, R.color.omfm_default_color)
+        val mainButtonColor = attributes.getResourceId(R.styleable.FabMenu_color_main_button, R.color.omfm_default_color)
         this.colorMainButton = ContextCompat.getColor(context, mainButtonColor)
 
-        val secondaryButtonColor = attributes.getResourceId(R.styleable.OneMoreFabMenu_color_secondary_buttons, R.color.omfm_default_color)
+        val secondaryButtonColor = attributes.getResourceId(R.styleable.FabMenu_color_secondary_buttons, R.color.omfm_default_color)
         this.colorSecondaryButtons = ContextCompat.getColor(context, secondaryButtonColor)
 
-        val backgroundColor = attributes.getResourceId(R.styleable.OneMoreFabMenu_expanded_background_color, android.R.color.transparent)
+        val backgroundColor = attributes.getResourceId(R.styleable.FabMenu_expanded_background_color, android.R.color.transparent)
         this.expandedBackgroundColor = ContextCompat.getColor(context, backgroundColor)
 
         addButtons()
@@ -268,9 +267,7 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
         }
     }
 
-    private fun isExpanded(): Boolean {
-        return state == Direction.EXPANDED
-    }
+    private fun isExpanded(): Boolean = state == Direction.EXPANDED
 
     private fun animateChildren(animation: Animation) {
         for (i in 0..(childCount - 1)) {
@@ -303,10 +300,10 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     private fun buildTextLabel(item: MenuItem): TextView {
         val label = TextView(context)
         label.text = item.title
-        label.typeface = Typeface.DEFAULT_BOLD
         label.background = ContextCompat.getDrawable(context, R.drawable.shape_rounded_corners)
         label.layoutParams = generateDefaultLayoutParams()
         label.setPadding(labelPadding, labelPadding, labelPadding, labelPadding)
+        label.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
 
         if (Build.VERSION.SDK_INT >= 21) {
             label.elevation = childElevation

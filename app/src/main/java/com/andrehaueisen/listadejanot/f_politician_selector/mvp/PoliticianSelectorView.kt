@@ -21,9 +21,9 @@ import android.widget.RatingBar
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.f_politician_selector.AutoCompletionAdapter
+import com.andrehaueisen.listadejanot.h_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.i_information.mvp.InformationPresenterActivity
 import com.andrehaueisen.listadejanot.j_login.LoginActivity
-import com.andrehaueisen.listadejanot.h_opinions.OpinionsActivity
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
@@ -36,7 +36,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.florent37.expectanim.ExpectAnim
-import com.github.florent37.expectanim.core.Expectations.alpha
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_grades.*
@@ -302,7 +301,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             mPresenterActivity.delete_text_image_button.setOnClickListener {
 
                 mPresenterActivity.auto_complete_text_view.text.clear()
-                ExpectAnim().fadeOutSingleView(mPresenterActivity.delete_text_image_button)
+                mPresenterActivity.delete_text_image_button.visibility = View.INVISIBLE
 
             }
 
@@ -381,7 +380,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         mGlide.downloadOnly()
                 .load(imageUrl)
                 .apply(requestOption)
-                .listener(object: RequestListener<File>{
+                .listener(object : RequestListener<File> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<File>?, isFirstResource: Boolean): Boolean = false
 
                     override fun onResourceReady(resource: File?, model: Any?, target: Target<File>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
@@ -470,23 +469,13 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun initiateShowAnimations() {
 
-        val DEFAULT_ANIM_DURATION = 500L
-
         with(mPresenterActivity) {
 
             if (politician_info_group.visibility == View.INVISIBLE) {
-
                 politician_info_group.visibility = View.VISIBLE
-                delete_text_image_button.visibility = View.VISIBLE
-
-            } else {
-                ExpectAnim()
-                        .expect(delete_text_image_button)
-                        .toBe(alpha(1.0f))
-                        .toAnimation()
-                        .setDuration(DEFAULT_ANIM_DURATION)
-                        .start()
             }
+
+            delete_text_image_button.visibility = View.VISIBLE
         }
     }
 
@@ -577,7 +566,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
     private fun setShareButtonClickListener(politician: Politician?) =
             mPresenterActivity.share_button.setOnClickListener {
-                //TODO put link to playstore
 
                 if (politician != null) {
 
@@ -653,20 +641,28 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             }
                         }
 
+                        type = "image/*"
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_STREAM, uri)
-                        putExtra(Intent.EXTRA_TEXT, mPresenterActivity.getString(R.string.share_boarding_message, determiner, post, politician.name))
+                        putExtra(Intent.EXTRA_TEXT, "${mPresenterActivity.getString(R.string.share_boarding_message, determiner, post, politician.name)}\n $PLAY_STORE_LINK")
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        type = "image/*"
-
                         this
                     }
 
-                    val tempFile = getTemporaryFile()
-                    mTempFilePath = tempFile.path
-                    val uri = FileProvider.getUriForFile(mPresenterActivity, "${mPresenterActivity.applicationContext.packageName}.fileprovider", getTemporaryFile())
-                    mPresenterActivity.startActivity(Intent.createChooser(getShareIntent(uri),
-                            mPresenterActivity.getString(R.string.share_title)))
+                    with(mPresenterActivity) {
+                        val tempFile = getTemporaryFile()
+                        mTempFilePath = tempFile.path
+                        val uri = FileProvider.getUriForFile(this, "${applicationContext.packageName}.fileprovider", getTemporaryFile())
+
+                        val intent = Intent.createChooser(getShareIntent(uri), getString(R.string.share_title))
+                        if (intent.resolveActivity(packageManager) != null) {
+                            startActivity(intent)
+                        } else {
+                            val alertDialog = AlertDialog.Builder(this)
+                                    .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.cant_handle_intent_message))
+                            alertDialog.show()
+                        }
+                    }
                 }
             }
 

@@ -6,13 +6,15 @@ import android.support.v7.app.AppCompatActivity
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
-import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.e_main_lists.dagger.DaggerMainListsComponent
+import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
+import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
 import javax.inject.Inject
+
+
 
 /**
  * Created by andre on 11/1/2017.
@@ -36,6 +38,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.e_activity_main_lists)
 
         DaggerMainListsComponent.builder()

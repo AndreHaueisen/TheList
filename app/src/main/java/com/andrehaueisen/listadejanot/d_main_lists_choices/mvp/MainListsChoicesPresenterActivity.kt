@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.d_main_lists_choices.mvp
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.transition.TransitionInflater
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
@@ -19,6 +20,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Named
+
+
 
 /**
  * Created by andre on 10/22/2017.
@@ -75,6 +78,10 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         mChoicesView?.setViews()
         subscribeToPoliticiansLoadingStatus()
         subscribeToPoliticiansListsMap()
+
+        val slideTransition = TransitionInflater.from(this).inflateTransition(R.transition.window_slide)
+        window.exitTransition = slideTransition
+        window.enterTransition = slideTransition
     }
 
     private fun subscribeToPoliticiansLoadingStatus(){
@@ -86,7 +93,7 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
 
     private fun subscribeToPoliticiansListsMap(){
         mMainListsChoicesModel.subscribeToPoliticiansListsMap()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { mChoicesView?.notifyPoliticiansReady(it[0], it[1], it[2]) }
     }
@@ -111,6 +118,7 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         mFirebaseRepository.listenToUser(mUserValueEventListener, getUserEmail())
+
     }
 
     override fun onStop() {

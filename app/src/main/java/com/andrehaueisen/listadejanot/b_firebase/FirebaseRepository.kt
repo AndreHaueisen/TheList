@@ -52,9 +52,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
                     val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
                     politicianDatabase.runTransaction(object : Transaction.Handler {
-                        override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
-
-                        }
+                        override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {}
 
                         override fun doTransaction(mutableData: MutableData?): Transaction.Result {
                             val remotePolitician: Politician = mutableData?.getValue(Politician::class.java) ?: return Transaction.success(mutableData)

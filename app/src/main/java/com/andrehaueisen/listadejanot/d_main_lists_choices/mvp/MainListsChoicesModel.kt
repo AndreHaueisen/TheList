@@ -13,8 +13,10 @@ import com.andrehaueisen.listadejanot.utilities.LOADER_ID
 import com.andrehaueisen.listadejanot.utilities.POLITICIANS_COLUMNS
 import com.andrehaueisen.listadejanot.utilities.SortType
 import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -39,7 +41,8 @@ class MainListsChoicesModel(
 
     private val mPoliticiansLoadingStatusPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val mPoliticiansListMapPublishSubject: PublishSubject<SparseArray<ArrayList<Politician>>> = PublishSubject.create()
-    private val mListObservable = Observable.zip(mSenadoresPublishSubject,
+    private val mListObservable = Observable.zip(
+            mSenadoresPublishSubject,
             mGovernadoresPublishSubject,
             mDeputadosPublishSubject,
             Function3<ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados ->
@@ -54,23 +57,40 @@ class MainListsChoicesModel(
     private val mCompositeDisposable = CompositeDisposable()
 
     private var mListReadyCounter = 0
+    private val mListReadyObserver = object : Observer<Boolean> {
+        override fun onNext(isListReady: Boolean) {
+            if (isListReady) mListReadyCounter++
+            if (mListReadyCounter % 3 == 0)
+                initiateDataLoad()
+        }
+
+        override fun onSubscribe(d: Disposable) {}
+        override fun onComplete() {}
+        override fun onError(e: Throwable) {}
+    }
+
+    private val mListMapObserver = object : Observer<SparseArray<ArrayList<Politician>>> {
+        override fun onNext(politiciansMap: SparseArray<ArrayList<Politician>>) = mPoliticiansListMapPublishSubject.onNext(politiciansMap)
+
+        override fun onSubscribe(disposable: Disposable) {
+            mCompositeDisposable.add(disposable)
+        }
+
+        override fun onComplete() {}
+        override fun onError(e: Throwable) {}
+    }
+
 
     init {
-        mListReadyPublishSubject.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ isListReady ->
-                    if (isListReady) mListReadyCounter++
-                    if (mListReadyCounter % 3 == 0)
-                        initiateDataLoad()
-                })
-
-        mListObservable
+        mListReadyPublishSubject
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({politiciansMap -> mPoliticiansListMapPublishSubject.onNext(politiciansMap)},
-                        {},
-                        {},
-                        {disposable -> mCompositeDisposable.add(disposable)})
+                .subscribe(mListReadyObserver)
+
+        mListObservable
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListMapObserver)
     }
 
     private fun initiateDataLoad() {

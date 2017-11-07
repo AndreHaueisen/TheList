@@ -6,15 +6,16 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.ViewTreeObserver
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.f_politician_selector.dagger.DaggerPoliticianSelectorComponent
 import com.andrehaueisen.listadejanot.f_politician_selector.dagger.ImageFetcherModule
 import com.andrehaueisen.listadejanot.f_politician_selector.dagger.PoliticianSelectorModule
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.images.ImageFetcherModel
+import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
@@ -26,6 +27,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
 import javax.inject.Inject
+
+
 
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
 
@@ -81,6 +84,21 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
             mView = PoliticianSelectorView(this)
             mView!!.setViews(isSavedState = true)
         }
+
+        postponeTransition()
+    }
+
+    private fun postponeTransition(){
+        postponeEnterTransition()
+
+        val decor = window.decorView
+        decor.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                decor.viewTreeObserver.removeOnPreDrawListener(this)
+                startPostponedEnterTransition()
+                return true
+            }
+        })
     }
 
     override fun onStart() {

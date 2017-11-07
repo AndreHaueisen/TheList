@@ -69,10 +69,13 @@
     <string name="answer_voters_grade">Responde eleitores:  %1$s</string>
     <string name="overall_grade">Nota Geral:  %1$s</string>
 
+    <string name="cant_handle_intent_message">Impossível compartilhar. Nenhum app suportado encontrado</string>
+
     <!--g_user_vote_list strings-->
     <string name="your_lists">Suas listas</string>
     <string name="no_one_on_list_yet">Ninguém na sua lista ainda</string>
     <string name="your_vote_date">Entrou na sua lista dia %1$s</string>
+    <string name="no_vote_registered">Nenhum voto registrado</string>
     <string name="remove_vote">Remover</string>
     <string name="place_vote">Recolocar</string>
     <string name="your_suspect_list">Lista de suspeitos</string>

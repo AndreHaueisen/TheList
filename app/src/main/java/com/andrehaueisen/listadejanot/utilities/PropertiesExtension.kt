@@ -14,7 +14,7 @@ enum class SortType {
     RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, TOP_OVERALL_GRADE, WORST_OVERALL_GRADE
 }
 
-val PLAY_STORE_LINK = "market://details?id=com.andrehaueisen.listadejanot"
+val PLAY_STORE_LINK = """http://play.google.com/store/apps/details?id=com.andrehaueisen.listadejanot"""
 
 val INTENT_POLITICIAN_NAME = "intent_politician_name"
 val BUNDLE_SENADORES_LIST = "bundle_senadores_list"

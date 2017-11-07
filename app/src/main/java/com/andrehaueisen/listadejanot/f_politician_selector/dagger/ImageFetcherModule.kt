@@ -113,7 +113,7 @@ class ImageFetcherModule{
     @PoliticianSelectorScope
     fun provideClient(loggingInterceptor: HttpLoggingInterceptor, interceptor: Interceptor, cache: Cache): OkHttpClient {
         return OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+                //.addInterceptor(loggingInterceptor)
                 .addInterceptor(interceptor)
                 .cache(cache)
                 .build()
