@@ -29,7 +29,7 @@ data class Politician(@Exclude var post: Post? = null,
                       var condemnationsCount: Int = 0) : Parcelable, Comparable<Politician> {
 
     enum class Post : Parcelable {
-        DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA;
+        DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA, PRESIDENTE;
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.writeInt(ordinal)
@@ -45,6 +45,11 @@ data class Politician(@Exclude var post: Post? = null,
                 override fun newArray(size: Int): Array<Post?> = arrayOfNulls(size)
             }
         }
+    }
+
+    fun resetPoliticianListsCount(recommendationsCount: Int, condemnationsCount: Int){
+        this.recommendationsCount = recommendationsCount
+        this.condemnationsCount = condemnationsCount
     }
 
     fun recalculateOverallGrade(){

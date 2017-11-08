@@ -6,6 +6,7 @@
     <string name="notification_text">%1$s não deve receber seu voto nas urnas</string>
 
     <!--d_main_lists_choices, e_main_lists-->
+    <string name="presidentes_title">Presidentes</string>
     <string name="senadores_title">Senadores</string>
     <string name="governadores_title">Governadores</string>
     <string name="deputados_title">Deputados</string>
@@ -49,6 +50,7 @@
     <string name="congresswoman">Deputada</string>
     <string name="governor">Governador</string>
     <string name="governora">Governadora</string>
+    <string name="president">Presidente</string>
     <string name="search">Pesquise</string>
     <string name="your_grade">Sua nota: %.1f</string>
     <string name="politician_added_to_voting_list">%1$s adicionado à lista de votação</string>

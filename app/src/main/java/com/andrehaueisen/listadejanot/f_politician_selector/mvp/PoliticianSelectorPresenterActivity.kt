@@ -26,6 +26,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
+import kotlinx.android.synthetic.main.group_layout_buttons.*
 import javax.inject.Inject
 
 
@@ -106,6 +107,13 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         if(!intent.hasExtra(INTENT_POLITICIAN_NAME)){
             politician_info_group.visibility = View.INVISIBLE
+            opinions_button.visibility = View.INVISIBLE
+            opinions_text_view.visibility = View.INVISIBLE
+            share_button.visibility = View.INVISIBLE
+            share_text_view.visibility = View.INVISIBLE
+            search_on_web_button.visibility = View.INVISIBLE
+            search_on_web_text_view.visibility = View.INVISIBLE
+            separator_view.visibility = View.INVISIBLE
         }
     }
 
@@ -205,6 +213,8 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         startNewActivity(LoginActivity::class.java)
         finish()
     }
+
+
 
     override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
         val intent = Intent(this, UserVoteListPresenterActivity::class.java)

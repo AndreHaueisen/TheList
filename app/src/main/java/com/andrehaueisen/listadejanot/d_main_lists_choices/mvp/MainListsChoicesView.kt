@@ -53,11 +53,15 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                         val message = exception.message
 
                         Log.e("ListsChoicesActivity", message)
-                        showToast(getString(R.string.login_required))
+                        if (isConnectedToInternet()) {
+                            showToast(getString(R.string.login_required))
 
-                        mLoadingDatabaseAlertDialog?.dismiss()
-                        mFirebaseAuthenticator.logout()
-                        startNewActivity(LoginActivity::class.java)
+                            mLoadingDatabaseAlertDialog?.dismiss()
+                            mFirebaseAuthenticator.logout()
+                            startNewActivity(LoginActivity::class.java)
+                        }else{
+                            showToast(getString(R.string.no_network))
+                        }
                     })
 
         }
@@ -78,12 +82,13 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
         }
     }
 
-    fun notifyPoliticiansReady(senadores: ArrayList<Politician>, governadores: ArrayList<Politician>, deputados: ArrayList<Politician>) {
+    fun notifyPoliticiansReady(senadores: ArrayList<Politician>, governadores: ArrayList<Politician>, deputados: ArrayList<Politician>, presidentes: ArrayList<Politician>) {
         with(mPresenterActivity) {
             val extras = Bundle()
             extras.putParcelableArrayList(BUNDLE_SENADORES_LIST, senadores)
             extras.putParcelableArrayList(BUNDLE_GOVERNADORES_LIST, governadores)
             extras.putParcelableArrayList(BUNDLE_DEPUTADOS_LIST, deputados)
+            extras.putParcelableArrayList(BUNDLE_PRESIDENTES_LIST, presidentes)
             extras.putString(BUNDLE_SORT_TYPE, mSortType.name)
 
             startNewActivity(MainListsPresenterActivity::class.java, extras = extras)

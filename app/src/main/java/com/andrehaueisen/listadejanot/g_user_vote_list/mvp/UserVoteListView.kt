@@ -75,7 +75,6 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
             lists_radio_group.setOnPositionChangedListener(object : RadioRealButtonGroup.OnPositionChangedListener {
                 override fun onPositionChanged(button: RadioRealButton?, currentPosition: Int, lastPosition: Int) {
 
-
                     if (currentPosition == 0) {
                         mCurrentShowingList = SUSPECTS_POLITICIANS_ADAPTER_TYPE
                         votes_recycler_view.swapAdapter(mSuspectsAdapter, false)

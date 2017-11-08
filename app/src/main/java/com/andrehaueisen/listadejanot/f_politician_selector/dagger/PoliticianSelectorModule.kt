@@ -26,8 +26,9 @@ class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
     @Provides
     fun provideSelectorModel(@Named("deputados_list") deputados: ArrayList<Politician>,
                              @Named("senadores_list") senadores: ArrayList<Politician>,
-                             @Named("governadores_list") governadores: ArrayList<Politician>): PoliticianSelectorModel =
-            PoliticianSelectorModel(deputados, senadores, governadores)
+                             @Named("governadores_list") governadores: ArrayList<Politician>,
+                             @Named("presidentes_list") presidentes: ArrayList<Politician>): PoliticianSelectorModel =
+            PoliticianSelectorModel(deputados, senadores, governadores, presidentes)
 
     @PoliticianSelectorScope
     @Provides

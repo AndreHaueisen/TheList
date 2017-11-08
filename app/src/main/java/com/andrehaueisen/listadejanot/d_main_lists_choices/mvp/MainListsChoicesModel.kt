@@ -17,7 +17,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
@@ -28,6 +28,7 @@ class MainListsChoicesModel(
         private val mDeputadosList: ArrayList<Politician>,
         private val mSenadoresList: ArrayList<Politician>,
         private val mGovernadoresList: ArrayList<Politician>,
+        private val mPresidentesList: ArrayList<Politician>,
         private val mLoaderManager: LoaderManager,
         private val mContext: Context,
         mListReadyPublishSubject: PublishSubject<Boolean>) : LoaderManager.LoaderCallbacks<Cursor> {
@@ -38,6 +39,7 @@ class MainListsChoicesModel(
     private val mDeputadosPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mSenadoresPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mGovernadoresPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
+    private val mPresidentesPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
 
     private val mPoliticiansLoadingStatusPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val mPoliticiansListMapPublishSubject: PublishSubject<SparseArray<ArrayList<Politician>>> = PublishSubject.create()
@@ -45,11 +47,13 @@ class MainListsChoicesModel(
             mSenadoresPublishSubject,
             mGovernadoresPublishSubject,
             mDeputadosPublishSubject,
-            Function3<ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados ->
-                val politiciansArray = SparseArray<ArrayList<Politician>>(3)
+            mPresidentesPublishSubject,
+            Function4<ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados, presidentes ->
+                val politiciansArray = SparseArray<ArrayList<Politician>>(4)
                 politiciansArray.put(0, senadores)
                 politiciansArray.put(1, governadores)
                 politiciansArray.put(2, deputados)
+                politiciansArray.put(4, presidentes)
 
                 politiciansArray
             })
@@ -60,7 +64,7 @@ class MainListsChoicesModel(
     private val mListReadyObserver = object : Observer<Boolean> {
         override fun onNext(isListReady: Boolean) {
             if (isListReady) mListReadyCounter++
-            if (mListReadyCounter % 3 == 0)
+            if (mListReadyCounter % 4 == 0)
                 initiateDataLoad()
         }
 
@@ -133,6 +137,9 @@ class MainListsChoicesModel(
 
                     Politician.Post.GOVERNADORA.name ->
                         mGovernadoresList.first { governadora -> governadora.email == politicianEmail }.post = Politician.Post.GOVERNADORA
+
+                    Politician.Post.PRESIDENTE.name ->
+                        mPresidentesList.first { presidente -> presidente.email == politicianEmail }.post = Politician.Post.PRESIDENTE
                 }
 
                 data.moveToNext()
@@ -191,6 +198,11 @@ class MainListsChoicesModel(
                 .sortedWith(comparator)
                 .take(10).toList()))
 
+        mPresidentesPublishSubject.onNext(ArrayList(
+                mPresidentesList.asSequence()
+                        .sortedWith(comparator)
+                        .take(4).toList()))
+
     }
 
     fun subscribeToPoliticiansLoadingStatus() = mPoliticiansLoadingStatusPublishSubject
@@ -200,6 +212,7 @@ class MainListsChoicesModel(
         mDeputadosPublishSubject.onComplete()
         mSenadoresPublishSubject.onComplete()
         mGovernadoresPublishSubject.onComplete()
+        mPresidentesPublishSubject.onComplete()
         mPoliticiansLoadingStatusPublishSubject.onComplete()
         mCompositeDisposable.dispose()
     }

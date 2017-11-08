@@ -40,18 +40,24 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
 
     private fun setRecyclerViews(bundle: Bundle?) {
         with(mPresenterActivity) {
+            val presidentesLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             val senadoresLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             val governadoresLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             val deputadosLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
             if (bundle != null) {
+                presidentesLayoutManager.onRestoreInstanceState(bundle.getParcelable<LinearLayoutManager.SavedState>(BUNDLE_PRESIDENTES_LAYOUT_MANAGER))
                 senadoresLayoutManager.onRestoreInstanceState(bundle.getParcelable<LinearLayoutManager.SavedState>(BUNDLE_SENADORES_LAYOUT_MANAGER))
                 governadoresLayoutManager.onRestoreInstanceState(bundle.getParcelable<LinearLayoutManager.SavedState>(BUNDLE_GOVERNADORES_LAYOUT_MANAGER))
                 deputadosLayoutManager.onRestoreInstanceState(bundle.getParcelable<LinearLayoutManager.SavedState>(BUNDLE_DEPUTADOS_LAYOUT_MANAGER))
+                getSortedPresidentes().addAll(bundle.getParcelableArrayList(BUNDLE_PRESIDENTES_LIST))
                 getSortedSenadores().addAll(bundle.getParcelableArrayList(BUNDLE_SENADORES_LIST))
                 getSortedGovernadores().addAll(bundle.getParcelableArrayList(BUNDLE_GOVERNADORES_LIST))
                 getSortedDeputados().addAll(bundle.getParcelableArrayList(BUNDLE_DEPUTADOS_LIST))
             }
+
+            presidentes_recycler_view.layoutManager = presidentesLayoutManager
+            presidentes_recycler_view.setHasFixedSize(true)
 
             senadores_recycler_view.layoutManager = senadoresLayoutManager
             senadores_recycler_view.setHasFixedSize(true)
@@ -85,10 +91,12 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
 
     private fun loadData(){
         with(mPresenterActivity) {
+            presidentes_recycler_view.setLayoutAnimation()
             senadores_recycler_view.setLayoutAnimation()
             governadores_recycler_view.setLayoutAnimation()
             deputados_recycler_view.setLayoutAnimation()
 
+            presidentes_recycler_view.adapter = MainListsAdapter(this, getSortedPresidentes(), getSortType()!!)
             senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
             governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
             deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
@@ -97,9 +105,11 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
 
     fun onSaveInstanceState(bundle: Bundle?) {
         with(mPresenterActivity) {
+            bundle?.putParcelable(BUNDLE_PRESIDENTES_LAYOUT_MANAGER, presidentes_recycler_view.layoutManager.onSaveInstanceState())
             bundle?.putParcelable(BUNDLE_SENADORES_LAYOUT_MANAGER, senadores_recycler_view.layoutManager.onSaveInstanceState())
             bundle?.putParcelable(BUNDLE_GOVERNADORES_LAYOUT_MANAGER, governadores_recycler_view.layoutManager.onSaveInstanceState())
             bundle?.putParcelable(BUNDLE_DEPUTADOS_LAYOUT_MANAGER, deputados_recycler_view.layoutManager.onSaveInstanceState())
+            bundle?.putParcelableArrayList(BUNDLE_PRESIDENTES_LIST, getSortedPresidentes())
             bundle?.putParcelableArrayList(BUNDLE_SENADORES_LIST, getSortedSenadores())
             bundle?.putParcelableArrayList(BUNDLE_GOVERNADORES_LIST, getSortedGovernadores())
             bundle?.putParcelableArrayList(BUNDLE_DEPUTADOS_LIST, getSortedDeputados())

@@ -110,6 +110,34 @@ class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
 
     @MainListsChoicesScope
     @Provides
+    @Named("presidentes_listener")
+    fun providePresidentesValueEventListener(@Named("presidentes_list") presidentes: ArrayList<Politician>): ValueEventListener{
+        return object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                if (presidentes.isNotEmpty()) {
+                    presidentes.clear()
+                }
+
+                if (dataSnapshot != null && dataSnapshot.exists()) {
+                    val genericIndicator = object : GenericTypeIndicator<Politician>() {}
+
+                    dataSnapshot.children.forEach { snapshot ->
+                        if (snapshot != null) {
+                            val presidente = (snapshot.getValue(genericIndicator) as Politician)
+                            presidente.email = snapshot.key.decodeEmail()
+                            presidentes.add(presidente)
+                        }
+                    }
+                }
+                mListReadyPublishSubject.onNext(true)
+            }
+
+            override fun onCancelled(error: DatabaseError?) {}
+        }
+    }
+
+    @MainListsChoicesScope
+    @Provides
     @Named("user_listener")
     fun provideUserValueEventListener(user: User) = object : ValueEventListener {
 
@@ -131,9 +159,10 @@ class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
     fun provideMainListsModel(@Named("deputados_list") deputados: ArrayList<Politician>,
                               @Named("senadores_list") senadores: ArrayList<Politician>,
                               @Named("governadores_list") governadores: ArrayList<Politician>,
+                              @Named("presidentes_list") presidentes: ArrayList<Politician>,
                               context: Context,
                               loaderManager: LoaderManager)
 
-            = MainListsChoicesModel(deputados, senadores, governadores, loaderManager, context, mListReadyPublishSubject)
+            = MainListsChoicesModel(deputados, senadores, governadores, presidentes, loaderManager, context, mListReadyPublishSubject)
 
 }

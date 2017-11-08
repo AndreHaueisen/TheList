@@ -72,12 +72,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 notifyPoliticianReady()
             }
         } else {
-            with(mPresenterActivity) {
-                if (isConnectedToInternet()) {
-                    beginDatabaseLoadingAlertDialog()
-                } else {
-                    showToast(getString(R.string.no_network))
-                }
+            if (!mPresenterActivity.isConnectedToInternet()) {
+                mPresenterActivity.showToast(mPresenterActivity.getString(R.string.no_network))
             }
         }
 
@@ -102,22 +98,22 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun setAutoCompleteTextView() = with(mPresenterActivity) {
+    private fun setAutoCompleteTextView() {
+        with(mPresenterActivity) {
 
-        val nonReliablePoliticiansList = ArrayList<Politician>()
-        nonReliablePoliticiansList.addAll(getSearchablePoliticiansList())
+            val nonReliablePoliticiansList = ArrayList<Politician>()
+            nonReliablePoliticiansList.addAll(getSearchablePoliticiansList())
 
-        val adapter = AutoCompletionAdapter(this,
-                R.layout.item_politician_identifier,
-                nonReliablePoliticiansList,
-                getSearchablePoliticiansList())
+            val adapter = AutoCompletionAdapter(this,
+                    R.layout.item_politician_identifier,
+                    nonReliablePoliticiansList,
+                    getSearchablePoliticiansList())
 
-        auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
-        setOnCompleteTextViewClickListener()
-        setOnDeleteTextClickListener()
-        auto_complete_text_view.requestFocus()
-
-        dismissAlertDialog()
+            auto_complete_text_view.setAdapter<ArrayAdapter<Politician>>(adapter)
+            setOnCompleteTextViewClickListener()
+            setOnDeleteTextClickListener()
+            auto_complete_text_view.requestFocus()
+        }
     }
 
     private fun setRatingBarsClickListeners(politician: Politician) = with(mPresenterActivity) {
@@ -305,24 +301,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             }
 
-    private fun beginDatabaseLoadingAlertDialog() {
-        mLoadingDatabaseAlertDialog = AlertDialog.Builder(mPresenterActivity)
-                .setCancelable(true)
-                .setIcon(mPresenterActivity.getDrawable(R.drawable.ic_launcher))
-                .setTitle(mPresenterActivity.getString(R.string.dialog_title_loading_database))
-                .setMessage("")
-                .create()
-
-        mLoadingDatabaseAlertDialog?.show()
-    }
-
-    private fun dismissAlertDialog() {
-        val isAlertDialogActive = (mLoadingDatabaseAlertDialog != null && mLoadingDatabaseAlertDialog?.isShowing!!)
-        if (isAlertDialogActive) {
-            mLoadingDatabaseAlertDialog?.dismiss()
-        }
-    }
-
     private fun dismissKeyBoard() {
         val manager = mPresenterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         manager.hideSoftInputFromWindow(mPresenterActivity.auto_complete_text_view.windowToken, 0)
@@ -340,14 +318,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 bindPoliticianDataToViews(politician)
                 bindUserDataToViews()
 
-                setButtonsClickListener(politician)
-                setRatingBarsClickListeners(politician)
+                setRadioButtonsClickListener(politician)
+                setOptionsButtonClickListener(politician)
                 setShareButtonClickListener(politician)
-                setSearchOnWebButtonClickListener(politician)
                 setEmailButtonClickListener(politician)
+                setSearchOnWebButtonClickListener(politician)
+                setRatingBarsClickListeners(politician)
                 setViewFlipperClickListener()
 
-                initiateShowAnimations()
+                initiateShowAnimations(politician)
             }
         }
     }
@@ -467,12 +446,34 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun initiateShowAnimations() {
+    private fun initiateShowAnimations(politician: Politician) {
 
         with(mPresenterActivity) {
 
+            fun reviewEmailVisibility() {
+                if (politician.post == Politician.Post.PRESIDENTE) {
+                    email_button.visibility = View.GONE
+                    email_text_view.visibility = View.GONE
+                } else {
+                    email_button.visibility = View.VISIBLE
+                    email_text_view.visibility = View.VISIBLE
+                }
+            }
+
             if (politician_info_group.visibility == View.INVISIBLE) {
                 politician_info_group.visibility = View.VISIBLE
+                opinions_button.visibility = View.VISIBLE
+                opinions_text_view.visibility = View.VISIBLE
+                share_button.visibility = View.VISIBLE
+                share_text_view.visibility = View.VISIBLE
+                search_on_web_button.visibility = View.VISIBLE
+                search_on_web_text_view.visibility = View.VISIBLE
+                separator_view.visibility = View.VISIBLE
+
+                reviewEmailVisibility()
+
+            } else {
+                reviewEmailVisibility()
             }
 
             delete_text_image_button.visibility = View.VISIBLE
@@ -514,7 +515,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun setButtonsClickListener(politician: Politician) =
+    private fun setRadioButtonsClickListener(politician: Politician) =
             with(mPresenterActivity) {
 
                 vote_radio_group.setOnClickedButtonListener { _, position ->
@@ -543,26 +544,31 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     }
                 }
 
-                opinions_button.setOnClickListener {
-
-                    val extras = Bundle()
-                    extras.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
-                    extras.putString(BUNDLE_POLITICIAN_NAME, politician.name)
-
-                    val streamImage = search_politician_image_view.drawable.convertToByteArray()
-
-                    extras.putByteArray(BUNDLE_POLITICIAN_IMAGE, streamImage)
-                    if (mFirebaseAuthenticator.getUserEmail() != null) {
-                        extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
-                    }
-
-                    val namePair = Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
-                    val imagePair = Pair<View, String>(search_politician_image_view as View, getString(R.string.transition_image))
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair, imagePair)
-
-                    startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
-                }
             }
+
+    private fun setOptionsButtonClickListener(politician: Politician) {
+        with(mPresenterActivity) {
+            opinions_button.setOnClickListener {
+
+                val extras = Bundle()
+                extras.putString(BUNDLE_POLITICIAN_EMAIL, politician.email)
+                extras.putString(BUNDLE_POLITICIAN_NAME, politician.name)
+
+                val streamImage = search_politician_image_view.drawable.convertToByteArray()
+
+                extras.putByteArray(BUNDLE_POLITICIAN_IMAGE, streamImage)
+                if (mFirebaseAuthenticator.getUserEmail() != null) {
+                    extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
+                }
+
+                val namePair = Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
+                val imagePair = Pair<View, String>(search_politician_image_view as View, getString(R.string.transition_image))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair, imagePair)
+
+                startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
+            }
+        }
+    }
 
     private fun setShareButtonClickListener(politician: Politician?) =
             mPresenterActivity.share_button.setOnClickListener {
@@ -635,6 +641,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                                 determiner = mPresenterActivity.getString(R.string.determiner_female)
                             }
 
+                            Politician.Post.PRESIDENTE -> {
+                                post = mPresenterActivity.getString(R.string.president)
+                                if (politician.name == "Dilma Rousseff") {
+                                    determiner = mPresenterActivity.getString(R.string.determiner_female)
+                                } else {
+                                    determiner = mPresenterActivity.getString(R.string.determiner_male)
+                                }
+                            }
+
                             else -> {
                                 post = "PLACE HOLDER"
                                 determiner = mPresenterActivity.getString(R.string.determiner_male)
@@ -683,20 +698,29 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 }
             }
 
-    private fun setEmailButtonClickListener(politician: Politician) = mPresenterActivity.email_button.setOnClickListener {
+    private fun setEmailButtonClickListener(politician: Politician) {
+
         with(mPresenterActivity) {
-            val intent = Intent(Intent.ACTION_SENDTO)
 
-            intent.data = Uri.parse("mailto:")
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(politician.email))
+            if (politician.post != Politician.Post.PRESIDENTE) {
 
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(Intent.createChooser(intent, getString(R.string.intent_email_chooser)))
+                mPresenterActivity.email_button.setOnClickListener {
 
-            } else {
-                val alertDialog = AlertDialog.Builder(mPresenterActivity)
-                        .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_email_app))
-                alertDialog.show()
+                    val intent = Intent(Intent.ACTION_SENDTO)
+
+                    intent.data = Uri.parse("mailto:")
+                    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(politician.email))
+
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(Intent.createChooser(intent, getString(R.string.intent_email_chooser)))
+
+                    } else {
+                        val alertDialog = AlertDialog.Builder(mPresenterActivity)
+                                .createNeutralDialog(getString(R.string.dialog_title_no_app_detected), getString(R.string.dialog_message_no_email_app))
+                        alertDialog.show()
+                    }
+
+                }
             }
         }
     }

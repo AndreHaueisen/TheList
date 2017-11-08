@@ -15,13 +15,14 @@
         android:contentDescription="@string/description_opinions_on_politician"
         android:elevation="1dp"
         android:src="@drawable/ic_opinions_24dp"
-        app:layout_constraintEnd_toStartOf="@+id/search_on_web_button"
+        app:layout_constraintEnd_toStartOf="@+id/share_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+        android:id="@+id/opinions_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -33,31 +34,6 @@
         app:layout_constraintTop_toBottomOf="@+id/opinions_button"/>
 
     <ImageButton
-        android:id="@+id/search_on_web_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_two_circles"
-        android:contentDescription="@string/search"
-        android:elevation="1dp"
-        android:src="@drawable/ic_open_in_new_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/opinions_button"
-        app:layout_constraintEnd_toStartOf="@+id/share_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/opinions_button"
-        app:layout_constraintTop_toTopOf="@+id/opinions_button"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/search"
-        android:textColor="@color/colorPrimaryLight"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/search_on_web_button"
-        app:layout_constraintStart_toStartOf="@+id/search_on_web_button"
-        app:layout_constraintTop_toBottomOf="@+id/search_on_web_button"/>
-
-    <ImageButton
         android:id="@+id/share_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,22 +41,48 @@
         android:contentDescription="@string/share"
         android:elevation="1dp"
         android:src="@drawable/ic_share_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/search_on_web_button"
-        app:layout_constraintEnd_toStartOf="@+id/email_button"
+        app:layout_constraintEnd_toStartOf="@+id/search_on_web_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/search_on_web_button"
-        app:layout_constraintTop_toTopOf="@+id/search_on_web_button"/>
+        app:layout_constraintStart_toEndOf="@+id/opinions_button"
+        app:layout_constraintTop_toTopOf="@+id/opinions_button"/>
 
     <TextView
+        android:id="@+id/share_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/share"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/share_button"
-        app:layout_constraintStart_toStartOf="@+id/share_button"
-        app:layout_constraintTop_toBottomOf="@+id/share_button"/>
+        app:layout_constraintEnd_toEndOf="@id/share_button"
+        app:layout_constraintStart_toStartOf="@id/share_button"
+        app:layout_constraintTop_toBottomOf="@id/share_button"/>
+
+    <ImageButton
+        android:id="@+id/search_on_web_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_two_circles"
+        android:contentDescription="@string/search"
+        android:elevation="1dp"
+        android:src="@drawable/ic_open_in_new_24dp"
+        app:layout_constraintEnd_toStartOf="@+id/email_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/share_button"
+        app:layout_constraintTop_toTopOf="@+id/share_button"
+        app:layout_goneMarginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/search_on_web_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/search"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/search_on_web_button"
+        app:layout_constraintStart_toStartOf="@id/search_on_web_button"
+        app:layout_constraintTop_toBottomOf="@id/search_on_web_button"/>
 
     <ImageButton
         android:id="@+id/email_button"
@@ -91,30 +93,33 @@
         android:contentDescription="@string/description_email_politician"
         android:elevation="1dp"
         android:src="@drawable/ic_email_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/share_button"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/share_button"
-        app:layout_constraintTop_toTopOf="@+id/share_button"/>
+        app:layout_constraintStart_toEndOf="@+id/search_on_web_button"
+        app:layout_constraintTop_toTopOf="@+id/search_on_web_button"/>
 
     <TextView
-        android:id="@+id/text_view"
+        android:id="@+id/email_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/fui_email_hint"
+        android:visibility="gone"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/email_button"
-        app:layout_constraintStart_toStartOf="@+id/email_button"
-        app:layout_constraintTop_toBottomOf="@+id/email_button"/>
+        app:layout_constraintEnd_toEndOf="@id/email_button"
+        app:layout_constraintStart_toStartOf="@id/email_button"
+        app:layout_constraintTop_toBottomOf="@id/email_button"/>
 
     <View
+        android:id="@+id/separator_view"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view"/>
+        app:layout_constraintTop_toBottomOf="@id/opinions_text_view"/>
+
 </android.support.constraint.ConstraintLayout>

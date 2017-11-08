@@ -38,6 +38,7 @@ class BaseApplication : Application(){
         val senadores = ArrayList<Politician>()
         val deputados = ArrayList<Politician>()
         val governadores = ArrayList<Politician>()
+        val presidentes = ArrayList<Politician>()
 
         mComponent = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(
@@ -46,7 +47,8 @@ class BaseApplication : Application(){
                         user,
                         deputados,
                         senadores,
-                        governadores))
+                        governadores,
+                        presidentes))
                 .contextModule(ContextModule(this))
                 .build()
 

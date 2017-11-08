@@ -24,7 +24,8 @@ class UserVoteListModule(private val loaderManager: LoaderManager) {
     fun provideUserVoteListModel(@Named("deputados_list") deputados: ArrayList<Politician>,
                                  @Named("senadores_list") senadores: ArrayList<Politician>,
                                  @Named("governadores_list") governadores: ArrayList<Politician>,
+                                 @Named("presidentes_list") presidentes: ArrayList<Politician>,
                                  user: User): UserVoteListModel =
-            UserVoteListModel(deputados, senadores, governadores, user)
+            UserVoteListModel(deputados, senadores, governadores, presidentes, user)
 
 }

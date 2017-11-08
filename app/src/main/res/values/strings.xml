@@ -11,6 +11,7 @@
     <string name="notification_text">%1$s should not receive your vote</string>
 
     <!--d_main_lists_choices, e_main_lists-->
+    <string name="presidentes_title">Presidents</string>
     <string name="senadores_title">Senators</string>
     <string name="governadores_title">Governors</string>
     <string name="deputados_title">Congressmen</string>
@@ -58,6 +59,7 @@
     <string name="governora">Governor</string>
     <string name="congressman">Congressman</string>
     <string name="congresswoman">Congresswoman</string>
+    <string name="president">President</string>
     <string name="search">Search</string>
     <string name="your_grade">Your grade: %.1f</string>
     <string name="politician_added_to_voting_list">%1$s added to voting list</string>
@@ -112,7 +114,7 @@
     <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
 
     <!--j_login strings-->
-    <string name="no_network">No network connection</string>
+    <string name="no_network">You are not connected to the internet</string>
     <string name="unknown_error">Something went wrong. Try again</string>
 
     <!--Sync strings-->

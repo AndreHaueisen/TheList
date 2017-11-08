@@ -20,7 +20,8 @@ class ApplicationModule(private val mDatabaseReference: DatabaseReference,
                         private val mUser: User,
                         private val mDeputados: ArrayList<Politician>,
                         private val mSenadores: ArrayList<Politician>,
-                        private val mGovernadores: ArrayList<Politician>) {
+                        private val mGovernadores: ArrayList<Politician>,
+                        private val mPresidentes: ArrayList<Politician>) {
 
     @ApplicationScope
     @Provides
@@ -49,6 +50,11 @@ class ApplicationModule(private val mDatabaseReference: DatabaseReference,
     @Provides
     @Named("governadores_list")
     fun provideGovernadores(): ArrayList<Politician> = mGovernadores
+
+    @ApplicationScope
+    @Provides
+    @Named("presidentes_list")
+    fun providePresidentes(): ArrayList<Politician> = mPresidentes
 
 
 }

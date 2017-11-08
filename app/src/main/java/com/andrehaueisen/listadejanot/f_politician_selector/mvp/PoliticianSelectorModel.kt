@@ -8,14 +8,15 @@ import com.andrehaueisen.listadejanot.models.Politician
  */
 class PoliticianSelectorModel(deputados: ArrayList<Politician>,
                               senadores: ArrayList<Politician>,
-                              governadores: ArrayList<Politician>) :
+                              governadores: ArrayList<Politician>,
+                              presidentes: ArrayList<Politician>) :
         PoliticianSelectorMvpContract.Model {
 
     private val LOG_TAG: String = PoliticianSelectorModel::class.java.simpleName
     private var mSearchablePoliticianList = ArrayList<Politician>()
 
     init {
-        MergeListsTask().execute(deputados, senadores, governadores)
+        MergeListsTask().execute(deputados, senadores, governadores, presidentes)
     }
 
     fun getSearchablePoliticiansList() = mSearchablePoliticianList
@@ -30,6 +31,7 @@ class PoliticianSelectorModel(deputados: ArrayList<Politician>,
             mSearchablePoliticianList.addAll(politiciansLists[0])
             mSearchablePoliticianList.addAll(politiciansLists[1])
             mSearchablePoliticianList.addAll(politiciansLists[2])
+            mSearchablePoliticianList.addAll(politiciansLists[3])
         }
     }
 

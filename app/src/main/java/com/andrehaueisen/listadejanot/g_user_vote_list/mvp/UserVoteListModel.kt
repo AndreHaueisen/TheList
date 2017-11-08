@@ -13,6 +13,7 @@ import io.reactivex.subjects.PublishSubject
 class UserVoteListModel(private val mDeputadosList: ArrayList<Politician>,
                         private val mSenadoresList: ArrayList<Politician>,
                         private val mGovernadoresList: ArrayList<Politician>,
+                        private val mPresidentesList: ArrayList<Politician>,
                         private val mUser: User) {
 
     private val mOnUserListsPoliticiansReadyPublisher: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
@@ -37,8 +38,11 @@ class UserVoteListModel(private val mDeputadosList: ArrayList<Politician>,
             userChosenPoliticiansEmails.contains(politician.email?.encodeEmail())
         })
 
-        mOnUserListsPoliticiansReadyPublisher.onNext(mOnUserListsPoliticians)
+        mOnUserListsPoliticians.addAll(mPresidentesList.filter { politician ->
+            userChosenPoliticiansEmails.contains(politician.email?.encodeEmail())
+        })
 
+        mOnUserListsPoliticiansReadyPublisher.onNext(mOnUserListsPoliticians)
     }
 
     fun subscribeToOnUserListsPoliticians(): Observable<ArrayList<Politician>> = Observable.defer { mOnUserListsPoliticiansReadyPublisher }

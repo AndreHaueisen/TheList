@@ -35,6 +35,9 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     @Inject
     lateinit var mFirebaseAuthenticator: FirebaseAuthenticator
 
+    @field:[Inject Named("presidentes_listener")]
+    lateinit var mPresidentesListener: ValueEventListener
+
     @field:[Inject Named("deputados_listener")]
     lateinit var mDeputadosListener: ValueEventListener
 
@@ -68,6 +71,7 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         mChoicesView = MainListsChoicesView(this)
 
         if (savedInstanceState == null) {
+            mFirebaseRepository.getFullPresidentesList(mPresidentesListener)
             mFirebaseRepository.getFullDeputadosList(mDeputadosListener)
             mFirebaseRepository.getFullSenadoresList(mSenadoresListener)
             mFirebaseRepository.getFullGovernadoresList(mGovernadoresListener)
@@ -95,7 +99,7 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         mMainListsChoicesModel.subscribeToPoliticiansListsMap()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { mChoicesView?.notifyPoliticiansReady(it[0], it[1], it[2]) }
+                .subscribe { mChoicesView?.notifyPoliticiansReady(it[0], it[1], it[2], it[4]) }
     }
 
     fun sortPoliticians(sortType: SortType) {
@@ -129,6 +133,6 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mMainListsChoicesModel.onDestroy()
-        mFirebaseRepository.destroyPoliticiansListsListeners(mDeputadosListener, mSenadoresListener, mGovernadoresListener)
+        mFirebaseRepository.destroyPoliticiansListsListeners(mDeputadosListener, mSenadoresListener, mGovernadoresListener, mPresidentesListener)
     }
 }

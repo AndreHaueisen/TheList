@@ -38,6 +38,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
             Politician.Post.SENADOR, Politician.Post.SENADORA -> LOCATION_SENADORES_LIST
             Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> LOCATION_DEPUTADOS_LIST
             Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> LOCATION_GOVERNADORES_LIST
+            Politician.Post.PRESIDENTE -> LOCATION_PRESIDENTES_LIST
             else -> LOCATION_SENADORES_LIST
         }
 
@@ -74,6 +75,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                             }
 
                             mutableData.value = remotePolitician
+                            politician.resetPoliticianListsCount(remotePolitician.recommendationsCount, remotePolitician.condemnationsCount)
                             return Transaction.success(mutableData)
                         }
 
@@ -93,38 +95,32 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                         ListAction.ADD_TO_VOTE_LIST -> {
                             if (hasVoteOnCondemnationList) {
                                 condemnations.remove(politicianEncodedEmail)
-                                politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
                             }
                             recommendations[politicianEncodedEmail] = generateLocalTimeStamp()
-                            politician.recommendationsCount++
                         }
 
                         ListAction.ADD_TO_SUSPECT_LIST -> {
                             if (hasVoteOnRecommendationList) {
                                 recommendations.remove(politicianEncodedEmail)
-                                politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
                             }
                             condemnations[politicianEncodedEmail] = generateLocalTimeStamp()
-                            politician.condemnationsCount++
                         }
                         ListAction.REMOVE_FROM_LISTS -> {
                             if (hasVoteOnRecommendationList) {
                                 recommendations.remove(politicianEncodedEmail)
-                                politician.recommendationsCount--
                                 hasRemovedVoteFromRecommendationsList = true
                             }
                             if (hasVoteOnCondemnationList) {
                                 condemnations.remove(politicianEncodedEmail)
-                                politician.condemnationsCount--
                                 hasRemovedVoteFromCondemnationsList = true
                             }
                         }
 
                     }
 
-                    mUser.refreshUser(remoteUser)
+                    mUser.refreshUser(this)
                     mutableData?.value = this
                 }
                 return Transaction.success(mutableData)
@@ -140,6 +136,7 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
             Politician.Post.SENADOR, Politician.Post.SENADORA -> LOCATION_SENADORES_LIST
             Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> LOCATION_DEPUTADOS_LIST
             Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> LOCATION_GOVERNADORES_LIST
+            Politician.Post.PRESIDENTE -> LOCATION_PRESIDENTES_LIST
             else -> LOCATION_SENADORES_LIST
         }
 
@@ -312,10 +309,16 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                 .addListenerForSingleValueEvent(deputadosListener)
     }
 
-    fun getFullGovernadoresList(governadoresList: ValueEventListener) {
+    fun getFullGovernadoresList(governadoresListener: ValueEventListener) {
         mDatabaseReference
                 .child(LOCATION_GOVERNADORES_LIST)
-                .addListenerForSingleValueEvent(governadoresList)
+                .addListenerForSingleValueEvent(governadoresListener)
+    }
+
+    fun getFullPresidentesList(presidentesListener: ValueEventListener){
+        mDatabaseReference
+                .child(LOCATION_PRESIDENTES_LIST)
+                .addListenerForSingleValueEvent(presidentesListener)
     }
 
     private val mListenerForSenadoresList = object : ValueEventListener {
@@ -456,22 +459,20 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
-    fun onDestroy() {
-        mDatabaseReference.child(LOCATION_SENADORES_LIST).removeEventListener(mListenerForSenadoresList)
-        mDatabaseReference.child(LOCATION_DEPUTADOS_LIST).removeEventListener(mListenerForDeputadosList)
-        mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).removeEventListener(mListenerForDeputadosList)
-    }
-
     fun destroyUserListener(userListener: ValueEventListener, userEmail: String?) {
         userEmail?.let {
             mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).removeEventListener(userListener)
         }
     }
 
-    fun destroyPoliticiansListsListeners(deputadosListener: ValueEventListener, senadoresListener: ValueEventListener, governadoresListner: ValueEventListener) {
+    fun destroyPoliticiansListsListeners(deputadosListener: ValueEventListener,
+                                         senadoresListener: ValueEventListener,
+                                         governadoresListener: ValueEventListener,
+                                         presidentesListener: ValueEventListener) {
         mDatabaseReference.child(LOCATION_DEPUTADOS_LIST).removeEventListener(deputadosListener)
         mDatabaseReference.child(LOCATION_SENADORES_LIST).removeEventListener(senadoresListener)
-        mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).removeEventListener(governadoresListner)
+        mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).removeEventListener(governadoresListener)
+        mDatabaseReference.child(LOCATION_PRESIDENTES_LIST).removeEventListener(presidentesListener)
     }
 
     fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String) {

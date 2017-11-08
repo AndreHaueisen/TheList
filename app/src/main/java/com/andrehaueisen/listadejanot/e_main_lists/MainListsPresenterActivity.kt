@@ -29,6 +29,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
     @Inject
     lateinit var mUser: User
 
+    private val mPresidentesSortedList = ArrayList<Politician>()
     private val mSenadoresSortedList = ArrayList<Politician>()
     private val mGovernadoresSortedList = ArrayList<Politician>()
     private val mDeputadosSortedList = ArrayList<Politician>()
@@ -48,6 +49,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
 
         val extras = intent.extras
         if(extras!= null){
+            mPresidentesSortedList.addAll(extras.getParcelableArrayList(BUNDLE_PRESIDENTES_LIST))
             mSenadoresSortedList.addAll(extras.getParcelableArrayList(BUNDLE_SENADORES_LIST))
             mGovernadoresSortedList.addAll(extras.getParcelableArrayList(BUNDLE_GOVERNADORES_LIST))
             mDeputadosSortedList.addAll(extras.getParcelableArrayList(BUNDLE_DEPUTADOS_LIST))
@@ -83,6 +85,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
         finish()
     }
 
+    fun getSortedPresidentes() = mPresidentesSortedList
     fun getSortedSenadores() = mSenadoresSortedList
     fun getSortedGovernadores() = mGovernadoresSortedList
     fun getSortedDeputados() = mDeputadosSortedList
