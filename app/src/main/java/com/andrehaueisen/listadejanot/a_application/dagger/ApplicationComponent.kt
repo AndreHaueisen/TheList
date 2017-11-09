@@ -35,5 +35,8 @@ interface ApplicationComponent{
     @Named("presidentes_list")
     fun loadPresidentesList(): ArrayList<Politician>
 
+    @Named("media_highlight_list")
+    fun loadMediaHighlightList(): ArrayList<String>
+
 }
 

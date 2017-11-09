@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -196,17 +196,21 @@
                     android:textAlignment="center"/>
             </LinearLayout>
 
-
             <LinearLayout
-                android:id="@+id/search_view"
+                android:id="@+id/media_highlight_view"
                 android:layout_width="136dp"
                 android:layout_height="136dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_buttons"
                 android:elevation="2dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@+id/top_overall_grade_view"
-                app:layout_constraintStart_toStartOf="@+id/top_overall_grade_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/search_view"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top_overall_grade_view">
 
                 <ImageButton
@@ -215,6 +219,48 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:src="@drawable/ic_reporter"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:maxWidth="100dp"
+                    android:text="@string/media_highlight"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/search_view"
+                android:layout_width="136dp"
+                android:layout_height="136dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ripple_buttons"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/media_highlight_view"
+                app:layout_constraintTop_toBottomOf="@+id/worst_overall_grade_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"

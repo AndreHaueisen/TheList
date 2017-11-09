@@ -59,7 +59,7 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                             mLoadingDatabaseAlertDialog?.dismiss()
                             mFirebaseAuthenticator.logout()
                             startNewActivity(LoginActivity::class.java)
-                        }else{
+                        } else {
                             showToast(getString(R.string.no_network))
                         }
                     })
@@ -115,40 +115,55 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
 
     private fun setButtons() {
         with(mPresenterActivity) {
-            top_recommendations_view.setOnClickListener {
-                mSortType = SortType.RECOMMENDATIONS_COUNT
-                sortPoliticians(mSortType)
-            }
+            top_recommendations_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    mSortType = SortType.RECOMMENDATIONS_COUNT
+                    sortPoliticians(mSortType)
+                }
+            })
 
-            top_condemnations_view.setOnClickListener {
-                mSortType = SortType.CONDEMNATIONS_COUNT
-                sortPoliticians(mSortType)
-            }
+            top_condemnations_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    mSortType = SortType.CONDEMNATIONS_COUNT
+                    sortPoliticians(mSortType)
+                }
+            })
 
-            top_overall_grade_view.setOnClickListener {
-                mSortType = SortType.TOP_OVERALL_GRADE
-                sortPoliticians(mSortType)
-            }
+            top_overall_grade_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    mSortType = SortType.TOP_OVERALL_GRADE
+                    sortPoliticians(mSortType)
+                }
+            })
 
-            worst_overall_grade_view.setOnClickListener {
-                mSortType = SortType.WORST_OVERALL_GRADE
-                sortPoliticians(mSortType)
+            worst_overall_grade_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    mSortType = SortType.WORST_OVERALL_GRADE
+                    sortPoliticians(mSortType)
+                }
+            })
 
-            }
+            media_highlight_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    mSortType = SortType.MEDIA_HIGHLIGHT
+                    sortPoliticians(mSortType)
+                }
+            })
 
-            search_view.setOnClickListener {
+            search_view.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(p0: View?) {
+                    val statusBar = findViewById<View>(android.R.id.statusBarBackground)
+                    val navigationBar = findViewById<View>(android.R.id.navigationBarBackground)
 
-                val statusBar = findViewById<View>(android.R.id.statusBarBackground)
-                val navigationBar = findViewById<View>(android.R.id.navigationBarBackground)
+                    val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
+                    val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
+                    val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
+                    val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
 
-                val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
-                val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
-                val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
-                val fabMenuPair = Pair(menu_fab as View, this.getString(R.string.transition_button))
-
-                val options = ActivityOptions.makeSceneTransitionAnimation(this, statusBarPair, navigationBarPair, fabMenuPair, toolbarPair)
-                startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
-            }
+                    val options = ActivityOptions.makeSceneTransitionAnimation(this@with, statusBarPair, navigationBarPair, fabMenuPair, toolbarPair)
+                    startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
+                }
+            })
         }
     }
 }

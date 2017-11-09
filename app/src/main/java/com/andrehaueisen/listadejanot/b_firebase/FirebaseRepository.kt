@@ -14,20 +14,11 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
     private val LOG_TAG: String = FirebaseRepository::class.java.simpleName
 
-    private lateinit var mPublishSenadoresList: PublishSubject<ArrayList<Politician>>
-    private lateinit var mPublishDeputadosList: PublishSubject<ArrayList<Politician>>
-    private lateinit var mPublishGovernadoresList: PublishSubject<ArrayList<Politician>>
     private lateinit var mPublishOpinionsList: PublishSubject<Pair<FirebaseAction, DataSnapshot>>
-
-    private val mListSenadores = ArrayList<Politician>()
-    private val mListDeputados = ArrayList<Politician>()
-    private val mListGovernadores = ArrayList<Politician>()
 
     enum class FirebaseAction {
         CHILD_ADDED, CHILD_REMOVED, CHILD_CHANGED
     }
-
-    private val mGenericIndicator = object : GenericTypeIndicator<Politician>() {}
 
     fun handleListChange(listAction: ListAction, politician: Politician, userEmail: String) {
 
@@ -50,10 +41,17 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
             override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
 
                 if (transactionCommitted) {
+                    val updatedUser : User = dataSnapshot?.getValue(User::class.java) ?: User()
+                    mUser.refreshUser(updatedUser)
 
                     val politicianDatabase = mDatabaseReference.child(politicianType).child(politicianEncodedEmail)
                     politicianDatabase.runTransaction(object : Transaction.Handler {
-                        override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {}
+                        override fun onComplete(error: DatabaseError?, transactionCommitted: Boolean, dataSnapshot: DataSnapshot?) {
+                            if(transactionCommitted){
+                                val updatedPolitician: Politician = dataSnapshot?.getValue(Politician::class.java) ?: Politician()
+                                politician.resetPoliticianListsCount(updatedPolitician.recommendationsCount, updatedPolitician.condemnationsCount)
+                            }
+                        }
 
                         override fun doTransaction(mutableData: MutableData?): Transaction.Result {
                             val remotePolitician: Politician = mutableData?.getValue(Politician::class.java) ?: return Transaction.success(mutableData)
@@ -75,12 +73,9 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                             }
 
                             mutableData.value = remotePolitician
-                            politician.resetPoliticianListsCount(remotePolitician.recommendationsCount, remotePolitician.condemnationsCount)
                             return Transaction.success(mutableData)
                         }
-
                     })
-
                 }
             }
 
@@ -120,7 +115,6 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
                     }
 
-                    mUser.refreshUser(this)
                     mutableData?.value = this
                 }
                 return Transaction.success(mutableData)
@@ -321,71 +315,9 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                 .addListenerForSingleValueEvent(presidentesListener)
     }
 
-    private val mListenerForSenadoresList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            if (mListSenadores.isNotEmpty()) {
-                mListSenadores.clear()
-            }
-
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { snapshot ->
-                    if (snapshot != null) {
-                        val senador = (snapshot.getValue(mGenericIndicator) as Politician)
-                        senador.email = snapshot.key
-                        mListSenadores.add(senador)
-                    }
-                }
-            }
-            mPublishSenadoresList.onNext(mListSenadores)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishSenadoresList.onError(error.toException())
-    }
-
-    private val mListenerForDeputadosList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-            if (mListDeputados.isNotEmpty()) {
-                mListDeputados.clear()
-            }
-
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { snapshot ->
-                    if (snapshot != null) {
-                        val deputado = (snapshot.getValue(mGenericIndicator) as Politician)
-                        deputado.email = snapshot.key
-                        mListDeputados.add(deputado)
-                    }
-                }
-            }
-            mPublishDeputadosList.onNext(mListDeputados)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishDeputadosList.onError(error.toException())
-    }
-
-    private val mListenerForGovernadoresList = object : ValueEventListener {
-
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-
-            if (mListGovernadores.isNotEmpty()) mListGovernadores.clear()
-            if (dataSnapshot != null && dataSnapshot.exists()) {
-                dataSnapshot.children.forEach { snapshot ->
-                    if (snapshot != null) {
-                        val governador = (snapshot.getValue(mGenericIndicator) as Politician)
-                        governador.email = snapshot.key
-                        mListGovernadores.add(governador)
-                    }
-                }
-            }
-            mPublishGovernadoresList.onNext(mListGovernadores)
-        }
-
-        override fun onCancelled(error: DatabaseError) =
-                mPublishGovernadoresList.onError(error.toException())
+    fun getMediaHighlightList(mediaHighlightListener: ValueEventListener){
+        mDatabaseReference.child(LOCATION_MEDIA_HIGHLIGHT)
+                .addListenerForSingleValueEvent(mediaHighlightListener)
     }
 
     private val mListenerForOpinionsList = object : ChildEventListener {
@@ -418,34 +350,6 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
         override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) = Unit
     }
 
-    fun getSenadoresList(): PublishSubject<ArrayList<Politician>> {
-        mPublishSenadoresList = PublishSubject.create()
-
-        mDatabaseReference
-                .child(LOCATION_SENADORES_LIST)
-                .addListenerForSingleValueEvent(mListenerForSenadoresList)
-
-        return mPublishSenadoresList
-    }
-
-    fun getDeputadosList(): PublishSubject<ArrayList<Politician>> {
-        mPublishDeputadosList = PublishSubject.create()
-
-        mDatabaseReference
-                .child(LOCATION_DEPUTADOS_LIST)
-                .addListenerForSingleValueEvent(mListenerForDeputadosList)
-
-        return mPublishDeputadosList
-    }
-
-    fun getGovernadoresList(): PublishSubject<ArrayList<Politician>> {
-        mPublishGovernadoresList = PublishSubject.create()
-
-        mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).addListenerForSingleValueEvent(mListenerForGovernadoresList)
-
-        return mPublishGovernadoresList
-    }
-
     fun getPoliticianOpinions(politicianEmail: String): PublishSubject<Pair<FirebaseAction, DataSnapshot>> {
         mPublishOpinionsList = PublishSubject.create()
 
@@ -468,11 +372,13 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
     fun destroyPoliticiansListsListeners(deputadosListener: ValueEventListener,
                                          senadoresListener: ValueEventListener,
                                          governadoresListener: ValueEventListener,
-                                         presidentesListener: ValueEventListener) {
+                                         presidentesListener: ValueEventListener,
+                                         mediaHighlightListener: ValueEventListener) {
         mDatabaseReference.child(LOCATION_DEPUTADOS_LIST).removeEventListener(deputadosListener)
         mDatabaseReference.child(LOCATION_SENADORES_LIST).removeEventListener(senadoresListener)
         mDatabaseReference.child(LOCATION_GOVERNADORES_LIST).removeEventListener(governadoresListener)
         mDatabaseReference.child(LOCATION_PRESIDENTES_LIST).removeEventListener(presidentesListener)
+        mDatabaseReference.child(LOCATION_MEDIA_HIGHLIGHT).removeEventListener(mediaHighlightListener)
     }
 
     fun addOpinionOnPolitician(politicianEmail: String, userEmail: String, opinion: String) {

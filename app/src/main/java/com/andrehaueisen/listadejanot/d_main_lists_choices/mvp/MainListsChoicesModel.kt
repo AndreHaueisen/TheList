@@ -29,6 +29,7 @@ class MainListsChoicesModel(
         private val mSenadoresList: ArrayList<Politician>,
         private val mGovernadoresList: ArrayList<Politician>,
         private val mPresidentesList: ArrayList<Politician>,
+        private val mMediaHighlights: ArrayList<String>,
         private val mLoaderManager: LoaderManager,
         private val mContext: Context,
         mListReadyPublishSubject: PublishSubject<Boolean>) : LoaderManager.LoaderCallbacks<Cursor> {
@@ -48,7 +49,11 @@ class MainListsChoicesModel(
             mGovernadoresPublishSubject,
             mDeputadosPublishSubject,
             mPresidentesPublishSubject,
-            Function4<ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, ArrayList<Politician>, SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados, presidentes ->
+            Function4<ArrayList<Politician>,
+                    ArrayList<Politician>,
+                    ArrayList<Politician>,
+                    ArrayList<Politician>,
+                    SparseArray<ArrayList<Politician>>> { senadores, governadores, deputados, presidentes ->
                 val politiciansArray = SparseArray<ArrayList<Politician>>(4)
                 politiciansArray.put(0, senadores)
                 politiciansArray.put(1, governadores)
@@ -160,6 +165,7 @@ class MainListsChoicesModel(
             SortType.CONDEMNATIONS_COUNT -> Comparator { politician_1, politician_2 -> (politician_2.condemnationsCount - politician_1.condemnationsCount) }
             SortType.TOP_OVERALL_GRADE -> Comparator { politician_1, politician_2 -> ((politician_2.overallGrade - politician_1.overallGrade) * 100).toInt() }
             SortType.WORST_OVERALL_GRADE -> Comparator { politician_1, politician_2 -> ((politician_1.overallGrade - politician_2.overallGrade) * 100).toInt() }
+            SortType.MEDIA_HIGHLIGHT -> null
 
         }
 
@@ -175,33 +181,60 @@ class MainListsChoicesModel(
 
             SortType.WORST_OVERALL_GRADE ->
                 emitPoliticians({ politician -> politician.overallGrade != gradeFilterThreshold }, comparator)
+
+            SortType.MEDIA_HIGHLIGHT ->
+                emitPoliticians({ politician -> politician.email in mMediaHighlights }, comparator)
         }
     }
 
-    private fun emitPoliticians(filter: (Politician) -> Boolean, comparator: Comparator<Politician>) {
+    private fun emitPoliticians(filter: (Politician) -> Boolean, comparator: Comparator<Politician>?) {
 
-        mSenadoresPublishSubject.onNext(ArrayList(
-                mSenadoresList.asSequence()
-                        .filter(filter)
-                        .sortedWith(comparator)
-                        .take(10).toList()))
+        if (comparator != null) {
+            mSenadoresPublishSubject.onNext(ArrayList(mSenadoresList
+                    .asSequence()
+                    .filter(filter)
+                    .sortedWith(comparator)
+                    .take(10).toList()))
 
-        mGovernadoresPublishSubject.onNext(ArrayList(mGovernadoresList
-                .asSequence()
-                .filter(filter)
-                .sortedWith(comparator)
-                .take(10).toList()))
+            mGovernadoresPublishSubject.onNext(ArrayList(mGovernadoresList
+                    .asSequence()
+                    .filter(filter)
+                    .sortedWith(comparator)
+                    .take(10).toList()))
 
-        mDeputadosPublishSubject.onNext(ArrayList(mDeputadosList
-                .asSequence()
-                .filter(filter)
-                .sortedWith(comparator)
-                .take(10).toList()))
+            mDeputadosPublishSubject.onNext(ArrayList(mDeputadosList
+                    .asSequence()
+                    .filter(filter)
+                    .sortedWith(comparator)
+                    .take(10).toList()))
 
-        mPresidentesPublishSubject.onNext(ArrayList(
-                mPresidentesList.asSequence()
-                        .sortedWith(comparator)
-                        .take(4).toList()))
+            mPresidentesPublishSubject.onNext(ArrayList(mPresidentesList
+                    .asSequence()
+                    .sortedWith(comparator)
+                    .take(4).toList()))
+
+        } else {
+
+            mSenadoresPublishSubject.onNext(ArrayList(mSenadoresList
+                    .asSequence()
+                    .filter(filter)
+                    .toList()))
+
+            mGovernadoresPublishSubject.onNext(ArrayList(mGovernadoresList
+                    .asSequence()
+                    .filter(filter)
+                    .toList()))
+
+            mDeputadosPublishSubject.onNext(ArrayList(mDeputadosList
+                    .asSequence()
+                    .filter(filter)
+                    .toList()))
+
+            mPresidentesPublishSubject.onNext(ArrayList(mPresidentesList
+                    .asSequence()
+                    .filter(filter)
+                    .toList()))
+        }
 
     }
 

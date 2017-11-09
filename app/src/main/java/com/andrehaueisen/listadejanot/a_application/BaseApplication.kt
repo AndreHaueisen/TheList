@@ -26,10 +26,9 @@ class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
 
-        //TODO search about firebase persistence
         val firebaseInstance = FirebaseDatabase.getInstance()
         //firebaseInstance.setLogLevel(Logger.Level.DEBUG)
-        //firebaseInstance.setPersistenceEnabled(true)
+        firebaseInstance.setPersistenceEnabled(true)
 
         val firebaseReference = firebaseInstance.reference
 
@@ -39,6 +38,7 @@ class BaseApplication : Application(){
         val deputados = ArrayList<Politician>()
         val governadores = ArrayList<Politician>()
         val presidentes = ArrayList<Politician>()
+        val mediaHighlights = ArrayList<String>()
 
         mComponent = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(
@@ -48,7 +48,8 @@ class BaseApplication : Application(){
                         deputados,
                         senadores,
                         governadores,
-                        presidentes))
+                        presidentes,
+                        mediaHighlights))
                 .contextModule(ContextModule(this))
                 .build()
 

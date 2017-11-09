@@ -59,6 +59,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
                 SortType.CONDEMNATIONS_COUNT.name -> mSortType = SortType.CONDEMNATIONS_COUNT
                 SortType.TOP_OVERALL_GRADE.name -> mSortType = SortType.TOP_OVERALL_GRADE
                 SortType.WORST_OVERALL_GRADE.name -> mSortType = SortType.WORST_OVERALL_GRADE
+                SortType.MEDIA_HIGHLIGHT.name -> mSortType = SortType.MEDIA_HIGHLIGHT
             }
         }
 

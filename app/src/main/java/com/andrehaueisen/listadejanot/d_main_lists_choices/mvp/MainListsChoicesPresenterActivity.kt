@@ -50,6 +50,9 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     @field:[Inject Named("user_listener")]
     lateinit var mUserValueEventListener: ValueEventListener
 
+    @field:[Inject Named("media_highlight_listener")]
+    lateinit var mMediaHighlightListener: ValueEventListener
+
     @Inject
     lateinit var mMainListsChoicesModel: MainListsChoicesModel
 
@@ -75,6 +78,7 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
             mFirebaseRepository.getFullDeputadosList(mDeputadosListener)
             mFirebaseRepository.getFullSenadoresList(mSenadoresListener)
             mFirebaseRepository.getFullGovernadoresList(mGovernadoresListener)
+            mFirebaseRepository.getMediaHighlightList(mMediaHighlightListener)
             mChoicesView?.beginDatabaseLoadingAlertDialog()
             mChoicesView?.verifyUserTokenValidity()
         }
@@ -133,6 +137,11 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mMainListsChoicesModel.onDestroy()
-        mFirebaseRepository.destroyPoliticiansListsListeners(mDeputadosListener, mSenadoresListener, mGovernadoresListener, mPresidentesListener)
+        mFirebaseRepository.destroyPoliticiansListsListeners(
+                mDeputadosListener,
+                mSenadoresListener,
+                mGovernadoresListener,
+                mPresidentesListener,
+                mMediaHighlightListener)
     }
 }

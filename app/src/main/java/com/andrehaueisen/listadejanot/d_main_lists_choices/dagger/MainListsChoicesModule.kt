@@ -111,7 +111,7 @@ class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
     @MainListsChoicesScope
     @Provides
     @Named("presidentes_listener")
-    fun providePresidentesValueEventListener(@Named("presidentes_list") presidentes: ArrayList<Politician>): ValueEventListener{
+    fun providePresidentesValueEventListener(@Named("presidentes_list") presidentes: ArrayList<Politician>): ValueEventListener {
         return object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 if (presidentes.isNotEmpty()) {
@@ -152,6 +152,24 @@ class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
 
     @MainListsChoicesScope
     @Provides
+    @Named("media_highlight_listener")
+    fun provideMediaHighlightListener(@Named("media_highlight_list") mediaHighlight: ArrayList<String>) = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+
+            dataSnapshot?.children?.forEach { snapshot ->
+                val highlight = snapshot?.getValue(String::class.java)!!
+                mediaHighlight.add(highlight.decodeEmail())
+
+            }
+        }
+
+        override fun onCancelled(p0: DatabaseError?) {}
+    }
+
+
+    @MainListsChoicesScope
+    @Provides
     fun provideLoaderManager(): LoaderManager = mLoaderManager
 
     @MainListsChoicesScope
@@ -160,9 +178,10 @@ class MainListsChoicesModule(private val mLoaderManager: LoaderManager) {
                               @Named("senadores_list") senadores: ArrayList<Politician>,
                               @Named("governadores_list") governadores: ArrayList<Politician>,
                               @Named("presidentes_list") presidentes: ArrayList<Politician>,
+                              @Named("media_highlight_list") mediaHighlight: ArrayList<String>,
                               context: Context,
                               loaderManager: LoaderManager)
 
-            = MainListsChoicesModel(deputados, senadores, governadores, presidentes, loaderManager, context, mListReadyPublishSubject)
+            = MainListsChoicesModel(deputados, senadores, governadores, presidentes, mediaHighlight, loaderManager, context, mListReadyPublishSubject)
 
 }

@@ -2,13 +2,13 @@ package com.andrehaueisen.listadejanot.e_main_lists
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.i_information.mvp.InformationPresenterActivity
 import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
 import kotlinx.android.synthetic.main.e_activity_main_lists.*
-
 
 
 /**
@@ -34,6 +34,7 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
                 SortType.CONDEMNATIONS_COUNT -> supportActionBar?.title = getString(R.string.top_suspicions)
                 SortType.TOP_OVERALL_GRADE -> supportActionBar?.title = getString(R.string.top_overall_grade)
                 SortType.WORST_OVERALL_GRADE -> supportActionBar?.title = getString(R.string.worst_overall_grade)
+                SortType.MEDIA_HIGHLIGHT -> supportActionBar?.title = getString(R.string.media_highlight)
             }
         }
     }
@@ -89,17 +90,40 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         }
     }
 
-    private fun loadData(){
+    private fun loadData() {
         with(mPresenterActivity) {
-            presidentes_recycler_view.setLayoutAnimation()
-            senadores_recycler_view.setLayoutAnimation()
-            governadores_recycler_view.setLayoutAnimation()
-            deputados_recycler_view.setLayoutAnimation()
 
-            presidentes_recycler_view.adapter = MainListsAdapter(this, getSortedPresidentes(), getSortType()!!)
-            senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
-            governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
-            deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
+            if (getSortedPresidentes().isNotEmpty()) {
+                presidentes_recycler_view.setLayoutAnimation()
+                presidentes_recycler_view.adapter = MainListsAdapter(this, getSortedPresidentes(), getSortType()!!)
+            } else {
+                presidentes_recycler_view.visibility = View.GONE
+                presidentes_title_text_view.visibility = View.GONE
+            }
+
+            if (getSortedSenadores().isNotEmpty()) {
+                senadores_recycler_view.setLayoutAnimation()
+                senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
+            } else {
+                senadores_recycler_view.visibility = View.GONE
+                senadores_title_text_view.visibility = View.GONE
+            }
+
+            if (getSortedGovernadores().isNotEmpty()) {
+                governadores_recycler_view.setLayoutAnimation()
+                governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
+            } else {
+                governadores_recycler_view.visibility = View.GONE
+                governadores_title_text_view.visibility = View.GONE
+            }
+
+            if (getSortedDeputados().isNotEmpty()) {
+                deputados_recycler_view.setLayoutAnimation()
+                deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
+            } else {
+                deputados_recycler_view.visibility = View.GONE
+                deputados_title_text_view.visibility = View.GONE
+            }
         }
     }
 

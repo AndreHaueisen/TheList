@@ -16,6 +16,7 @@
     <string name="top_overall_grade">Melhores notas</string>
     <string name="worst_overall_grade">Piores notas</string>
     <string name="individual_search">Procura individual</string>
+    <string name="media_highlight">Destaques na mídia</string>
     <string name="login_required">Login expirou. Por favor, entre novamente</string>
 
     <string name="information">Informações</string>
@@ -102,7 +103,7 @@
     <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
 
     <!--j_login strings-->
-    <string name="no_network">Sem internet</string>
+    <string name="no_network">Sem internet. Mudanças não serão salvas</string>
     <string name="unknown_error">Algo deu errado. Tente novamente</string>
 
     <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>

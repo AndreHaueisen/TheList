@@ -97,7 +97,7 @@ class ImageFetcherModule{
                     .addQueryParameter(PARAMETER_LANGUAGE, "pt-BR")
                     .addQueryParameter(PARAMETER_SEARCH_TYPE, "image")
                     .addQueryParameter(PARAMETER_IMAGE_SIZE, "large")
-                    .addQueryParameter(PARAMETER_IMAGE_TYPE, "photo")
+                    .addQueryParameter(PARAMETER_IMAGE_TYPE, "face")
                     .addQueryParameter(PARAMETER_SEARCH_KEY, BuildConfig.SEARCH_API_KEY)
                     .build()
             request = request.newBuilder().url(url).build()

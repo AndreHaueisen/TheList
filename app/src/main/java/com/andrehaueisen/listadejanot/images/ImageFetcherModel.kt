@@ -22,7 +22,14 @@ class ImageFetcherModel(private val mImageFetcherService: ImageFetcherService) {
 
     private fun getImagesFromNetwork(politicianName: String, politicianPost: Politician.Post): Observable<Item> {
 
-        return mImageFetcherService.catchNews("$politicianName ${politicianPost.name}")
+        val queryComplement = when(politicianPost){
+            Politician.Post.SENADOR, Politician.Post.SENADORA -> "congresso nacional"
+            Politician.Post.PRESIDENTE -> "posse"
+            Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> "sede do governo"
+            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> "fala"
+        }
+
+        return mImageFetcherService.catchNews("$politicianName ${politicianPost.name} $queryComplement")
                 .flatMap({ items ->
                     Observable.fromIterable(items.items)
                 })

@@ -11,7 +11,7 @@ enum class ListAction {
 }
 
 enum class SortType {
-    RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, TOP_OVERALL_GRADE, WORST_OVERALL_GRADE
+    RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, TOP_OVERALL_GRADE, WORST_OVERALL_GRADE, MEDIA_HIGHLIGHT
 }
 
 const val PLAY_STORE_LINK = """http://play.google.com/store/apps/details?id=com.andrehaueisen.listadejanot"""
@@ -44,6 +44,7 @@ const val LOCATION_SENADORES_LIST = "Senadores_list"
 const val LOCATION_GOVERNADORES_LIST = "Governadores_list"
 const val LOCATION_PRESIDENTES_LIST = "Presidentes_list"
 const val LOCATION_USERS = "Users"
+const val LOCATION_MEDIA_HIGHLIGHT = "Media_highlight"
 const val LOCATION_OPINIONS_ON_POLITICIANS = "Opinions_on_politicians"
 const val CHILD_LOCATION_USER_HONESTY = "honestyGrades"
 const val CHILD_LOCATION_USER_LEADER = "leaderGrades"

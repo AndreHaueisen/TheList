@@ -21,6 +21,7 @@
     <string name="top_overall_grade">Better grades</string>
     <string name="worst_overall_grade">Worst grades</string>
     <string name="individual_search">Individual search</string>
+    <string name="media_highlight">Media highlight</string>
     <string name="login_required">Invalid expired. Please, login again</string>
 
     <string name="information">Information</string>
@@ -114,7 +115,7 @@
     <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
 
     <!--j_login strings-->
-    <string name="no_network">You are not connected to the internet</string>
+    <string name="no_network">You are not connected to the internet. Changes won\'t be saved</string>
     <string name="unknown_error">Something went wrong. Try again</string>
 
     <!--Sync strings-->
