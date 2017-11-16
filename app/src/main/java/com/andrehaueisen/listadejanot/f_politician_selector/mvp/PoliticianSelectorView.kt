@@ -310,6 +310,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         with(mPresenterActivity) {
             val politician = getSinglePolitician()
+            intent.putExtra(INTENT_POLITICIAN_NAME, politician?.name)
             subscribeToImageFetcher(politician)
 
             if (politician != null) {
@@ -559,9 +560,8 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     extras.putString(BUNDLE_USER_EMAIL, mFirebaseAuthenticator.getUserEmail())
                 }
 
-                val namePair = Pair<View, String>(name_text_view as View, getString(R.string.transition_name))
                 val imagePair = Pair<View, String>(search_politician_image_view as View, getString(R.string.transition_image))
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, namePair, imagePair)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imagePair)
 
                 startNewActivity(OpinionsActivity::class.java, null, extras, options.toBundle())
             }

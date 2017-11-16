@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:visibility="visible"
-                app:constraint_referenced_ids="post_text_view, name_text_view, group_grades, vote_radio_group, group_rating_bars"
+                app:constraint_referenced_ids="post_text_view, name_text_view, vote_radio_group, group_rating_boards"
                 tools:visibility="visible"/>
 
             <include
@@ -111,7 +111,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textSize="26sp"
-                android:transitionName="@string/transition_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_buttons"
@@ -170,7 +169,7 @@
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
             <include
-                android:id="@+id/group_rating_bars"
+                android:id="@+id/group_rating_boards"
                 layout="@layout/group_layout_rating_board"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
