@@ -237,7 +237,6 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     fun getSinglePolitician() = mPolitician
 
     override fun onBackPressed() {
-        group_grades.animate().alpha(0F).setDuration(50).start()
         group_rating_bars.animate().alpha(0F).setDuration(50).start()
         super.onBackPressed()
     }

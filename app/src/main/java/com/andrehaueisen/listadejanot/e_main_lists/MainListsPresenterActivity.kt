@@ -3,6 +3,7 @@ package com.andrehaueisen.listadejanot.e_main_lists
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.ViewTreeObserver
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
@@ -70,6 +71,21 @@ class MainListsPresenterActivity: AppCompatActivity() {
         } else {
             mMainListsView?.setViews(savedInstanceState)
         }
+
+        postponeTransition()
+    }
+
+    private fun postponeTransition(){
+        postponeEnterTransition()
+
+        val decor = window.decorView
+        decor.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                decor.viewTreeObserver.removeOnPreDrawListener(this)
+                startPostponedEnterTransition()
+                return true
+            }
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

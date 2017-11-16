@@ -21,8 +21,6 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Named
 
-
-
 /**
  * Created by andre on 10/22/2017.
  */
@@ -87,9 +85,9 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         subscribeToPoliticiansLoadingStatus()
         subscribeToPoliticiansListsMap()
 
-        val slideTransition = TransitionInflater.from(this).inflateTransition(R.transition.window_slide)
-        window.exitTransition = slideTransition
-        window.enterTransition = slideTransition
+        val fadeTransition = TransitionInflater.from(this).inflateTransition(R.transition.windows_fade)
+        window.exitTransition = fadeTransition
+        window.enterTransition = fadeTransition
     }
 
     private fun subscribeToPoliticiansLoadingStatus(){

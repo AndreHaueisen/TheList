@@ -91,7 +91,17 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
             extras.putParcelableArrayList(BUNDLE_PRESIDENTES_LIST, presidentes)
             extras.putString(BUNDLE_SORT_TYPE, mSortType.name)
 
-            startNewActivity(MainListsPresenterActivity::class.java, extras = extras)
+            val statusBar = findViewById<View>(android.R.id.statusBarBackground)
+            val navigationBar = findViewById<View>(android.R.id.navigationBarBackground)
+
+            val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
+            val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
+            val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
+            val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this@with, statusBarPair, navigationBarPair, fabMenuPair, toolbarPair)
+
+            startNewActivity(MainListsPresenterActivity::class.java, extras = extras, options = options.toBundle())
         }
     }
 

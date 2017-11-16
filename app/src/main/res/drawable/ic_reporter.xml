@@ -38,12 +38,12 @@
     <path
         android:name="path_6"
         android:pathData="M 31.75 54.96 L 22.7 42.68 L 19.43 33.91 L 24.04 31.98 L 32 37.03 L 39.97 31.98 L 44.57 33.91 L 41.3 42.68 L 32.25 54.96 L 31.99 55.4 L 31.75 54.96 Z"
-        android:fillColor="#1bcdea"
+        android:fillColor="#006f9d "
         android:strokeWidth="1"/>
     <path
         android:name="path_7"
         android:pathData="M 32 37.03 L 39.97 31.98 L 44.57 33.91 L 41.3 42.68 L 32.25 54.96 L 31.99 55.4 L 31.75 54.96"
-        android:fillColor="#039dc1"
+        android:fillColor="#37628d"
         android:strokeWidth="1"/>
     <path
         android:name="path_8"
@@ -68,17 +68,17 @@
     <path
         android:name="path_12"
         android:pathData="M 14.8 60 C 14.8 60.366 14.655 60.717 14.396 60.976 C 14.137 61.235 13.786 61.38 13.42 61.38 L 10.08 61.38 C 9.714 61.38 9.363 61.235 9.104 60.976 C 8.845 60.717 8.7 60.366 8.7 60 L 8.7 38.38 C 8.7 38.014 8.845 37.663 9.104 37.404 C 9.363 37.145 9.714 37 10.08 37 L 13.42 37 C 13.786 37 14.137 37.145 14.396 37.404 C 14.655 37.663 14.8 38.014 14.8 38.38 Z"
-        android:fillColor="#ff5b1a"
+        android:fillColor="#ff8601"
         android:strokeWidth="1"/>
     <path
         android:name="path_13"
         android:pathData="M 20.32 47.81 C 20.32 48.176 20.175 48.527 19.916 48.786 C 19.657 49.045 19.306 49.19 18.94 49.19 L 4.56 49.19 C 4.194 49.19 3.843 49.045 3.584 48.786 C 3.325 48.527 3.18 48.176 3.18 47.81 L 3.18 41 C 3.18 40.634 3.325 40.283 3.584 40.024 C 3.843 39.765 4.194 39.62 4.56 39.62 L 18.94 39.62 C 19.306 39.62 19.657 39.765 19.916 40.024 C 20.175 40.283 20.32 40.634 20.32 41 L 20.32 47.79 Z"
-        android:fillColor="#d64505"
+        android:fillColor="#ff8601"
         android:strokeWidth="1"/>
     <path
         android:name="path_14"
         android:pathData="M 20.32 41 L 20.32 47.79 C 20.32 48.156 20.175 48.507 19.916 48.766 C 19.657 49.025 19.306 49.17 18.94 49.17 L 4.56 49.17 C 4.194 49.17 3.843 49.025 3.584 48.766 C 3.325 48.507 3.18 48.156 3.18 47.79"
-        android:fillColor="#c63205"
+        android:fillColor="#c95800"
         android:strokeWidth="1"/>
     <path
         android:name="path_15"
@@ -88,6 +88,6 @@
     <path
         android:name="path_16"
         android:pathData="M 18.19 35.27 C 18.19 38.83 15.31 38.27 11.75 38.27 C 8.19 38.27 5.31 38.84 5.31 35.27 C 5.31 31.713 8.193 28.83 11.75 28.83 C 15.307 28.83 18.19 31.713 18.19 35.27 Z"
-        android:fillColor="#323535"
+        android:fillColor="#ff8601"
         android:strokeWidth="1"/>
 </vector>

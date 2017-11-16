@@ -94,7 +94,6 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         with(mPresenterActivity) {
 
             if (getSortedPresidentes().isNotEmpty()) {
-                presidentes_recycler_view.setLayoutAnimation()
                 presidentes_recycler_view.adapter = MainListsAdapter(this, getSortedPresidentes(), getSortType()!!)
             } else {
                 presidentes_recycler_view.visibility = View.GONE
@@ -102,7 +101,6 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             }
 
             if (getSortedSenadores().isNotEmpty()) {
-                senadores_recycler_view.setLayoutAnimation()
                 senadores_recycler_view.adapter = MainListsAdapter(this, getSortedSenadores(), getSortType()!!)
             } else {
                 senadores_recycler_view.visibility = View.GONE
@@ -110,7 +108,6 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             }
 
             if (getSortedGovernadores().isNotEmpty()) {
-                governadores_recycler_view.setLayoutAnimation()
                 governadores_recycler_view.adapter = MainListsAdapter(this, getSortedGovernadores(), getSortType()!!)
             } else {
                 governadores_recycler_view.visibility = View.GONE
@@ -118,7 +115,6 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             }
 
             if (getSortedDeputados().isNotEmpty()) {
-                deputados_recycler_view.setLayoutAnimation()
                 deputados_recycler_view.adapter = MainListsAdapter(this, getSortedDeputados(), getSortType()!!)
             } else {
                 deputados_recycler_view.visibility = View.GONE

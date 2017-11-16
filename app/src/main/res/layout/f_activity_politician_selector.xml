@@ -105,96 +105,83 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/post_text_view"
-                style="@style/LatoBoldTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:textSize="28sp"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/group_buttons"
-                tools:text="SENADOR"/>
-
-            <TextView
                 android:id="@+id/name_text_view"
                 style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:textSize="26sp"
                 android:transitionName="@string/transition_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/group_buttons"
                 tools:text="Aecio Neves"/>
+
+            <TextView
+                android:id="@+id/post_text_view"
+                style="@style/LatoRegularTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name_text_view"
+                tools:text="SENADOR"/>
 
             <co.ceryle.radiorealbutton.RadioRealButtonGroup
                 android:id="@+id/vote_radio_group"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/post_text_view"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/post_text_view"
-                app:rrbg_animateDrawables_enter="bounce"
-                app:rrbg_animateDrawables_exit="bounce"
-                app:rrbg_animateDrawables_scale="1.4"
-                app:rrbg_animateSelector="overshoot"
-                app:rrbg_bottomLineRadius="2dp"
-                app:rrbg_dividerSize="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_text_view"
+                app:rrbg_animateDrawables_enter="accelerateDecelerate"
+                app:rrbg_animateDrawables_exit="accelerateDecelerate"
+                app:rrbg_animateDrawables_scale="1.1"
+                app:rrbg_animateSelector="accelerateDecelerate"
+                app:rrbg_backgroundColor="@color/colorNeutralSmooth"
                 app:rrbg_enableDeselection="true"
                 app:rrbg_radius="4dp"
-                app:rrbg_selectorBringToFront="true"
-                app:rrbg_selectorColor="@color/colorDarkTransparent"
-                app:rrbg_selectorSize="4dp">
+                app:rrbg_dividerColor="@color/colorAccent"
+                app:rrbg_dividerRadius="1dp"
+                app:rrbg_dividerSize="1dp"
+                app:rrbg_selectorColor="@color/colorAccent"
+                app:rrbg_selectorRadius="2dp"
+                app:rrbg_selectorSize="2dp">
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rrb_backgroundColor="@color/colorSecondaryLight"
                     app:rrb_drawable="@drawable/ic_thief"
-                    app:rrb_drawableTint="@color/colorSecondarySmooth"
-                    app:rrb_drawableTintTo="@color/colorSecondaryWhite"
-                    app:rrb_ripple="true"
-                    app:rrb_rippleColor="@color/colorSecondaryDark"/>
+                    app:rrb_ripple="false"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rrb_backgroundColor="@color/colorPrimaryLight"
                     app:rrb_drawable="@drawable/ic_politician"
-                    app:rrb_drawableTint="@color/colorPrimarySmooth"
-                    app:rrb_drawableTintTo="@color/colorSecondaryWhite"
-                    app:rrb_ripple="true"
-                    app:rrb_rippleColor="@color/colorPrimary"/>
+                    app:rrb_ripple="false"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
             <include
-                android:id="@+id/group_grades"
-                layout="@layout/group_layout_grades"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toTopOf="@id/group_rating_bars"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_text_view"
-                app:layout_constraintVertical_bias="0.5"/>
-
-            <include
                 android:id="@+id/group_rating_bars"
-                layout="@layout/group_layout_rating_bars"
+                layout="@layout/group_layout_rating_board"
                 android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="78dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vote_radio_group"/>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -209,6 +196,7 @@
         app:color_main_button="@color/colorAccent"
         app:color_secondary_buttons="@color/colorAccentDark"
         app:content_options="@menu/menu_d_politician_search"
-        app:expanded_background_color="@color/colorDarkTransparent"/>
+        app:expanded_background_color="@color/colorDarkTransparent"
+        tools:visibility="gone"/>
 
 </android.support.design.widget.CoordinatorLayout>

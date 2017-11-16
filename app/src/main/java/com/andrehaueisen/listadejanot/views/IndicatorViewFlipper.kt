@@ -39,7 +39,7 @@ class IndicatorViewFlipper : ViewFlipper {
                 canvas.drawCircle(cx, cy, radius, paint)
 
             } else {
-                paint.color = ContextCompat.getColor(context, R.color.colorAccent)
+                paint.color = ContextCompat.getColor(context, R.color.colorNeutralLight)
                 canvas.drawCircle(cx, cy, radius, paint)
             }
             cx += 2 * (radius + margin)

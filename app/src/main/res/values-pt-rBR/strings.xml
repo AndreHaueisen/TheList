@@ -54,8 +54,8 @@
     <string name="president">Presidente</string>
     <string name="search">Pesquise</string>
     <string name="your_grade">Sua nota: %.1f</string>
-    <string name="politician_added_to_voting_list">%1$s adicionado à lista de votação</string>
-    <string name="politician_added_to_suspect_list">%1$s adicionado à lista de suspeitos</string>
+    <string name="politician_added_to_voting_list">%1$s adicionado à sua lista de votação</string>
+    <string name="politician_added_to_suspect_list">%1$s adicionado à sua lista de suspeitos</string>
     <string name="politician_removed_from_list">%1$s retirado da lista</string>
     <string name="no_grade">Sem nota</string>
 

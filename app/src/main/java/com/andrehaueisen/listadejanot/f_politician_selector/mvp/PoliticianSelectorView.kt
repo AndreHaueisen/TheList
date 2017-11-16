@@ -38,8 +38,7 @@ import com.bumptech.glide.request.target.Target
 import com.github.florent37.expectanim.ExpectAnim
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_buttons.*
-import kotlinx.android.synthetic.main.group_layout_grades.*
-import kotlinx.android.synthetic.main.group_layout_rating_bars.*
+import kotlinx.android.synthetic.main.group_layout_rating_board.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -54,7 +53,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     private val LOG_TAG = PoliticianSelectorView::class.java.simpleName
     private val mGlide = Glide.with(mPresenterActivity)
 
-    private var mLoadingDatabaseAlertDialog: AlertDialog? = null
     private var mTempFilePath: String = ""
     private var mLastButtonPosition = 0
     private var mPoliticianEncodedEmail: String? = null

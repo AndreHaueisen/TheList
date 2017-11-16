@@ -24,7 +24,7 @@
     <style name="Autocomplete" parent="@android:style/Widget.Material.AutoCompleteTextView">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:dropDownSelector">@color/colorAccentDark</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColorHint">@color/colorPrimaryLight</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:completionThreshold">2</item>
         <item name="android:textCursorDrawable">@drawable/shape_cursor</item>

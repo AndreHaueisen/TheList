@@ -18,7 +18,9 @@
     <color name="colorSecondaryWhite">#fff</color>
 
     <color name="colorDarkTransparent">#b9000000</color>
-    <color name="colorNeutral">#686868</color>
+    <color name="colorNeutral">#616161</color>
+    <color name="colorNeutralLight">#bdbdbd</color>
+    <color name="colorNeutralSmooth">#e0e0e0</color>
 
 
     <color name="omfm_default_color">#DD2C00</color>
