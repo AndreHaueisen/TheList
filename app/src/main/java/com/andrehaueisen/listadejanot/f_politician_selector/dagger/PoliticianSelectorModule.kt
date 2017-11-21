@@ -1,5 +1,6 @@
 package com.andrehaueisen.listadejanot.f_politician_selector.dagger
 
+import android.content.ContentResolver
 import android.support.v4.app.LoaderManager
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
@@ -16,7 +17,7 @@ import javax.inject.Named
  * Created by andre on 5/11/2017.
  */
 @Module
-class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
+class PoliticianSelectorModule(private val mLoaderManager: LoaderManager, private val contentResolver: ContentResolver) {
 
     @PoliticianSelectorScope
     @Provides
@@ -39,6 +40,6 @@ class PoliticianSelectorModule(private val mLoaderManager: LoaderManager) {
 
     @PoliticianSelectorScope
     @Provides
-    fun provideImageFetcherModel(imageFetcherService: ImageFetcherService) = ImageFetcherModel(imageFetcherService)
+    fun provideImageFetcherModel(imageFetcherService: ImageFetcherService) = ImageFetcherModel(imageFetcherService, contentResolver)
 
 }

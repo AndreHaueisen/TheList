@@ -15,6 +15,8 @@ import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.d_activity_main_lists_choices.*
 
 
@@ -30,6 +32,7 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
         setToolbar()
         setFabMenu()
         setButtons()
+        setAdView()
     }
 
     fun beginDatabaseLoadingAlertDialog() {
@@ -91,15 +94,21 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
             extras.putParcelableArrayList(BUNDLE_PRESIDENTES_LIST, presidentes)
             extras.putString(BUNDLE_SORT_TYPE, mSortType.name)
 
+            val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
+            val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
             val statusBar = findViewById<View>(android.R.id.statusBarBackground)
             val navigationBar = findViewById<View>(android.R.id.navigationBarBackground)
 
-            val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
-            val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
-            val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
-            val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
+            val pairs = mutableListOf(toolbarPair, fabMenuPair)
 
-            val options = ActivityOptions.makeSceneTransitionAnimation(this@with, statusBarPair, navigationBarPair, fabMenuPair, toolbarPair)
+            if(statusBar != null && navigationBar != null){
+                val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
+                val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
+                pairs += statusBarPair
+                pairs += navigationBarPair
+            }
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(this@with, *pairs.toTypedArray())
 
             startNewActivity(MainListsPresenterActivity::class.java, extras = extras, options = options.toBundle())
         }
@@ -174,6 +183,14 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                     startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
                 }
             })
+        }
+    }
+
+    private fun setAdView(){
+        with(mPresenterActivity){
+            val adViewBanner = findViewById<AdView>(R.id.adView)
+            val adRequest = AdRequest.Builder().build()
+            adViewBanner.loadAd(adRequest)
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.andrehaueisen.listadejanot.g_user_vote_list.mvp
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.animation.AnimationUtils
 import co.ceryle.radiorealbutton.RadioRealButton
@@ -47,7 +46,7 @@ class UserVoteListView(private val mPresenterActivity: UserVoteListPresenterActi
     private fun setRecyclerView(savedState: Bundle?) = with(mPresenterActivity) {
         votes_recycler_view.setHasFixedSize(true)
         votes_recycler_view.setLayoutAnimation()
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = getProperLayoutManager()
 
         if (savedState != null) {
             mCurrentShowingList = savedState.getInt(BUNDLE_CURRENT_SHOWING_LIST)

@@ -13,8 +13,8 @@ android {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 20
-        versionName "0.9.1"
+        versionCode 21
+        versionName "0.9.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         resConfigs "auto"
@@ -23,6 +23,7 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'SEARCH_API_KEY', SearchApiKey
         it.buildConfigField 'String', 'SEARCH_ID', SearchId
+        it.buildConfigField 'String', 'ADD_MOB_ID', AddMobId
     }
 
     buildTypes {
@@ -71,6 +72,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebase_version"
     implementation "com.google.firebase:firebase-storage:$firebase_version"
     implementation "com.google.firebase:firebase-messaging:$firebase_version"
+    implementation "com.google.firebase:firebase-ads:$firebase_version"
 
     implementation 'com.firebaseui:firebase-ui-auth:3.1.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.27.0'

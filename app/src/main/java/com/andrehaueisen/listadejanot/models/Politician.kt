@@ -9,7 +9,8 @@ import kotlin.collections.HashMap
 /**
  * Created by andre on 9/25/2017.
  */
-data class Politician(@Exclude var post: Post? = null,
+data class Politician(@Exclude var sqlId: Long? = null,
+                      @Exclude var post: Post? = null,
                       var name: String = "",
                       @Exclude var email: String? = null,
                       var honestyGrade: Float = -1F,
@@ -26,8 +27,10 @@ data class Politician(@Exclude var post: Post? = null,
                       var answerVotersCount: Int = 0,
 
                       var recommendationsCount: Int = 0,
-                      var condemnationsCount: Int = 0) : Parcelable, Comparable<Politician> {
+                      var condemnationsCount: Int = 0,
 
+                      @Exclude var imageUrl: String? = null,
+                      @Exclude var imageTimestamp: String? = null) : Parcelable, Comparable<Politician> {
     enum class Post : Parcelable {
         DEPUTADO, DEPUTADA, SENADOR, SENADORA, GOVERNADOR, GOVERNADORA, PRESIDENTE;
 
@@ -47,12 +50,12 @@ data class Politician(@Exclude var post: Post? = null,
         }
     }
 
-    fun resetPoliticianListsCount(recommendationsCount: Int, condemnationsCount: Int){
+    fun resetPoliticianListsCount(recommendationsCount: Int, condemnationsCount: Int) {
         this.recommendationsCount = recommendationsCount
         this.condemnationsCount = condemnationsCount
     }
 
-    fun recalculateOverallGrade(){
+    fun recalculateOverallGrade() {
 
         val grades = listOf(honestyGrade, leaderGrade, promiseKeeperGrade, rulesForThePeopleGrade, answerVotersGrade)
 
@@ -103,6 +106,7 @@ data class Politician(@Exclude var post: Post? = null,
     override fun toString(): String = name
 
     constructor(source: Parcel) : this(
+            source.readValue(Long::class.java.classLoader) as Long?,
             source.readValue(Int::class.java.classLoader)?.let { Post.values()[it as Int] },
             source.readString(),
             source.readString(),
@@ -118,12 +122,15 @@ data class Politician(@Exclude var post: Post? = null,
             source.readInt(),
             source.readInt(),
             source.readInt(),
-            source.readInt()
+            source.readInt(),
+            source.readString(),
+            source.readString()
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeValue(sqlId)
         writeValue(post?.ordinal)
         writeString(name)
         writeString(email)
@@ -140,6 +147,8 @@ data class Politician(@Exclude var post: Post? = null,
         writeInt(answerVotersCount)
         writeInt(recommendationsCount)
         writeInt(condemnationsCount)
+        writeString(imageUrl)
+        writeString(imageTimestamp)
     }
 
     companion object {

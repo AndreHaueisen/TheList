@@ -38,8 +38,8 @@
 
             <LinearLayout
                 android:id="@+id/top_recommendations_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_buttons"
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/image_margin"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -79,8 +79,8 @@
 
             <LinearLayout
                 android:id="@+id/top_condemnations_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/image_margin"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -119,8 +119,8 @@
 
             <LinearLayout
                 android:id="@+id/top_overall_grade_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/star_margin_top"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -159,8 +159,8 @@
 
             <LinearLayout
                 android:id="@+id/worst_overall_grade_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_buttons"
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/star_margin_top"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -198,16 +198,16 @@
 
             <LinearLayout
                 android:id="@+id/media_highlight_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_buttons"
                 android:elevation="2dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/ad_mod_card_view"
                 app:layout_constraintEnd_toStartOf="@+id/search_view"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/image_margin"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -241,15 +241,15 @@
 
             <LinearLayout
                 android:id="@+id/search_view"
-                android:layout_width="136dp"
-                android:layout_height="136dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="@dimen/list_choices_buttons_size"
+                android:layout_height="@dimen/list_choices_buttons_size"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_buttons"
                 android:elevation="2dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/ad_mod_card_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/media_highlight_view"
@@ -260,7 +260,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/image_margin"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -279,6 +279,31 @@
                     android:text="@string/individual_search"
                     android:textAlignment="center"/>
             </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/ad_mod_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="78dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:cardElevation="1dp"
+                app:cardCornerRadius="50dp">
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:adSize="MEDIUM_RECTANGLE"
+                    app:adUnitId="@string/official_block_id">
+                </com.google.android.gms.ads.AdView>
+
+            </android.support.v7.widget.CardView>
 
         </android.support.constraint.ConstraintLayout>
 

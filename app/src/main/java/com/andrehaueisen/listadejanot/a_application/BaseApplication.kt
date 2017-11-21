@@ -2,12 +2,14 @@ package com.andrehaueisen.listadejanot.a_application
 
 import android.app.Activity
 import android.app.Application
+import com.andrehaueisen.listadejanot.BuildConfig
 import com.andrehaueisen.listadejanot.a_application.dagger.ApplicationComponent
 import com.andrehaueisen.listadejanot.a_application.dagger.ApplicationModule
 import com.andrehaueisen.listadejanot.a_application.dagger.ContextModule
 import com.andrehaueisen.listadejanot.a_application.dagger.DaggerApplicationComponent
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -25,6 +27,8 @@ class BaseApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()
+
+        MobileAds.initialize(this, BuildConfig.ADD_MOB_ID)
 
         val firebaseInstance = FirebaseDatabase.getInstance()
         //firebaseInstance.setLogLevel(Logger.Level.DEBUG)

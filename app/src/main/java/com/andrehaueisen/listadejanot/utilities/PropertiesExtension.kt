@@ -21,7 +21,7 @@ const val BUNDLE_PRESIDENTES_LIST = "bundle_presidentes_list"
 const val BUNDLE_SENADORES_LIST = "bundle_senadores_list"
 const val BUNDLE_GOVERNADORES_LIST = "bundle_governadores_list"
 const val BUNDLE_DEPUTADOS_LIST = "bundle_deputados_list"
-const val BUNDLE_SORT_TYPE = "budle_sort_type"
+const val BUNDLE_SORT_TYPE = "bundle_sort_type"
 const val BUNDLE_PRESIDENTES_LAYOUT_MANAGER =  "bundle_presidentes_layout_manager"
 const val BUNDLE_SENADORES_LAYOUT_MANAGER =  "bundle_senadores_layout_manager"
 const val BUNDLE_GOVERNADORES_LAYOUT_MANAGER = "bundle_governadores_layout_manager"
@@ -58,7 +58,7 @@ const val WILL_VOTE_POLITICIANS_ADAPTER_TYPE = 1
 const val DEFAULT_ANIMATIONS_DURATION: Long = 500
 const val QUICK_ANIMATIONS_DURATION: Long = 250
 const val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
-const val UNEXISTING_GRADE_VALUE: Float = -1F
+const val NONEXISTING_GRADE_VALUE: Float = -1F
 
 const val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 const val SHARED_MESSAGE_TOKEN = "message_token"
@@ -69,8 +69,11 @@ val politiciansEntry = PoliticiansContract.Companion.PoliticiansEntry()
 const val LOADER_ID = 0
 
 val POLITICIANS_COLUMNS = arrayOf(
+        politiciansEntry._ID,
         politiciansEntry.COLUMN_POST,
-        politiciansEntry.COLUMN_EMAIL)
+        politiciansEntry.COLUMN_EMAIL,
+        politiciansEntry.COLUMN_IMAGE_URL,
+        politiciansEntry.COLUMN_IMAGE_TIMESTAMP)
 
 const val NOTIFICATION_CHANNEL_ID = "com.andrehaueisen.listadejanot.notificationChannel"
 const val NEW_POLITICIAN_CHANNEL = "new_politician_channel"

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.util.Log
 import android.util.SparseArray
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Politician
@@ -34,8 +35,11 @@ class MainListsChoicesModel(
         private val mContext: Context,
         mListReadyPublishSubject: PublishSubject<Boolean>) : LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val COLUMNS_INDEX_POST = 0
-    private val COLUMNS_INDEX_EMAIL = 1
+    private val COLUMNS_INDEX_ID = 0
+    private val COLUMNS_INDEX_POST = 1
+    private val COLUMNS_INDEX_EMAIL = 2
+    private val COLUMNS_INDEX_IMAGE_URL = 3
+    private val COLUMNS_INDEX_IMAGE_TIMESTAMP = 4
 
     private val mDeputadosPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
     private val mSenadoresPublishSubject: PublishSubject<ArrayList<Politician>> = PublishSubject.create()
@@ -122,35 +126,49 @@ class MainListsChoicesModel(
             data.moveToFirst()
 
             for (i in 0 until data.count) {
+                val id = data.getLong(COLUMNS_INDEX_ID)
                 val politicianEmail = data.getString(COLUMNS_INDEX_EMAIL)
+                val imageUrl: String? = data.getString(COLUMNS_INDEX_IMAGE_URL)
+                val imageTimestamp: String? = data.getString(COLUMNS_INDEX_IMAGE_TIMESTAMP)
 
-                when (data.getString(COLUMNS_INDEX_POST)) {
+                val politicianPair: Pair<Politician, Politician.Post> = when (data.getString(COLUMNS_INDEX_POST)) {
                     Politician.Post.DEPUTADO.name ->
-                        mDeputadosList.first { deputado -> deputado.email == politicianEmail }.post = Politician.Post.DEPUTADO
+                        Pair(mDeputadosList.first { deputado -> deputado.email == politicianEmail }, Politician.Post.DEPUTADO)
 
                     Politician.Post.DEPUTADA.name ->
-                        mDeputadosList.first { deputada -> deputada.email == politicianEmail }.post = Politician.Post.DEPUTADA
+                        Pair(mDeputadosList.first { deputada -> deputada.email == politicianEmail }, Politician.Post.DEPUTADA)
 
                     Politician.Post.SENADOR.name ->
-                        mSenadoresList.first { senador -> senador.email == politicianEmail }.post = Politician.Post.SENADOR
+                        Pair(mSenadoresList.first { senador -> senador.email == politicianEmail }, Politician.Post.SENADOR)
 
                     Politician.Post.SENADORA.name ->
-                        mSenadoresList.first { senadora -> senadora.email == politicianEmail }.post = Politician.Post.SENADORA
+                        Pair(mSenadoresList.first { senadora -> senadora.email == politicianEmail }, Politician.Post.SENADORA)
 
                     Politician.Post.GOVERNADOR.name ->
-                        mGovernadoresList.first { governador -> governador.email == politicianEmail }.post = Politician.Post.GOVERNADOR
+                        Pair(mGovernadoresList.first { governador -> governador.email == politicianEmail }, Politician.Post.GOVERNADOR)
 
                     Politician.Post.GOVERNADORA.name ->
-                        mGovernadoresList.first { governadora -> governadora.email == politicianEmail }.post = Politician.Post.GOVERNADORA
+                        Pair(mGovernadoresList.first { governadora -> governadora.email == politicianEmail }, Politician.Post.GOVERNADORA)
 
                     Politician.Post.PRESIDENTE.name ->
-                        mPresidentesList.first { presidente -> presidente.email == politicianEmail }.post = Politician.Post.PRESIDENTE
+                        Pair(mPresidentesList.first { presidente -> presidente.email == politicianEmail }, Politician.Post.PRESIDENTE)
+
+                    else -> {
+                        Log.e("MainListsChoicesModel", "Else block reached. Politician not found!")
+                        Pair(mPresidentesList.first { presidente -> presidente.email == politicianEmail }, Politician.Post.PRESIDENTE)
+                    }
                 }
+
+                val politician = politicianPair.first
+                politician.sqlId = id
+                politician.post = politicianPair.second
+                politician.imageUrl = imageUrl
+                politician.imageTimestamp = imageTimestamp
 
                 data.moveToNext()
             }
-            mPoliticiansLoadingStatusPublishSubject.onNext(true)
 
+            mPoliticiansLoadingStatusPublishSubject.onNext(true)
             data.close()
         }
     }

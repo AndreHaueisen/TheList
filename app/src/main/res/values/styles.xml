@@ -30,8 +30,12 @@
         <item name="android:textCursorDrawable">@drawable/shape_cursor</item>
     </style>
 
-    <style name="RobotoThinItalicTextStyle">
+    <style name="RobotoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/colorPrimaryLight</item>
+        <item name="android:fontFamily">@string/font_roboto_regular</item>
+    </style>
+
+    <style name="RobotoThinItalicTextStyle" parent="RobotoRegularTextStyle">
         <item name="android:fontFamily">@string/font_roboto_thin</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textSize">16sp</item>
@@ -41,23 +45,17 @@
         <item name="fontFamily">@string/font_roboto_medium</item>
     </style>
 
-    <style name="RobotoBlackTextStyle">
+    <style name="RobotoBlackTextStyle" parent="RobotoRegularTextStyle">
         <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@color/colorPrimaryLight</item>
         <item name="android:fontFamily">@string/font_roboto_black</item>
     </style>
 
-    <style name="RobotoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/colorPrimaryLight</item>
-        <item name="android:fontFamily">@string/font_roboto_regular</item>
-    </style>
-
-    <style name="RobotoThinTextStyle" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/colorPrimaryLight</item>
+    <style name="RobotoThinTextStyle" parent="RobotoRegularTextStyle">
         <item name="android:fontFamily">@string/font_roboto_thin</item>
     </style>
 
     <style name="LatoRegularTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">@dimen/text_size_default</item>
         <item name="android:textColor">@color/colorPrimaryLight</item>
         <item name="android:fontFamily">@font/lato</item>
     </style>

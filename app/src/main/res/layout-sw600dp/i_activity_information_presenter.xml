@@ -11,15 +11,16 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:title="@string/information"
         app:theme="@style/ToolbarStyle"
-        android:background="@color/colorPrimary"
         app:titleTextColor="@android:color/white">
 
     </android.support.v7.widget.Toolbar>
 
 
     <TextView
+        android:id="@+id/app_motivation_text_view"
         style="@style/LatoRegularTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -192,8 +192,8 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                 with(remotePolitician) {
                     when (voteType) {
                         RatingBarType.HONESTY -> {
-                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                            val isNotFirstGrade = honestyGrade != UNEXISTING_GRADE_VALUE
+                            val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = honestyGrade != NONEXISTING_GRADE_VALUE
 
                             honestyGrade = if (isNotFirstGrade) {
                                 if (containsUserPastGrade) {
@@ -209,8 +209,8 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                         }
 
                         RatingBarType.LEADER -> {
-                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                            val isNotFirstGrade = leaderGrade != UNEXISTING_GRADE_VALUE
+                            val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = leaderGrade != NONEXISTING_GRADE_VALUE
 
                             leaderGrade = if (isNotFirstGrade) {
                                 if (containsUserPastGrade) {
@@ -226,8 +226,8 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                         }
 
                         RatingBarType.PROMISE_KEEPER -> {
-                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                            val isNotFirstGrade = promiseKeeperGrade != UNEXISTING_GRADE_VALUE
+                            val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = promiseKeeperGrade != NONEXISTING_GRADE_VALUE
 
                             promiseKeeperGrade = if (isNotFirstGrade) {
                                 if (containsUserPastGrade) {
@@ -243,8 +243,8 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                         }
 
                         RatingBarType.RULES_FOR_PEOPLE -> {
-                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                            val isNotFirstGrade = rulesForThePeopleGrade != UNEXISTING_GRADE_VALUE
+                            val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = rulesForThePeopleGrade != NONEXISTING_GRADE_VALUE
 
                             rulesForThePeopleGrade = if (isNotFirstGrade) {
                                 if (containsUserPastGrade) {
@@ -260,8 +260,8 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
                         }
 
                         RatingBarType.ANSWER_VOTERS -> {
-                            val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                            val isNotFirstGrade = answerVotersGrade != UNEXISTING_GRADE_VALUE
+                            val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                            val isNotFirstGrade = answerVotersGrade != NONEXISTING_GRADE_VALUE
 
                             answerVotersGrade = if (isNotFirstGrade) {
                                 if (containsUserPastGrade) {

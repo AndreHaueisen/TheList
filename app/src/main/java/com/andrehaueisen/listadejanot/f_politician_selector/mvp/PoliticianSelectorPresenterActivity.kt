@@ -66,7 +66,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
         DaggerPoliticianSelectorComponent.builder()
                 .applicationComponent(BaseApplication.get(this).getAppComponent())
-                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager))
+                .politicianSelectorModule(PoliticianSelectorModule(supportLoaderManager, contentResolver))
                 .imageFetcherModule(ImageFetcherModule())
                 .build()
                 .inject(this)
@@ -157,7 +157,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
 
     fun subscribeToImageFetcher(politician: Politician?) {
         politician?.let {
-            mImageFetcherModel.getPoliticianImages(politician.name, politician.post!!)
+            mImageFetcherModel.getPoliticianImages(politician)
                     .firstElement()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

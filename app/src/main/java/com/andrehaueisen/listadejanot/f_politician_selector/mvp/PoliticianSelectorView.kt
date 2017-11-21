@@ -28,10 +28,10 @@ import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
+import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -51,7 +51,6 @@ import java.io.IOException
 class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorPresenterActivity) : PoliticianSelectorMvpContract.View {
 
     private val LOG_TAG = PoliticianSelectorView::class.java.simpleName
-    private val mGlide = Glide.with(mPresenterActivity)
 
     private var mTempFilePath: String = ""
     private var mLastButtonPosition = 0
@@ -119,15 +118,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         val politicianEncodedEmail = politician.email?.encodeEmail() ?: "no_email_found"
 
         honesty_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
-            val outdatedUserGrade = user.honestyGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val outdatedUserGrade = user.honestyGrades[politicianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             if (changedByUser) {
                 with(politician) {
 
                     user.honestyGrades.put(politicianEncodedEmail, newGrade)
                     mPresenterActivity.updateGrade(RatingBarType.HONESTY, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = honestyGrade != UNEXISTING_GRADE_VALUE
+                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = honestyGrade != NONEXISTING_GRADE_VALUE
 
                     honestyGrade = if (isNotFirstGrade) {
                         if (containsUserPastGrade) {
@@ -149,15 +148,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
 
         leader_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
-            val outdatedUserGrade = user.leaderGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val outdatedUserGrade = user.leaderGrades[politicianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             if (changedByUser) {
                 with(politician) {
 
                     user.leaderGrades.put(politicianEncodedEmail, newGrade)
                     mPresenterActivity.updateGrade(RatingBarType.LEADER, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = leaderGrade != UNEXISTING_GRADE_VALUE
+                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = leaderGrade != NONEXISTING_GRADE_VALUE
 
                     leaderGrade = if (isNotFirstGrade) {
                         if (containsUserPastGrade) {
@@ -179,15 +178,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
 
         promise_keeper_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
-            val outdatedUserGrade = user.promiseKeeperGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val outdatedUserGrade = user.promiseKeeperGrades[politicianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             if (changedByUser) {
                 with(politician) {
 
                     user.promiseKeeperGrades.put(politicianEncodedEmail, newGrade)
                     mPresenterActivity.updateGrade(RatingBarType.PROMISE_KEEPER, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = promiseKeeperGrade != UNEXISTING_GRADE_VALUE
+                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = promiseKeeperGrade != NONEXISTING_GRADE_VALUE
 
                     promiseKeeperGrade = if (isNotFirstGrade) {
                         if (containsUserPastGrade) {
@@ -210,15 +209,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
 
         rules_for_the_people_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
-            val outdatedUserGrade = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val outdatedUserGrade = user.rulesForThePeopleGrades[politicianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             if (changedByUser) {
                 with(politician) {
 
                     user.rulesForThePeopleGrades.put(politicianEncodedEmail, newGrade)
                     mPresenterActivity.updateGrade(RatingBarType.RULES_FOR_PEOPLE, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = rulesForThePeopleGrade != UNEXISTING_GRADE_VALUE
+                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = rulesForThePeopleGrade != NONEXISTING_GRADE_VALUE
 
                     rulesForThePeopleGrade = if (isNotFirstGrade) {
                         if (containsUserPastGrade) {
@@ -241,15 +240,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
 
         answer_voters_rating_bar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, newGrade, changedByUser ->
-            val outdatedUserGrade = user.answerVotersGrades[politicianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val outdatedUserGrade = user.answerVotersGrades[politicianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             if (changedByUser) {
                 with(politician) {
 
                     user.answerVotersGrades.put(politicianEncodedEmail, newGrade)
                     mPresenterActivity.updateGrade(RatingBarType.ANSWER_VOTERS, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != UNEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = answerVotersGrade != UNEXISTING_GRADE_VALUE
+                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                    val isNotFirstGrade = answerVotersGrade != NONEXISTING_GRADE_VALUE
 
                     answerVotersGrade = if (isNotFirstGrade) {
                         if (containsUserPastGrade) {
@@ -331,48 +330,41 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     }
 
     fun notifyImageReady(imageItem: Item) {
-        val imageUrl = imageItem.link
-        val originalImageHeight = imageItem.image?.height!!
-        val originalImageWidth = imageItem.image?.width!!
 
-        val requestOption: RequestOptions
-        val targetHeight = mPresenterActivity.convertDipToPixel(200F)
-        val metrics = DisplayMetrics()
-        mPresenterActivity.windowManager.defaultDisplay.getMetrics(metrics)
+        with(mPresenterActivity) {
+            val imageUrl = imageItem.link
 
-        if (originalImageHeight > originalImageWidth) {
-            requestOption = RequestOptions
-                    .encodeFormatOf(Bitmap.CompressFormat.JPEG)
-                    .encodeQuality(25)
-                    .placeholder(R.drawable.ic_launcher)
-                    .override(metrics.widthPixels, targetHeight.toInt())
+            val requestOption: RequestOptions
+            val targetHeight = convertDipToPixel(200F)
+            val metrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(metrics)
 
-        } else {
             requestOption = RequestOptions
                     .encodeFormatOf(Bitmap.CompressFormat.JPEG)
                     .encodeQuality(30)
                     .placeholder(R.drawable.ic_launcher)
                     .override(metrics.widthPixels, targetHeight.toInt())
-        }
 
-        mGlide.downloadOnly()
-                .load(imageUrl)
-                .apply(requestOption)
-                .listener(object : RequestListener<File> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<File>?, isFirstResource: Boolean): Boolean = false
+            val glide = Glide.with(this)
+            glide.downloadOnly()
+                    .load(imageUrl)
+                    .apply(requestOption)
+                    .listener(object : RequestListener<File> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<File>?, isFirstResource: Boolean): Boolean = false
 
-                    override fun onResourceReady(resource: File?, model: Any?, target: Target<File>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        with(mPresenterActivity) {
-                            mGlide.load(resource)
+                        override fun onResourceReady(resource: File?, model: Any?, target: Target<File>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+
+                            glide.load(resource)
                                     .apply(requestOption)
-                                    .transition(DrawableTransitionOptions.withCrossFade().crossFade())
+                                    .transition(GenericTransitionOptions.with(R.anim.item_animation_grow_from_center_big_delay))
                                     .into(search_politician_image_view)
 
                             search_politician_image_view.contentDescription = getString(R.string.description_politician_image, getSinglePolitician()?.name)
+
+                            return false
                         }
-                        return false
-                    }
-                }).submit(metrics.widthPixels, targetHeight.toInt())
+                    }).submit(metrics.widthPixels, targetHeight.toInt())
+        }
     }
 
     private fun bindPoliticianDataToViews(politician: Politician) {
@@ -397,11 +389,11 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         with(mPresenterActivity) {
             val user = mPresenterActivity.getUser()
 
-            val honestyGrade = user.honestyGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val leaderGrade = user.leaderGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val promiseKeeperGrade = user.promiseKeeperGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val rulesForThePeopleGrade = user.rulesForThePeopleGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
-            val answerVotersGrade = user.answerVotersGrades[mPoliticianEncodedEmail] ?: UNEXISTING_GRADE_VALUE
+            val honestyGrade = user.honestyGrades[mPoliticianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
+            val leaderGrade = user.leaderGrades[mPoliticianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
+            val promiseKeeperGrade = user.promiseKeeperGrades[mPoliticianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
+            val rulesForThePeopleGrade = user.rulesForThePeopleGrades[mPoliticianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
+            val answerVotersGrade = user.answerVotersGrades[mPoliticianEncodedEmail] ?: NONEXISTING_GRADE_VALUE
 
             honesty_rating_bar.rating = honestyGrade
             leader_rating_bar.rating = leaderGrade

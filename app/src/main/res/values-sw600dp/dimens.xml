@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- d_activity_main_lists dimensions -->
+    <dimen name="image_margin">24dp</dimen>
+    <dimen name="star_margin_top">32dp</dimen>
+
+    <dimen name="image_star_width_size">166.4dp</dimen>
+    <dimen name="image_star_height_size">104dp</dimen>
+    <dimen name="list_choices_images_size">120dp</dimen>
+
+    <dimen name="text_size_default">20sp</dimen>
+
+    <dimen name="list_choices_buttons_size">248dp</dimen>
+
+    <!-- f_politician_selector dimensions-->
+    <dimen name="selector_image_height">400dp</dimen>
+    <dimen name="politician_buttons_margin">32dp</dimen>
+
+</resources>
