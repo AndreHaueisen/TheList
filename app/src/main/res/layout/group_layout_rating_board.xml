@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_two_rectangles"
+    android:background="@drawable/shape_rounded_rectangle"
     android:elevation="1dp"
-    android:orientation="vertical">
+    android:paddingTop="8dp">
+
+    <ImageButton
+        android:id="@+id/left_arrow_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/ripple_square_buttons"
+        android:elevation="3dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:src="@drawable/ic_left_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/rating_bars_view_flipper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rating_bars_view_flipper"/>
+
+    <ImageButton
+        android:id="@+id/right_arrow_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/ripple_square_buttons"
+        android:elevation="3dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:src="@drawable/ic_right_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/rating_bars_view_flipper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rating_bars_view_flipper"/>
 
     <com.andrehaueisen.listadejanot.views.IndicatorViewFlipper
         android:id="@+id/rating_bars_view_flipper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorNeutralSmooth"
+        android:elevation="3dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/right_arrow_image_view"
+        app:layout_constraintStart_toEndOf="@+id/left_arrow_image_view"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +65,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/honesty_title"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,21 +88,22 @@
 
             <TextView
                 android:id="@+id/your_grade_honesty_text_view"
-                style="@style/LatoLightTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:textColor="@color/colorNeutral"
+                android:textSize="15sp"
                 tools:text="Your Grade: 4,3"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
-
 
             <TextView
                 android:id="@+id/leader_rating_bar_title_text_view"
@@ -84,7 +117,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/leader_title"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,12 +140,15 @@
 
             <TextView
                 android:id="@+id/your_grade_leader_text_view"
-                style="@style/LatoLightTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:textColor="@color/colorNeutral"
+                android:textSize="15sp"
                 tools:text="Your Grade: 4,3"/>
 
         </LinearLayout>
@@ -135,7 +171,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/promise_keeper_title"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -158,12 +194,15 @@
 
             <TextView
                 android:id="@+id/your_grade_promise_keeper_text_view"
-                style="@style/LatoLightTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:textColor="@color/colorNeutral"
+                android:textSize="15sp"
                 tools:text="Your Grade: 4,3"/>
 
         </LinearLayout>
@@ -171,7 +210,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -186,7 +224,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/rules_for_the_people_title"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -209,12 +247,15 @@
 
             <TextView
                 android:id="@+id/your_grade_rules_for_people_text_view"
-                style="@style/LatoLightTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:textColor="@color/colorNeutral"
+                android:textSize="15sp"
                 tools:text="Your Grade: 4,3"/>
 
         </LinearLayout>
@@ -222,7 +263,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -237,7 +277,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/answer_voters_title"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -262,41 +302,39 @@
 
             <TextView
                 android:id="@+id/your_grade_answer_voters_text_view"
-                style="@style/LatoLightTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:textColor="@android:color/white"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorNeutral"
+                android:textSize="15sp"
                 tools:text="Your Grade: 4,3"/>
 
         </LinearLayout>
 
     </com.andrehaueisen.listadejanot.views.IndicatorViewFlipper>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="16dp"
-        android:background="?android:colorBackground"/>
-
     <TextView
         android:id="@+id/honesty_grade_text_view"
-        style="@style/LatoLightTextStyle"
-        android:layout_width="wrap_content"
+        style="@style/LatoRegularTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating_bars_view_flipper"/>
 
     <TextView
         android:id="@+id/leader_grade_text_view"
-        style="@style/LatoLightTextStyle"
-        android:layout_width="wrap_content"
+        style="@style/LatoRegularTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
@@ -304,12 +342,15 @@
         android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/honesty_grade_text_view"/>
 
     <TextView
         android:id="@+id/promise_keeper_grade_text_view"
-        style="@style/LatoLightTextStyle"
-        android:layout_width="wrap_content"
+        style="@style/LatoRegularTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
@@ -317,12 +358,15 @@
         android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leader_grade_text_view"/>
 
     <TextView
         android:id="@+id/rules_for_the_people_grade_text_view"
-        style="@style/LatoLightTextStyle"
-        android:layout_width="wrap_content"
+        style="@style/LatoRegularTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
@@ -330,21 +374,29 @@
         android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/promise_keeper_grade_text_view"/>
 
     <TextView
         android:id="@+id/answer_voters_grade_text_view"
-        style="@style/LatoLightTextStyle"
-        android:layout_width="wrap_content"
+        style="@style/LatoRegularTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rules_for_the_people_grade_text_view"
+        app:layout_constraintVertical_bias="0.0"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
 

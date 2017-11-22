@@ -19,27 +19,26 @@ class IndicatorViewFlipper : ViewFlipper {
 
     private val paint = Paint()
 
-
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
 
         val width = width
 
-        val margin = 2F
-        val radius = 5F
+        val margin = 3F
+        val radius = 6F
         var cx: Float = (width / 2F) - ((radius+margin) * 2F * childCount / 2F)
-        val cy: Float = height - 15F
+        val cy: Float = height - 20F
 
         canvas.save()
 
         for (i in 0 until childCount) {
 
             if (i == displayedChild) {
-                paint.color = ContextCompat.getColor(context, android.R.color.white)
+                paint.color = ContextCompat.getColor(context, R.color.colorAccentDark)
                 canvas.drawCircle(cx, cy, radius, paint)
 
             } else {
-                paint.color = ContextCompat.getColor(context, R.color.colorNeutralLight)
+                paint.color = ContextCompat.getColor(context, R.color.colorAccent)
                 canvas.drawCircle(cx, cy, radius, paint)
             }
             cx += 2 * (radius + margin)

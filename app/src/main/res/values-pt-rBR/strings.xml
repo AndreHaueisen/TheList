@@ -53,7 +53,7 @@
     <string name="governora">Governadora</string>
     <string name="president">Presidente</string>
     <string name="search">Pesquise</string>
-    <string name="your_grade">Sua nota: %.1f</string>
+    <string name="your_grade">Sua nota  %.1f</string>
     <string name="politician_added_to_voting_list">%1$s adicionado à sua lista de votação</string>
     <string name="politician_added_to_suspect_list">%1$s adicionado à sua lista de suspeitos</string>
     <string name="politician_removed_from_list">%1$s retirado da lista</string>
@@ -65,12 +65,12 @@
     <string name="rules_for_the_people_title">Governa pelo povo</string>
     <string name="answer_voters_title">Responde eleitores</string>
 
-    <string name="honesty_grade">Honestidade:  %1$s</string>
-    <string name="leader_grade">Liderança:  %1$s</string>
-    <string name="promise_keeper_grade">Cumpre promessas:  %1$s</string>
-    <string name="rules_for_the_people_grade">Governa pelo povo:  %1$s</string>
-    <string name="answer_voters_grade">Responde eleitores:  %1$s</string>
-    <string name="overall_grade">Nota Geral:  %1$s</string>
+    <string name="honesty_grade">Honestidade   %1$s</string>
+    <string name="leader_grade">Liderança   %1$s</string>
+    <string name="promise_keeper_grade">Cumpre promessas   %1$s</string>
+    <string name="rules_for_the_people_grade">Governa pelo povo   %1$s</string>
+    <string name="answer_voters_grade">Responde eleitores   %1$s</string>
+    <string name="overall_grade">Nota Geral   %1$s</string>
 
     <string name="cant_handle_intent_message">Impossível compartilhar. Nenhum app suportado encontrado</string>
 

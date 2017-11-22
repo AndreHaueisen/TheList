@@ -12,7 +12,6 @@ import android.support.v4.util.Pair
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -322,7 +321,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 setEmailButtonClickListener(politician)
                 setSearchOnWebButtonClickListener(politician)
                 setRatingBarsClickListeners(politician)
-                setViewFlipperClickListener()
+                setArrowClickListeners()
 
                 initiateShowAnimations(politician)
             }
@@ -471,38 +470,26 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private var initialX: Float = 0F
+    private fun setArrowClickListeners() {
 
-    private fun setViewFlipperClickListener() {
         with(mPresenterActivity) {
 
-            rating_bars_view_flipper.setOnTouchListener({ _, motionEvent ->
-                when (motionEvent.action) {
-
-                    MotionEvent.ACTION_DOWN -> {
-                        initialX = motionEvent.x
-                        true
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-                        val finalX = motionEvent.x
-
-                        if (finalX > initialX) {
-                            rating_bars_view_flipper.setInAnimation(this, android.R.anim.slide_in_left)
-                            rating_bars_view_flipper.setOutAnimation(this, android.R.anim.slide_out_right)
-                            rating_bars_view_flipper.showPrevious()
-
-                        } else if (finalX < initialX) {
-                            rating_bars_view_flipper.setInAnimation(this, R.anim.slide_in_right)
-                            rating_bars_view_flipper.setOutAnimation(this, R.anim.slide_out_left)
-                            rating_bars_view_flipper.showNext()
-                        }
-                        true
-                    }
-                    else -> false
+            left_arrow_image_view.setOnClickListener(object: View.OnClickListener{
+                override fun onClick(view: View?) {
+                    rating_bars_view_flipper.setInAnimation(this@with, R.anim.slide_in_left)
+                    rating_bars_view_flipper.setOutAnimation(this@with, R.anim.slide_out_right)
+                    rating_bars_view_flipper.showPrevious()
                 }
-
             })
+
+            right_arrow_image_view.setOnClickListener(object: View.OnClickListener{
+                override fun onClick(view: View?) {
+                    rating_bars_view_flipper.setInAnimation(this@with, R.anim.slide_in_right)
+                    rating_bars_view_flipper.setOutAnimation(this@with, R.anim.slide_out_left)
+                    rating_bars_view_flipper.showNext()
+                }
+            })
+
         }
     }
 

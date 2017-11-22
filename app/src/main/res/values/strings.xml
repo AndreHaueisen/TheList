@@ -62,7 +62,7 @@
     <string name="congresswoman">Congresswoman</string>
     <string name="president">President</string>
     <string name="search">Search</string>
-    <string name="your_grade">Your grade: %.1f</string>
+    <string name="your_grade">Your grade  %.1f</string>
     <string name="politician_added_to_voting_list">%1$s added to voting list</string>
     <string name="politician_added_to_suspect_list">%1$s added to suspect list</string>
     <string name="politician_removed_from_list">%1$s removed</string>
@@ -74,12 +74,12 @@
     <string name="rules_for_the_people_title">Rules for the people</string>
     <string name="answer_voters_title">Answer voters</string>
 
-    <string name="honesty_grade">Honesty:  %1$s</string>
-    <string name="leader_grade">Leader:  %1$s</string>
-    <string name="promise_keeper_grade">Keeps promises:  %1$s</string>
-    <string name="rules_for_the_people_grade">Rules for the people:  %1$s</string>
-    <string name="answer_voters_grade">Answer voters:  %1$s</string>
-    <string name="overall_grade">Overall Grade:  %1$s</string>
+    <string name="honesty_grade">Honesty   %1$s</string>
+    <string name="leader_grade">Leader   %1$s</string>
+    <string name="promise_keeper_grade">Keeps promises   %1$s</string>
+    <string name="rules_for_the_people_grade">Rules for the people   %1$s</string>
+    <string name="answer_voters_grade">Answer voters   %1$s</string>
+    <string name="overall_grade">Overall Grade   %1$s</string>
 
     <string name="cant_handle_intent_message">Can\'t share. No app support</string>
 

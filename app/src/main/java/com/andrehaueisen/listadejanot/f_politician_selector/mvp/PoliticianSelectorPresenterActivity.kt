@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.group_layout_buttons.*
 import javax.inject.Inject
 
 
-
 class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelectorMvpContract.Presenter {
 
     private val ACTIVITY_REQUEST_CODE = 1
@@ -89,7 +88,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         postponeTransition()
     }
 
-    private fun postponeTransition(){
+    private fun postponeTransition() {
         postponeEnterTransition()
 
         val decor = window.decorView
@@ -105,7 +104,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
     override fun onStart() {
         super.onStart()
 
-        if(!intent.hasExtra(INTENT_POLITICIAN_NAME)){
+        if (!intent.hasExtra(INTENT_POLITICIAN_NAME)) {
             politician_info_group.visibility = View.INVISIBLE
             opinions_button.visibility = View.INVISIBLE
             opinions_text_view.visibility = View.INVISIBLE
@@ -213,8 +212,6 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         startNewActivity(LoginActivity::class.java)
         finish()
     }
-
-
 
     override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
         val intent = Intent(this, UserVoteListPresenterActivity::class.java)

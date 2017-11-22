@@ -174,12 +174,18 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                     val statusBar = findViewById<View>(android.R.id.statusBarBackground)
                     val navigationBar = findViewById<View>(android.R.id.navigationBarBackground)
 
-                    val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
-                    val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
                     val toolbarPair = Pair(main_lists_choices_toolbar as View, getString(R.string.transition_toolbar))
                     val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
 
-                    val options = ActivityOptions.makeSceneTransitionAnimation(this@with, statusBarPair, navigationBarPair, fabMenuPair, toolbarPair)
+                    val pairs = mutableListOf(toolbarPair, fabMenuPair)
+                    if(statusBar != null && navigationBar != null){
+                        val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
+                        val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
+                        pairs += statusBarPair
+                        pairs += navigationBarPair
+                    }
+
+                    val options = ActivityOptions.makeSceneTransitionAnimation(this@with, *pairs.toTypedArray())
                     startNewActivity(PoliticianSelectorPresenterActivity::class.java, options = options.toBundle())
                 }
             })
