@@ -11,10 +11,8 @@ import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.d_main_lists_choices.dagger.DaggerMainListsChoicesComponent
 import com.andrehaueisen.listadejanot.d_main_lists_choices.dagger.MainListsChoicesModule
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
-import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.SortType
-import com.andrehaueisen.listadejanot.utilities.startNewActivity
+import com.andrehaueisen.listadejanot.views.LoginPermissionDialog
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -54,8 +52,6 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
     @Inject
     lateinit var mMainListsChoicesModel: MainListsChoicesModel
 
-    @Inject
-    lateinit var mUser: User
 
     private var mChoicesView: MainListsChoicesView? = null
 
@@ -110,13 +106,12 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
 
     private fun getUserEmail() = mFirebaseAuthenticator.getUserEmail()
 
-    fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
+    fun showUserVoteListIfLogged(): Unit = if (mFirebaseAuthenticator.isUserLoggedIn()) {
         val intent = Intent(this, UserVoteListPresenterActivity::class.java)
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
 
     } else {
-        startNewActivity(LoginActivity::class.java)
-        finish()
+        LoginPermissionDialog(this).show()
     }
 
     fun getAuthenticator() = mFirebaseAuthenticator

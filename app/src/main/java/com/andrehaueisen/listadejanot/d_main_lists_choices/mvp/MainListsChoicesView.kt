@@ -15,6 +15,7 @@ import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
+import com.andrehaueisen.listadejanot.views.LoginPermissionDialog
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.d_activity_main_lists_choices.*
@@ -61,7 +62,8 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
 
                             mLoadingDatabaseAlertDialog?.dismiss()
                             mFirebaseAuthenticator.logout()
-                            startNewActivity(LoginActivity::class.java)
+                            LoginPermissionDialog(this).show()
+
                         } else {
                             showToast(getString(R.string.no_network))
                         }
@@ -124,7 +126,10 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                         R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
                         R.id.action_logout -> {
                             mFirebaseAuthenticator.logout()
-                            startNewActivity(LoginActivity::class.java)
+                            val extras = Bundle()
+                            extras.putString(INTENT_CALLING_ACTIVITY, CallingActivity.MAIN_LISTS_PRESENTER_ACTIVITY.name)
+
+                            startNewActivity(LoginActivity::class.java, extras = extras)
                         }
                     }
                 }
@@ -134,6 +139,17 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
 
     private fun setButtons() {
         with(mPresenterActivity) {
+            lists_highlight_view.setOnClickListener(object: View.OnClickListener{
+                override fun onClick(view: View?) {
+                    if(group_buttons.isShown) {
+                        group_buttons.visibility = View.GONE
+                    } else {
+                        group_buttons.visibility = View.VISIBLE
+                    }
+
+                }
+            })
+
             top_recommendations_view.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
                     mSortType = SortType.RECOMMENDATIONS_COUNT

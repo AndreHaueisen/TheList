@@ -11,6 +11,7 @@
     <string name="governadores_title">Governadores</string>
     <string name="deputados_title">Deputados</string>
 
+    <string name="highlights_by_category">Rankings</string>
     <string name="top_recommendations">Intenções de votos</string>
     <string name="top_suspicions">Suspeitos</string>
     <string name="top_overall_grade">Melhores notas</string>
@@ -95,8 +96,8 @@
 
     <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Excluir opinião atual?</string>
-    <string name="opinion_dialog_button_positive">Confirmar</string>
-    <string name="opinion_dialog_button_negative">Cancelar</string>
+    <string name="opinion_dialog_delete_button_positive">Excluir</string>
+    <string name="opinion_dialog_replace_button_positive">Substituir</string>
 
     <!--i_information strings-->
     <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
@@ -107,7 +108,12 @@
     <string name="unknown_error">Algo deu errado. Tente novamente</string>
 
     <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>
-    <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político. Confirmar substituição?</string>
+    <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político</string>
+
+    <!-- LoginPermissionDialog strings -->
+    <string name="dialog_title">Quem está aí?</string>
+    <string name="dialog_message">Essa ação precisa de login. Vamos fazer isso agora?</string>
+    <string name="login_dialog_positive_button">Vamos</string>
 
     <!--Accessibility strings-->
     <string name="description_erase_search_text">Apagar texto de procura</string>

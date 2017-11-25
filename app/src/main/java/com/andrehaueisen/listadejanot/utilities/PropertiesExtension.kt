@@ -14,8 +14,16 @@ enum class SortType {
     RECOMMENDATIONS_COUNT, CONDEMNATIONS_COUNT, TOP_OVERALL_GRADE, WORST_OVERALL_GRADE, MEDIA_HIGHLIGHT
 }
 
+enum class CallingActivity {
+    MAIN_LISTS_CHOICES_PRESENTER_ACTIVITY,
+    MAIN_LISTS_PRESENTER_ACTIVITY,
+    POLITICIAN_SELECTOR_PRESENTER_ACTIVITY,
+    USER_VOTE_LIST_PRESENTER_ACTIVITY
+}
+
 const val PLAY_STORE_LINK = """http://play.google.com/store/apps/details?id=com.andrehaueisen.listadejanot"""
 
+const val INTENT_CALLING_ACTIVITY = "intent_calling_activity"
 const val INTENT_POLITICIAN_NAME = "intent_politician_name"
 const val BUNDLE_PRESIDENTES_LIST = "bundle_presidentes_list"
 const val BUNDLE_SENADORES_LIST = "bundle_senadores_list"

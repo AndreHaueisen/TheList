@@ -157,13 +157,19 @@
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:rrb_text="@string/your_suspect_list"
                     app:rrb_drawable="@drawable/ic_thief"
+                    app:rrb_textColor="@color/colorPrimary"
+                    app:rrb_drawableGravity="top"
                     app:rrb_ripple="false"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:rrb_drawableGravity="top"
                     app:rrb_drawable="@drawable/ic_politician"
+                    app:rrb_textColor="@color/colorPrimary"
+                    app:rrb_text="@string/your_vote_list"
                     app:rrb_ripple="false"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 

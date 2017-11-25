@@ -285,9 +285,9 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
         })
     }
 
-    fun listenToUser(userListener: ValueEventListener, userEmail: String?) {
-        userEmail?.let {
-            mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).addValueEventListener(userListener)
+    fun listenToUser(userListener: ValueEventListener, userDecodedEmail: String?) {
+        userDecodedEmail?.let {
+            mDatabaseReference.child(LOCATION_USERS).child(userDecodedEmail.encodeEmail()).addValueEventListener(userListener)
         }
     }
 
@@ -363,9 +363,9 @@ class FirebaseRepository(private val mUser: User, private val mDatabaseReference
 
     fun completePublishOptionsList() = mPublishOpinionsList.onComplete()
 
-    fun destroyUserListener(userListener: ValueEventListener, userEmail: String?) {
-        userEmail?.let {
-            mDatabaseReference.child(LOCATION_USERS).child(userEmail.encodeEmail()).removeEventListener(userListener)
+    fun destroyUserListener(userListener: ValueEventListener, userDecodedEmail: String?) {
+        userDecodedEmail?.let {
+            mDatabaseReference.child(LOCATION_USERS).child(userDecodedEmail.encodeEmail()).removeEventListener(userListener)
         }
     }
 

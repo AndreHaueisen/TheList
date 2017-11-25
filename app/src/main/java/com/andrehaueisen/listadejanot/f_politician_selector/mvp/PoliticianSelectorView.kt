@@ -86,7 +86,13 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                         R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
                         R.id.action_logout -> {
                             mFirebaseAuthenticator.logout()
-                            startNewActivity(LoginActivity::class.java)
+                            val extras = Bundle()
+                            extras.putString(INTENT_CALLING_ACTIVITY, CallingActivity.POLITICIAN_SELECTOR_PRESENTER_ACTIVITY.name)
+                            if(getSinglePolitician() != null)
+                                extras.putString(INTENT_POLITICIAN_NAME, getSinglePolitician()?.name)
+
+                            startNewActivity(LoginActivity::class.java, extras = extras)
+                            finish()
                         }
                     }
                 }
@@ -121,27 +127,30 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (changedByUser) {
                 with(politician) {
+                    if (mPresenterActivity.isUserLoggedIn()) {
+                        user.honestyGrades.put(politicianEncodedEmail, newGrade)
+                        mPresenterActivity.updateGrade(RatingBarType.HONESTY, outdatedUserGrade, newGrade, this)
+                        val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                        val isNotFirstGrade = honestyGrade != NONEXISTING_GRADE_VALUE
 
-                    user.honestyGrades.put(politicianEncodedEmail, newGrade)
-                    mPresenterActivity.updateGrade(RatingBarType.HONESTY, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = honestyGrade != NONEXISTING_GRADE_VALUE
-
-                    honestyGrade = if (isNotFirstGrade) {
-                        if (containsUserPastGrade) {
-                            ((honestyGrade * honestyCount) - outdatedUserGrade + newGrade) / honestyCount
+                        honestyGrade = if (isNotFirstGrade) {
+                            if (containsUserPastGrade) {
+                                ((honestyGrade * honestyCount) - outdatedUserGrade + newGrade) / honestyCount
+                            } else {
+                                honestyCount++
+                                ((honestyGrade * (honestyCount - 1)) + newGrade) / honestyCount
+                            }
                         } else {
                             honestyCount++
-                            ((honestyGrade * (honestyCount - 1)) + newGrade) / honestyCount
+                            newGrade
                         }
-                    } else {
-                        honestyCount++
-                        newGrade
-                    }
 
-                    honesty_grade_text_view.setPoliticianGradeText(honestyGrade, R.string.honesty_grade)
-                    your_grade_honesty_text_view.decideOnUserGradeVisibility(newGrade)
-                    ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
+                        honesty_grade_text_view.setPoliticianGradeText(honestyGrade, R.string.honesty_grade)
+                        your_grade_honesty_text_view.decideOnUserGradeVisibility(newGrade)
+                        ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
+                    } else {
+                        startLoginActivity(this)
+                    }
                 }
             }
         }
@@ -151,27 +160,30 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (changedByUser) {
                 with(politician) {
+                    if (mPresenterActivity.isUserLoggedIn()) {
+                        user.leaderGrades.put(politicianEncodedEmail, newGrade)
+                        mPresenterActivity.updateGrade(RatingBarType.LEADER, outdatedUserGrade, newGrade, this)
+                        val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                        val isNotFirstGrade = leaderGrade != NONEXISTING_GRADE_VALUE
 
-                    user.leaderGrades.put(politicianEncodedEmail, newGrade)
-                    mPresenterActivity.updateGrade(RatingBarType.LEADER, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = leaderGrade != NONEXISTING_GRADE_VALUE
-
-                    leaderGrade = if (isNotFirstGrade) {
-                        if (containsUserPastGrade) {
-                            ((leaderGrade * leaderCount) - outdatedUserGrade + newGrade) / leaderCount
+                        leaderGrade = if (isNotFirstGrade) {
+                            if (containsUserPastGrade) {
+                                ((leaderGrade * leaderCount) - outdatedUserGrade + newGrade) / leaderCount
+                            } else {
+                                leaderCount++
+                                ((leaderGrade * (leaderCount - 1)) + newGrade) / leaderCount
+                            }
                         } else {
                             leaderCount++
-                            ((leaderGrade * (leaderCount - 1)) + newGrade) / leaderCount
+                            newGrade
                         }
-                    } else {
-                        leaderCount++
-                        newGrade
-                    }
 
-                    leader_grade_text_view.setPoliticianGradeText(leaderGrade, R.string.leader_grade)
-                    your_grade_leader_text_view.decideOnUserGradeVisibility(newGrade)
-                    ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
+                        leader_grade_text_view.setPoliticianGradeText(leaderGrade, R.string.leader_grade)
+                        your_grade_leader_text_view.decideOnUserGradeVisibility(newGrade)
+                        ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
+                    } else {
+                        startLoginActivity(this)
+                    }
                 }
             }
         }
@@ -181,28 +193,31 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (changedByUser) {
                 with(politician) {
+                    if (mPresenterActivity.isUserLoggedIn()) {
+                        user.promiseKeeperGrades.put(politicianEncodedEmail, newGrade)
+                        mPresenterActivity.updateGrade(RatingBarType.PROMISE_KEEPER, outdatedUserGrade, newGrade, this)
+                        val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                        val isNotFirstGrade = promiseKeeperGrade != NONEXISTING_GRADE_VALUE
 
-                    user.promiseKeeperGrades.put(politicianEncodedEmail, newGrade)
-                    mPresenterActivity.updateGrade(RatingBarType.PROMISE_KEEPER, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = promiseKeeperGrade != NONEXISTING_GRADE_VALUE
-
-                    promiseKeeperGrade = if (isNotFirstGrade) {
-                        if (containsUserPastGrade) {
-                            ((promiseKeeperGrade * promiseKeeperCount) - outdatedUserGrade + newGrade) / promiseKeeperCount
+                        promiseKeeperGrade = if (isNotFirstGrade) {
+                            if (containsUserPastGrade) {
+                                ((promiseKeeperGrade * promiseKeeperCount) - outdatedUserGrade + newGrade) / promiseKeeperCount
+                            } else {
+                                promiseKeeperCount++
+                                ((promiseKeeperGrade * (promiseKeeperCount - 1)) + newGrade) / promiseKeeperCount
+                            }
                         } else {
                             promiseKeeperCount++
-                            ((promiseKeeperGrade * (promiseKeeperCount - 1)) + newGrade) / promiseKeeperCount
+                            newGrade
                         }
+
+                        promise_keeper_grade_text_view.setPoliticianGradeText(promiseKeeperGrade, R.string.promise_keeper_grade)
+                        your_grade_promise_keeper_text_view.decideOnUserGradeVisibility(newGrade)
+
+                        ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        promiseKeeperCount++
-                        newGrade
+                        startLoginActivity(this)
                     }
-
-                    promise_keeper_grade_text_view.setPoliticianGradeText(promiseKeeperGrade, R.string.promise_keeper_grade)
-                    your_grade_promise_keeper_text_view.decideOnUserGradeVisibility(newGrade)
-
-                    ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                 }
             }
         }
@@ -212,28 +227,31 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (changedByUser) {
                 with(politician) {
+                    if (mPresenterActivity.isUserLoggedIn()) {
+                        user.rulesForThePeopleGrades.put(politicianEncodedEmail, newGrade)
+                        mPresenterActivity.updateGrade(RatingBarType.RULES_FOR_PEOPLE, outdatedUserGrade, newGrade, this)
+                        val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                        val isNotFirstGrade = rulesForThePeopleGrade != NONEXISTING_GRADE_VALUE
 
-                    user.rulesForThePeopleGrades.put(politicianEncodedEmail, newGrade)
-                    mPresenterActivity.updateGrade(RatingBarType.RULES_FOR_PEOPLE, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = rulesForThePeopleGrade != NONEXISTING_GRADE_VALUE
-
-                    rulesForThePeopleGrade = if (isNotFirstGrade) {
-                        if (containsUserPastGrade) {
-                            ((rulesForThePeopleGrade * rulesForThePeopleCount) - outdatedUserGrade + newGrade) / rulesForThePeopleCount
+                        rulesForThePeopleGrade = if (isNotFirstGrade) {
+                            if (containsUserPastGrade) {
+                                ((rulesForThePeopleGrade * rulesForThePeopleCount) - outdatedUserGrade + newGrade) / rulesForThePeopleCount
+                            } else {
+                                rulesForThePeopleCount++
+                                ((rulesForThePeopleGrade * (rulesForThePeopleCount - 1)) + newGrade) / rulesForThePeopleCount
+                            }
                         } else {
                             rulesForThePeopleCount++
-                            ((rulesForThePeopleGrade * (rulesForThePeopleCount - 1)) + newGrade) / rulesForThePeopleCount
+                            newGrade
                         }
+
+                        rules_for_the_people_grade_text_view.setPoliticianGradeText(rulesForThePeopleGrade, R.string.rules_for_the_people_grade)
+                        your_grade_rules_for_people_text_view.decideOnUserGradeVisibility(newGrade)
+
+                        ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        rulesForThePeopleCount++
-                        newGrade
+                        startLoginActivity(this)
                     }
-
-                    rules_for_the_people_grade_text_view.setPoliticianGradeText(rulesForThePeopleGrade, R.string.rules_for_the_people_grade)
-                    your_grade_rules_for_people_text_view.decideOnUserGradeVisibility(newGrade)
-
-                    ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                 }
             }
         }
@@ -243,28 +261,31 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             if (changedByUser) {
                 with(politician) {
+                    if (mPresenterActivity.isUserLoggedIn()) {
+                        user.answerVotersGrades.put(politicianEncodedEmail, newGrade)
+                        mPresenterActivity.updateGrade(RatingBarType.ANSWER_VOTERS, outdatedUserGrade, newGrade, this)
+                        val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
+                        val isNotFirstGrade = answerVotersGrade != NONEXISTING_GRADE_VALUE
 
-                    user.answerVotersGrades.put(politicianEncodedEmail, newGrade)
-                    mPresenterActivity.updateGrade(RatingBarType.ANSWER_VOTERS, outdatedUserGrade, newGrade, this)
-                    val containsUserPastGrade = outdatedUserGrade != NONEXISTING_GRADE_VALUE
-                    val isNotFirstGrade = answerVotersGrade != NONEXISTING_GRADE_VALUE
-
-                    answerVotersGrade = if (isNotFirstGrade) {
-                        if (containsUserPastGrade) {
-                            ((answerVotersGrade * answerVotersCount) - outdatedUserGrade + newGrade) / answerVotersCount
+                        answerVotersGrade = if (isNotFirstGrade) {
+                            if (containsUserPastGrade) {
+                                ((answerVotersGrade * answerVotersCount) - outdatedUserGrade + newGrade) / answerVotersCount
+                            } else {
+                                answerVotersCount++
+                                ((answerVotersGrade * (answerVotersCount - 1)) + newGrade) / answerVotersCount
+                            }
                         } else {
                             answerVotersCount++
-                            ((answerVotersGrade * (answerVotersCount - 1)) + newGrade) / answerVotersCount
+                            newGrade
                         }
+
+                        answer_voters_grade_text_view.setPoliticianGradeText(answerVotersGrade, R.string.answer_voters_grade)
+                        your_grade_answer_voters_text_view.decideOnUserGradeVisibility(newGrade)
+
+                        ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        answerVotersCount++
-                        newGrade
+                        startLoginActivity(this)
                     }
-
-                    answer_voters_grade_text_view.setPoliticianGradeText(answerVotersGrade, R.string.answer_voters_grade)
-                    your_grade_answer_voters_text_view.decideOnUserGradeVisibility(newGrade)
-
-                    ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                 }
             }
         }
@@ -474,7 +495,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         with(mPresenterActivity) {
 
-            left_arrow_image_view.setOnClickListener(object: View.OnClickListener{
+            left_arrow_image_view.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View?) {
                     rating_bars_view_flipper.setInAnimation(this@with, R.anim.slide_in_left)
                     rating_bars_view_flipper.setOutAnimation(this@with, R.anim.slide_out_right)
@@ -482,7 +503,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 }
             })
 
-            right_arrow_image_view.setOnClickListener(object: View.OnClickListener{
+            right_arrow_image_view.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View?) {
                     rating_bars_view_flipper.setInAnimation(this@with, R.anim.slide_in_right)
                     rating_bars_view_flipper.setOutAnimation(this@with, R.anim.slide_out_left)

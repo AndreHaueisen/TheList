@@ -15,11 +15,11 @@ import com.andrehaueisen.listadejanot.f_politician_selector.dagger.ImageFetcherM
 import com.andrehaueisen.listadejanot.f_politician_selector.dagger.PoliticianSelectorModule
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
 import com.andrehaueisen.listadejanot.images.ImageFetcherModel
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.LoginPermissionDialog
 import io.reactivex.MaybeObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -202,15 +202,19 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 }
                 mSinglePoliticianModel.updateLists(action, politician)
             } else {
-                startNewActivity(LoginActivity::class.java)
-                finish()
+                startLoginActivity(politician)
             }
 
-    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if (mFirebaseAuthenticator.isUserLoggedIn()) {
+    fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if (isUserLoggedIn()) {
         mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician)
     } else {
-        startNewActivity(LoginActivity::class.java)
-        finish()
+        startLoginActivity(politician)
+    }
+
+    fun isUserLoggedIn() = mFirebaseAuthenticator.isUserLoggedIn()
+
+    fun startLoginActivity(politician: Politician){
+        LoginPermissionDialog(this).show()
     }
 
     override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
@@ -218,8 +222,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
 
     } else {
-        startNewActivity(LoginActivity::class.java)
-        finish()
+        LoginPermissionDialog(this).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

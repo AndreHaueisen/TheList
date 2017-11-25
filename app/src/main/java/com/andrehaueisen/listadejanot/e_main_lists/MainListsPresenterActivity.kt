@@ -9,10 +9,10 @@ import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.e_main_lists.dagger.DaggerMainListsComponent
 import com.andrehaueisen.listadejanot.g_user_vote_list.mvp.UserVoteListPresenterActivity
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.LoginPermissionDialog
 import javax.inject.Inject
 
 
@@ -98,8 +98,7 @@ class MainListsPresenterActivity: AppCompatActivity() {
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
 
     } else {
-        startNewActivity(LoginActivity::class.java)
-        finish()
+        LoginPermissionDialog(this).show()
     }
 
     fun getSortedPresidentes() = mPresidentesSortedList

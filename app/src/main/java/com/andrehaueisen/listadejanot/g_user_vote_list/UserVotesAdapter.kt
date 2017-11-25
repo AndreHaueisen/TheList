@@ -15,10 +15,10 @@ import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.a_application.BaseApplication
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
-import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.models.User
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.LoginPermissionDialog
 import com.facebook.FacebookSdk.getApplicationContext
 import com.github.florent37.expectanim.ExpectAnim
 import java.util.*
@@ -141,8 +141,7 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
                         initiateVoteProcess()
 
                     } else {
-                        mActivity.startNewActivity(LoginActivity::class.java)
-                        mActivity.finish()
+                        LoginPermissionDialog(mActivity).show()
                     }
 
                 } else {

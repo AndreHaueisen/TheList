@@ -82,7 +82,9 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
                         R.id.action_app_info -> startNewActivity(InformationPresenterActivity::class.java)
                         R.id.action_logout -> {
                             mFirebaseAuthenticator.logout()
-                            startNewActivity(LoginActivity::class.java)
+                            val extras = Bundle()
+                            extras.putString(INTENT_CALLING_ACTIVITY, CallingActivity.MAIN_LISTS_PRESENTER_ACTIVITY.name)
+                            startNewActivity(LoginActivity::class.java, extras = extras)
                         }
                     }
                 }

@@ -13,7 +13,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_lists_choices_toolbar"
@@ -28,34 +29,78 @@
                 app:theme="@style/ToolbarStyle"
                 app:titleTextColor="@android:color/white"/>
 
-            <android.support.constraint.Group
-                android:id="@+id/group_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="top_recommendations_view, top_condemnations_view, top_overall_grade_view, worst_overall_grade_view, search_view"
-                tools:visibility="visible"/>
-
             <LinearLayout
-                android:id="@+id/top_recommendations_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
+                android:id="@+id/lists_highlight_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/top_condemnations_view"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
+                android:elevation="3dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_lists_choices_toolbar">
+                app:layout_constraintTop_toBottomOf="@+id/main_lists_choices_toolbar">
 
                 <ImageButton
                     style="@android:style/Widget.Material.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/image_margin"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:src="@drawable/ic_lists_representation"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:text="@string/highlights_by_category"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <android.support.constraint.Group
+                android:id="@+id/group_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="top_recommendations_view, top_condemnations_view, top_overall_grade_view, worst_overall_grade_view, media_highlight_view"
+                tools:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/top_recommendations_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lists_highlight_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -63,72 +108,30 @@
 
                 <TextView
                     style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
-                    android:maxWidth="100dp"
                     android:text="@string/top_recommendations"
-                    android:textAlignment="center"/>
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/top_condemnations_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
                 android:elevation="2dp"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/top_recommendations_view"
-                app:layout_constraintTop_toBottomOf="@id/main_lists_choices_toolbar">
-
-                <ImageButton
-                    style="@android:style/Widget.Material.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/image_margin"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:src="@drawable/ic_thumb_down"/>
-
-                <TextView
-                    style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:maxWidth="80dp"
-                    android:text="@string/top_suspicions"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/top_overall_grade_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/worst_overall_grade_view"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top_recommendations_view">
 
@@ -136,8 +139,50 @@
                     style="@android:style/Widget.Material.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/star_margin_top"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:src="@drawable/ic_thumb_down"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:text="@string/top_suspicions"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/top_overall_grade_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_condemnations_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginTop="16dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -145,71 +190,28 @@
 
                 <TextView
                     style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
                     android:background="@null"
                     android:clickable="false"
-                    android:maxWidth="100dp"
                     android:text="@string/top_overall_grade"
-                    android:textAlignment="center"/>
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/worst_overall_grade_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
                 android:elevation="2dp"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/top_overall_grade_view"
-                app:layout_constraintTop_toBottomOf="@+id/top_condemnations_view">
-
-                <ImageButton
-                    style="@android:style/Widget.Material.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/star_margin_top"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:src="@drawable/ic_five_stars_empty"/>
-
-                <TextView
-                    style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:maxWidth="100dp"
-                    android:text="@string/worst_overall_grade"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/media_highlight_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/ad_mod_card_view"
-                app:layout_constraintEnd_toStartOf="@+id/search_view"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top_overall_grade_view">
 
@@ -217,8 +219,49 @@
                     style="@android:style/Widget.Material.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/image_margin"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="34dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:src="@drawable/ic_five_stars_empty"/>
+
+                <TextView
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
+                    android:clickable="false"
+                    android:text="@string/worst_overall_grade"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/media_highlight_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_rounded_rectangle"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/worst_overall_grade_view">
+
+                <ImageButton
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -226,41 +269,40 @@
 
                 <TextView
                     style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="24dp"
                     android:background="@null"
                     android:clickable="false"
-                    android:maxWidth="100dp"
                     android:text="@string/media_highlight"
-                    android:textAlignment="center"/>
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"/>
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/search_view"
-                android:layout_width="@dimen/list_choices_buttons_size"
-                android:layout_height="@dimen/list_choices_buttons_size"
-                android:layout_marginBottom="16dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_round_buttons"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/ad_mod_card_view"
+                android:layout_marginBottom="128dp"
+                android:background="@drawable/ripple_rounded_rectangle"
+                android:elevation="3dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/media_highlight_view"
-                app:layout_constraintTop_toBottomOf="@+id/worst_overall_grade_view">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/media_highlight_view">
 
                 <ImageButton
                     style="@android:style/Widget.Material.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/image_margin"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
                     android:background="@null"
                     android:clickable="false"
                     android:focusable="false"
@@ -268,42 +310,17 @@
 
                 <TextView
                     style="@style/LatoRegularTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
                     android:background="@null"
                     android:clickable="false"
                     android:maxWidth="100dp"
                     android:text="@string/individual_search"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
             </LinearLayout>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/ad_mod_card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="78dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:cardElevation="1dp"
-                app:cardCornerRadius="50dp">
-
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/adView"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:adSize="MEDIUM_RECTANGLE"
-                    app:adUnitId="@string/test_block_id">
-                </com.google.android.gms.ads.AdView>
-
-            </android.support.v7.widget.CardView>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -315,9 +332,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:transitionName="@string/transition_button"
+        android:layout_marginBottom="50dp"
         app:color_main_button="@color/colorAccent"
         app:color_secondary_buttons="@color/colorAccentDark"
         app:content_options="@menu/menu_d_politician_search"
-        app:expanded_background_color="@color/colorDarkTransparent"/>
+        app:expanded_background_color="@color/colorDarkTransparent"
+        tools:visibility="gone"/>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:adSize="BANNER"
+        app:adUnitId="@string/test_block_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </FrameLayout>

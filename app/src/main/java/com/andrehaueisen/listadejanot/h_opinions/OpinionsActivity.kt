@@ -94,11 +94,11 @@ class OpinionsActivity : AppCompatActivity() {
 
                         setTitle(R.string.replace_opinion_dialog_title)
                         setMessage(R.string.replace_opinion_dialog_message)
-                        setPositiveButton(R.string.opinion_dialog_button_positive,
+                        setPositiveButton(R.string.opinion_dialog_replace_button_positive,
                                 { _, _ ->
                                     mFirebaseRepository.addOpinionOnPolitician(politicianEmail, userEmail, opinion)
                                 })
-                        setNegativeButton(R.string.opinion_dialog_button_negative, { dialog, _ -> dialog.dismiss() })
+                        setNegativeButton(android.R.string.cancel, { dialog, _ -> dialog.dismiss() })
                         show()
                     }
 
@@ -112,11 +112,11 @@ class OpinionsActivity : AppCompatActivity() {
             val alertDialog = AlertDialog.Builder(this)
             with(alertDialog) {
                 setTitle(getString(R.string.delete_opinion_dialog_title))
-                setPositiveButton(R.string.opinion_dialog_button_positive,
+                setPositiveButton(R.string.opinion_dialog_delete_button_positive,
                         { _, _ ->
                             mFirebaseRepository.removeOpinion(mPoliticianEmail, mUserEmail)
                         })
-                setNegativeButton(R.string.opinion_dialog_button_negative) { dialog, _ -> dialog.dismiss() }
+                setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
                 show()
             }
         }

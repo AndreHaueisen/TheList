@@ -11,7 +11,7 @@
 
     <dimen name="text_size_default">14sp</dimen>
 
-    <dimen name="list_choices_buttons_size">136dp</dimen>
+    <dimen name="list_choices_buttons_size">120dp</dimen>
 
     <!-- f_politician_selector dimensions-->
     <dimen name="selector_image_height">240dp</dimen>

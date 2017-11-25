@@ -42,7 +42,7 @@ class MessagingService : FirebaseMessagingService() {
         val uniqueId : Int = ((Date().time / 1000L).toInt() % Integer.MAX_VALUE)
         val pendingIntent = PendingIntent.getActivity(this, uniqueId, intent, PendingIntent.FLAG_ONE_SHOT)
 
-        notificationBuilder.setSmallIcon(R.drawable.ic_broom_24dp)
+        notificationBuilder.setSmallIcon(R.drawable.ic_launcher)
         notificationBuilder.setColor(Color.argb(1, RED, GREEN, BLUE))
         notificationBuilder.setContentTitle(contentTitle)
         notificationBuilder.setContentText(contentText)

@@ -4,6 +4,5 @@
         android:color="@color/colorPrimaryLight"
         tools:targetApi="lollipop">
 
-    <item android:drawable="@drawable/shape_oval_corners"/>
-
+    <item android:drawable="@drawable/shape_rounded_rectangle_white"/>
 </ripple>

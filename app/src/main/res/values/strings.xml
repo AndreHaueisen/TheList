@@ -16,6 +16,7 @@
     <string name="governadores_title">Governors</string>
     <string name="deputados_title">Congressmen</string>
 
+    <string name="highlights_by_category">Rankings</string>
     <string name="top_recommendations">Most vote intentions</string>
     <string name="top_suspicions">Most suspicions</string>
     <string name="top_overall_grade">Better grades</string>
@@ -104,11 +105,11 @@
 
     <!--h_opinions strings-->
     <string name="delete_opinion_dialog_title">Delete current opinion?</string>
-    <string name="opinion_dialog_button_positive">Confirm</string>
-    <string name="opinion_dialog_button_negative">Cancel</string>
+    <string name="opinion_dialog_delete_button_positive">Delete</string>
+    <string name="opinion_dialog_replace_button_positive">Replace</string>
 
     <string name="replace_opinion_dialog_title">Replace current opinion?</string>
-    <string name="replace_opinion_dialog_message">You can have only one opinion per politician. Confirm replacement?</string>
+    <string name="replace_opinion_dialog_message">You can have only one opinion per politician</string>
 
     <!--i_information strings-->
     <string name="understand_app_motivation">1 - Select a politician\n2 - Grade the politician\n3 - Put the politician on your suspect list or voting list\n4 - In the next elections, don\'t vote on who has bad grades\n5 - Share</string>
@@ -117,6 +118,11 @@
     <!--j_login strings-->
     <string name="no_network">You are not connected to the internet. Changes won\'t be saved</string>
     <string name="unknown_error">Something went wrong. Try again</string>
+
+    <!-- LoginPermissionDialog strings -->
+    <string name="dialog_title">Who is this?</string>
+    <string name="dialog_message">This action requires login. Can I take you there?</string>
+    <string name="login_dialog_positive_button">Take me</string>
 
     <!--Sync strings-->
 
