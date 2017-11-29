@@ -55,7 +55,7 @@ data class Politician(@Exclude var sqlId: Long? = null,
         this.condemnationsCount = condemnationsCount
     }
 
-    fun recalculateOverallGrade() {
+    fun recalculateOverallGrade(): Float {
 
         val grades = listOf(honestyGrade, leaderGrade, promiseKeeperGrade, rulesForThePeopleGrade, answerVotersGrade)
 
@@ -68,6 +68,7 @@ data class Politician(@Exclude var sqlId: Long? = null,
                 }
 
         overallGrade = (gradeSum / size)
+        return overallGrade
     }
 
     fun toSimpleMap(): Map<String, Any> {

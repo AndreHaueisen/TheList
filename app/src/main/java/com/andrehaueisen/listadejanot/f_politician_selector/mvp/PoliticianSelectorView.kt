@@ -88,7 +88,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             mFirebaseAuthenticator.logout()
                             val extras = Bundle()
                             extras.putString(INTENT_CALLING_ACTIVITY, CallingActivity.POLITICIAN_SELECTOR_PRESENTER_ACTIVITY.name)
-                            if(getSinglePolitician() != null)
+                            if (getSinglePolitician() != null)
                                 extras.putString(INTENT_POLITICIAN_NAME, getSinglePolitician()?.name)
 
                             startNewActivity(LoginActivity::class.java, extras = extras)
@@ -145,11 +145,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             newGrade
                         }
 
+                        overall_grade_text_view.setPoliticianGradeText(recalculateOverallGrade(), R.string.single_number)
                         honesty_grade_text_view.setPoliticianGradeText(honestyGrade, R.string.honesty_grade)
                         your_grade_honesty_text_view.decideOnUserGradeVisibility(newGrade)
                         ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        startLoginActivity(this)
+                        startLoginActivity()
                     }
                 }
             }
@@ -178,11 +179,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             newGrade
                         }
 
+                        overall_grade_text_view.setPoliticianGradeText(recalculateOverallGrade(), R.string.single_number)
                         leader_grade_text_view.setPoliticianGradeText(leaderGrade, R.string.leader_grade)
                         your_grade_leader_text_view.decideOnUserGradeVisibility(newGrade)
                         ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        startLoginActivity(this)
+                        startLoginActivity()
                     }
                 }
             }
@@ -211,12 +213,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             newGrade
                         }
 
+                        overall_grade_text_view.setPoliticianGradeText(recalculateOverallGrade(), R.string.single_number)
                         promise_keeper_grade_text_view.setPoliticianGradeText(promiseKeeperGrade, R.string.promise_keeper_grade)
                         your_grade_promise_keeper_text_view.decideOnUserGradeVisibility(newGrade)
-
                         ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        startLoginActivity(this)
+                        startLoginActivity()
                     }
                 }
             }
@@ -245,12 +247,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             newGrade
                         }
 
+                        overall_grade_text_view.setPoliticianGradeText(recalculateOverallGrade(), R.string.single_number)
                         rules_for_the_people_grade_text_view.setPoliticianGradeText(rulesForThePeopleGrade, R.string.rules_for_the_people_grade)
                         your_grade_rules_for_people_text_view.decideOnUserGradeVisibility(newGrade)
-
                         ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        startLoginActivity(this)
+                        startLoginActivity()
                     }
                 }
             }
@@ -279,12 +281,12 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                             newGrade
                         }
 
+                        overall_grade_text_view.setPoliticianGradeText(recalculateOverallGrade(), R.string.single_number)
                         answer_voters_grade_text_view.setPoliticianGradeText(answerVotersGrade, R.string.answer_voters_grade)
                         your_grade_answer_voters_text_view.decideOnUserGradeVisibility(newGrade)
-
                         ExpectAnim().scaleRatingBarUpAndDown(ratingBar, rating_bars_view_flipper, mPresenterActivity)
                     } else {
-                        startLoginActivity(this)
+                        startLoginActivity()
                     }
                 }
             }
@@ -391,6 +393,9 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
         with(mPresenterActivity) {
 
+            overall_grade_text_view.setPoliticianGradeText(politician.overallGrade, R.string.single_number)
+            condemnations_count_text_view.text = politician.condemnationsCount.toString()
+            recommendations_count_text_view.text = politician.recommendationsCount.toString()
             post_text_view.text = politician.post?.name
             name_text_view.text = politician.name
 
@@ -448,6 +453,19 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
+   /* private fun TextView.setNewOverallGrade(grades: List<Float>){
+
+        var gradeSum = 0F
+        var size = 0
+        grades.filter { grade -> grade != -1F }
+                .forEach { grade ->
+                    gradeSum += grade
+                    size++
+                }
+
+        this.text = String.format("%.1f", (gradeSum / size))
+    }*/
+
     private fun View.decideOnUserGradeVisibility(grade: Float) {
         if (grade != -1F) {
             (this as TextView).text = this.resources.getString(R.string.your_grade, grade)
@@ -472,6 +490,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             }
 
             if (politician_info_group.visibility == View.INVISIBLE) {
+                overall_info_constraint_layout.visibility = View.VISIBLE
                 politician_info_group.visibility = View.VISIBLE
                 opinions_button.visibility = View.VISIBLE
                 opinions_text_view.visibility = View.VISIBLE
@@ -524,15 +543,50 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                     if (position != mLastButtonPosition) {
                         if (isConnectedToInternet()) {
 
+                            val condemnationsCount = condemnations_count_text_view.text.toString().toInt()
+                            val recommendationsCount = recommendations_count_text_view.text.toString().toInt()
+
                             listAction = when (position) {
-                                0 -> ListAction.ADD_TO_SUSPECT_LIST
+                                0 -> {
+                                    if (isUserLoggedIn()) {
+                                        if (mLastButtonPosition == 1) {
+                                            condemnations_count_text_view.text = (condemnationsCount + 1).toString()
+                                            recommendations_count_text_view.text = (recommendationsCount - 1).toString()
+                                        } else {
+                                            condemnations_count_text_view.text = (condemnationsCount + 1).toString()
+                                        }
+                                    }
+                                    ListAction.ADD_TO_SUSPECT_LIST
 
-                                1 -> ListAction.ADD_TO_VOTE_LIST
+                                }
 
-                                -1 -> ListAction.REMOVE_FROM_LISTS
+                                1 -> {
+                                    if (isUserLoggedIn()) {
+                                        if (mLastButtonPosition == 0) {
+                                            condemnations_count_text_view.text = (condemnationsCount - 1).toString()
+                                            recommendations_count_text_view.text = (recommendationsCount + 1).toString()
+                                        } else {
+                                            recommendations_count_text_view.text = (recommendationsCount + 1).toString()
+                                        }
+                                    }
+                                    ListAction.ADD_TO_VOTE_LIST
+                                }
+
+                                -1 -> {
+                                    if (isUserLoggedIn()) {
+                                        if (mLastButtonPosition == 1) {
+                                            recommendations_count_text_view.text = (recommendationsCount - 1).toString()
+                                        } else {
+                                            condemnations_count_text_view.text = (condemnationsCount - 1).toString()
+                                        }
+                                    }
+                                    ListAction.REMOVE_FROM_LISTS
+                                }
 
                                 else -> ListAction.REMOVE_FROM_LISTS
                             }
+
+
                             updateLists(listAction, politician)
                             mLastButtonPosition = position
 

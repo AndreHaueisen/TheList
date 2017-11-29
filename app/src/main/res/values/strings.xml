@@ -75,12 +75,17 @@
     <string name="rules_for_the_people_title">Rules for the people</string>
     <string name="answer_voters_title">Answer voters</string>
 
-    <string name="honesty_grade">Honesty   %1$s</string>
-    <string name="leader_grade">Leader   %1$s</string>
-    <string name="promise_keeper_grade">Keeps promises   %1$s</string>
-    <string name="rules_for_the_people_grade">Rules for the people   %1$s</string>
-    <string name="answer_voters_grade">Answer voters   %1$s</string>
-    <string name="overall_grade">Overall Grade   %1$s</string>
+    <string name="honesty_grade">Honesty: %1$s</string>
+    <string name="leader_grade">Leader: %1$s</string>
+    <string name="promise_keeper_grade">Keeps promises: %1$s</string>
+    <string name="rules_for_the_people_grade">Rules for the people: %1$s</string>
+    <string name="answer_voters_grade">Answer voters: %1$s</string>
+    <string name="overall_grade">Overall Grade: %1$s</string>
+
+    <string name="overall_grade_title">"Overall\ngrade"</string>
+    <string name="single_number" translatable="false">%1$s</string>
+    <string name="condemnations_title">"Suspicions\ncount"</string>
+    <string name="recommendations_title">"Vote\nintentions"</string>
 
     <string name="cant_handle_intent_message">Can\'t share. No app support</string>
 

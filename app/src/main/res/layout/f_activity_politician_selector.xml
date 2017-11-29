@@ -29,8 +29,8 @@
                 android:id="@+id/search_politician_image_view"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/selector_image_height"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginTop="?android:attr/actionBarSize"
                 android:scaleType="center"
                 android:src="@drawable/ic_launcher"
@@ -68,6 +68,105 @@
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/overall_info_constraint_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_gray_transparent"
+                android:paddingTop="32dp"
+                android:layout_gravity="bottom">
+
+                <TextView
+                    android:id="@+id/title_overall_grade_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/overall_grade_title"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/overall_grade_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/title_overall_grade_text_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_overall_grade_text_view"
+                    app:layout_constraintVertical_bias="1.0"/>
+
+                <TextView
+                    android:id="@+id/title_condemnations_count_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/condemnations_title"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/condemnations_count_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/title_condemnations_count_text_view"
+                    app:layout_constraintStart_toStartOf="@+id/title_condemnations_count_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/title_condemnations_count_text_view"
+                    app:layout_constraintVertical_bias="1.0"/>
+
+                <TextView
+                    android:id="@+id/title_recommendations_count_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/recommendations_title"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/recommendations_count_text_view"
+                    style="@style/LatoRegularTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/title_recommendations_count_text_view"
+                    app:layout_constraintStart_toStartOf="@+id/title_recommendations_count_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/title_recommendations_count_text_view"
+                    app:layout_constraintVertical_bias="1.0"/>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -157,20 +256,20 @@
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rrb_text="@string/your_suspect_list"
                     app:rrb_drawable="@drawable/ic_thief"
-                    app:rrb_textColor="@color/colorPrimary"
                     app:rrb_drawableGravity="top"
-                    app:rrb_ripple="false"/>
+                    app:rrb_ripple="false"
+                    app:rrb_text="@string/your_suspect_list"
+                    app:rrb_textColor="@color/colorPrimary"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rrb_drawableGravity="top"
                     app:rrb_drawable="@drawable/ic_politician"
-                    app:rrb_textColor="@color/colorPrimary"
+                    app:rrb_drawableGravity="top"
+                    app:rrb_ripple="false"
                     app:rrb_text="@string/your_vote_list"
-                    app:rrb_ripple="false"/>
+                    app:rrb_textColor="@color/colorPrimary"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
             <include

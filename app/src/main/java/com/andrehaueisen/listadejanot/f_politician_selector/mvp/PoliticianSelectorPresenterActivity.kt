@@ -105,6 +105,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         super.onStart()
 
         if (!intent.hasExtra(INTENT_POLITICIAN_NAME)) {
+            overall_info_constraint_layout.visibility = View.INVISIBLE
             politician_info_group.visibility = View.INVISIBLE
             opinions_button.visibility = View.INVISIBLE
             opinions_text_view.visibility = View.INVISIBLE
@@ -202,19 +203,19 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
                 }
                 mSinglePoliticianModel.updateLists(action, politician)
             } else {
-                startLoginActivity(politician)
+                startLoginActivity()
             }
 
     fun updateGrade(voteType: RatingBarType, outdatedGrade: Float, newGrade: Float, politician: Politician) = if (isUserLoggedIn()) {
         mSinglePoliticianModel.updateGrade(voteType, outdatedGrade, newGrade, politician)
     } else {
-        startLoginActivity(politician)
+        startLoginActivity()
     }
 
     fun isUserLoggedIn() = mFirebaseAuthenticator.isUserLoggedIn()
 
-    fun startLoginActivity(politician: Politician){
-        LoginPermissionDialog(this).show()
+    fun startLoginActivity(){
+        LoginPermissionDialog(this, getSinglePolitician()?.name).show()
     }
 
     override fun showUserVoteListIfLogged() = if (mFirebaseAuthenticator.isUserLoggedIn()) {
@@ -222,7 +223,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         startActivityForResult(intent, ACTIVITY_REQUEST_CODE)
 
     } else {
-        LoginPermissionDialog(this).show()
+        LoginPermissionDialog(this, getSinglePolitician()?.name).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -45,7 +45,7 @@ class ImageFetcherModel(private val mImageFetcherService: ImageFetcherService, p
     private fun getUrlFromNetwork(politician: Politician): Observable<Item> {
 
         val queryComplement = when (politician.post!!) {
-            Politician.Post.SENADOR, Politician.Post.SENADORA -> "congresso nacional"
+            Politician.Post.SENADOR, Politician.Post.SENADORA -> "head"
             Politician.Post.PRESIDENTE -> "posse"
             Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> "sede do governo"
             Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> "fala"

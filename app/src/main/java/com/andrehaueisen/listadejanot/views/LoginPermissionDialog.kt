@@ -2,9 +2,11 @@ package com.andrehaueisen.listadejanot.views
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.d_main_lists_choices.mvp.MainListsChoicesPresenterActivity
 import com.andrehaueisen.listadejanot.e_main_lists.MainListsPresenterActivity
@@ -21,31 +23,33 @@ import com.andrehaueisen.listadejanot.utilities.startNewActivity
  */
 class LoginPermissionDialog(activity: Activity, val politicianName: String? = null): AlertDialog(activity) {
 
-    private val cA : Activity
-    init {
-        cA = activity
-    }
+    private val mActivity: Activity = activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.dialog_login_permision)
-
         setCancelable(true)
+
+        val idAnimatedVectorDrawable = AnimatedVectorDrawableCompat.create(context, R.drawable.anim_ic_id)
+        val idAnimationView = findViewById<ImageView>(R.id.animation_view)
+        idAnimationView?.setImageDrawable(idAnimatedVectorDrawable)
+        idAnimatedVectorDrawable?.start()
+
         findViewById<Button>(R.id.positive_button)?.setOnClickListener(object : View.OnClickListener{
             override fun onClick(view: View) {
 
-                val callingActivityName = when(cA){
+                val callingActivityName = when(mActivity){
                     is MainListsChoicesPresenterActivity-> CallingActivity.MAIN_LISTS_CHOICES_PRESENTER_ACTIVITY.name
                     is MainListsPresenterActivity -> CallingActivity.MAIN_LISTS_PRESENTER_ACTIVITY.name
 
                     is PoliticianSelectorPresenterActivity -> {
-                        cA.finish()
+                        mActivity.finish()
                         CallingActivity.POLITICIAN_SELECTOR_PRESENTER_ACTIVITY.name
 
                     }
                     is UserVoteListPresenterActivity -> {
-                        cA.finish()
+                        mActivity.finish()
                         CallingActivity.USER_VOTE_LIST_PRESENTER_ACTIVITY.name
                     }
 

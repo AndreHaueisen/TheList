@@ -13,6 +13,7 @@ import com.andrehaueisen.listadejanot.b_firebase.FirebaseAuthenticator
 import com.andrehaueisen.listadejanot.b_firebase.FirebaseRepository
 import com.andrehaueisen.listadejanot.h_opinions.dagger.DaggerOpinionsComponent
 import com.andrehaueisen.listadejanot.utilities.*
+import com.andrehaueisen.listadejanot.views.DeleteOpinionDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -109,29 +110,28 @@ class OpinionsActivity : AppCompatActivity() {
         }
 
         delete_opinion_image_button.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(this)
-            with(alertDialog) {
-                setTitle(getString(R.string.delete_opinion_dialog_title))
-                setPositiveButton(R.string.opinion_dialog_delete_button_positive,
-                        { _, _ ->
-                            mFirebaseRepository.removeOpinion(mPoliticianEmail, mUserEmail)
-                        })
-                setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                show()
+
+            val alertDialog = DeleteOpinionDialog(this)
+            alertDialog.show()
+
+            alertDialog.setPositiveButton().setOnClickListener {
+                mFirebaseRepository.removeOpinion(mPoliticianEmail, mUserEmail)
+                alertDialog.dismiss()
             }
+            alertDialog.setNegativeButton().setOnClickListener { alertDialog.dismiss() }
         }
     }
 
     private fun setTextInput(bundleSavedState: Bundle?) {
         val opinion = bundleSavedState?.getString(BUNDLE_USER_OPINION)
-        if (opinion != null){
+        if (opinion != null) {
             opinion_text_input_layout.editText?.setText(opinion)
         }
     }
 
-    private fun setCurrentOpinion(){
-        current_opinion_text_view.setOnClickListener{ opinionView ->
-            val opinionAlertDialog = AlertDialog.Builder(this).createNeutralDialog(null, (opinionView as TextView).text.toString() )
+    private fun setCurrentOpinion() {
+        current_opinion_text_view.setOnClickListener { opinionView ->
+            val opinionAlertDialog = AlertDialog.Builder(this).createNeutralDialog(null, (opinionView as TextView).text.toString())
             opinionAlertDialog.show()
         }
     }
@@ -189,7 +189,7 @@ class OpinionsActivity : AppCompatActivity() {
                     mOpinionsMap.remove(emailKey)
                     (opinions_recycler_view.adapter as OpinionsAdapter).removeItem(emailKey)
 
-                    if(mHasCurrentOpinion && !hasUserAOpinion(mOpinionsMap, mFirebaseAuthenticator.getUserEmail())){
+                    if (mHasCurrentOpinion && !hasUserAOpinion(mOpinionsMap, mFirebaseAuthenticator.getUserEmail())) {
                         mHasCurrentOpinion = false
                     }
                     resolveVisibility()
@@ -302,7 +302,6 @@ class OpinionsActivity : AppCompatActivity() {
         }
 
     }
-
 
 
     override fun onSaveInstanceState(outState: Bundle) {

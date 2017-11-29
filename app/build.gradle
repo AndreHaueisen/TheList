@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
+    
 
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -12,8 +13,8 @@ android {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 23
-        versionName "0.9.7"
+        versionCode 24
+        versionName "0.9.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         resConfigs "auto"

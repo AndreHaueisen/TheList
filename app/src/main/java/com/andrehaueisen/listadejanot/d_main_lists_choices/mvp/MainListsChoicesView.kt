@@ -60,7 +60,7 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                         if (isConnectedToInternet()) {
                             showToast(getString(R.string.login_required))
 
-                            mLoadingDatabaseAlertDialog?.dismiss()
+                            dismissAlertDialog()
                             mFirebaseAuthenticator.logout()
                             LoginPermissionDialog(this).show()
 
@@ -103,7 +103,7 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
 
             val pairs = mutableListOf(toolbarPair, fabMenuPair)
 
-            if(statusBar != null && navigationBar != null){
+            if (statusBar != null && navigationBar != null) {
                 val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
                 val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
                 pairs += statusBarPair
@@ -139,9 +139,9 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
 
     private fun setButtons() {
         with(mPresenterActivity) {
-            lists_highlight_view.setOnClickListener(object: View.OnClickListener{
+            lists_highlight_view.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View?) {
-                    if(group_buttons.isShown) {
+                    if (group_buttons.isShown) {
                         group_buttons.visibility = View.GONE
                     } else {
                         group_buttons.visibility = View.VISIBLE
@@ -194,7 +194,7 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
                     val fabMenuPair = Pair(menu_fab as View, this@with.getString(R.string.transition_button))
 
                     val pairs = mutableListOf(toolbarPair, fabMenuPair)
-                    if(statusBar != null && navigationBar != null){
+                    if (statusBar != null && navigationBar != null) {
                         val statusBarPair = Pair(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)
                         val navigationBarPair = Pair(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME)
                         pairs += statusBarPair
@@ -208,8 +208,8 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
         }
     }
 
-    private fun setAdView(){
-        with(mPresenterActivity){
+    private fun setAdView() {
+        with(mPresenterActivity) {
             val adViewBanner = findViewById<AdView>(R.id.adView)
             val adRequest = AdRequest.Builder().build()
             adViewBanner.loadAd(adRequest)
