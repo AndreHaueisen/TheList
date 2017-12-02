@@ -76,15 +76,14 @@ fun Activity.getProperLayoutManager(orientation: Int = LinearLayoutManager.VERTI
 
 }
 
-fun Context.pullStringFromSharedPreferences(key: String): String {
-    val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
-    return sharedPreference.getString(key, null)
-}
+fun Context.pullStringFromSharedPreferences(key: String): String =
+        this.getSharedPreferences(SHARED_PREFERENCES, 0).getString(key, null)
 
-fun Context.pullIntFromSharedPreferences(key: String): Int {
-    val sharedPreference = this.getSharedPreferences(SHARED_PREFERENCES, 0)
-    return sharedPreference.getInt(key, 0)
-}
+fun Context.pullIntFromSharedPreferences(key: String): Int =
+        this.getSharedPreferences(SHARED_PREFERENCES, 0).getInt(key, 0)
+
+fun Context.pullBooleanFromSharedPreferences(key: String, defaultValue: Boolean = false): Boolean =
+        this.getSharedPreferences(SHARED_PREFERENCES, 0).getBoolean(key, defaultValue)
 
 fun Context.convertDipToPixel(dipValue: Float): Float {
     val metrics = this.resources.displayMetrics

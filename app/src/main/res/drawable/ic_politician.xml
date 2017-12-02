@@ -1,8 +1,8 @@
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:name="vector"
-    android:width="64dp"
-    android:height="64dp"
+    android:width="58dp"
+    android:height="58dp"
     android:viewportWidth="64"
     android:viewportHeight="64">
     <group android:name="group"/>
@@ -30,7 +30,7 @@
         <path
             android:name="path_4"
             android:pathData="M 32.09 32.26 C 30.94 32.26 25.79 28.26 25.79 28.26 L 38.2 28.15 C 33 32.26 33 32.26 32.09 32.26 Z"
-            android:fillColor="#f7a980"
+            android:fillColor="#ff9a74"
             android:strokeWidth="1"/>
         <path
             android:name="path_5"
@@ -40,7 +40,7 @@
         <path
             android:name="path_6"
             android:pathData="M 29.79 20.64 C 29.79 22.46 28.32 19.64 26.5 19.64 C 24.68 19.64 23.21 22.47 23.21 20.64 C 23.21 19.465 23.837 18.378 24.855 17.791 C 25.873 17.203 27.127 17.203 28.145 17.791 C 29.163 18.378 29.79 19.465 29.79 20.64 Z M 40.79 20.64 C 40.79 22.46 39.32 19.64 37.5 19.64 C 35.68 19.64 34.21 22.47 34.21 20.64 C 34.21 19.465 34.837 18.378 35.855 17.791 C 36.873 17.203 38.127 17.203 39.145 17.791 C 40.163 18.378 40.79 19.465 40.79 20.64 Z"
-            android:fillColor="#f7a980"
+            android:fillColor="#ff9a74"
             android:strokeWidth="1"/>
     </group>
 </vector>

@@ -69,6 +69,7 @@ const val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
 const val NONEXISTING_GRADE_VALUE: Float = -1F
 
 const val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
+const val SHARED_IS_FIRST_USAGE = "first_usage"
 const val SHARED_MESSAGE_TOKEN = "message_token"
 const val SHARED_VERSION_CODE = "version_code"
 

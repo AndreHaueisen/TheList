@@ -52,29 +52,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:rrbg_animateDrawables_enter="accelerateDecelerate"
         app:rrbg_animateDrawables_exit="accelerateDecelerate"
-        app:rrbg_animateDrawables_scale="1.2"
-        app:rrbg_animateSelector="accelerateDecelerate"
-        app:rrbg_backgroundColor="@color/colorNeutralSmooth"
-        app:rrbg_enableDeselection="true"
-        app:rrbg_dividerColor="@color/colorAccent"
-        app:rrbg_dividerRadius="1dp"
-        app:rrbg_dividerSize="1dp"
-        app:rrbg_selectorColor="@color/colorAccent"
-        app:rrbg_selectorSize="2dp">
+        app:rrbg_animateDrawables_scale="1.4"
+        app:rrbg_backgroundColor="?android:colorBackground"
+        app:rrbg_radius="4dp"
+        app:rrbg_selectorSize="0dp">
 
         <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rrb_text="@string/your_suspect_list"
             app:rrb_drawable="@drawable/ic_thief"
-            app:rrb_textColor="@color/colorPrimary"
+            app:rrb_drawablePadding="8dp"
+            app:rrb_textColor="@color/colorSecondaryText"
+            app:rrb_textColorTo="@color/colorPrimaryText"
             app:rrb_ripple="false"/>
 
         <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rrb_drawable="@drawable/ic_politician"
-            app:rrb_textColor="@color/colorPrimary"
+            app:rrb_drawablePadding="8dp"
+            app:rrb_textColor="@color/colorSecondaryText"
+            app:rrb_textColorTo="@color/colorPrimaryText"
             app:rrb_text="@string/your_vote_list"
             app:rrb_ripple="false"/>
     </co.ceryle.radiorealbutton.RadioRealButtonGroup>

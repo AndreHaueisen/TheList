@@ -114,6 +114,17 @@
     <string name="replace_opinion_dialog_title">Substituir sua opinião atual?</string>
     <string name="replace_opinion_dialog_message">Você só pode ter uma opinião por político</string>
 
+    <!--l_onboarding strings-->
+    <string name="card_one_title">Ache o político</string>
+    <string name="card_two_title">Suspeito ou confiável?</string>
+    <string name="card_three_title">De 0 a 5</string>
+    <string name="card_fourth_title">A união faz a força</string>
+
+    <string name="card_one_description">Procure através dos nossos rankings ou pelo nome</string>
+    <string name="card_two_description">Se não confia, o coloque na lista de suspeitos. Se confia e pretende votar, o coloque na lista de votação</string>
+    <string name="card_three_description">Deslise e solte a barra de notas para avaliar as diferentes categorias</string>
+    <string name="card_fourth_description">Tudo o que você faz compõe a nota do político. Juntando as ações de todos, teremos uma boa noção de quem votar e quem evitar nas próximas eleições</string>
+
     <!-- LoginPermissionDialog strings -->
     <string name="dialog_title">Quem está aí?</string>
     <string name="dialog_message">Essa ação precisa de login. Vamos fazer isso agora?</string>

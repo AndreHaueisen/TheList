@@ -13,8 +13,8 @@ android {
         applicationId "com.andrehaueisen.listadejanot"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 24
-        versionName "0.9.8"
+        versionCode 25
+        versionName "0.9.85"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
         resConfigs "auto"
@@ -102,6 +102,7 @@ dependencies {
 
     implementation 'com.github.florent37:expectanim:1.0.7'
     implementation 'com.github.ceryle:RadioRealButton:v2.1.1'
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 
     testCompile 'junit:junit:4.12'
 }

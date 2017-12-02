@@ -12,6 +12,7 @@ import com.andrehaueisen.listadejanot.e_main_lists.MainListsPresenterActivity
 import com.andrehaueisen.listadejanot.f_politician_selector.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.i_information.mvp.InformationPresenterActivity
 import com.andrehaueisen.listadejanot.j_login.LoginActivity
+import com.andrehaueisen.listadejanot.l_onboarding.OnboardingActivity
 import com.andrehaueisen.listadejanot.models.Politician
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
@@ -76,6 +77,16 @@ class MainListsChoicesView(private val mPresenterActivity: MainListsChoicesPrese
         val isAlertDialogActive = (mLoadingDatabaseAlertDialog != null && mLoadingDatabaseAlertDialog?.isShowing!!)
         if (isAlertDialogActive) {
             mLoadingDatabaseAlertDialog?.dismiss()
+        }
+    }
+
+    fun loadOnboardingScreen(){
+        with(mPresenterActivity) {
+            val isFirstUsage = pullBooleanFromSharedPreferences(SHARED_IS_FIRST_USAGE, defaultValue = true)
+            if (isFirstUsage) {
+                startNewActivity(OnboardingActivity::class.java)
+                putValueOnSharedPreferences(SHARED_IS_FIRST_USAGE, false)
+            }
         }
     }
 

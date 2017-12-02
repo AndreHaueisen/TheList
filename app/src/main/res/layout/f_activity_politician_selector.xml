@@ -76,9 +76,9 @@
                 android:id="@+id/overall_info_constraint_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:background="@drawable/gradient_gray_transparent"
-                android:paddingTop="32dp"
-                android:layout_gravity="bottom">
+                android:paddingTop="32dp">
 
                 <TextView
                     android:id="@+id/title_overall_grade_text_view"
@@ -89,7 +89,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/overall_grade_title"
                     android:textAlignment="center"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -102,7 +102,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/title_overall_grade_text_view"
@@ -118,7 +118,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/condemnations_title"
                     android:textAlignment="center"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/title_condemnations_count_text_view"
@@ -148,7 +148,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/recommendations_title"
                     android:textAlignment="center"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorTextAndIcons"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/title_recommendations_count_text_view"
@@ -222,6 +222,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:textColor="@color/colorSecondaryText"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread"
@@ -235,41 +236,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/post_text_view"
                 app:rrbg_animateDrawables_enter="accelerateDecelerate"
                 app:rrbg_animateDrawables_exit="accelerateDecelerate"
-                app:rrbg_animateDrawables_scale="1.1"
-                app:rrbg_animateSelector="accelerateDecelerate"
-                app:rrbg_backgroundColor="@color/colorNeutralSmooth"
-                app:rrbg_dividerColor="@color/colorAccent"
-                app:rrbg_dividerRadius="1dp"
-                app:rrbg_dividerSize="1dp"
+                app:rrbg_animateDrawables_scale="1.4"
+                app:rrbg_backgroundColor="?android:colorBackground"
                 app:rrbg_enableDeselection="true"
                 app:rrbg_radius="4dp"
-                app:rrbg_selectorColor="@color/colorAccent"
-                app:rrbg_selectorRadius="2dp"
-                app:rrbg_selectorSize="2dp">
+                app:rrbg_selectorSize="0dp">
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_thief"
                     app:rrb_drawableGravity="top"
+                    app:rrb_drawablePadding="8dp"
                     app:rrb_ripple="false"
                     app:rrb_text="@string/your_suspect_list"
-                    app:rrb_textColor="@color/colorPrimary"/>
+                    app:rrb_textColor="@color/colorSecondaryText"
+                    app:rrb_textColorTo="@color/colorPrimaryText"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_politician"
                     app:rrb_drawableGravity="top"
+                    app:rrb_drawablePadding="8dp"
                     app:rrb_ripple="false"
                     app:rrb_text="@string/your_vote_list"
-                    app:rrb_textColor="@color/colorPrimary"/>
+                    app:rrb_textColor="@color/colorSecondaryText"
+                    app:rrb_textColorTo="@color/colorPrimaryText"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
             <include
@@ -280,7 +279,7 @@
                 android:layout_marginBottom="78dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -297,7 +296,7 @@
         android:layout_gravity="bottom|end"
         android:transitionName="@string/transition_button"
         app:color_main_button="@color/colorAccent"
-        app:color_secondary_buttons="@color/colorAccentDark"
+        app:color_secondary_buttons="@color/colorAccent"
         app:content_options="@menu/menu_d_politician_search"
         app:expanded_background_color="@color/colorDarkTransparent"
         tools:visibility="gone"/>

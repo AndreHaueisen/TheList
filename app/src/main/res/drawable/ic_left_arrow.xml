@@ -9,11 +9,11 @@
     <path
         android:name="path"
         android:pathData="M 32 1.63 C 15.227 1.63 1.63 15.227 1.63 32 C 1.63 48.773 15.227 62.37 32 62.37 C 48.773 62.37 62.37 48.773 62.37 32 C 62.37 15.227 48.773 1.63 32 1.63 Z"
-        android:fillColor="#366255"
+        android:fillColor="@color/colorPrimary"
         android:strokeWidth="1"/>
     <path
         android:name="path_1"
         android:pathData="M 48.49 30.72 L 20.32 30.72 L 33 23.4 C 33.616 23.047 33.828 22.261 33.475 21.645 C 33.122 21.029 32.336 20.817 31.72 21.17 L 15 30.83 C 14.531 31.033 14.228 31.494 14.228 32.005 C 14.228 32.516 14.531 32.977 15 33.18 L 31.77 42.84 C 32.382 43.13 33.114 42.893 33.44 42.3 C 33.766 41.706 33.573 40.961 33 40.6 L 20.32 33.28 L 48.49 33.28 C 49.2 33.28 49.775 32.705 49.775 31.995 C 49.775 31.285 49.2 30.71 48.49 30.71 Z"
-        android:fillColor="#e0e0e0"
+        android:fillColor="@color/colorTextAndIcons"
         android:strokeWidth="1"/>
 </vector>

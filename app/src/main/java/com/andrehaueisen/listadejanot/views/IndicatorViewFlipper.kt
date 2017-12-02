@@ -34,11 +34,11 @@ class IndicatorViewFlipper : ViewFlipper {
         for (i in 0 until childCount) {
 
             if (i == displayedChild) {
-                paint.color = ContextCompat.getColor(context, R.color.colorAccentDark)
+                paint.color = ContextCompat.getColor(context, R.color.colorAccent)
                 canvas.drawCircle(cx, cy, radius, paint)
 
             } else {
-                paint.color = ContextCompat.getColor(context, R.color.colorAccent)
+                paint.color = ContextCompat.getColor(context, R.color.colorPrimary)
                 canvas.drawCircle(cx, cy, radius, paint)
             }
             cx += 2 * (radius + margin)

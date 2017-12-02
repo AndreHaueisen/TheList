@@ -15,12 +15,12 @@
                 <path
                     android:name="path"
                     android:pathData="M 2.63 1.03 L 118.12 1.03 C 118.52 1.03 118.905 1.189 119.188 1.472 C 119.471 1.755 119.63 2.14 119.63 2.54 L 119.63 60.22 C 119.63 60.62 119.471 61.005 119.188 61.288 C 118.905 61.571 118.52 61.73 118.12 61.73 L 2.63 61.73 C 1.796 61.73 1.12 61.054 1.12 60.22 L 1.12 2.54 C 1.12 1.706 1.796 1.03 2.63 1.03"
-                    android:fillColor="#09382c"
+                    android:fillColor="@color/colorPrimaryDark"
                     android:strokeWidth="1"/>
                 <path
                     android:name="path_1"
                     android:pathData="M 1.87 0.27 L 117.36 0.27 C 117.76 0.27 118.145 0.429 118.428 0.712 C 118.711 0.995 118.87 1.38 118.87 1.78 L 118.87 59.46 C 118.87 59.86 118.711 60.245 118.428 60.528 C 118.145 60.811 117.76 60.97 117.36 60.97 L 1.87 60.97 C 1.036 60.97 0.36 60.294 0.36 59.46 L 0.36 1.78 C 0.36 0.946 1.036 0.27 1.87 0.27"
-                    android:fillColor="#366255"
+                    android:fillColor="@color/colorPrimary"
                     android:strokeWidth="1"/>
             </group>
             <group
@@ -59,7 +59,7 @@
                 <path
                     android:name="path_8"
                     android:pathData="M 55.28 12.72 L 111.22 12.72 L 111.22 19.24 L 55.28 19.24 Z M 55.28 22.74 L 111.22 22.74 L 111.22 29.26 L 55.28 29.26 Z M 55.28 32.75 L 111.22 32.75 L 111.22 39.27 L 55.28 39.27 Z M 55.28 42.76 L 85.79 42.76 L 85.79 49.28 L 55.28 49.28 Z"
-                    android:fillColor="#59a18c"
+                    android:fillColor="@color/colorPrimaryLight"
                     android:strokeWidth="1"/>
             </group>
             <group android:name="interrogation_layer">

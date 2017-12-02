@@ -23,7 +23,7 @@
     <string name="worst_overall_grade">Worst grades</string>
     <string name="individual_search">Individual search</string>
     <string name="media_highlight">Media highlight</string>
-    <string name="login_required">Invalid expired. Please, login again</string>
+    <string name="login_required">Login expired. Please, login again</string>
 
     <string name="information">Information</string>
     <string name="login">Login</string>
@@ -123,6 +123,17 @@
     <!--j_login strings-->
     <string name="no_network">You are not connected to the internet. Changes won\'t be saved</string>
     <string name="unknown_error">Something went wrong. Try again</string>
+
+    <!--l_onboarding strings-->
+    <string name="card_one_title">Find the politician</string>
+    <string name="card_two_title">Suspicious or trustworthy?</string>
+    <string name="card_three_title">From 0 to 5</string>
+    <string name="card_fourth_title">United we are strong</string>
+
+    <string name="card_one_description">Search using our rankings ou by name</string>
+    <string name="card_two_description">If your don\'t trust, add to suspects list. If you trust and plan on voting, add to voting list</string>
+    <string name="card_three_description">Swipe the rating bar to give a grade on a specific category</string>
+    <string name="card_fourth_description">Everything you do compose the politician\'s stats. Put others users actions together and we will end up with a good notion on who to vote and who to avoid in the next election</string>
 
     <!-- LoginPermissionDialog strings -->
     <string name="dialog_title">Who is this?</string>

@@ -81,6 +81,8 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         subscribeToPoliticiansLoadingStatus()
         subscribeToPoliticiansListsMap()
 
+        mChoicesView?.loadOnboardingScreen()
+
         val fadeTransition = TransitionInflater.from(this).inflateTransition(R.transition.windows_fade)
         window.exitTransition = fadeTransition
         window.enterTransition = fadeTransition
@@ -90,7 +92,11 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
         mMainListsChoicesModel.subscribeToPoliticiansLoadingStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { listsAreReady -> if(listsAreReady) mChoicesView?.dismissAlertDialog()}
+                .subscribe { listsAreReady ->
+                    if(listsAreReady){
+                        mChoicesView?.dismissAlertDialog()
+                        //mChoicesView?.loadOnboardingScreen()
+                    }}
     }
 
     private fun subscribeToPoliticiansListsMap(){

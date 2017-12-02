@@ -130,7 +130,7 @@
         android:layout_gravity="bottom|end"
         android:transitionName="@string/transition_button"
         app:color_main_button="@color/colorAccent"
-        app:color_secondary_buttons="@color/colorAccentDark"
+        app:color_secondary_buttons="@color/colorAccent"
         app:content_options="@menu/menu_d_politician_search"
         app:expanded_background_color="@color/colorDarkTransparent"/>
 

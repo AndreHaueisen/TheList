@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/colorSecondarySmooth">
+        app:cardBackgroundColor="@color/colorSecondary">
 
         <TextView
             style="@style/LatoLightTextStyle"
@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/beta_warning"
+            android:textColor="@color/colorTextAndIcons"
             android:textSize="18sp"/>
     </android.support.v7.widget.CardView>
 

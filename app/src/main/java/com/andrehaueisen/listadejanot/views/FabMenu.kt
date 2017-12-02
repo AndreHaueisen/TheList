@@ -303,7 +303,7 @@ class FabMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
         label.background = ContextCompat.getDrawable(context, R.drawable.shape_rounded_corners)
         label.layoutParams = generateDefaultLayoutParams()
         label.setPadding(labelPadding, labelPadding, labelPadding, labelPadding)
-        label.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+        label.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
 
         if (Build.VERSION.SDK_INT >= 21) {
             label.elevation = childElevation
