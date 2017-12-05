@@ -16,6 +16,8 @@
     <color name="colorSecondaryLight">#b12b2b</color>
     <color name="colorSecondaryWhite">#fff</color>
 
+    <color name="colorTest">#b4ffffff</color>
+
     <color name="colorDarkTransparent">#b9000000</color>
     <color name="colorNeutralDark">#424242</color>
     <color name="colorNeutral">#616161</color>

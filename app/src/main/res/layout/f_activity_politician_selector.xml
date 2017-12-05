@@ -234,8 +234,8 @@
                 android:id="@+id/vote_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -245,7 +245,6 @@
                 app:rrbg_animateDrawables_scale="1.4"
                 app:rrbg_backgroundColor="?android:colorBackground"
                 app:rrbg_enableDeselection="true"
-                app:rrbg_radius="4dp"
                 app:rrbg_selectorSize="0dp">
 
                 <co.ceryle.radiorealbutton.RadioRealButton
@@ -253,9 +252,9 @@
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_thief"
                     app:rrb_drawableGravity="top"
-                    app:rrb_drawablePadding="8dp"
                     app:rrb_ripple="false"
-                    app:rrb_text="@string/your_suspect_list"
+                    app:rrb_text="@string/suspect"
+                    app:rrb_drawablePadding="12dp"
                     app:rrb_textColor="@color/colorSecondaryText"
                     app:rrb_textColorTo="@color/colorPrimaryText"/>
 
@@ -264,9 +263,9 @@
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_politician"
                     app:rrb_drawableGravity="top"
-                    app:rrb_drawablePadding="8dp"
                     app:rrb_ripple="false"
-                    app:rrb_text="@string/your_vote_list"
+                    app:rrb_text="@string/will_vote"
+                    app:rrb_drawablePadding="12dp"
                     app:rrb_textColor="@color/colorSecondaryText"
                     app:rrb_textColorTo="@color/colorPrimaryText"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>

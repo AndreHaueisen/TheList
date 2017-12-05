@@ -63,6 +63,7 @@ class OpinionsActivity : AppCompatActivity() {
         mUserEmail = intent.extras.getString(BUNDLE_USER_EMAIL)
 
         setRecyclerView(opinions_recycler_view)
+        setBackButton()
         setImageButtons(mPoliticianEmail, mUserEmail)
         setTextInput(savedInstanceState)
         setCurrentOpinion()
@@ -76,6 +77,10 @@ class OpinionsActivity : AppCompatActivity() {
     private fun setRecyclerView(opinionsRecyclerView: RecyclerView) {
         opinionsRecyclerView.setHasFixedSize(true)
         opinionsRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun setBackButton(){
+        go_back_image_view.setOnClickListener { onBackPressed() }
     }
 
     private fun setImageButtons(politicianEmail: String, userEmail: String?) {

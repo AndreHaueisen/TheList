@@ -47,6 +47,9 @@
     <string name="dialog_message_no_browser_app">Download a browser to complete this action</string>
     <string name="name_plus_corruption">%1$s corruption</string>
 
+    <string name="suspect">Suspicious</string>
+    <string name="will_vote">Has my vote</string>
+
     <string name="dialog_title_loading_database">Loading politicians</string>
     <string name="type_politician_name_hint">Type a politician\'s Name</string>
     <string name="share">Share</string>
@@ -134,6 +137,8 @@
     <string name="card_two_description">If your don\'t trust, add to suspects list. If you trust and plan on voting, add to voting list</string>
     <string name="card_three_description">Swipe the rating bar to give a grade on a specific category</string>
     <string name="card_fourth_description">Everything you do compose the politician\'s stats. Put others users actions together and we will end up with a good notion on who to vote and who to avoid in the next election</string>
+
+    <string name="finish">Finish</string>
 
     <!-- LoginPermissionDialog strings -->
     <string name="dialog_title">Who is this?</string>

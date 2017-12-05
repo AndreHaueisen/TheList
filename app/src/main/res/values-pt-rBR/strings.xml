@@ -38,6 +38,9 @@
     <string name="dialog_message_no_browser_app">Baixe um navegador para completar a ação</string>
     <string name="name_plus_corruption">%1$s corrupção</string>
 
+    <string name="suspect">Cosidero suspeito</string>
+    <string name="will_vote">Tem meu voto</string>
+
     <string name="dialog_title_loading_database">Carregando Políticos</string>
     <string name="type_politician_name_hint">Digite o nome do político</string>
     <string name="share">Compartilhe</string>
@@ -121,9 +124,11 @@
     <string name="card_fourth_title">A união faz a força</string>
 
     <string name="card_one_description">Procure através dos nossos rankings ou pelo nome</string>
-    <string name="card_two_description">Se não confia, o coloque na lista de suspeitos. Se confia e pretende votar, o coloque na lista de votação</string>
-    <string name="card_three_description">Deslise e solte a barra de notas para avaliar as diferentes categorias</string>
-    <string name="card_fourth_description">Tudo o que você faz compõe a nota do político. Juntando as ações de todos, teremos uma boa noção de quem votar e quem evitar nas próximas eleições</string>
+    <string name="card_two_description">Se não confia, coloque-o na lista de suspeitos. Se confia e pretende votar, coloque-o na lista de votação</string>
+    <string name="card_three_description">Deslize e solte a barra de notas para avaliar as diferentes categorias</string>
+    <string name="card_fourth_description">Tudo o que você faz compõe a nota do político. Juntando as ações de todos saberemos em quem votar e quem evitar nas próximas eleições</string>
+
+    <string name="finish">Pronto</string>
 
     <!-- LoginPermissionDialog strings -->
     <string name="dialog_title">Quem está aí?</string>

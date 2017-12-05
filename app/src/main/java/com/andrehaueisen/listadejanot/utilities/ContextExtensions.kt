@@ -89,3 +89,11 @@ fun Context.convertDipToPixel(dipValue: Float): Float {
     val metrics = this.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics)
 }
+
+fun Context.convertSpToPixel(spValue: Float): Float{
+    val metrics = this.resources.displayMetrics
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, metrics)
+}
+
+fun Context.convertPixelToSp(pixelValue: Float): Float =
+        pixelValue / resources.displayMetrics.scaledDensity
