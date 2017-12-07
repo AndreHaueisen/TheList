@@ -35,6 +35,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.florent37.expectanim.ExpectAnim
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_rating_board.*
@@ -62,6 +64,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     override fun setViews(isSavedState: Boolean) {
         setFabMenu()
         setAutoCompleteTextView()
+        setAdView()
 
         if (isSavedState) {
             if (mPresenterActivity.getSinglePolitician() != null) {
@@ -293,6 +296,17 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
+    private fun setFinishGradingTextClickListener(){
+        with(mPresenterActivity) {
+
+            finish_grading_text_view.setOnClickListener {
+                rating_bars_view_flipper.setInAnimation(this, R.anim.slide_in_right)
+                rating_bars_view_flipper.setOutAnimation(this, R.anim.slide_out_left)
+                rating_bars_view_flipper.showNext()
+            }
+        }
+    }
+
     private fun setOnCompleteTextViewClickListener() = with(mPresenterActivity) {
         auto_complete_text_view.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             dismissKeyBoard()
@@ -317,12 +331,18 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 mPresenterActivity.auto_complete_text_view.text.clear()
                 mPresenterActivity.delete_text_image_button.visibility = View.INVISIBLE
+                showKeyBoard()
 
             }
 
     private fun dismissKeyBoard() {
         val manager = mPresenterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         manager.hideSoftInputFromWindow(mPresenterActivity.auto_complete_text_view.windowToken, 0)
+    }
+
+    private fun showKeyBoard(){
+        val manager = mPresenterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.showSoftInput(mPresenterActivity.auto_complete_text_view, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun requestSearchableListUpdate() = setAutoCompleteTextView()
@@ -344,6 +364,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 setEmailButtonClickListener(politician)
                 setSearchOnWebButtonClickListener(politician)
                 setRatingBarsClickListeners(politician)
+                setFinishGradingTextClickListener()
                 setArrowClickListeners()
 
                 initiateShowAnimations(politician)
@@ -786,6 +807,14 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             Log.i(LOG_TAG, "Temporary picture file deleted")
         } else {
             Log.i(LOG_TAG, "Temporary picture file not deleted")
+        }
+    }
+
+    private fun setAdView() {
+        with(mPresenterActivity) {
+            val adViewBanner = findViewById<AdView>(R.id.adView)
+            val adRequest = AdRequest.Builder().build()
+            adViewBanner.loadAd(adRequest)
         }
     }
 }

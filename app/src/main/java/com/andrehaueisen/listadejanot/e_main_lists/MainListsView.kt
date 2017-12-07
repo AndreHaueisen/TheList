@@ -8,6 +8,8 @@ import com.andrehaueisen.listadejanot.i_information.mvp.InformationPresenterActi
 import com.andrehaueisen.listadejanot.j_login.LoginActivity
 import com.andrehaueisen.listadejanot.utilities.*
 import com.andrehaueisen.listadejanot.views.FabMenu
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.e_activity_main_lists.*
 
 
@@ -20,6 +22,7 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
         setRecyclerViews(bundle)
         setToolbar()
         setFabMenu()
+        setAdView()
         loadData()
     }
 
@@ -135,6 +138,14 @@ class MainListsView(private val mPresenterActivity: MainListsPresenterActivity) 
             bundle?.putParcelableArrayList(BUNDLE_SENADORES_LIST, getSortedSenadores())
             bundle?.putParcelableArrayList(BUNDLE_GOVERNADORES_LIST, getSortedGovernadores())
             bundle?.putParcelableArrayList(BUNDLE_DEPUTADOS_LIST, getSortedDeputados())
+        }
+    }
+
+    private fun setAdView() {
+        with(mPresenterActivity) {
+            val adViewBanner = findViewById<AdView>(R.id.adView)
+            val adRequest = AdRequest.Builder().build()
+            adViewBanner.loadAd(adRequest)
         }
     }
 }

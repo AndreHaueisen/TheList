@@ -17,8 +17,8 @@
 
     <style name="RatingBarStyle" parent="@android:style/Widget.Material.RatingBar">
         <item name="android:progressTint">@color/colorPrimaryDark</item>
-        <item name="android:progressBackgroundTint">@color/colorPrimary</item>
-        <item name="android:secondaryProgressTint">@color/colorPrimary</item>
+        <item name="android:progressBackgroundTint">@color/colorPrimaryLight</item>
+        <item name="android:secondaryProgressTint">@color/colorPrimaryLight</item>
     </style>
 
     <style name="Autocomplete" parent="@android:style/Widget.Material.AutoCompleteTextView">

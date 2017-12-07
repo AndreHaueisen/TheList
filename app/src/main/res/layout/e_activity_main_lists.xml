@@ -7,7 +7,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -128,10 +129,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="50dp"
         android:transitionName="@string/transition_button"
         app:color_main_button="@color/colorAccent"
         app:color_secondary_buttons="@color/colorAccent"
         app:content_options="@menu/menu_d_politician_search"
         app:expanded_background_color="@color/colorDarkTransparent"/>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:adSize="BANNER"
+        app:adUnitId="@string/test_banner_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </FrameLayout>

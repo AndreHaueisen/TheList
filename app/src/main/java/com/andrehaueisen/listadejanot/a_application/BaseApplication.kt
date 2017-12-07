@@ -35,6 +35,7 @@ class BaseApplication : Application(){
         firebaseInstance.setPersistenceEnabled(true)
 
         val firebaseReference = firebaseInstance.reference
+        firebaseReference.keepSynced(true)
 
         val user = User()
 

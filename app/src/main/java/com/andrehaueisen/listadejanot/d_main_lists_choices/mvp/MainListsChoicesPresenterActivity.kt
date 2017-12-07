@@ -95,7 +95,6 @@ class MainListsChoicesPresenterActivity : AppCompatActivity() {
                 .subscribe { listsAreReady ->
                     if(listsAreReady){
                         mChoicesView?.dismissAlertDialog()
-                        //mChoicesView?.loadOnboardingScreen()
                     }}
     }
 

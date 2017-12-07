@@ -72,6 +72,7 @@
     <string name="politician_removed_from_list">%1$s removed</string>
     <string name="no_grade">No grade</string>
 
+    <string name="means_title">Means</string>
     <string name="honesty_title">Honesty</string>
     <string name="leader_title">Leader</string>
     <string name="promise_keeper_title">Keeps promises</string>
@@ -84,6 +85,8 @@
     <string name="rules_for_the_people_grade">Rules for the people: %1$s</string>
     <string name="answer_voters_grade">Answer voters: %1$s</string>
     <string name="overall_grade">Overall Grade: %1$s</string>
+
+    <string name="finish_grading_title">Thank you!</string>
 
     <string name="overall_grade_title">"Overall\ngrade"</string>
     <string name="single_number" translatable="false">%1$s</string>
@@ -162,8 +165,10 @@
     <string name="transition_toolbar" translatable="false">toolbar_transition</string>
 
     <!--AdMod strings-->
-    <string name="test_block_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="official_block_id" translatable="false">ca-app-pub-4777473120550963/8682532000</string>
+    <string name="test_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="official_d_activity_banner_id" translatable="false">ca-app-pub-4777473120550963/8682532000</string>
+    <string name="official_e_activity_banner_id" translatable="false">ca-app-pub-4777473120550963/2881346302</string>
+    <string name="official_f_activity_banner_id" translatable="false">ca-app-pub-4777473120550963/5548049859</string>
 
 
 </resources>

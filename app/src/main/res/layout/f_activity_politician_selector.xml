@@ -85,8 +85,10 @@
                     style="@style/LatoRegularTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
                     android:text="@string/overall_grade_title"
                     android:textAlignment="center"
                     android:textColor="@color/colorTextAndIcons"
@@ -100,13 +102,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:textColor="@color/colorTextAndIcons"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/title_overall_grade_text_view"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/title_overall_grade_text_view"
                     app:layout_constraintTop_toBottomOf="@+id/title_overall_grade_text_view"
                     app:layout_constraintVertical_bias="1.0"/>
 
@@ -144,8 +145,9 @@
                     style="@style/LatoRegularTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
                     android:text="@string/recommendations_title"
                     android:textAlignment="center"
                     android:textColor="@color/colorTextAndIcons"
@@ -252,9 +254,9 @@
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_thief"
                     app:rrb_drawableGravity="top"
+                    app:rrb_drawablePadding="12dp"
                     app:rrb_ripple="false"
                     app:rrb_text="@string/suspect"
-                    app:rrb_drawablePadding="12dp"
                     app:rrb_textColor="@color/colorSecondaryText"
                     app:rrb_textColorTo="@color/colorPrimaryText"/>
 
@@ -263,9 +265,9 @@
                     android:layout_height="wrap_content"
                     app:rrb_drawable="@drawable/ic_politician"
                     app:rrb_drawableGravity="top"
+                    app:rrb_drawablePadding="12dp"
                     app:rrb_ripple="false"
                     app:rrb_text="@string/will_vote"
-                    app:rrb_drawablePadding="12dp"
                     app:rrb_textColor="@color/colorSecondaryText"
                     app:rrb_textColorTo="@color/colorPrimaryText"/>
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
@@ -275,7 +277,7 @@
                 layout="@layout/group_layout_rating_board"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="78dp"
+                android:layout_marginBottom="128dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
@@ -293,11 +295,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="50dp"
         android:transitionName="@string/transition_button"
         app:color_main_button="@color/colorAccent"
         app:color_secondary_buttons="@color/colorAccent"
         app:content_options="@menu/menu_d_politician_search"
         app:expanded_background_color="@color/colorDarkTransparent"
         tools:visibility="gone"/>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:adSize="BANNER"
+        app:adUnitId="@string/test_banner_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </android.support.design.widget.CoordinatorLayout>
