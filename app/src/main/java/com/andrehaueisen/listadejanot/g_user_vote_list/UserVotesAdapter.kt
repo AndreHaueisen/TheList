@@ -75,15 +75,22 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
             mVoteDateTextView.text = formatDateText(politician.email)
             mNameTextView.text = politician.name
 
-            mRecommendationsVotesTextView.text = mActivity.resources.getQuantityString(
-                    R.plurals.recommendation_votes,
-                    politician.recommendationsCount,
-                    politician.recommendationsCount)
+            mRecommendationsVotesTextView.text =
+                    if (politician.recommendationsCount == 0)
+                        mActivity.getString(R.string.recommendation_votes_zero)
+                    else mActivity.resources.getQuantityString(
+                            R.plurals.recommendation_votes,
+                            politician.recommendationsCount,
+                            politician.recommendationsCount)
 
-            mCondemnationsVotesTxtView.text = mActivity.resources.getQuantityString(
-                    R.plurals.condemnation_votes,
-                    politician.condemnationsCount,
-                    politician.condemnationsCount)
+            mCondemnationsVotesTxtView.text =
+                    if (politician.condemnationsCount == 0)
+                        mActivity.getString(R.string.condemnation_votes_zero)
+                    else
+                        mActivity.resources.getQuantityString(
+                                R.plurals.condemnation_votes,
+                                politician.condemnationsCount,
+                                politician.condemnationsCount)
 
             mOverallGradeRatingBar.rating = politician.overallGrade
 
@@ -158,12 +165,12 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
             else
                 mUser.recommendations[politicianEmail?.encodeEmail()]
 
-            return if(timestamp != null) {
+            return if (timestamp != null) {
                 val date = Date(timestamp.toLong())
                 val dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext())
 
                 mActivity.getString(R.string.your_vote_date, dateFormat.format(date))
-            }else{
+            } else {
                 mActivity.getString(R.string.no_vote_registered)
             }
         }

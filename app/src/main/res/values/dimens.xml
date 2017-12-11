@@ -8,6 +8,8 @@
     <dimen name="image_star_width_size">89.6dp</dimen>
     <dimen name="image_star_height_size">56dp</dimen>
     <dimen name="list_choices_images_size">64dp</dimen>
+    <dimen name="podium_image_size">120dp</dimen>
+    <dimen name="search_image_size">100dp</dimen>
 
     <dimen name="text_size_default">14sp</dimen>
 
@@ -16,5 +18,8 @@
     <!-- f_politician_selector dimensions-->
     <dimen name="selector_image_height">240dp</dimen>
     <dimen name="politician_buttons_margin">16dp</dimen>
+
+    <!-- l_onboard dimensions0-->
+    <dimen name="onboard_icon_size">168dp</dimen>
 
 </resources>

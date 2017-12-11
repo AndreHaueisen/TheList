@@ -70,14 +70,22 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
             val stars = mOverallGradeRatingBar.progressDrawable as LayerDrawable
             stars.getDrawable(2).setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP)
 
-            mRecommendationsVotesTextView.text = activity.resources.getQuantityString(
-                    R.plurals.recommendation_votes,
-                    politician.recommendationsCount,
-                    politician.recommendationsCount)
-            mCondemnationsVotesTxtView.text = activity.resources.getQuantityString(
-                    R.plurals.condemnation_votes,
-                    politician.condemnationsCount,
-                    politician.condemnationsCount)
+            mRecommendationsVotesTextView.text =
+                    if (politician.recommendationsCount == 0)
+                        activity.getString(R.string.recommendation_votes_zero)
+                    else activity.resources.getQuantityString(
+                            R.plurals.recommendation_votes,
+                            politician.recommendationsCount,
+                            politician.recommendationsCount)
+
+            mCondemnationsVotesTxtView.text =
+                    if (politician.condemnationsCount == 0)
+                        activity.getString(R.string.condemnation_votes_zero)
+                    else
+                        activity.resources.getQuantityString(
+                                R.plurals.condemnation_votes,
+                                politician.condemnationsCount,
+                                politician.condemnationsCount)
 
             mOverallGradeTextView.setPoliticianGradeText(politician.overallGrade, R.string.overall_grade)
 

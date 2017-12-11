@@ -2,7 +2,6 @@ package com.andrehaueisen.listadejanot.l_onboarding
 
 import android.os.Bundle
 import com.andrehaueisen.listadejanot.R
-import com.andrehaueisen.listadejanot.utilities.convertDipToPixel
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
 
@@ -18,10 +17,27 @@ class OnboardingActivity: AhoyOnboarderActivity() {
         setGradientBackground()
         setFinishButtonTitle(R.string.finish)
 
-        val firstCard = getOnboardCard(R.drawable.ic_onboard_first, getString(R.string.card_one_title), getString(R.string.card_one_description))
-        val secondCard = getOnboardCard(R.drawable.ic_onboard_second, getString(R.string.card_two_title), getString(R.string.card_two_description), titleTextSize = 18F)
-        val thirdCard = getOnboardCard(R.drawable.ic_onboard_third, getString(R.string.card_three_title), getString(R.string.card_three_description))
-        val fourthCard = getOnboardCard(R.drawable.ic_onboard_fourth, getString(R.string.card_fourth_title), getString(R.string.card_fourth_description))
+        val iconSize = resources.getDimension(R.dimen.onboard_icon_size).toInt()
+
+        val firstCard = getOnboardCard(R.drawable.ic_onboard_first,
+                getString(R.string.card_one_title),
+                getString(R.string.card_one_description),
+                iconSize = iconSize)
+
+        val secondCard = getOnboardCard(R.drawable.ic_onboard_second,
+                getString(R.string.card_two_title),
+                getString(R.string.card_two_description),
+                titleTextSize = 18F, iconSize = iconSize)
+
+        val thirdCard = getOnboardCard(R.drawable.ic_onboard_third,
+                getString(R.string.card_three_title),
+                getString(R.string.card_three_description),
+                iconSize = iconSize)
+
+        val fourthCard = getOnboardCard(R.drawable.ic_onboard_fourth,
+                getString(R.string.card_fourth_title),
+                getString(R.string.card_fourth_description),
+                iconSize = iconSize)
 
         val pages = mutableListOf(firstCard, secondCard, thirdCard, fourthCard)
         setOnboardPages(pages)
@@ -34,9 +50,7 @@ class OnboardingActivity: AhoyOnboarderActivity() {
                                descriptionColor: Int = R.color.colorTextAndIcons,
                                titleTextSize: Float = 20F,
                                descriptionTextSize: Float = 14F,
-                               iconSize: Float = 168F): AhoyOnboarderCard{
-
-        val iconWidthAndHeight = this.convertDipToPixel(iconSize).toInt()
+                               iconSize: Int): AhoyOnboarderCard{
 
         val ahoyOnboardCard = AhoyOnboarderCard(title, description, icon)
         ahoyOnboardCard.setBackgroundColor(backgroundColor)
@@ -44,7 +58,7 @@ class OnboardingActivity: AhoyOnboarderActivity() {
         ahoyOnboardCard.setDescriptionColor(descriptionColor)
         ahoyOnboardCard.setTitleTextSize(titleTextSize)
         ahoyOnboardCard.setDescriptionTextSize(descriptionTextSize)
-        ahoyOnboardCard.setIconLayoutParams(iconWidthAndHeight, iconWidthAndHeight, 56, 8, 8, 8)
+        ahoyOnboardCard.setIconLayoutParams(iconSize, iconSize, 56, 8, 8, 8)
 
         return ahoyOnboardCard
     }

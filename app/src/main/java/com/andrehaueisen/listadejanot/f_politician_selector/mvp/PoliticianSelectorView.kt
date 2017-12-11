@@ -369,6 +369,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
                 initiateShowAnimations(politician)
             }
+            rating_bars_view_flipper.displayedChild = 0
         }
     }
 

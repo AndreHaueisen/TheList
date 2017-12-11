@@ -104,6 +104,8 @@
     <string name="place_vote">Undo</string>
     <string name="your_suspect_list">Suspect list</string>
     <string name="your_vote_list">Voting list</string>
+    <string name="recommendation_votes_zero">Total recommendations: none</string>
+    <string name="condemnation_votes_zero">Total suspicions: none</string>
     <plurals name="recommendation_votes">
         <item quantity="one">Total recommendations: %1$d vote</item>
         <item quantity="other">Total recommendations: %1$d votes</item>
@@ -124,7 +126,7 @@
 
     <!--i_information strings-->
     <string name="understand_app_motivation">1 - Select a politician\n2 - Grade the politician\n3 - Put the politician on your suspect list or voting list\n4 - In the next elections, don\'t vote on who has bad grades\n5 - Share</string>
-    <string name="beta_warning">The app is in beta version. Database containing you votes can be reset at any time.</string>
+    <string name="banner_request">Leave your positive and negative thoughts about the app at the Play Store. They are very important to us. Thanks for the support!</string>
 
     <!--j_login strings-->
     <string name="no_network">You are not connected to the internet. Changes won\'t be saved</string>

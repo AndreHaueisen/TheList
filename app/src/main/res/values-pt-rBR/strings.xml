@@ -94,14 +94,16 @@
     <string name="place_vote">Recolocar</string>
     <string name="your_suspect_list">Lista de suspeitos</string>
     <string name="your_vote_list">Lista de votação</string>
+    <string name="recommendation_votes_zero">Pretendem votar: ninguém</string>
+    <string name="condemnation_votes_zero">Consideram suspeito: ninguém</string>
     <plurals name="recommendation_votes">
-        <item quantity="one">Pretendem votar:  %1$d pessoa</item>
-        <item quantity="other">Pretendem votar:  %1$d pessoas</item>
+        <item quantity="one">Pretendem votar: %1$d pessoa</item>
+        <item quantity="other">Pretendem votar: %1$d pessoas</item>
     </plurals>
 
     <plurals name="condemnation_votes">
-        <item quantity="one">Consideram suspeito:  %1$d pessoa</item>
-        <item quantity="other">Consideram suspeito:  %1$d pessoas</item>
+        <item quantity="one">Consideram suspeito: %1$d pessoa</item>
+        <item quantity="other">Consideram suspeito: %1$d pessoas</item>
     </plurals>
 
     <!--h_opinions strings-->
@@ -111,7 +113,7 @@
 
     <!--i_information strings-->
     <string name="understand_app_motivation">1 - Selecione o político\n2 - Avalie-o\n3 - Coloque-o na sua lista de suspeitos ou na sua lista de votação\n4 - Nas próximas eleições, não vote nos maus avaliados\n5 - Compartilhe</string>
-    <string name="beta_warning">Estamos em versão de testes. O banco de dados contendo seus votos e comentários será reiniciado se for necessário.</string>
+    <string name="banner_request">Deixe sua opinião sobre o que gostou e o que precisa melhorar na Play Store. Ela é muito importante para que possamos evoluir. Obrigado pelo apoio!</string>
 
     <!--j_login strings-->
     <string name="no_network">Sem internet. Mudanças não serão salvas</string>

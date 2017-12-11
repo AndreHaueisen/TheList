@@ -40,15 +40,22 @@ fun ExpectAnim.animateVoteTextChange(view: View, adapterType: Int, newCount: Int
             .start()
             .addEndListener{
                 if(adapterType == WILL_VOTE_POLITICIANS_ADAPTER_TYPE){
-                    (view as TextView).text = view.resources.getQuantityString(
-                            R.plurals.recommendation_votes,
-                            newCount,
-                            newCount)
+                    (view as TextView).text = if (newCount == 0)
+                        view.resources.getString(R.string.recommendation_votes_zero)
+                    else
+                        view.resources.getQuantityString(
+                                R.plurals.recommendation_votes,
+                                newCount,
+                                newCount)
+
                 }else{
-                    (view as TextView).text = view.resources.getQuantityString(
-                            R.plurals.condemnation_votes,
-                            newCount,
-                            newCount)
+                    (view as TextView).text = if (newCount == 0)
+                        view.resources.getString(R.string.condemnation_votes_zero)
+                    else
+                        view.resources.getQuantityString(
+                                R.plurals.condemnation_votes,
+                                newCount,
+                                newCount)
                 }
 
                 ExpectAnim().expect(view)

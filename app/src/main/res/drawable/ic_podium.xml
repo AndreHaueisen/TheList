@@ -1,8 +1,8 @@
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:name="vector"
-    android:width="120dp"
-    android:height="120dp"
+    android:width="@dimen/podium_image_size"
+    android:height="@dimen/podium_image_size"
     android:viewportWidth="64"
     android:viewportHeight="64">
     <group android:name="group"/>
