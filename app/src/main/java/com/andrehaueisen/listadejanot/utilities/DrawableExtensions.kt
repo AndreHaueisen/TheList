@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 fun Drawable.convertToByteArray(): ByteArray{
     val bitmap = this.convertToBitmap()
     val outputStream = ByteArrayOutputStream()
-    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+    bitmap?.compress(Bitmap.CompressFormat.JPEG, 15, outputStream)
 
     return outputStream.toByteArray()
 }

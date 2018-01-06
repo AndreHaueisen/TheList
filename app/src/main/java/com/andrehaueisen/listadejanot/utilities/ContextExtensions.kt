@@ -62,7 +62,7 @@ fun Activity.getProperLayoutManager(orientation: Int = LinearLayoutManager.VERTI
     val metrics = DisplayMetrics()
     display.getMetrics(metrics)
 
-    val scaleFactor = metrics.density;
+    val scaleFactor = metrics.density
 
     val widthDp = metrics.widthPixels / scaleFactor
     val heightDp = metrics.heightPixels / scaleFactor

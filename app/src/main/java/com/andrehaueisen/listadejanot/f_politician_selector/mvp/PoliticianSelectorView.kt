@@ -359,7 +359,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 bindUserDataToViews()
 
                 setRadioButtonsClickListener(politician)
-                setOptionsButtonClickListener(politician)
+                setOpinionsButtonClickListener(politician)
                 setShareButtonClickListener(politician)
                 setEmailButtonClickListener(politician)
                 setSearchOnWebButtonClickListener(politician)
@@ -474,19 +474,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
             }
         }
     }
-
-   /* private fun TextView.setNewOverallGrade(grades: List<Float>){
-
-        var gradeSum = 0F
-        var size = 0
-        grades.filter { grade -> grade != -1F }
-                .forEach { grade ->
-                    gradeSum += grade
-                    size++
-                }
-
-        this.text = String.format("%.1f", (gradeSum / size))
-    }*/
 
     private fun View.decideOnUserGradeVisibility(grade: Float) {
         if (grade != -1F) {
@@ -621,7 +608,7 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
 
             }
 
-    private fun setOptionsButtonClickListener(politician: Politician) {
+    private fun setOpinionsButtonClickListener(politician: Politician) {
         with(mPresenterActivity) {
             opinions_button.setOnClickListener {
 

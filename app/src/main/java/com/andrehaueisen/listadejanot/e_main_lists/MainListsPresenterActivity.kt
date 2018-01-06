@@ -48,28 +48,29 @@ class MainListsPresenterActivity: AppCompatActivity() {
                 .build()
                 .inject(this)
 
+        mMainListsView = MainListsView(this)
+
         val extras = intent.extras
-        if(extras!= null){
+        when(extras.getString(BUNDLE_SORT_TYPE)){
+            SortType.RECOMMENDATIONS_COUNT.name -> mSortType = SortType.RECOMMENDATIONS_COUNT
+            SortType.CONDEMNATIONS_COUNT.name -> mSortType = SortType.CONDEMNATIONS_COUNT
+            SortType.TOP_OVERALL_GRADE.name -> mSortType = SortType.TOP_OVERALL_GRADE
+            SortType.WORST_OVERALL_GRADE.name -> mSortType = SortType.WORST_OVERALL_GRADE
+            SortType.MEDIA_HIGHLIGHT.name -> mSortType = SortType.MEDIA_HIGHLIGHT
+        }
+
+        if(savedInstanceState == null && extras != null){
             mPresidentesSortedList.addAll(extras.getParcelableArrayList(BUNDLE_PRESIDENTES_LIST))
             mSenadoresSortedList.addAll(extras.getParcelableArrayList(BUNDLE_SENADORES_LIST))
             mGovernadoresSortedList.addAll(extras.getParcelableArrayList(BUNDLE_GOVERNADORES_LIST))
             mDeputadosSortedList.addAll(extras.getParcelableArrayList(BUNDLE_DEPUTADOS_LIST))
 
-            when(extras.getString(BUNDLE_SORT_TYPE)){
-                SortType.RECOMMENDATIONS_COUNT.name -> mSortType = SortType.RECOMMENDATIONS_COUNT
-                SortType.CONDEMNATIONS_COUNT.name -> mSortType = SortType.CONDEMNATIONS_COUNT
-                SortType.TOP_OVERALL_GRADE.name -> mSortType = SortType.TOP_OVERALL_GRADE
-                SortType.WORST_OVERALL_GRADE.name -> mSortType = SortType.WORST_OVERALL_GRADE
-                SortType.MEDIA_HIGHLIGHT.name -> mSortType = SortType.MEDIA_HIGHLIGHT
-            }
-        }
-
-        mMainListsView = MainListsView(this)
-
-        if (savedInstanceState == null) {
             mMainListsView?.setViews(null)
-        } else {
+
+        } else if (savedInstanceState != null && extras == null) {
             mMainListsView?.setViews(savedInstanceState)
+        } else {
+            mMainListsView?.setViews(extras)
         }
 
         postponeTransition()
