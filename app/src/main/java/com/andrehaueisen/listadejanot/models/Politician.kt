@@ -95,8 +95,8 @@ data class Politician(@Exclude var sqlId: Long? = null,
         return simplePoliticianMap
     }
 
-    override operator fun compareTo(politician: Politician): Int =
-            Comparators.NAME.compare(this, politician)
+    override operator fun compareTo(other: Politician): Int =
+            Comparators.NAME.compare(this, other)
 
     object Comparators {
 

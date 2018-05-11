@@ -120,9 +120,9 @@ class MainListsChoicesModel(
         return CursorLoader(mContext, politiciansEntry.CONTENT_URI, POLITICIANS_COLUMNS, null, null, null)
     }
 
-    override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
+    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
 
-        if (data != null && data.count != 0) {
+        if (data != null && !data.isClosed && data.count != 0) {
             data.moveToFirst()
 
             for (i in 0 until data.count) {
@@ -268,5 +268,5 @@ class MainListsChoicesModel(
         mCompositeDisposable.dispose()
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>?) = Unit
+    override fun onLoaderReset(loader: Loader<Cursor>) = Unit
 }

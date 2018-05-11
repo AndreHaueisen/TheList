@@ -13,15 +13,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import com.andrehaueisen.listadejanot.R
 import com.andrehaueisen.listadejanot.f_politician_selector.mvp.PoliticianSelectorPresenterActivity
 import com.andrehaueisen.listadejanot.models.Politician
-import com.andrehaueisen.listadejanot.utilities.INTENT_POLITICIAN_NAME
-import com.andrehaueisen.listadejanot.utilities.SortType
-import com.andrehaueisen.listadejanot.utilities.setPoliticianGradeText
-import com.andrehaueisen.listadejanot.utilities.startNewActivity
+import com.andrehaueisen.listadejanot.utilities.*
 import kotlinx.android.synthetic.main.e_activity_main_lists.*
 
 /**
@@ -29,7 +27,7 @@ import kotlinx.android.synthetic.main.e_activity_main_lists.*
  */
 class MainListsAdapter(val activity: AppCompatActivity, val politicianList: ArrayList<Politician>, val sortType: SortType) : RecyclerView.Adapter<MainListsAdapter.PoliticianResume>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PoliticianResume {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoliticianResume {
 
         val view = LayoutInflater.from(activity as Context).inflate(R.layout.item_politician_resume, parent, false)
         return PoliticianResume(view)
@@ -37,12 +35,13 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
 
     override fun getItemCount(): Int = politicianList.size
 
-    override fun onBindViewHolder(holder: PoliticianResume?, position: Int) {
-        holder?.onBindData(position)
+    override fun onBindViewHolder(holder: PoliticianResume, position: Int) {
+        holder.onBindData(position)
     }
 
     inner class PoliticianResume(politicianView: View) : RecyclerView.ViewHolder(politicianView) {
 
+        private val mScrollIndicatorView = politicianView.findViewById<View>(R.id.horizontal_scroll_indicator)
         private val mCardView: CardView = politicianView.findViewById(R.id.politician_resume_card_view)
         private val mNameTextView: TextView = politicianView.findViewById(R.id.name_text_view)
         private val mOverallGradeRatingBar: RatingBar = politicianView.findViewById(R.id.overall_grade_rating_bar)
@@ -56,8 +55,8 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
                 val extras = Bundle()
                 extras.putString(INTENT_POLITICIAN_NAME, mNameTextView.text.toString())
 
-                val toolbarPair = Pair<View, String>(activity.main_lists_toolbar as View, activity.getString(R.string.transition_toolbar))
-                val fabMenuPair = Pair<View, String>(activity.menu_fab as View, activity.getString(R.string.transition_button))
+                val toolbarPair = Pair(activity.main_lists_toolbar as View, activity.getString(R.string.transition_toolbar))
+                val fabMenuPair = Pair(activity.menu_fab as View, activity.getString(R.string.transition_button))
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, fabMenuPair, toolbarPair)
 
                 activity.startNewActivity(PoliticianSelectorPresenterActivity::class.java, extras = extras, options = options.toBundle())
@@ -107,6 +106,32 @@ class MainListsAdapter(val activity: AppCompatActivity, val politicianList: Arra
                 }
             }
 
+            if(politicianList.count() > 1) {
+
+                when (layoutPosition) {
+                    0 -> setViewMargin(mScrollIndicatorView, HORIZONTAL_LIST_INDICATOR_MARGIN, HORIZONTAL_LIST_INDICATOR_MARGIN)
+
+                    politicianList.count() - 1 -> setViewMargin(mScrollIndicatorView, top = HORIZONTAL_LIST_INDICATOR_MARGIN, right = HORIZONTAL_LIST_INDICATOR_MARGIN)
+
+                    else -> setViewMargin(mScrollIndicatorView, top = HORIZONTAL_LIST_INDICATOR_MARGIN)
+                }
+
+            } else {
+                setViewMargin(mScrollIndicatorView, HORIZONTAL_LIST_INDICATOR_MARGIN, HORIZONTAL_LIST_INDICATOR_MARGIN, HORIZONTAL_LIST_INDICATOR_MARGIN)
+            }
+
+        }
+
+        private fun setViewMargin(view: View, left: Float = 0F, top: Float = 0F, right: Float = 0F, bottom: Float = 0F){
+
+            val context = activity
+            val marginLeft = context.convertDpToPixel(left).toInt()
+            val marginTop = context.convertDpToPixel(top).toInt()
+            val marginRight = context.convertDpToPixel(right).toInt()
+            val marginBottom = context.convertDpToPixel(bottom).toInt()
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.setMargins(marginLeft, marginTop, marginRight, marginBottom) //substitute parameters for left, top, right, bottom
+            view.layoutParams = params
         }
     }
 }

@@ -11,7 +11,6 @@ import javax.inject.Named
 /**
  * Created by andre on 6/20/2017.
  */
-@UserVoteListScope
 @Module
 class UserVoteListModule(private val loaderManager: LoaderManager) {
 

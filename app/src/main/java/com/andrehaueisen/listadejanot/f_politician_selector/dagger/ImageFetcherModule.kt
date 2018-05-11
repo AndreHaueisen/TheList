@@ -19,7 +19,7 @@ import java.io.File
  * Created by andre on 9/30/2017.
  */
 @Module
-class ImageFetcherModule{
+class ImageFetcherModule {
 
     /*
     "https://www.googleapis.com/customsearch/v1
@@ -67,6 +67,7 @@ class ImageFetcherModule{
     private val PARAMETER_IMAGE_SIZE = "imgSize"
     private val PARAMETER_IMAGE_TYPE = "imgType"
     private val PARAMETER_SEARCH_KEY = "key"
+    private val PARAMETER_SAFE_SEARCH = "safe"
 
     @Provides
     @PoliticianSelectorScope
@@ -82,7 +83,7 @@ class ImageFetcherModule{
     @Provides
     @PoliticianSelectorScope
     fun provideLoggingInterceptor(): HttpLoggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     @Provides
     @PoliticianSelectorScope
@@ -90,16 +91,17 @@ class ImageFetcherModule{
         return Interceptor { chain ->
             var request = chain.request()
             val url = request
-                    .url()
-                    .newBuilder()
-                    .addQueryParameter(PARAMETER_RESULTS_NUMBER, "1")
-                    .addQueryParameter(PARAMETER_SEARCH_ID, BuildConfig.SEARCH_ID)
-                    .addQueryParameter(PARAMETER_LANGUAGE, "pt-BR")
-                    .addQueryParameter(PARAMETER_SEARCH_TYPE, "image")
-                    .addQueryParameter(PARAMETER_IMAGE_SIZE, "large")
-                    .addQueryParameter(PARAMETER_IMAGE_TYPE, "photo")
-                    .addQueryParameter(PARAMETER_SEARCH_KEY, BuildConfig.SEARCH_API_KEY)
-                    .build()
+                .url()
+                .newBuilder()
+                .addQueryParameter(PARAMETER_RESULTS_NUMBER, "1")
+                .addQueryParameter(PARAMETER_SEARCH_ID, BuildConfig.SEARCH_ID)
+                .addQueryParameter(PARAMETER_LANGUAGE, "pt-BR")
+                .addQueryParameter(PARAMETER_SEARCH_TYPE, "image")
+                .addQueryParameter(PARAMETER_IMAGE_SIZE, "large")
+                .addQueryParameter(PARAMETER_IMAGE_TYPE, "photo")
+                .addQueryParameter(PARAMETER_SAFE_SEARCH, "high")
+                .addQueryParameter(PARAMETER_SEARCH_KEY, BuildConfig.SEARCH_API_KEY)
+                .build()
             request = request.newBuilder().url(url).build()
             chain.proceed(request)
         }
@@ -113,21 +115,25 @@ class ImageFetcherModule{
     @PoliticianSelectorScope
     fun provideClient(loggingInterceptor: HttpLoggingInterceptor, interceptor: Interceptor, cache: Cache): OkHttpClient {
         return OkHttpClient.Builder()
-                //.addInterceptor(loggingInterceptor)
-                .addInterceptor(interceptor)
-                .cache(cache)
-                .build()
+            //.addInterceptor(loggingInterceptor)
+            .addInterceptor(interceptor)
+            .cache(cache)
+            .build()
     }
 
     @Provides
     @PoliticianSelectorScope
-    fun provideImageService(client: OkHttpClient, converterFactory: GsonConverterFactory, adapterFactory: RxJava2CallAdapterFactory): ImageFetcherService {
+    fun provideImageService(
+        client: OkHttpClient,
+        converterFactory: GsonConverterFactory,
+        adapterFactory: RxJava2CallAdapterFactory
+    ): ImageFetcherService {
         return Retrofit.Builder()
-                .baseUrl(BASE_NEWS_URL)
-                .client(client)
-                .addConverterFactory(converterFactory)
-                .addCallAdapterFactory(adapterFactory)
-                .build()
-                .create<ImageFetcherService>(ImageFetcherService::class.java)
+            .baseUrl(BASE_NEWS_URL)
+            .client(client)
+            .addConverterFactory(converterFactory)
+            .addCallAdapterFactory(adapterFactory)
+            .build()
+            .create<ImageFetcherService>(ImageFetcherService::class.java)
     }
 }

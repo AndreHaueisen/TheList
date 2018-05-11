@@ -67,6 +67,7 @@ const val DEFAULT_ANIMATIONS_DURATION: Long = 500
 const val QUICK_ANIMATIONS_DURATION: Long = 250
 const val VERY_QUICK_ANIMATIONS_DURATION: Long = 100
 const val NONEXISTING_GRADE_VALUE: Float = -1F
+const val HORIZONTAL_LIST_INDICATOR_MARGIN = 32F
 
 const val SHARED_PREFERENCES = "com_andre_haueisen_shared_pref"
 const val SHARED_IS_FIRST_USAGE = "first_usage"

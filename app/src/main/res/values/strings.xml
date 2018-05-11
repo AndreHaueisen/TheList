@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Urna Limpa</string>
     <string name="title_activity_main_list" translatable="false">Urna Limpa</string>
-    <string name="facebook_app_id" translatable="false">1698727047098274</string>
+    <string name="facebook_application_id" translatable="false">1698727047098274</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1698727047098274</string>
     <string name="twitter_consumer_key" translatable="false">ayN9FhDVDT9Q9W9Pq1aI3Ctzd</string>
     <string name="twitter_consumer_secret" translatable="false">anitylaBVwlTBE2tptnXBwaLju6tiUWZDhjg6XMWbz23tx48sy</string>

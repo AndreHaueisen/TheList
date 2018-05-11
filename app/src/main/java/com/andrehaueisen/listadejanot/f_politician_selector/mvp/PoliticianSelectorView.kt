@@ -38,7 +38,6 @@ import com.github.florent37.expectanim.ExpectAnim
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
-import kotlinx.android.synthetic.main.group_layout_buttons.*
 import kotlinx.android.synthetic.main.group_layout_rating_board.*
 import java.io.File
 import java.io.FileOutputStream
@@ -498,8 +497,15 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
                 }
             }
 
+            title_overall_grade_text_view.visibility = View.VISIBLE
+            overall_grade_text_view.visibility = View.VISIBLE
+            title_condemnations_count_text_view.visibility = View.VISIBLE
+            condemnations_count_text_view.visibility = View.VISIBLE
+            title_recommendations_count_text_view.visibility = View.VISIBLE
+            recommendations_count_text_view.visibility = View.VISIBLE
+
             if (politician_info_group.visibility == View.INVISIBLE) {
-                overall_info_constraint_layout.visibility = View.VISIBLE
+
                 politician_info_group.visibility = View.VISIBLE
                 opinions_button.visibility = View.VISIBLE
                 opinions_text_view.visibility = View.VISIBLE

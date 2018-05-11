@@ -79,9 +79,9 @@
 
     <string name="finish_grading_title">Obrigado!</string>
 
-    <string name="overall_grade_title">"Nota\ngeral"</string>
-    <string name="condemnations_title">"Consideram\nsuspeito"</string>
-    <string name="recommendations_title">"Pretendem\nvotar"</string>
+    <string name="overall_grade_title">"Nota"</string>
+    <string name="condemnations_title">"Desconfiados"</string>
+    <string name="recommendations_title">"Votantes"</string>
 
     <string name="cant_handle_intent_message">Impossível compartilhar. Nenhum app suportado encontrado</string>
 

@@ -26,7 +26,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
-import kotlinx.android.synthetic.main.group_layout_buttons.*
 import javax.inject.Inject
 
 
@@ -105,7 +104,7 @@ class PoliticianSelectorPresenterActivity : AppCompatActivity(), PoliticianSelec
         super.onStart()
 
         if (!intent.hasExtra(INTENT_POLITICIAN_NAME)) {
-            overall_info_constraint_layout.visibility = View.INVISIBLE
+
             politician_info_group.visibility = View.INVISIBLE
             opinions_button.visibility = View.INVISIBLE
             opinions_text_view.visibility = View.INVISIBLE

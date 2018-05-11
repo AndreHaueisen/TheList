@@ -40,13 +40,13 @@ class UserVotesAdapter(val mActivity: Activity, private val mPoliticians: List<P
         mFirebaseAuthenticator = appComponent.loadFirebaseAuthenticator()
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup?, viewType: Int): VoteHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): VoteHolder {
         val voteView = LayoutInflater.from(mActivity).inflate(R.layout.item_vote_resume, viewGroup, false)
         return VoteHolder(voteView)
     }
 
-    override fun onBindViewHolder(voteHolder: VoteHolder?, position: Int) {
-        voteHolder?.bindVotesToViews(mPoliticians[position])
+    override fun onBindViewHolder(voteHolder: VoteHolder, position: Int) {
+        voteHolder.bindVotesToViews(mPoliticians[position])
     }
 
     override fun getItemViewType(position: Int) = adapterType

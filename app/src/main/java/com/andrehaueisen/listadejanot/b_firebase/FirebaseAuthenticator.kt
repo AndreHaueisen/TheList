@@ -13,7 +13,12 @@ import com.google.firebase.database.*
 /**
  * Created by andre on 6/8/2017.
  */
-class FirebaseAuthenticator(private val mContext: Context, private val mDatabaseReference: DatabaseReference, private val mFirebaseAuth: FirebaseAuth, private val mUser: User) {
+class FirebaseAuthenticator(
+    private val mContext: Context,
+    private val mDatabaseReference: DatabaseReference,
+    private val mFirebaseAuth: FirebaseAuth,
+    private val mUser: User
+) {
 
     private val LOG_TAG = FirebaseAuthenticator::class.java.simpleName
     private val REQUEST_CODE = 0
@@ -26,16 +31,20 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
     fun getCurrentUser() = mFirebaseAuth.currentUser
 
     fun startLoginFlow(activity: Activity) = activity.startActivityForResult(
-            AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(listOf(
-                            AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                            AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
-                            AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build(),
-                            AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                    .setLogo(R.drawable.ic_launcher)
-                    .setTheme(R.style.LogInTheme)
-                    .build(), REQUEST_CODE)
+        AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(
+                listOf(
+                    AuthUI.IdpConfig.GoogleBuilder().build(),
+                    AuthUI.IdpConfig.FacebookBuilder().build(),
+                    AuthUI.IdpConfig.TwitterBuilder().build(),
+                    AuthUI.IdpConfig.EmailBuilder().build()
+                )
+            )
+            .setLogo(R.drawable.ic_launcher)
+            .setTheme(R.style.LogInTheme)
+            .build(), REQUEST_CODE
+    )
 
     fun saveUserIdOnLogin() {
         val currentUser = mFirebaseAuth.currentUser
@@ -52,7 +61,7 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
     private fun sendRegistrationToServer(email: String?) {
         val token = mContext.pullStringFromSharedPreferences(SHARED_MESSAGE_TOKEN)
 
-        if(email != null) {
+        if (email != null) {
             mDatabaseReference.child(LOCATION_MESSAGE_TOKENS).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError?) {
                     Log.e(LOG_TAG, "Token not sent to server! Device won`t receive notifications")
@@ -75,7 +84,7 @@ class FirebaseAuthenticator(private val mContext: Context, private val mDatabase
         }
     }
 
-    fun logout(){
+    fun logout() {
         mUser.refreshUser(User())
         mFirebaseAuth.signOut()
     }

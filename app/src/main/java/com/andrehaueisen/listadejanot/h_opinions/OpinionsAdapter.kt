@@ -43,13 +43,13 @@ class OpinionsAdapter(val context: Context, opinionsMap: HashMap<String, String>
         notifyItemRemoved(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): OpinionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OpinionViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_opinion, parent, false)
         return OpinionViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: OpinionViewHolder?, position: Int) {
-        holder?.onBindView(position)
+    override fun onBindViewHolder(holder: OpinionViewHolder, position: Int) {
+        holder.onBindView(position)
     }
 
     override fun getItemCount(): Int = opinions.size

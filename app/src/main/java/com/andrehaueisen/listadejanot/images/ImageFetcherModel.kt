@@ -2,7 +2,6 @@ package com.andrehaueisen.listadejanot.images
 
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.util.Log
 import com.andrehaueisen.listadejanot.c_database.PoliticiansContract
 import com.andrehaueisen.listadejanot.models.Item
 import com.andrehaueisen.listadejanot.models.Politician
@@ -19,10 +18,7 @@ class ImageFetcherModel(private val mImageFetcherService: ImageFetcherService, p
         return getUrlFromDatabase(politician)
                 .switchIfEmpty(getUrlFromNetwork(politician))
                 .flatMap(object : Function<Item, ObservableSource<Item>> {
-                    override fun apply(item: Item): ObservableSource<Item> {
-
-                        return Observable.just(item)
-                    }
+                    override fun apply(item: Item): ObservableSource<Item> = Observable.just(item)
                 })
     }
 
@@ -44,14 +40,7 @@ class ImageFetcherModel(private val mImageFetcherService: ImageFetcherService, p
 
     private fun getUrlFromNetwork(politician: Politician): Observable<Item> {
 
-        val queryComplement = when (politician.post!!) {
-            Politician.Post.SENADOR, Politician.Post.SENADORA -> "head"
-            Politician.Post.PRESIDENTE -> "posse"
-            Politician.Post.GOVERNADOR, Politician.Post.GOVERNADORA -> "sede do governo"
-            Politician.Post.DEPUTADO, Politician.Post.DEPUTADA -> "fala"
-        }
-
-        return mImageFetcherService.catchNews("${politician.name} ${politician.post!!.name} $queryComplement")
+        return mImageFetcherService.catchNews("${politician.name} ${politician.post!!.name}")
                 .flatMap({ items ->
 
                     if (items.items?.size != 0) {
@@ -74,7 +63,6 @@ class ImageFetcherModel(private val mImageFetcherService: ImageFetcherService, p
         politician.imageUrl = item.link
         politician.imageTimestamp = timestamp
 
-        val rowUpdated = contentResolver.update(databaseUri, contentValues, null, null)
-        Log.i("ImageFetcherModel", "Row number $rowUpdated updated!!!")
+        contentResolver.update(databaseUri, contentValues, null, null)
     }
 }

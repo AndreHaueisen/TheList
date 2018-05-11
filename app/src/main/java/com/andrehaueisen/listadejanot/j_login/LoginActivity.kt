@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         val idpResponse = IdpResponse.fromResultIntent(data)
 
         if(idpResponse != null) {
-            when (idpResponse.errorCode) {
+            when (idpResponse.error?.errorCode) {
 
                 ErrorCodes.NO_NETWORK -> {
                     showToast(getString(R.string.no_network))
