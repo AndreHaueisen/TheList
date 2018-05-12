@@ -1,15 +1,15 @@
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:name="vector"
-    android:width="48dp"
-    android:height="48dp"
+    android:width="36dp"
+    android:height="36dp"
     android:viewportWidth="64"
     android:viewportHeight="64">
     <group android:name="group"/>
     <path
         android:name="path"
         android:pathData="M 32 1.63 C 15.227 1.63 1.63 15.227 1.63 32 C 1.63 48.773 15.227 62.37 32 62.37 C 48.773 62.37 62.37 48.773 62.37 32 C 62.37 15.227 48.773 1.63 32 1.63 Z"
-        android:fillColor="@color/colorPrimary"
+        android:fillColor="@color/colorPrimaryLight"
         android:strokeWidth="1"/>
     <path
         android:name="path_1"

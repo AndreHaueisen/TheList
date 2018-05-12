@@ -11,8 +11,8 @@
 
     <ImageButton
         android:id="@+id/left_arrow_image_view"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@null"
@@ -25,8 +25,8 @@
 
     <ImageButton
         android:id="@+id/right_arrow_image_view"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:background="@null"
@@ -56,7 +56,7 @@
 
             <TextView
                 android:id="@+id/honesty_title_rating_bar_text_view"
-                style="@style/LatoBoldTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -67,7 +67,7 @@
                 android:focusable="false"
                 android:text="@string/honesty_title"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -89,7 +89,7 @@
 
             <TextView
                 android:id="@+id/your_grade_honesty_text_view"
-                style="@style/LatoRegularTextStyle"
+                style="@style/LatoLightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -108,7 +108,7 @@
 
             <TextView
                 android:id="@+id/leader_rating_bar_title_text_view"
-                style="@style/LatoBoldTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -119,7 +119,7 @@
                 android:focusable="false"
                 android:text="@string/leader_title"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/honesty_rating_bar"/>
@@ -141,7 +141,7 @@
 
             <TextView
                 android:id="@+id/your_grade_leader_text_view"
-                style="@style/LatoRegularTextStyle"
+                style="@style/LatoLightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -162,7 +162,7 @@
 
             <TextView
                 android:id="@+id/promise_keeper_rating_bar_title_text_view"
-                style="@style/LatoBoldTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -173,7 +173,7 @@
                 android:focusable="false"
                 android:text="@string/promise_keeper_title"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/leader_rating_bar"/>
@@ -195,7 +195,7 @@
 
             <TextView
                 android:id="@+id/your_grade_promise_keeper_text_view"
-                style="@style/LatoRegularTextStyle"
+                style="@style/LatoLightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -215,7 +215,7 @@
 
             <TextView
                 android:id="@+id/rules_for_the_people_rating_bar_title_text_view"
-                style="@style/LatoBoldTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -226,7 +226,7 @@
                 android:focusable="false"
                 android:text="@string/rules_for_the_people_title"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/promise_keeper_rating_bar"/>
@@ -248,7 +248,7 @@
 
             <TextView
                 android:id="@+id/your_grade_rules_for_people_text_view"
-                style="@style/LatoRegularTextStyle"
+                style="@style/LatoLightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -268,7 +268,7 @@
 
             <TextView
                 android:id="@+id/answer_voters_rating_bar_title_text_view"
-                style="@style/LatoBoldTextStyle"
+                style="@style/LatoRegularTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -279,7 +279,7 @@
                 android:focusable="false"
                 android:text="@string/answer_voters_title"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rules_for_the_people_rating_bar"/>
@@ -303,7 +303,7 @@
 
             <TextView
                 android:id="@+id/your_grade_answer_voters_text_view"
-                style="@style/LatoRegularTextStyle"
+                style="@style/LatoLightTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

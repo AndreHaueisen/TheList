@@ -35,8 +35,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.github.florent37.expectanim.ExpectAnim
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.f_activity_politician_selector.*
 import kotlinx.android.synthetic.main.group_layout_rating_board.*
 import java.io.File
@@ -63,7 +61,6 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
     override fun setViews(isSavedState: Boolean) {
         setFabMenu()
         setAutoCompleteTextView()
-        setAdView()
 
         if (isSavedState) {
             if (mPresenterActivity.getSinglePolitician() != null) {
@@ -804,11 +801,4 @@ class PoliticianSelectorView(private val mPresenterActivity: PoliticianSelectorP
         }
     }
 
-    private fun setAdView() {
-        with(mPresenterActivity) {
-            val adViewBanner = findViewById<AdView>(R.id.adView)
-            val adRequest = AdRequest.Builder().build()
-            adViewBanner.loadAd(adRequest)
-        }
-    }
 }

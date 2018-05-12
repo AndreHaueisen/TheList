@@ -17,7 +17,7 @@
 
     <!-- f_politician_selector dimensions-->
     <dimen name="selector_image_height">240dp</dimen>
-    <dimen name="politician_buttons_margin">16dp</dimen>
+    <dimen name="politician_buttons_margin">24dp</dimen>
 
     <!-- l_onboard dimensions0-->
     <dimen name="onboard_icon_size">168dp</dimen>

@@ -103,6 +103,7 @@ class OpinionsActivity : AppCompatActivity() {
                         setPositiveButton(R.string.opinion_dialog_replace_button_positive,
                                 { _, _ ->
                                     mFirebaseRepository.addOpinionOnPolitician(politicianEmail, userEmail, opinion)
+                                    opinion_text_input_layout.editText?.text?.clear()
                                 })
                         setNegativeButton(android.R.string.cancel, { dialog, _ -> dialog.dismiss() })
                         show()
@@ -110,6 +111,7 @@ class OpinionsActivity : AppCompatActivity() {
 
                 } else if (!opinion.isNullOrBlank()) {
                     mFirebaseRepository.addOpinionOnPolitician(politicianEmail, userEmail, opinion)
+                    opinion_text_input_layout.editText?.text?.clear()
                 }
             }
         }

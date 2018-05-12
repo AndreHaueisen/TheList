@@ -51,10 +51,13 @@ class FirebaseAuthenticator(
 
         if (currentUser != null) {
             val encodedEmail = currentUser.email?.encodeEmail()
-            val database = mDatabaseReference.child(LOCATION_UID_MAPPINGS).child(encodedEmail)
 
-            database.setValue(currentUser.uid)
-            sendRegistrationToServer(encodedEmail)
+            encodedEmail?.let {
+                val database = mDatabaseReference.child(LOCATION_UID_MAPPINGS).child(encodedEmail)
+
+                database.setValue(currentUser.uid)
+                sendRegistrationToServer(encodedEmail)
+            }
         }
     }
 
